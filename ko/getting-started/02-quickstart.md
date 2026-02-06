@@ -204,3 +204,10 @@ Organization: My Startup
 | Cursor      | [Cursor 설정](../integrations/05-cursor-setup.md)           |
 | 기타 도구       | [AI 도구 연동 개요](../integrations/01-overview.md)             |
 
+### 실전 프로젝트
+
+| 프로젝트                                      | 난이도 | 설명           |
+| ----------------------------------------- | --- | ------------ |
+| [Todo 앱](../cookbook/01-todo-app.md)      | 쉬움  | 할 일 관리 앱     |
+| [블로그 백엔드](../cookbook/02-blog-backend.md) | 중간  | 게시글, 댓글, 사용자 |
+| [이커머스](../cookbook/05-ecommerce.md)       | 어려움 | 상품, 주문, 결제   |

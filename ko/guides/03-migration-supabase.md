@@ -1,0 +1,224 @@
+# Supabase에서 이전하기
+
+> Supabase 프로젝트를 bkend로 이전하는 방법을 안내합니다.
+
+## 개요
+
+Supabase에서 bkend로 이전하려면 PostgreSQL 스키마를 MongoDB 스키마로 변환하고, RLS 정책을 bkend의 RBAC 설정으로 재작성해야 합니다.
+
+---
+
+## 마이그레이션 순서
+
+```mermaid
+flowchart TD
+    A[1. bkend 프로젝트 생성] --> B[2. 스키마 변환]
+    B --> C[3. 데이터 이전]
+    C --> D[4. RLS 정책 변환]
+    D --> E[5. 인증 이전]
+    E --> F[6. 파일 저장소 이전]
+    F --> G[7. 클라이언트 코드 수정]
+    G --> H[8. 테스트 및 검증]
+```
+
+---
+
+## 1단계: 스키마 변환하기
+
+### 타입 매핑
+
+| PostgreSQL | bkend | 비고 |
+|-----------|-------|------|
+| `text`, `varchar` | String | |
+| `integer`, `bigint` | Number | |
+| `numeric`, `decimal` | Number | 실수 포함 |
+| `boolean` | Boolean | |
+| `timestamp`, `timestamptz` | Date | ISO 8601 형식 |
+| `json`, `jsonb` | Object | |
+| `text[]`, `integer[]` | Array | |
+| `uuid` | String | 문자열로 저장 |
+| `bytea` | 🚧 확인 필요 | 바이너리 데이터 |
+
+### 관계 변환
+
+| Supabase (SQL) | bkend | 설명 |
+|---------------|-------|------|
+| Foreign Key | 관계 설정 (Relation) | 테이블 간 참조 |
+| JOIN | 조인 쿼리 | 관계 데이터 조회 |
+| Many-to-Many (중간 테이블) | Array 또는 별도 테이블 | 관계 방식 선택 |
+
+### 변환 예시
+
+```sql
+-- Supabase (PostgreSQL)
+CREATE TABLE posts (
+  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  title text NOT NULL,
+  content text,
+  author_id uuid REFERENCES auth.users(id),
+  tags text[] DEFAULT '{}',
+  metadata jsonb DEFAULT '{}',
+  created_at timestamptz DEFAULT now()
+);
+```
+
+bkend에서는 다음과 같이 테이블을 생성합니다.
+
+```json
+{
+  "name": "posts",
+  "columns": [
+    { "name": "title", "type": "String", "required": true },
+    { "name": "content", "type": "String" },
+    { "name": "authorId", "type": "String" },
+    { "name": "tags", "type": "Array" },
+    { "name": "metadata", "type": "Object" }
+  ]
+}
+```
+
+> 💡 **Tip** - bkend는 `_id`, `createdAt`, `updatedAt`, `createdBy` 필드를 자동 생성합니다. Supabase의 `id`, `created_at` 컬럼은 별도로 생성할 필요가 없습니다.
+
+---
+
+## 2단계: RLS 정책 변환하기
+
+### Supabase RLS → bkend RBAC
+
+```sql
+-- Supabase RLS 정책
+CREATE POLICY "Users can view all posts"
+ON posts FOR SELECT USING (true);
+
+CREATE POLICY "Users can insert own posts"
+ON posts FOR INSERT WITH CHECK (auth.uid() = author_id);
+
+CREATE POLICY "Users can update own posts"
+ON posts FOR UPDATE USING (auth.uid() = author_id);
+```
+
+bkend에서는 다음과 같이 권한을 설정합니다.
+
+```json
+{
+  "permissions": {
+    "admin": {
+      "create": true, "read": true, "update": true, "delete": true
+    },
+    "user": {
+      "create": true, "read": true
+    },
+    "self": {
+      "update": true, "delete": true
+    },
+    "guest": {
+      "read": true
+    }
+  }
+}
+```
+
+### 주요 차이점
+
+| Supabase RLS | bkend RBAC |
+|-------------|-----------|
+| SQL 기반 커스텀 정책 | JSON 기반 선언적 설정 |
+| 복잡한 조건식 가능 | admin/user/self/guest 4그룹 |
+| `auth.uid()` 비교 | `createdBy` 자동 필터 |
+| Row 단위 세밀한 제어 | 그룹 단위 CRUD 제어 |
+
+> ⚠️ **주의** - Supabase의 복잡한 커스텀 RLS 정책(예: 여러 조건을 조합한 정책)은 bkend의 기본 RBAC으로 완전히 대체되지 않을 수 있습니다. 비즈니스 로직에서 추가 검증이 필요할 수 있습니다.
+
+---
+
+## 3단계: 데이터 이전하기
+
+1. **Supabase에서 데이터 내보내기** — SQL 쿼리 또는 Supabase Dashboard에서 CSV/JSON으로 내보내세요.
+
+2. **데이터 변환** — PostgreSQL 타입을 bkend 타입으로 변환하세요.
+
+3. **bkend에 데이터 삽입** — 서비스 API의 Insert 엔드포인트로 데이터를 삽입하세요.
+
+```typescript
+// Supabase 데이터 변환 예시
+const supabaseRow = {
+  id: "550e8400-e29b-41d4-a716-446655440000",
+  title: "게시글",
+  created_at: "2025-01-01T00:00:00+09:00",
+  tags: ["javascript", "tutorial"]
+};
+
+// bkend 형식으로 변환
+const bkendRecord = {
+  title: supabaseRow.title,
+  tags: supabaseRow.tags
+  // _id, createdAt은 자동 생성됨
+};
+```
+
+---
+
+## 4단계: 인증 이전하기
+
+### 인증 방식 비교
+
+| Supabase | bkend | 이전 방법 |
+|----------|-------|---------|
+| 이메일/비밀번호 | 이메일/비밀번호 | 비밀번호 재설정 필요 |
+| Google OAuth | Google OAuth | OAuth 설정 재구성 |
+| GitHub OAuth | GitHub OAuth | OAuth 설정 재구성 |
+| 매직 링크 | 매직 링크 | API 교체 |
+| Phone (SMS) | 🚧 확인 필요 | |
+
+> ⚠️ **주의** - Supabase의 비밀번호 해시(bcrypt)는 bkend와 동일한 알고리즘을 사용하지만, 직접 이전은 지원되지 않습니다. User에게 비밀번호 재설정을 안내하세요.
+
+---
+
+## 5단계: 파일 저장소 이전하기
+
+| Supabase Storage | bkend Storage | 설명 |
+|-----------------|---------------|------|
+| Bucket | 버킷 카테고리 | 파일 저장 위치 |
+| Public/Private | public/private visibility | 접근 권한 |
+| URL | CDN/Presigned URL | 파일 접근 |
+
+1. Supabase Storage에서 파일을 다운로드하세요.
+2. bkend의 Presigned URL 업로드 API로 파일을 업로드하세요.
+3. 기존 Supabase Storage URL을 bkend URL로 교체하세요.
+
+---
+
+## 6단계: 클라이언트 코드 수정하기
+
+```typescript
+// Supabase (Before)
+import { createClient } from '@supabase/supabase-js';
+const supabase = createClient(url, key);
+const { data } = await supabase.from('posts').select('*').eq('status', 'published');
+
+// bkend (After)
+const response = await fetch('https://api.bkend.io/data/posts?status=published', {
+  headers: { 'X-API-Key': '{your_api_key}' }
+});
+const { items } = await response.json();
+```
+
+---
+
+## 테스트 체크리스트
+
+- [ ] 모든 테이블이 올바른 스키마로 생성되었는지 확인
+- [ ] 데이터가 정확히 이전되었는지 확인 (타입 변환 포함)
+- [ ] RLS 정책이 RBAC으로 올바르게 변환되었는지 확인
+- [ ] User 인증이 정상 동작하는지 확인
+- [ ] 파일 접근 URL이 올바르게 교체되었는지 확인
+- [ ] 관계 쿼리가 정상 동작하는지 확인
+
+---
+
+## 관련 문서
+
+- [타 서비스 비교](01-comparison.md) — Firebase, Supabase 비교
+- [테이블 생성하기](../database/03-create-table.md) — 테이블과 스키마 설정
+- [RLS 개요](../security/05-rls-overview.md) — bkend의 접근 제어
+- [Auth 개요](../authentication/01-overview.md) — 인증 시스템

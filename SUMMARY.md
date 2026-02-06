@@ -1,8 +1,7 @@
 # Table of contents
 
 * [Welcome](README.md)
-
-* 시작하기
+* [시작하기](undefined/README.md)
   * [bkend란?](ko/getting-started/01-what-is-bkend.md)
   * [빠른 시작](ko/getting-started/02-quickstart.md)
   * [콘솔 화면 구성](ko/getting-started/03-console-overview.md)
@@ -13,8 +12,7 @@
   * [첫 번째 프로젝트](ko/getting-started/08-first-project.md)
   * [대시보드 사용법](ko/getting-started/09-dashboard-usage.md)
   * [다음 단계](ko/getting-started/10-next-steps.md)
-
-* AI 도구 연동
+* [AI 도구 연동](ai/README.md)
   * [개요](ko/integrations/01-overview.md)
   * [MCP 설정 기본](ko/integrations/02-mcp-basics.md)
   * [Claude Code 설정](ko/integrations/03-claude-code-setup.md)
@@ -24,8 +22,7 @@
   * [Antigravity 연동](ko/integrations/08-antigravity.md)
   * [기타 MCP 도구](ko/integrations/09-other-tools.md)
   * [직접 MCP 연결](ko/integrations/10-direct-mcp.md)
-
-* Database
+* [Database](database/README.md)
   * [개요](ko/database/01-overview.md)
   * [콘솔에서 DB 관리](ko/database/02-console-ui.md)
   * [테이블 생성](ko/database/03-create-table.md)
@@ -41,8 +38,7 @@
   * [조인 쿼리](ko/database/13-joins.md)
   * [인덱스 & 성능](ko/database/14-indexes.md)
   * [마이그레이션](ko/database/15-migrations.md)
-
-* Authentication
+* [Authentication](authentication/README.md)
   * [개요](ko/authentication/01-overview.md)
   * [콘솔에서 Auth 관리](ko/authentication/02-console-ui.md)
   * [이메일 회원가입](ko/authentication/03-signup-email.md)
@@ -59,8 +55,7 @@
   * [유저 프로필 관리](ko/authentication/14-user-profile.md)
   * [유저 목록 조회](ko/authentication/15-user-list.md)
   * [계정 삭제](ko/authentication/16-account-deletion.md)
-
-* Storage
+* [Storage](storage/README.md)
   * [개요](ko/storage/01-overview.md)
   * [콘솔에서 Storage 관리](ko/storage/02-console-ui.md)
   * [버킷 생성/관리](ko/storage/03-buckets.md)
@@ -71,8 +66,7 @@
   * [파일 목록 조회](ko/storage/08-file-list.md)
   * [파일 삭제](ko/storage/09-file-delete.md)
   * [파일 접근 권한](ko/storage/10-permissions.md)
-
-* Security
+* [Security](security/README.md)
   * [개요](ko/security/01-overview.md)
   * [API Key 관리](ko/security/02-api-keys.md)
   * [콘솔에서 Key 관리](ko/security/03-api-key-console.md)
@@ -82,8 +76,7 @@
   * [데이터 암호화](ko/security/07-data-encryption.md)
   * [감사 로그](ko/security/08-audit-logs.md)
   * [보안 모범 사례](ko/security/09-best-practices.md)
-
-* Platform
+* [Platform](platform/README.md)
   * [환경 개요](ko/platform/01-environments.md)
   * [환경 전환](ko/platform/02-env-switching.md)
   * [환경 변수 관리](ko/platform/03-env-variables.md)
@@ -92,8 +85,7 @@
   * [사용량 분석](ko/platform/06-usage-analytics.md)
   * [팀 멤버 관리](ko/platform/07-team-management.md)
   * [결제 & 플랜](ko/platform/08-billing.md)
-
-* API Reference
+* [API Reference](api-reference/README.md)
   * [개요](ko/api-reference/01-overview.md)
   * [MCP 프로토콜](ko/api-reference/02-mcp-protocol.md)
   * [Database MCP 도구](ko/api-reference/03-db-tools.md)
@@ -104,8 +96,7 @@
   * [REST Auth](ko/api-reference/08-rest-auth.md)
   * [REST Storage](ko/api-reference/09-rest-storage.md)
   * [에러 코드](ko/api-reference/10-error-codes.md)
-
-* Guides
+* [Guides](guides/README.md)
   * [타 서비스 비교](ko/guides/01-comparison.md)
   * [Firebase 이전](ko/guides/02-migration-firebase.md)
   * [Supabase 이전](ko/guides/03-migration-supabase.md)
@@ -116,8 +107,7 @@
   * [웹훅 설정](ko/guides/08-webhooks.md)
   * [실시간 기능](ko/guides/09-realtime.md)
   * [커스텀 도메인](ko/guides/10-custom-domain.md)
-
-* Troubleshooting
+* [Troubleshooting](troubleshooting/README.md)
   * [자주 발생하는 에러](ko/troubleshooting/01-common-errors.md)
   * [연결 문제](ko/troubleshooting/02-connection-issues.md)
   * [인증 관련 문제](ko/troubleshooting/03-auth-issues.md)

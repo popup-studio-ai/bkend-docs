@@ -1,0 +1,25 @@
+name: Notify Private Repo (GitBook Sync)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.gitbook/**'
+      - 'ko/**'
+      - 'SUMMARY.md'
+      - 'README.md'
+
+jobs:
+  notify:
+    # sync-to-public 봇 커밋은 무시 (순환 방지)
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger private repo sync
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.PRIVATE_REPO_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ secrets.PRIVATE_REPO }}/dispatches" \
+            -d '{"event_type": "gitbook-sync"}'
+          echo "✅ Private repo 동기화 트리거 완료"

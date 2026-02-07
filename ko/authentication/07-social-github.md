@@ -1,0 +1,142 @@
+# GitHub OAuth
+
+{% hint style="info" %}
+💡 GitHub 계정으로 소셜 로그인을 구현하세요.
+{% endhint %}
+
+## 개요
+
+GitHub OAuth는 OAuth 2.0 프로토콜을 사용합니다. 개발자 중심 서비스에서 GitHub 계정 기반 인증을 간편하게 구현할 수 있습니다.
+
+***
+
+## 사전 준비
+
+### GitHub OAuth App 생성
+
+1. [GitHub Developer Settings](https://github.com/settings/developers)에 접속하세요.
+2. **OAuth Apps** > **New OAuth App**을 클릭하세요.
+3. 다음 정보를 입력하세요.
+
+| 필드 | 설명 |
+|------|------|
+| **Application name** | 앱 이름 |
+| **Homepage URL** | 앱 홈페이지 URL |
+| **Authorization callback URL** | 콜백 URL |
+
+4. **Register application**을 클릭하세요.
+5. `Client ID`를 복사하고, **Generate a new client secret**으로 `Client Secret`을 생성하세요.
+
+{% hint style="warning" %}
+⚠️ `Client Secret`은 생성 직후에만 확인할 수 있습니다. 안전한 곳에 저장하세요.
+{% endhint %}
+
+### bkend에 등록
+
+발급받은 `Client ID`와 `Client Secret`을 bkend에 등록하세요. [인증 제공자 설정](17-provider-config.md)에서 설정할 수 있습니다.
+
+***
+
+## GitHub 로그인 구현
+
+### 1단계: 인증 URL 생성
+
+```bash
+curl -X GET "https://api-client.bkend.ai/v1/auth/github/authorize?redirect=https://myapp.com/auth/callback" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod"
+```
+
+**응답:**
+
+```json
+{
+  "authorizationUrl": "https://github.com/login/oauth/authorize?client_id=...&redirect_uri=...&scope=user:email&state=..."
+}
+```
+
+### 2단계: User를 GitHub으로 리다이렉트
+
+```javascript
+window.location.href = data.authorizationUrl;
+```
+
+### 3단계: 콜백에서 토큰 발급
+
+{% tabs %}
+{% tab title="cURL" %}
+```bash
+curl -X POST https://api-client.bkend.ai/v1/auth/github/callback \
+  -H "Content-Type: application/json" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod" \
+  -d '{
+    "code": "{authorization_code}",
+    "state": "{state_value}"
+  }'
+```
+{% endtab %}
+{% tab title="JavaScript" %}
+```javascript
+const urlParams = new URLSearchParams(window.location.search);
+const code = urlParams.get('code');
+const state = urlParams.get('state');
+
+const response = await fetch('https://api-client.bkend.ai/v1/auth/github/callback', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Project-Id': '{project_id}',
+    'X-Environment': 'prod',
+  },
+  body: JSON.stringify({ code, state }),
+});
+
+const { accessToken, refreshToken, is_new_user } = await response.json();
+```
+{% endtab %}
+{% endtabs %}
+
+### 성공 응답
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
+  "tokenType": "Bearer",
+  "expiresIn": 3600,
+  "is_new_user": false
+}
+```
+
+***
+
+## GitHub에서 제공하는 사용자 정보
+
+| 필드 | GitHub Scope | 설명 |
+|------|-------------|------|
+| `email` | `user:email` | 이메일 주소 |
+| `name` | `user` | 이름 (display name) |
+| `image` | `user` | 프로필 사진 URL (avatar_url) |
+
+***
+
+## 에러 응답
+
+| 에러 코드 | HTTP | 설명 |
+|----------|:----:|------|
+| `auth/oauth-not-configured` | 400 | GitHub OAuth 설정이 완료되지 않음 |
+| `auth/invalid-oauth-code` | 401 | authorization code가 유효하지 않음 |
+| `auth/oauth-callback-failed` | 500 | 콜백 처리 중 오류 발생 |
+
+***
+
+## 다음 단계
+
+- [Google OAuth](06-social-google.md) — Google 로그인 설정
+- [소셜 계정 연동](12-account-linking.md) — 기존 계정에 GitHub 연결
+- [인증 제공자 설정](17-provider-config.md) — OAuth 설정 변경
+
+## 참조 표준
+
+- [GitHub OAuth 문서](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)

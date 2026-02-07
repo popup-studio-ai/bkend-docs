@@ -1,130 +1,135 @@
-# Auth 개요
+# 인증 시스템 개요
 
-> bkend의 Authentication 기능으로 User 인증과 세션을 관리하는 방법을 소개합니다.
+{% hint style="info" %}
+💡 bkend는 이메일, 소셜 로그인, 매직 링크 등 다양한 인증 방식을 제공합니다.
+{% endhint %}
 
 ## 개요
 
-bkend Authentication은 이메일/비밀번호 로그인, 소셜 로그인, 매직 링크 등 다양한 인증 방식을 지원하는 관리형 인증 서비스입니다. JWT 기반 세션 관리, 이메일 인증, 비밀번호 재설정, 2FA까지 콘솔이나 API를 통해 설정할 수 있습니다.
+bkend 인증 시스템은 프로젝트의 User를 관리하는 핵심 기능입니다. 회원가입부터 로그인, 세션 관리, 다중 인증(MFA)까지 앱에 필요한 인증 기능을 REST API로 제공합니다.
 
-```mermaid
-flowchart TD
-    A[User 앱] -->|서비스 API| B[Authentication]
-    B --> C[이메일/비밀번호]
-    B --> D[소셜 로그인]
-    B --> E[매직 링크]
-    C --> F[JWT 토큰 발급]
-    D --> F
-    E --> F
-    F --> G[API 접근]
-```
+***
 
----
+## 인증 방식
 
-## 주요 기능
+bkend는 다음 인증 방식을 지원합니다.
 
-| 기능 | 설명 |
-|------|------|
-| **이메일 회원가입** | 이메일과 비밀번호로 계정 생성 |
-| **이메일 로그인** | 비밀번호 기반 로그인 |
-| **소셜 로그인** | Google, GitHub 지원 |
-| **매직 링크** | 비밀번호 없이 이메일 링크로 로그인 |
-| **비밀번호 재설정** | 이메일을 통한 비밀번호 재설정 |
-| **이메일 인증** | 이메일 주소 소유권 확인 |
-| **JWT 토큰** | Access Token + Refresh Token 기반 인증 |
-| **세션 관리** | 디바이스별 세션 추적 및 관리 |
-| **2FA** | TOTP 기반 2단계 인증 |
-| **계정 연동** | 여러 소셜 계정을 하나의 계정에 연결 |
-| **유저 프로필** | 프로필 정보 조회 및 수정 |
+| 방식 | 설명 | 사용 사례 |
+|------|------|----------|
+| **이메일 + 비밀번호** | 전통적인 이메일/비밀번호 인증 | 일반적인 웹/앱 서비스 |
+| **매직 링크** | 이메일로 일회용 로그인 링크 전송 | 비밀번호 없는 간편 로그인 |
+| **Google OAuth** | Google 계정으로 소셜 로그인 | 빠른 소셜 로그인 |
+| **GitHub OAuth** | GitHub 계정으로 소셜 로그인 | 개발자 중심 서비스 |
 
----
-
-## 지원하는 인증 방식
-
-| 방식 | 엔드포인트 | 설명 |
-|------|-----------|------|
-| 비밀번호 | `POST /auth/email/signup` | 이메일 + 비밀번호 회원가입 |
-| 비밀번호 | `POST /auth/email/signin` | 이메일 + 비밀번호 로그인 |
-| 매직 링크 | `POST /auth/email/signup` | 이메일 링크로 회원가입 |
-| 매직 링크 | `POST /auth/email/signin` | 이메일 링크로 로그인 |
-| Google | `GET /auth/google/authorize` | Google OAuth 2.0 |
-| GitHub | `GET /auth/github/authorize` | GitHub OAuth |
-
----
+***
 
 ## 인증 흐름
 
-### 비밀번호 방식
-
 ```mermaid
-sequenceDiagram
-    participant User as User 앱
-    participant API as 서비스 API
-    participant DB as Database
-
-    User->>API: POST /auth/email/signup (email, password, name)
-    API->>API: 비밀번호 검증 + 이메일 중복 확인
-    API->>DB: User 생성
-    API-->>User: JWT 토큰 (accessToken + refreshToken)
+flowchart TD
+    A[User] --> B{인증 방식 선택}
+    B -->|이메일 + 비밀번호| C[POST /auth/email/signup]
+    B -->|매직 링크| D[POST /auth/email/signup<br>method: magiclink]
+    B -->|소셜 로그인| E[GET /auth/:provider/authorize]
+    C --> F[JWT 토큰 발급]
+    D --> G[이메일 링크 클릭]
+    G --> F
+    E --> H[OAuth 콜백]
+    H --> F
+    F --> I[API 접근]
 ```
 
-### 소셜 로그인 방식
+***
 
-```mermaid
-sequenceDiagram
-    participant User as User 앱
-    participant API as 서비스 API
-    participant OAuth as OAuth 제공자
+## JWT 토큰
 
-    User->>API: GET /auth/{provider}/authorize
-    API-->>User: 인증 URL
-    User->>OAuth: 사용자 인증
-    OAuth-->>User: Authorization Code
-    User->>API: POST /auth/{provider}/callback (code)
-    API->>OAuth: 토큰 교환
-    OAuth-->>API: OAuth 토큰
-    API-->>User: JWT 토큰 (accessToken + refreshToken)
+bkend는 JWT(JSON Web Token) 기반 인증을 사용합니다.
+
+| 토큰 | 용도 | 유효 기간 |
+|------|------|----------|
+| **Access Token** | API 요청 시 인증 헤더에 포함 | 단기 (기본 1시간) |
+| **Refresh Token** | Access Token 만료 시 갱신 | 장기 (기본 7일) |
+
+### 인증 헤더
+
+```
+Authorization: Bearer {accessToken}
 ```
 
----
+{% hint style="warning" %}
+⚠️ Access Token이 만료되면 Refresh Token으로 새 Access Token을 발급받으세요. Refresh Token까지 만료되면 다시 로그인해야 합니다.
+{% endhint %}
 
-## 토큰 구조
+***
 
-| 토큰 | 형식 | 만료 시간 | 용도 |
-|------|------|----------|------|
-| **Access Token** | JWT | 1시간 (3600초) | API 요청 인증 |
-| **Refresh Token** | JWT | 7일 (604800초) | Access Token 갱신 |
+## 필수 헤더
 
----
+모든 인증 API 요청에는 다음 헤더가 필요합니다.
 
-## API 인증 헤더
+| 헤더 | 값 | 필수 | 설명 |
+|------|-----|:----:|------|
+| `Authorization` | `Bearer {accessToken}` | 조건부 | 인증이 필요한 엔드포인트 |
+| `X-Project-Id` | `{project_id}` | ✅ | 프로젝트 ID |
+| `X-Environment` | `dev` \| `staging` \| `prod` | ✅ | 환경 |
 
-서비스 API 호출 시 다음 헤더를 포함하세요:
+{% hint style="info" %}
+💡 `X-Project-Id`는 콘솔의 프로젝트 설정에서 확인할 수 있습니다. 자세한 내용은 [프로젝트 설정](../console/12-settings.md)을 참고하세요.
+{% endhint %}
 
-| 헤더 | 필수 | 설명 |
-|------|------|------|
-| `x-project-id` | ✅ | 프로젝트 ID |
-| `x-environment` | - | 환경 이름 (기본값: `development`) |
-| `Authorization` | ✅ | `Bearer {accessToken}` (보호된 엔드포인트) |
+***
 
----
+## User 역할
 
-## 비밀번호 정책
+bkend 프로젝트에 등록된 User는 다음 역할을 가질 수 있습니다.
 
-| 규칙 | 요구사항 |
-|------|---------|
-| 최소 길이 | 8자 |
-| 대문자 | 1개 이상 |
-| 소문자 | 1개 이상 |
-| 숫자 | 1개 이상 |
-| 특수 문자 | 1개 이상 |
+| 역할 | 설명 |
+|------|------|
+| `admin` | 관리자 — 모든 데이터에 접근 가능 |
+| `user` | 일반 사용자 — 기본 역할 |
+| `guest` | 게스트 — 제한된 접근 |
 
----
+역할에 따라 데이터 접근 권한이 달라집니다. 자세한 내용은 [RLS 정책](../security/05-rls-policies.md)을 참고하세요.
 
-## 관련 문서
+***
 
-- [콘솔에서 Auth 관리](02-console-ui.md) — 콘솔 UI 가이드
-- [이메일 회원가입](03-signup-email.md) — 이메일 회원가입
-- [이메일 로그인](04-login-email.md) — 이메일 로그인
-- [소셜 로그인 개요](07-social-overview.md) — 소셜 로그인 설정
-- [JWT 토큰](12-jwt-tokens.md) — 토큰 구조 상세
-- [세션 관리](11-session-management.md) — 세션 관리 가이드
+## 주요 기능
+
+### 계정 관리
+
+- [이메일 회원가입](02-email-signup.md) — 이메일과 비밀번호로 계정 생성
+- [이메일 로그인](03-email-signin.md) — 이메일과 비밀번호로 로그인
+- [매직 링크](04-magic-link.md) — 비밀번호 없이 이메일로 로그인
+- [회원 탈퇴](16-account-deletion.md) — 계정 삭제
+
+### 소셜 로그인
+
+- [소셜 로그인 개요](05-social-overview.md) — OAuth 인증 흐름 이해
+- [Google OAuth](06-social-google.md) — Google 계정 연동
+- [GitHub OAuth](07-social-github.md) — GitHub 계정 연동
+
+### 보안
+
+- [비밀번호 관리](08-password-management.md) — 비밀번호 재설정 및 변경
+- [이메일 인증](09-email-verification.md) — 이메일 소유권 확인
+- [세션 관리](10-session-management.md) — 활성 세션 조회 및 종료
+- [다중 인증 (MFA)](11-mfa.md) — TOTP 기반 2단계 인증
+
+### User 관리
+
+- [소셜 계정 연동](12-account-linking.md) — 여러 소셜 계정 연결
+- [초대 시스템](13-invitation.md) — 이메일로 사용자 초대
+- [사용자 프로필](14-user-profile.md) — 프로필 및 아바타 관리
+- [사용자 관리](15-user-management.md) — 사용자 목록, 역할, 설정
+
+### 설정
+
+- [인증 제공자 설정](17-provider-config.md) — OAuth 및 이메일 인증 설정
+- [이메일 템플릿](18-email-templates.md) — 인증 이메일 커스터마이징
+
+***
+
+## 다음 단계
+
+- [이메일 회원가입](02-email-signup.md) — 첫 번째 인증 구현
+- [Auth & User REST API 레퍼런스](19-api-reference.md) — 전체 API 목록
+- [콘솔에서 API 키 발급](../console/11-api-keys.md) — API 접근 토큰 생성

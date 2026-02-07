@@ -1,86 +1,106 @@
-# API Key 관리
+# API 키 이해
 
-> API Key를 생성하고 관리하는 방법을 안내합니다.
+{% hint style="info" %}
+💡 bkend API 키의 구조, 생성 방식, 보안 특성을 이해합니다.
+{% endhint %}
 
 ## 개요
 
-API Key는 서비스 API를 호출할 때 프로젝트를 식별하는 인증 수단입니다. Organization의 Owner 또는 Admin 역할을 가진 Tenant가 생성할 수 있습니다.
+API 키는 bkend 서비스 API에 접근하기 위한 인증 수단입니다. 콘솔에서 생성하며, `Authorization: Bearer {api_key}` 헤더로 사용합니다.
 
----
+***
 
-## API Key 타입
+## API 키 구조
 
-| 타입 | 접두사 | 설명 |
-|------|--------|------|
-| **API Key** | `ak_` | 서비스 API 호출용 |
-| **Bearer Token** | `bt_` | Bearer 인증용 |
+### 키 형식
 
----
-
-## API Key 생성하기
-
-콘솔의 Organization 설정 또는 API를 통해 API Key를 생성합니다.
-
-### 요청
-
-```bash
-curl -X POST "https://api.bkend.ai/v1/organizations/{organizationId}/access-tokens" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Production API Key",
-    "type": "API_KEY",
-    "scopes": ["project:read", "table:data:*"],
-    "projectIds": ["{project_id}"],
-    "expiresAt": "2025-12-31T23:59:59Z"
-  }'
+```
+ak_a1b2c3d4e5f6...  (ak_ + 64자 hex)
 ```
 
-### 파라미터
+| 구성 요소 | 설명 |
+|----------|------|
+| `ak_` | API 키 prefix |
+| 64자 hex | 32바이트 랜덤 값 (암호학적 난수) |
 
-| 파라미터 | 타입 | 필수 | 설명 |
-|---------|------|------|------|
-| `name` | string | ✅ | API Key 이름 |
-| `type` | string | ✅ | `API_KEY` 또는 `BEARER_TOKEN` |
-| `scopes` | string[] | ✅ | 권한 범위 |
-| `projectIds` | string[] | - | 프로젝트 범위 (미지정 시 전체 조직) |
-| `expiresAt` | string | - | 만료 시간 (ISO 8601) |
+### 보안 저장 방식
 
-> ❌ **위험** - 원본 API Key는 생성 시에만 표시됩니다. 안전한 곳에 저장하세요. 이후에는 다시 조회할 수 없습니다.
+API 키는 생성 시 **SHA-256 해시**로 변환되어 저장됩니다. 원본 키는 저장되지 않습니다.
 
----
+```mermaid
+flowchart LR
+    A[키 생성] -->|randomBytes 32| B[ak_xxx...xxx]
+    B -->|SHA-256| C[해시값 저장]
+    B -->|1회 반환| D[사용자에게 표시]
+```
 
-## API Key 보안
+{% hint style="danger" %}
+🚨 **위험** — API 키는 생성 시 **단 한 번만** 표시됩니다. 안전한 곳에 즉시 저장하세요.
+{% endhint %}
 
-| 항목 | 설명 |
+***
+
+## API 키 속성
+
+| 속성 | 설명 |
 |------|------|
-| **저장 방식** | SHA256 해시 (원본 미저장) |
-| **마스킹** | UI에서 `ak_8930****...dcbb` 형태로 표시 |
-| **만료** | 선택적 시간 기반 만료 |
-| **폐기** | 즉시 비활성화 가능 |
+| Organization | 키가 속한 조직 |
+| 프로젝트 범위 | 접근 가능한 프로젝트 (전체 또는 특정) |
+| 스코프 | 권한 범위 (읽기, 쓰기 등) |
+| 만료 시간 | 선택 사항 (미설정 시 영구) |
+| 생성자 | 키를 생성한 사용자 |
 
----
+***
 
-## API Key 목록 조회하기
+## API 키 검증 흐름
 
-```bash
-curl -X GET "https://api.bkend.ai/v1/organizations/{organizationId}/access-tokens" \
-  -H "Authorization: Bearer {accessToken}"
+```mermaid
+sequenceDiagram
+    participant C as 클라이언트
+    participant A as bkend API
+    participant DB as 데이터베이스
+
+    C->>A: Authorization: Bearer ak_xxx...
+    A->>A: 1. Prefix 확인 (ak_)
+    A->>A: 2. SHA-256 해시 생성
+    A->>DB: 3. 해시로 조회
+    DB-->>A: 4. 키 정보 반환
+    A->>A: 5. 폐기/만료 확인
+    A-->>C: 6. 요청 처리
 ```
 
----
+### 검증 실패 사유
 
-## API Key 폐기하기
+| 사유 | HTTP | 설명 |
+|------|:----:|------|
+| 잘못된 형식 | 401 | `ak_` prefix가 아닌 경우 |
+| 키 없음 | 401 | 해시에 해당하는 키가 없는 경우 |
+| 폐기됨 | 401 | 키가 폐기된 경우 |
+| 만료됨 | 401 | 만료 시간이 지난 경우 |
+
+***
+
+## API 키 관리
+
+### 콘솔에서 관리하기
+
+콘솔의 **프로젝트 설정** > **API 키** 메뉴에서 API 키를 관리할 수 있습니다.
+
+→ [API 키 관리 (콘솔)](../console/11-api-keys.md)
+
+### API 키 사용 예시
 
 ```bash
-curl -X DELETE "https://api.bkend.ai/v1/organizations/{organizationId}/access-tokens/{accessTokenId}" \
-  -H "Authorization: Bearer {accessToken}"
+curl -X GET https://api-client.bkend.ai/v1/data/users \
+  -H "Authorization: Bearer ak_your_api_key_here" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod"
 ```
 
----
+***
 
-## 관련 문서
+## 다음 단계
 
-- [콘솔에서 Key 관리](03-api-key-console.md) — 콘솔 UI 가이드
-- [Public vs Secret Key](04-public-vs-secret.md) — Key 타입 차이
-- [보안 개요](01-overview.md) — 보안 모델 소개
+- [Public Key vs Secret Key](03-public-vs-secret.md) — 키 종류별 사용법
+- [보안 모범 사례](07-best-practices.md) — API 키 보안 권장 사항
+- [보안 개요](01-overview.md) — 전체 보안 아키텍처

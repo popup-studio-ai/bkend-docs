@@ -1,87 +1,92 @@
-# 계정 삭제
+# 회원 탈퇴
 
-> User 계정을 영구적으로 삭제(탈퇴)하는 방법을 안내합니다.
+{% hint style="info" %}
+💡 User가 자신의 계정을 삭제하여 서비스에서 탈퇴할 수 있습니다.
+{% endhint %}
 
 ## 개요
 
-User는 자신의 계정을 직접 삭제(탈퇴)할 수 있습니다. 계정 삭제 시 모든 세션, 연동된 소셜 계정, 사용자 정보가 영구적으로 삭제됩니다.
+회원 탈퇴(Withdraw)는 User가 자신의 계정을 삭제하는 기능입니다. 탈퇴하면 세션이 종료되고 인증 정보가 삭제됩니다.
 
-> ❌ **위험** - 계정 삭제는 되돌릴 수 없습니다. 삭제된 데이터는 복구할 수 없으니 신중하게 진행하세요.
+***
 
----
+## 회원 탈퇴
 
-## 계정 삭제하기
+### DELETE /v1/auth/withdraw
 
-### 요청
-
+{% tabs %}
+{% tab title="cURL" %}
 ```bash
-curl -X DELETE "https://api.bkend.ai/v1/auth/withdraw" \
-  -H "x-project-id: {project_id}" \
-  -H "x-environment: dev" \
-  -H "Authorization: Bearer {accessToken}"
+curl -X DELETE https://api-client.bkend.ai/v1/auth/withdraw \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod"
 ```
+{% endtab %}
+{% tab title="JavaScript" %}
+```javascript
+const response = await fetch('https://api-client.bkend.ai/v1/auth/withdraw', {
+  method: 'DELETE',
+  headers: {
+    'Authorization': `Bearer ${accessToken}`,
+    'X-Project-Id': '{project_id}',
+    'X-Environment': 'prod',
+  },
+});
 
-### 응답 (200 OK)
-
-```json
-{}
+if (response.ok) {
+  // 로컬 토큰 삭제 및 로그인 페이지로 이동
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  window.location.href = '/login';
+}
 ```
+{% endtab %}
+{% endtabs %}
 
----
+{% hint style="danger" %}
+🚨 **위험** — 회원 탈퇴는 되돌릴 수 없습니다. 탈퇴 전에 User에게 확인을 요청하세요.
+{% endhint %}
 
-## 삭제 처리 흐름
+***
+
+## 탈퇴 시 처리 사항
+
+| 항목 | 처리 |
+|------|------|
+| 세션 | 모든 활성 세션 종료 |
+| 토큰 | Access Token, Refresh Token 무효화 |
+| 연동 계정 | 소셜 로그인 연결 해제 |
+| 사용자 데이터 | 소프트 삭제 처리 |
+
+***
+
+## 탈퇴 확인 UI 구현 권장
+
+탈퇴 기능을 구현할 때는 다음과 같은 확인 단계를 추가하는 것이 좋습니다.
 
 ```mermaid
-sequenceDiagram
-    participant User as User 앱
-    participant API as 서비스 API
-    participant DB as Database
-    participant Email as 이메일
-
-    User->>API: DELETE /auth/withdraw
-    API->>API: 사용자 정보 조회 (이메일 발송용)
-    API->>DB: 모든 세션 삭제
-    API->>DB: 모든 연동 계정 삭제
-    API->>DB: 사용자 삭제
-    API->>Email: 탈퇴 안내 이메일 발송
-    API-->>User: 200 OK
+flowchart TD
+    A[탈퇴 버튼 클릭] --> B[경고 메시지 표시]
+    B --> C{확인 입력}
+    C -->|취소| D[이전 페이지]
+    C -->|확인| E[DELETE /auth/withdraw]
+    E --> F[로컬 토큰 삭제]
+    F --> G[로그인 페이지 이동]
 ```
 
----
-
-## 삭제되는 데이터
-
-| 데이터 | 설명 |
-|--------|------|
-| **사용자 정보** | 이름, 이메일, 프로필 등 모든 개인정보 |
-| **모든 세션** | 모든 디바이스의 로그인 세션 |
-| **연동 계정** | 이메일 계정, 소셜 계정(Google, GitHub 등) 연동 정보 |
-| **인증 토큰** | Access Token, Refresh Token 모두 무효화 |
-
-> ⚠️ **주의** - User가 생성한 데이터(Database에 저장된 레코드 등)는 별도로 삭제되지 않습니다. 필요한 경우 계정 삭제 전에 데이터를 직접 삭제하세요.
-
----
-
-## 계정 삭제 전 확인 사항
-
-계정 삭제를 구현할 때 다음 사항을 고려하세요:
-
-1. **확인 절차 추가** — User에게 삭제 의사를 한 번 더 확인하세요.
-2. **데이터 백업** — 필요한 데이터가 있다면 삭제 전에 백업하세요.
-3. **연동 해제** — 삭제 후에도 소셜 제공자 측에서 앱 연결이 남아있을 수 있습니다.
-
----
+***
 
 ## 에러 응답
 
-| 에러 코드 | HTTP 상태 | 설명 |
-|----------|----------|------|
-| `auth/unauthorized` | 401 | 인증되지 않은 요청 |
+| 에러 코드 | HTTP | 설명 |
+|----------|:----:|------|
+| `auth/unauthorized` | 401 | 인증이 필요함 |
 
----
+***
 
-## 관련 문서
+## 다음 단계
 
-- [유저 프로필 관리](14-user-profile.md) — 프로필 조회 및 계정 연동
-- [세션 관리](11-session-management.md) — 세션 관리 가이드
-- [Auth 개요](01-overview.md) — Authentication 기능 소개
+- [이메일 회원가입](02-email-signup.md) — 새 계정 생성
+- [세션 관리](10-session-management.md) — 세션 종료
+- [인증 시스템 개요](01-overview.md) — 인증 흐름 이해

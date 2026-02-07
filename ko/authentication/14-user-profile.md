@@ -1,221 +1,191 @@
-# 유저 프로필 관리
+# 사용자 프로필 & 아바타
 
-> 로그인한 User의 프로필 정보를 조회하고 연동된 계정을 관리하는 방법을 안내합니다.
+{% hint style="info" %}
+💡 User의 프로필 정보를 조회하고 수정하세요. 아바타 이미지도 관리할 수 있습니다.
+{% endhint %}
 
 ## 개요
 
-로그인한 User는 자신의 프로필 정보를 조회할 수 있습니다. 프로필에는 이름, 이메일, 프로필 이미지, 연동된 소셜 계정 등의 정보가 포함됩니다.
+사용자 프로필 API를 사용하여 이름, 닉네임, 소개, 소셜 링크 등의 프로필 정보와 아바타 이미지를 관리할 수 있습니다.
 
----
+***
 
-## 프로필 조회하기
+## 프로필 조회
 
-### 요청
+### GET /v1/users/:userId/profile
 
 ```bash
-curl -X GET "https://api.bkend.ai/v1/auth/me" \
-  -H "x-project-id: {project_id}" \
-  -H "x-environment: dev" \
-  -H "Authorization: Bearer {accessToken}"
+curl -X GET https://api-client.bkend.ai/v1/users/{userId}/profile \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod"
 ```
 
-### 응답 (200 OK)
+**응답:**
 
 ```json
 {
-  "id": "user_abc123",
-  "role": "user",
   "name": "홍길동",
   "nickname": "gildong",
   "email": "user@example.com",
-  "emailVerified": "2024-01-01T00:00:00Z",
-  "image": "https://example.com/avatar.jpg",
-  "mobile": "+82-10-1234-5678",
+  "mobile": "+821012345678",
   "gender": "male",
-  "bio": "개발자입니다",
+  "bio": "풀스택 개발자입니다.",
   "socialLinks": {
-    "github": "https://github.com/gildong"
-  },
-  "preferences": {
-    "theme": "dark",
-    "language": "ko"
-  },
-  "accounts": [
-    {
-      "provider": "google",
-      "providerAccountId": "123456789"
-    }
-  ],
-  "lastLoginAt": "2024-01-15T10:30:00Z",
-  "createdAt": "2024-01-01T00:00:00Z",
-  "updatedAt": "2024-01-15T10:30:00Z"
-}
-```
-
-### 프로필 필드
-
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `id` | string | 사용자 ID |
-| `role` | string | 시스템 역할 |
-| `name` | string | 이름 |
-| `nickname` | string | 닉네임 |
-| `email` | string | 이메일 주소 |
-| `emailVerified` | string | 이메일 인증 시점 (미인증 시 `null`) |
-| `image` | string | 프로필 이미지 URL |
-| `mobile` | string | 휴대폰 번호 |
-| `gender` | string | 성별 (`none`, `male`, `female`, `etc`) |
-| `bio` | string | 자기소개 |
-| `socialLinks` | object | 소셜 미디어 링크 |
-| `preferences` | object | 사용자 환경설정 |
-| `accounts` | array | 연동된 소셜 계정 목록 |
-| `lastLoginAt` | string | 마지막 로그인 시점 |
-
----
-
-## 소셜 계정 연동하기
-
-기존 계정에 소셜 계정을 추가로 연동할 수 있습니다.
-
-### 요청
-
-```bash
-curl -X POST "https://api.bkend.ai/v1/auth/accounts" \
-  -H "x-project-id: {project_id}" \
-  -H "x-environment: dev" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "provider": "google",
-    "code": "{authorization_code}",
-    "redirectUri": "https://myapp.com/callback"
-  }'
-```
-
-### 파라미터
-
-| 파라미터 | 타입 | 필수 | 설명 |
-|---------|------|------|------|
-| `provider` | string | ✅ | OAuth 제공자 (`google`, `github`) |
-| `code` | string | - | Authorization Code (웹 방식) |
-| `idToken` | string | - | ID Token (모바일 방식) |
-| `redirectUri` | string | - | Code 교환에 사용한 리다이렉트 URI |
-
-### 응답 (201 Created)
-
-```json
-{}
-```
-
----
-
-## 연동 계정 목록 조회하기
-
-### 요청
-
-```bash
-curl -X GET "https://api.bkend.ai/v1/auth/accounts" \
-  -H "x-project-id: {project_id}" \
-  -H "x-environment: dev" \
-  -H "Authorization: Bearer {accessToken}"
-```
-
-### 응답 (200 OK)
-
-```json
-{
-  "items": [
-    {
-      "id": "account_abc123",
-      "userId": "user_xyz789",
-      "type": "credentials",
-      "provider": "email",
-      "providerAccountId": "user@example.com",
-      "createdAt": "2024-01-01T00:00:00Z"
-    },
-    {
-      "id": "account_def456",
-      "userId": "user_xyz789",
-      "type": "oauth",
-      "provider": "google",
-      "providerAccountId": "123456789",
-      "createdAt": "2024-01-10T00:00:00Z"
-    }
-  ],
-  "pagination": {
-    "total": 2,
-    "page": 1,
-    "limit": 10
+    "github": "https://github.com/gildong",
+    "twitter": "https://twitter.com/gildong"
   }
 }
 ```
 
----
+***
 
-## 계정 연동 해제하기
+## 프로필 수정
 
-### 요청
+### PATCH /v1/users/:userId/profile
 
+{% tabs %}
+{% tab title="cURL" %}
 ```bash
-curl -X DELETE "https://api.bkend.ai/v1/auth/accounts/{provider}" \
-  -H "x-project-id: {project_id}" \
-  -H "x-environment: dev" \
-  -H "Authorization: Bearer {accessToken}"
-```
-
-### 응답 (200 OK)
-
-```json
-{}
-```
-
-> ⚠️ **주의** - 마지막 로그인 수단을 해제하면 로그인할 수 없게 됩니다.
-
----
-
-## 계정 존재 여부 확인하기
-
-특정 이메일이나 소셜 계정의 가입 여부를 확인할 수 있습니다.
-
-### 요청
-
-```bash
-curl -X POST "https://api.bkend.ai/v1/auth/accounts/check" \
-  -H "x-project-id: {project_id}" \
-  -H "x-environment: dev" \
+curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/profile \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod" \
   -d '{
-    "type": "credentials",
-    "provider": "email",
-    "providerAccountId": "user@example.com"
+    "nickname": "newgildong",
+    "bio": "백엔드 개발자입니다.",
+    "socialLinks": {
+      "github": "https://github.com/newgildong"
+    }
+  }'
+```
+{% endtab %}
+{% tab title="JavaScript" %}
+```javascript
+const response = await fetch(`https://api-client.bkend.ai/v1/users/${userId}/profile`, {
+  method: 'PATCH',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`,
+    'X-Project-Id': '{project_id}',
+    'X-Environment': 'prod',
+  },
+  body: JSON.stringify({
+    nickname: 'newgildong',
+    bio: '백엔드 개발자입니다.',
+  }),
+});
+```
+{% endtab %}
+{% endtabs %}
+
+### 요청 파라미터
+
+모든 필드는 선택 사항입니다. 변경할 필드만 전달하세요.
+
+| 파라미터 | 타입 | 설명 |
+|---------|------|------|
+| `name` | `string` | 이름 (1~100자) |
+| `nickname` | `string` \| `null` | 닉네임 (1~50자) |
+| `mobile` | `string` \| `null` | 연락처 (E.164 형식, 최대 20자) |
+| `gender` | `string` \| `null` | `none`, `male`, `female`, `etc` |
+| `bio` | `string` \| `null` | 한 줄 소개 (최대 500자) |
+| `socialLinks` | `object` \| `null` | 소셜 링크 |
+
+### socialLinks 필드
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| `github` | `string` \| `null` | GitHub 프로필 URL |
+| `twitter` | `string` \| `null` | Twitter 프로필 URL |
+| `linkedin` | `string` \| `null` | LinkedIn 프로필 URL |
+
+{% hint style="info" %}
+💡 필드에 `null`을 전달하면 해당 값이 제거됩니다.
+{% endhint %}
+
+***
+
+## 아바타 관리
+
+### 아바타 업로드 URL 생성
+
+S3 Presigned URL을 발급받아 직접 업로드합니다.
+
+#### POST /v1/users/:userId/avatar/upload-url
+
+```bash
+curl -X POST https://api-client.bkend.ai/v1/users/{userId}/avatar/upload-url \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod" \
+  -d '{
+    "filename": "avatar.jpg",
+    "contentType": "image/jpeg"
   }'
 ```
 
-### 응답 (200 OK)
+| 파라미터 | 타입 | 필수 | 설명 |
+|---------|------|:----:|------|
+| `filename` | `string` | ✅ | 파일명 |
+| `contentType` | `string` | ✅ | `image/jpeg`, `image/png`, `image/gif`, `image/webp` |
+
+**응답:**
 
 ```json
 {
-  "exists": true,
-  "type": "credentials",
-  "provider": "email"
+  "uploadUrl": "https://s3.amazonaws.com/...",
+  "key": "avatars/user-uuid/avatar.jpg",
+  "expiresAt": "2025-01-21T01:00:00.000Z"
 }
 ```
 
----
+### 아바타 업로드 후 저장
+
+S3에 파일을 업로드한 후, S3 key를 등록하세요.
+
+#### PATCH /v1/users/:userId/avatar
+
+```bash
+curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/avatar \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod" \
+  -d '{
+    "s3Key": "avatars/user-uuid/avatar.jpg"
+  }'
+```
+
+### 아바타 삭제
+
+#### DELETE /v1/users/:userId/avatar
+
+```bash
+curl -X DELETE https://api-client.bkend.ai/v1/users/{userId}/avatar \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod"
+```
+
+***
 
 ## 에러 응답
 
-| 에러 코드 | HTTP 상태 | 설명 |
-|----------|----------|------|
-| `auth/unauthorized` | 401 | 인증되지 않은 요청 |
-| `auth/account-already-linked` | 409 | 이미 연동된 계정 |
-| `auth/account-exists-different-provider` | 409 | 다른 방식으로 가입된 이메일 |
-| `auth/unsupported-provider` | 400 | 지원하지 않는 OAuth 제공자 |
+| 에러 코드 | HTTP | 설명 |
+|----------|:----:|------|
+| `user/not-found` | 404 | 사용자를 찾을 수 없음 |
+| `user/invalid-name` | 400 | 이름이 유효하지 않음 |
+| `user/invalid-nickname` | 400 | 닉네임이 유효하지 않음 |
+| `user/unauthorized` | 401 | 인증이 필요함 |
+| `user/forbidden` | 403 | 다른 사용자의 프로필 수정 불가 |
 
----
+***
 
-## 관련 문서
+## 다음 단계
 
-- [소셜 로그인 개요](07-social-overview.md) — 소셜 로그인 가이드
-- [이메일 인증](06-email-verification.md) — 이메일 인증
-- [계정 삭제](16-account-deletion.md) — 계정 탈퇴
+- [사용자 관리](15-user-management.md) — 사용자 목록 및 역할 관리
+- [공개 프로필](15-user-management.md#공개-프로필-설정) — 프로필 공개 설정
+- [세션 관리](10-session-management.md) — 내 정보 조회

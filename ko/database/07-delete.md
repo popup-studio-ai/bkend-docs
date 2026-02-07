@@ -20,7 +20,7 @@
 curl -X DELETE https://api-client.bkend.ai/v1/data/posts/507f1f77bcf86cd799439011 \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -32,7 +32,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/data/posts/${postId
   headers: {
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
 });
 

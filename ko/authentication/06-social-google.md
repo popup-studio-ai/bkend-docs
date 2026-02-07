@@ -38,7 +38,7 @@ Google OAuth는 OAuth 2.0 + OpenID Connect 프로토콜을 사용합니다. User
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/google/authorize?redirect=https://myapp.com/auth/callback" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -65,7 +65,7 @@ Google 인증 완료 후 콜백 URL로 리다이렉트됩니다.
 curl -X POST https://api-client.bkend.ai/v1/auth/google/callback \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "code": "{authorization_code}",
     "state": "{state_value}"
@@ -84,7 +84,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/google/callbac
   headers: {
     'Content-Type': 'application/json',
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({ code, state }),
 });

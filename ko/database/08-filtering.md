@@ -18,7 +18,7 @@
 # status가 "active"이고 age가 18 이상인 데이터
 curl -X GET "https://api-client.bkend.ai/v1/data/users?andFilters=%7B%22status%22%3A%22active%22%2C%22age%22%3A%7B%22%24gte%22%3A18%7D%7D" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ```javascript
@@ -32,7 +32,7 @@ const response = await fetch(
   {
     headers: {
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
   }
 );
@@ -120,7 +120,7 @@ const url = `https://api-client.bkend.ai/v1/data/posts?andFilters=${encodeURICom
 # 모든 필드에서 "bkend" 검색
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?search=bkend" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### 특정 필드 검색
@@ -131,7 +131,7 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?search=bkend" \
 # title 필드에서만 "bkend" 검색
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?search=bkend&searchType=title" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 | 파라미터 | 타입 | 설명 |

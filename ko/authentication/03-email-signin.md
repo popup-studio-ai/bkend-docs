@@ -39,7 +39,7 @@ sequenceDiagram
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -54,7 +54,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signin',
   headers: {
     'Content-Type': 'application/json',
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     method: 'password',
@@ -85,7 +85,7 @@ MFA가 활성화된 계정은 `mfaCode`를 함께 전달해야 합니다.
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -125,7 +125,7 @@ Access Token이 만료되면 Refresh Token으로 새 토큰을 발급받으세�
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'

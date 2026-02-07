@@ -21,7 +21,7 @@ curl -X POST https://api-client.bkend.ai/v1/files \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "s3Key": "org-123/private/images/2025/01/15/uuid-abc.jpg",
     "originalName": "profile.jpg",
@@ -44,7 +44,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/files', {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     s3Key: presigned.key,
@@ -117,7 +117,7 @@ console.log(fileData.id); // 파일 ID
 curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### 응답 (200 OK)
@@ -155,7 +155,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "originalName": "new-profile.jpg",
     "visibility": "public",

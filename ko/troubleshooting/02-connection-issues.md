@@ -50,14 +50,14 @@ flowchart TD
 curl -X GET https://api-client.bkend.ai/v1/data/posts \
   -H "Authorization: Bearer {api_key_or_jwt}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 | 헤더 | 필수 | 주의 |
 |------|:----:|------|
 | `Authorization` | 조건부 | `Bearer ` 접두사 필수 (공백 주의) |
 | `X-Project-Id` | ✅ | 프로젝트 ID (콘솔에서 확인) |
-| `X-Environment` | ✅ | `dev`, `staging`, `prod` 중 하나 |
+| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
 
 {% hint style="warning" %}
 ⚠️ `Authorization: Bearer {token}`에서 `Bearer`와 토큰 사이에 **공백**이 있어야 합니다. `Bearer{token}`은 잘못된 형식입니다.
@@ -91,7 +91,7 @@ export default async function handler(req, res) {
     headers: {
       'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
       'X-Project-Id': process.env.BKEND_PROJECT_ID,
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
   });
   const data = await response.json();

@@ -38,13 +38,14 @@ curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "filename": "profile.jpg",
     "contentType": "image/jpeg",
     "fileSize": 1048576,
     "visibility": "private",
-    "category": "images"
+    "category": "images",
+    "namespace": "{namespace}"
   }'
 ```
 {% endtab %}
@@ -56,7 +57,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/files/presigned-url
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     filename: 'profile.jpg',
@@ -64,6 +65,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/files/presigned-url
     fileSize: 1048576,
     visibility: 'private',
     category: 'images',
+    namespace: '{namespace}',
   }),
 });
 
@@ -81,13 +83,14 @@ const { url, key, filename } = await response.json();
 | `fileSize` | `number` | - | 파일 크기 (바이트) |
 | `visibility` | `string` | - | `public`, `private`(기본값), `protected`, `shared` |
 | `category` | `string` | - | `images`, `documents`, `media`, `attachments`, `exports`, `backups`, `temp` |
+| `namespace` | `string` | ✅ | 조직 식별자 (예: `org_xxx`) |
 
 ### 응답 (200 OK)
 
 ```json
 {
   "url": "https://s3.amazonaws.com/bucket/...",
-  "key": "org-123/private/images/2025/01/15/uuid-abc.jpg",
+  "key": "org_xxx/private/images/a1b2c3d4-e5f6-7890-abcd-ef1234567890/profile.jpg",
   "filename": "profile.jpg",
   "contentType": "image/jpeg"
 }
@@ -138,7 +141,7 @@ const presigned = await fetch('https://api-client.bkend.ai/v1/files/presigned-ur
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     filename: file.name,
@@ -146,6 +149,7 @@ const presigned = await fetch('https://api-client.bkend.ai/v1/files/presigned-ur
     fileSize: file.size,
     visibility: 'private',
     category: 'images',
+    namespace: '{namespace}',
   }),
 }).then(res => res.json());
 
@@ -163,7 +167,7 @@ const metadata = await fetch('https://api-client.bkend.ai/v1/files', {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     s3Key: presigned.key,
@@ -184,10 +188,18 @@ console.log('파일 ID:', metadata.id);
 업로드된 파일의 S3 키는 다음 구조를 따릅니다.
 
 ```
-{namespace}/{visibility}/{category}/{YYYY}/{MM}/{DD}/{uuid}.{ext}
+{namespace}/{visibility}/{category}/{fileId}/{filename}
 ```
 
-**예시:** `org-123/private/images/2025/01/15/a1b2c3d4.jpg`
+| 세그먼트 | 설명 | 예시 |
+|---------|------|------|
+| `namespace` | 조직 식별자 | `org_xxx` |
+| `visibility` | 접근 범위 (기본: `private`) | `private` |
+| `category` | 파일 카테고리 (기본: `attachments`) | `images` |
+| `fileId` | UUID v4 (자동 생성) | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
+| `filename` | sanitized 파일명 (소문자, 특수문자 제거) | `profile.jpg` |
+
+**예시:** `org_xxx/private/images/a1b2c3d4-e5f6-7890-abcd-ef1234567890/profile.jpg`
 
 ***
 
@@ -195,6 +207,7 @@ console.log('파일 ID:', metadata.id);
 
 | 에러 코드 | HTTP | 설명 |
 |----------|:----:|------|
+| `file/namespace-required` | 400 | namespace 누락 |
 | `file/invalid-name` | 400 | 유효하지 않은 파일명 |
 | `file/file-too-large` | 400 | 파일 크기 초과 |
 | `file/invalid-format` | 400 | 지원하지 않는 파일 형식 |

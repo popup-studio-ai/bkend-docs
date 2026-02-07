@@ -20,7 +20,7 @@
 curl -X GET "https://api-client.bkend.ai/v1/users?page=1&limit=20&sortBy=createdAt&sortDirection=desc" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -36,7 +36,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users?${params}`, {
   headers: {
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
 });
 ```
@@ -94,7 +94,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users?${params}`, {
 curl -X GET https://api-client.bkend.ai/v1/users/{userId} \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***
@@ -110,7 +110,7 @@ curl -X POST https://api-client.bkend.ai/v1/users \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "name": "새 사용자",
     "email": "newuser@example.com",
@@ -129,7 +129,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId} \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "name": "수정된 이름"
   }'
@@ -145,7 +145,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId} \
 curl -X DELETE https://api-client.bkend.ai/v1/users/{userId} \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 {% hint style="danger" %}
@@ -163,7 +163,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/role \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "role": "admin"
   }'
@@ -185,7 +185,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/role \
 curl -X GET https://api-client.bkend.ai/v1/users/{userId}/preferences \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### PATCH /v1/users/:userId/preferences
@@ -195,7 +195,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/preferences \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "locale": "ko",
     "timezone": "Asia/Seoul",
@@ -219,7 +219,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/preferences \
 curl -X GET https://api-client.bkend.ai/v1/users/{userId}/notifications \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### PATCH /v1/users/:userId/notifications
@@ -229,7 +229,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/notifications \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "marketing": false,
     "push": true,
@@ -262,7 +262,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/public-settings \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "slug": "gildong",
     "isPublic": true

@@ -40,7 +40,7 @@ sequenceDiagram
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "method": "magiclink",
     "email": "user@example.com",
@@ -55,7 +55,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
   headers: {
     'Content-Type': 'application/json',
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     method: 'magiclink',
@@ -98,7 +98,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "method": "magiclink",
     "email": "user@example.com",
@@ -126,7 +126,7 @@ https://myapp.com/auth/callback?token={magic_link_token}
 curl -X POST https://api-client.bkend.ai/v1/auth/email/callback \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "token": "{magic_link_token}"
   }'

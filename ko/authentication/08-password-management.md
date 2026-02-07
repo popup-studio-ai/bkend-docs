@@ -38,7 +38,7 @@ sequenceDiagram
 curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/request \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "email": "user@example.com"
   }'
@@ -60,7 +60,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/request \
 curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/confirm \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "email": "user@example.com",
     "token": "{reset_token}",
@@ -89,7 +89,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/password/change \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "currentPassword": "MyP@ssw0rd!",
     "newPassword": "NewP@ssw0rd!"
@@ -104,7 +104,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/password/chang
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     currentPassword: 'MyP@ssw0rd!',

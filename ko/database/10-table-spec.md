@@ -20,7 +20,7 @@
 curl -X GET https://api-client.bkend.ai/v1/data/posts/spec \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -29,7 +29,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts/spec', {
   headers: {
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
 });
 

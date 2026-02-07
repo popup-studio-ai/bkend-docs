@@ -40,7 +40,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   headers: {
     'Authorization': `Bearer ${PUBLIC_KEY}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
 });
 ```
@@ -70,7 +70,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/users', {
   headers: {
     'Authorization': `Bearer ${process.env.BKEND_SECRET_KEY}`,
     'X-Project-Id': process.env.BKEND_PROJECT_ID,
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
 });
 ```

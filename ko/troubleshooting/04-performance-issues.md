@@ -34,7 +34,7 @@ flowchart TD
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published" \
   -H "Authorization: Bearer {api_key}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 응답이 느리다면 `status` 필드에 인덱스를 추가하세요.

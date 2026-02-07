@@ -29,13 +29,14 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "filename": "video.mp4",
     "contentType": "video/mp4",
     "fileSize": 104857600,
     "visibility": "private",
-    "category": "media"
+    "category": "media",
+    "namespace": "{namespace}"
   }'
 ```
 
@@ -48,13 +49,14 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
 | `fileSize` | `number` | ✅ | 전체 파일 크기 (바이트) |
 | `visibility` | `string` | - | `public`, `private`(기본값), `protected`, `shared` |
 | `category` | `string` | - | 파일 카테고리 |
+| `namespace` | `string` | ✅ | 조직 식별자 (예: `org_xxx`) |
 
 ### 응답 (200 OK)
 
 ```json
 {
   "uploadId": "multipart-upload-id",
-  "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+  "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
   "filename": "video.mp4"
 }
 ```
@@ -72,9 +74,9 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
-    "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+    "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
     "uploadId": "multipart-upload-id",
     "partNumber": 1
   }'
@@ -126,9 +128,9 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
-    "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+    "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
     "uploadId": "multipart-upload-id",
     "parts": [
       { "partNumber": 1, "etag": "\"abc123\"" },
@@ -152,7 +154,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
 
 ```json
 {
-  "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+  "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
   "location": "https://s3.amazonaws.com/bucket/org-123/..."
 }
 ```
@@ -170,9 +172,9 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/abort \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
-    "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+    "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
     "uploadId": "multipart-upload-id"
   }'
 ```
@@ -182,7 +184,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/abort \
 ```json
 {
   "success": true,
-  "key": "org-123/private/media/2025/01/15/uuid-abc.mp4"
+  "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4"
 }
 ```
 
@@ -201,12 +203,13 @@ async function multipartUpload(file, accessToken) {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`,
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
     body: JSON.stringify({
       filename: file.name,
       contentType: file.type,
       fileSize: file.size,
+      namespace: '{namespace}',
     }),
   }).then(res => res.json());
 
@@ -227,7 +230,7 @@ async function multipartUpload(file, accessToken) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`,
         'X-Project-Id': '{project_id}',
-        'X-Environment': 'prod',
+        'X-Environment': 'dev',
       },
       body: JSON.stringify({ key, uploadId, partNumber }),
     }).then(res => res.json());
@@ -252,7 +255,7 @@ async function multipartUpload(file, accessToken) {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`,
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
     body: JSON.stringify({ key, uploadId, parts }),
   }).then(res => res.json());

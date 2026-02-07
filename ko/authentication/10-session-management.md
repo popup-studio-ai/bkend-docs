@@ -20,7 +20,7 @@ bkend는 JWT 기반 인증과 함께 세션 관리 기능을 제공합니다. Us
 curl -X GET https://api-client.bkend.ai/v1/auth/me \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -52,7 +52,7 @@ Access Token이 만료되었을 때 Refresh Token으로 새 토큰 쌍을 발급
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'
@@ -65,7 +65,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/refresh', {
   headers: {
     'Content-Type': 'application/json',
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     refreshToken: localStorage.getItem('refreshToken'),
@@ -109,7 +109,7 @@ const { accessToken, refreshToken } = await response.json();
 curl -X GET "https://api-client.bkend.ai/v1/auth/sessions?page=1&limit=10" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 | 파라미터 | 위치 | 타입 | 필수 | 설명 |
@@ -152,7 +152,7 @@ curl -X GET "https://api-client.bkend.ai/v1/auth/sessions?page=1&limit=10" \
 curl -X DELETE https://api-client.bkend.ai/v1/auth/sessions/{sessionId} \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 {% hint style="warning" %}
@@ -171,7 +171,7 @@ curl -X DELETE https://api-client.bkend.ai/v1/auth/sessions/{sessionId} \
 curl -X POST https://api-client.bkend.ai/v1/auth/signout \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***

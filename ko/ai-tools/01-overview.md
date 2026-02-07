@@ -45,38 +45,20 @@ flowchart LR
 
 ## 제공되는 도구
 
-### 문서 도구
+### 고정 도구
 
-AI 도구가 bkend 사용법을 이해하는 데 필요한 가이드를 제공합니다.
+세션 컨텍스트와 문서 검색을 위한 도구입니다.
 
 | 도구 | 설명 |
 |------|------|
-| `0_get_context` | 세션 시작 시 필수 호출 — 리소스 계층 및 주의사항 안내 |
-| `1_concepts` | 핵심 개념 (스키마, 역할, 계층 구조) |
-| `2_tutorial` | 단계별 프로젝트 설정 가이드 |
-| `3_howto_implement_auth` | 인증 구현 API 레퍼런스 |
-| `4_howto_implement_data_crud` | CRUD 구현 패턴 및 예시 |
-| `5_get_operation_schema` | 특정 작업의 상세 스키마 조회 |
-| `6_code_examples_auth` | 인증 코드 예시 (TypeScript/JavaScript) |
-| `7_code_examples_data` | 데이터 CRUD 코드 예시 |
+| `get_context` | 세션 시작 시 필수 호출 — Organization ID, 리소스 계층 및 주의사항 안내 |
+| `search_docs` | bkend 문서 검색 — API 가이드, 인증 구현, CRUD 패턴, 코드 예시 등 |
 
 ### API 도구
 
-실제 bkend API를 호출하여 리소스를 관리합니다.
+bkend 백엔드의 관리 기능을 호출하는 도구입니다. Organization, Project, Environment, Table, Auth, Storage 등을 관리할 수 있습니다.
 
-| 도구 | 설명 |
-|------|------|
-| `backend_org_list` | Organization 목록 조회 |
-| `backend_project_list` | Project 목록 조회 |
-| `backend_project_create` | Project 생성 |
-| `backend_env_list` | Environment 목록 조회 |
-| `backend_env_create` | Environment 생성 |
-| `backend_table_list` | 테이블 목록 조회 |
-| `backend_table_create` | 테이블 생성 |
-| `backend_field_manage` | 필드 추가/수정/삭제 |
-| `backend_index_manage` | 인덱스 관리 |
-
-→ 각 도구의 상세 파라미터와 응답은 [MCP 도구 레퍼런스](12-mcp-db-tools.md)를 참고하세요.
+→ 각 도구의 상세 파라미터와 응답은 [Database MCP 도구](12-mcp-db-tools.md), [Auth & User MCP 도구](14-mcp-auth-tools.md), [Storage MCP 도구](13-mcp-storage-tools.md)를 참고하세요.
 
 ***
 

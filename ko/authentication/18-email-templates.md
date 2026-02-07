@@ -20,7 +20,7 @@ bkend는 인증 과정에서 발송되는 이메일의 템플릿을 프로젝트
 curl -X GET https://api-client.bkend.ai/v1/auth/email-templates/config \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -46,7 +46,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/config \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "senderEmail": "hello@myapp.com",
     "senderName": "MyApp Team",
@@ -76,7 +76,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/config \
 curl -X GET https://api-client.bkend.ai/v1/auth/email-templates \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -122,7 +122,7 @@ curl -X GET https://api-client.bkend.ai/v1/auth/email-templates \
 curl -X GET https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -150,7 +150,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "subject": "[MyApp] 비밀번호를 재설정해주세요",
     "body": "<html><body><h1>비밀번호 재설정</h1><p>아래 버튼을 클릭하여 비밀번호를 재설정하세요.</p><a href=\"{{resetLink}}\">재설정하기</a></body></html>"
@@ -188,7 +188,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
 curl -X GET "https://api-client.bkend.ai/v1/auth/email-templates/preview/password_reset?locale=ko" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**

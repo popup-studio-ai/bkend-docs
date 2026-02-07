@@ -21,7 +21,7 @@ curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "title": "첫 번째 게시글",
     "content": "안녕하세요, bkend입니다.",
@@ -38,7 +38,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: '첫 번째 게시글',

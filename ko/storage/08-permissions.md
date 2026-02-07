@@ -33,7 +33,7 @@ const presigned = await fetch('https://api-client.bkend.ai/v1/files/presigned-ur
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     filename: 'document.pdf',
@@ -50,7 +50,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "visibility": "public"
   }'

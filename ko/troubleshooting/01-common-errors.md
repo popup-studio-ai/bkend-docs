@@ -30,7 +30,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${apiKey}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: '제목', // 필수 필드 포함 확인
@@ -66,7 +66,7 @@ async function refreshAccessToken(refreshToken) {
     headers: {
       'Content-Type': 'application/json',
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
     body: JSON.stringify({ refreshToken }),
   });

@@ -21,7 +21,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/posts/507f1f77bcf86cd799439011
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "title": "수정된 제목",
     "published": true
@@ -38,7 +38,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/data/posts/${postId
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: '수정된 제목',

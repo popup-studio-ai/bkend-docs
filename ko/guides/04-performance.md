@@ -67,7 +67,7 @@ bkend는 테이블 생성 시 다음 인덱스를 자동 생성합니다.
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published&sort=-createdAt&limit=20" \
   -H "Authorization: Bearer {api_key}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### 페이지네이션 활용하기
@@ -91,7 +91,7 @@ const response = await fetch(
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
   }
 );
@@ -106,7 +106,7 @@ const response = await fetch(
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?fields=title,status,createdAt" \
   -H "Authorization: Bearer {api_key}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***

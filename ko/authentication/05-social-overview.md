@@ -51,7 +51,7 @@ OAuth 제공자의 인증 페이지 URL을 생성합니다.
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/google/authorize?redirect=https://myapp.com/auth/callback" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 #### 요청 파라미터
@@ -86,7 +86,7 @@ OAuth 제공자에서 인증이 완료되면 authorization code와 함께 콜백
 curl -X POST https://api-client.bkend.ai/v1/auth/google/callback \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "code": "{authorization_code}",
     "state": "{state_value}"
@@ -105,7 +105,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/google/callbac
   headers: {
     'Content-Type': 'application/json',
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({ code, state }),
 });

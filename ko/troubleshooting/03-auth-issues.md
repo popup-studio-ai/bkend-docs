@@ -86,7 +86,7 @@ async function fetchWithAuth(url, options = {}) {
       ...options.headers,
       'Authorization': `Bearer ${accessToken}`,
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
   });
 
@@ -100,7 +100,7 @@ async function fetchWithAuth(url, options = {}) {
         headers: {
           'Content-Type': 'application/json',
           'X-Project-Id': '{project_id}',
-          'X-Environment': 'prod',
+          'X-Environment': 'dev',
         },
         body: JSON.stringify({ refreshToken }),
       }
@@ -117,7 +117,7 @@ async function fetchWithAuth(url, options = {}) {
           ...options.headers,
           'Authorization': `Bearer ${newToken}`,
           'X-Project-Id': '{project_id}',
-          'X-Environment': 'prod',
+          'X-Environment': 'dev',
         },
       });
     }

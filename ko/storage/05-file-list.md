@@ -20,7 +20,7 @@
 curl -X GET "https://api-client.bkend.ai/v1/files?page=1&limit=20&visibility=private&sortBy=createdAt&sortDirection=desc" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -37,7 +37,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/files?${params}`, {
   headers: {
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
 });
 
@@ -98,7 +98,7 @@ const { items, pagination } = await response.json();
 curl -X GET "https://api-client.bkend.ai/v1/files?mimeType=image/jpeg" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### 공개 파일만 조회
@@ -106,7 +106,7 @@ curl -X GET "https://api-client.bkend.ai/v1/files?mimeType=image/jpeg" \
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?visibility=public" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### 파일명으로 검색
@@ -115,7 +115,7 @@ curl -X GET "https://api-client.bkend.ai/v1/files?visibility=public" \
 curl -X GET "https://api-client.bkend.ai/v1/files?search=profile" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***

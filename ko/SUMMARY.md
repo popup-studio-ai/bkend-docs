@@ -31,11 +31,10 @@
   * [Cursor 사용법](ai-tools/07-cursor-usage.md)
   * [Antigravity 설정](ai-tools/08-antigravity-setup.md)
   * [기타 AI 도구](ai-tools/09-other-tools.md)
-  * [MCP 직접 연동](ai-tools/10-direct-mcp.md)
   * [MCP 컨텍스트](ai-tools/11-mcp-context.md)
+  * [Auth & User MCP 도구](ai-tools/14-mcp-auth-tools.md)
   * [Database MCP 도구](ai-tools/12-mcp-db-tools.md)
   * [Storage MCP 도구](ai-tools/13-mcp-storage-tools.md)
-  * [Auth & User MCP 도구](ai-tools/14-mcp-auth-tools.md)
   * [MCP 리소스](ai-tools/15-mcp-resources.md)
 
 * 인증
@@ -100,7 +99,6 @@
   * [성능 최적화](guides/04-performance.md)
   * [확장 가이드](guides/05-scaling.md)
   * [테스트 전략](guides/06-testing.md)
-  * [CI/CD 파이프라인](guides/07-ci-cd.md)
   * [웹훅](guides/08-webhooks.md)
   * [실시간 데이터](guides/09-realtime.md)
   * [커스텀 도메인](guides/10-custom-domain.md)

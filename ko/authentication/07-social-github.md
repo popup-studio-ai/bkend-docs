@@ -44,7 +44,7 @@ GitHub OAuth는 OAuth 2.0 프로토콜을 사용합니다. 개발자 중심 서�
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/github/authorize?redirect=https://myapp.com/auth/callback" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -69,7 +69,7 @@ window.location.href = data.authorizationUrl;
 curl -X POST https://api-client.bkend.ai/v1/auth/github/callback \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "code": "{authorization_code}",
     "state": "{state_value}"
@@ -87,7 +87,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/github/callbac
   headers: {
     'Content-Type': 'application/json',
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({ code, state }),
 });

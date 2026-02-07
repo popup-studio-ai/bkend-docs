@@ -20,7 +20,7 @@
 curl -X GET https://api-client.bkend.ai/v1/auth/providers \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***
@@ -33,7 +33,7 @@ curl -X GET https://api-client.bkend.ai/v1/auth/providers \
 curl -X GET https://api-client.bkend.ai/v1/auth/providers/email \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -62,7 +62,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/email \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "passwordPolicy": {
       "minLength": 10,
@@ -106,7 +106,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/email \
 curl -X GET https://api-client.bkend.ai/v1/auth/providers/oauth \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### 개별 OAuth 제공자 조회
@@ -117,7 +117,7 @@ curl -X GET https://api-client.bkend.ai/v1/auth/providers/oauth \
 curl -X GET https://api-client.bkend.ai/v1/auth/providers/oauth/google \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -147,7 +147,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/google \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "clientId": "{google_client_id}",
     "clientSecret": "{google_client_secret}",
@@ -163,7 +163,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/github \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "clientId": "{github_client_id}",
     "clientSecret": "{github_client_secret}",
@@ -193,7 +193,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/github \
 curl -X DELETE https://api-client.bkend.ai/v1/auth/providers/oauth/github \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***

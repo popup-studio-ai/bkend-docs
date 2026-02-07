@@ -38,7 +38,7 @@ sequenceDiagram
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -54,7 +54,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
   headers: {
     'Content-Type': 'application/json',
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     method: 'password',
@@ -79,20 +79,20 @@ const data = await response.json();
 | `password` | `string` | ✅ | 비밀번호 (정책 참고) |
 | `name` | `string` | ✅ | 사용자 이름 |
 
+{% hint style="info" %}
+💡 회원가입 시 이용약관 및 개인정보처리방침 동의가 필수입니다. 약관 관련 상세 내용은 [사용자 프로필](14-user-profile.md)을 참고하세요.
+{% endhint %}
+
 ### 비밀번호 정책
 
-기본 비밀번호 정책은 다음과 같습니다.
+기본 비밀번호 정책은 최소 8자입니다.
 
 | 규칙 | 기본값 |
 |------|--------|
 | 최소 길이 | 8자 |
-| 대문자 포함 | ✅ |
-| 소문자 포함 | ✅ |
-| 숫자 포함 | ✅ |
-| 특수문자 포함 | ✅ |
 
-{% hint style="info" %}
-💡 비밀번호 정책은 [인증 제공자 설정](17-provider-config.md)에서 프로젝트별로 변경할 수 있습니다.
+{% hint style="danger" %}
+🚨 **프로덕션 배포 전 반드시 비밀번호 정책을 강화하세요.** 대문자, 소문자, 숫자, 특수문자 요구 등의 정책을 [인증 제공자 설정](17-provider-config.md)에서 변경할 수 있습니다.
 {% endhint %}
 
 ### 성공 응답

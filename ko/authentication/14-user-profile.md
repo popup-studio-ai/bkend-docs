@@ -18,7 +18,7 @@
 curl -X GET https://api-client.bkend.ai/v1/users/{userId}/profile \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -51,7 +51,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/profile \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "nickname": "newgildong",
     "bio": "백엔드 개발자입니다.",
@@ -69,7 +69,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users/${userId}/pro
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     nickname: 'newgildong',
@@ -120,7 +120,7 @@ curl -X POST https://api-client.bkend.ai/v1/users/{userId}/avatar/upload-url \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "filename": "avatar.jpg",
     "contentType": "image/jpeg"
@@ -153,7 +153,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/avatar \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "s3Key": "avatars/user-uuid/avatar.jpg"
   }'
@@ -167,7 +167,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/avatar \
 curl -X DELETE https://api-client.bkend.ai/v1/users/{userId}/avatar \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***

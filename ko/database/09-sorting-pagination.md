@@ -20,7 +20,7 @@
 # createdAt 기준 내림차순 (최신 순)
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDirection=desc" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### sortDirection
@@ -73,7 +73,7 @@ const params3 = new URLSearchParams({
 # 1페이지, 10개씩
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?page=1&limit=10" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### 페이지네이션 응답
@@ -124,7 +124,7 @@ const response = await fetch(
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
   }
 );
@@ -146,7 +146,7 @@ while (hasNext) {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'X-Project-Id': '{project_id}',
-        'X-Environment': 'prod',
+        'X-Environment': 'dev',
       },
     }
   );

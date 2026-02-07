@@ -39,7 +39,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/invitations \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "resourceType": "organization",
     "resourceId": "{org_id}",
@@ -95,7 +95,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/invitations \
 curl -X GET "https://api-client.bkend.ai/v1/auth/invitations?resourceType=organization&status=pending&page=1&limit=10" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 | 파라미터 | 위치 | 타입 | 필수 | 설명 |
@@ -116,7 +116,7 @@ curl -X GET "https://api-client.bkend.ai/v1/auth/invitations?resourceType=organi
 curl -X GET https://api-client.bkend.ai/v1/auth/invitations/{invitationId} \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***
@@ -131,7 +131,7 @@ curl -X GET https://api-client.bkend.ai/v1/auth/invitations/{invitationId} \
 curl -X POST https://api-client.bkend.ai/v1/auth/invitations/accept \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "token": "{invitation_token}",
     "email": "newuser@example.com"
@@ -153,7 +153,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/invitations/accept \
 curl -X POST https://api-client.bkend.ai/v1/auth/invitations/reject \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "token": "{invitation_token}",
     "email": "newuser@example.com"
@@ -172,7 +172,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/invitations/reject \
 curl -X DELETE https://api-client.bkend.ai/v1/auth/invitations/{invitationId} \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***

@@ -94,7 +94,7 @@ sequenceDiagram
 curl -X GET https://api-client.bkend.ai/v1/data/users \
   -H "Authorization: Bearer ak_your_api_key_here" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***

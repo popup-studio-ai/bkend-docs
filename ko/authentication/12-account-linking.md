@@ -23,7 +23,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "provider": "google",
     "code": "{authorization_code}"
@@ -35,7 +35,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts \
 // 1. OAuth 인증 URL 생성
 const authRes = await fetch(
   'https://api-client.bkend.ai/v1/auth/google/authorize?redirect=https://myapp.com/link-callback',
-  { headers: { 'X-Project-Id': '{project_id}', 'X-Environment': 'prod' } }
+  { headers: { 'X-Project-Id': '{project_id}', 'X-Environment': 'dev' } }
 );
 const { authorizationUrl } = await authRes.json();
 
@@ -47,7 +47,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/accounts', {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     provider: 'google',
@@ -75,7 +75,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/accounts', {
 curl -X GET "https://api-client.bkend.ai/v1/auth/accounts?page=1&limit=10" \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 **응답:**
@@ -116,7 +116,7 @@ curl -X GET "https://api-client.bkend.ai/v1/auth/accounts?page=1&limit=10" \
 curl -X DELETE https://api-client.bkend.ai/v1/auth/accounts/google \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 {% hint style="warning" %}
@@ -135,7 +135,7 @@ curl -X DELETE https://api-client.bkend.ai/v1/auth/accounts/google \
 curl -X POST https://api-client.bkend.ai/v1/auth/accounts/check \
   -H "Content-Type: application/json" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod" \
+  -H "X-Environment: dev" \
   -d '{
     "type": "email",
     "provider": "email",

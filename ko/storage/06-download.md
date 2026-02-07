@@ -32,7 +32,7 @@ sequenceDiagram
 curl -X POST https://api-client.bkend.ai/v1/files/{fileId}/download-url \
   -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -42,7 +42,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/files/${fileId}/dow
   headers: {
     'Authorization': `Bearer ${accessToken}`,
     'X-Project-Id': '{project_id}',
-    'X-Environment': 'prod',
+    'X-Environment': 'dev',
   },
 });
 
@@ -95,7 +95,7 @@ async function downloadFile(fileId, accessToken) {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
   });
 
@@ -118,7 +118,7 @@ async function downloadToBlob(fileId, accessToken) {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'X-Project-Id': '{project_id}',
-      'X-Environment': 'prod',
+      'X-Environment': 'dev',
     },
   });
 

@@ -41,7 +41,7 @@ https://api-client.bkend.ai
 curl -X GET https://api-client.bkend.ai/v1/data/{tableName} \
   -H "Authorization: Bearer ak_{your_api_key}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ### JWT 인증
@@ -50,7 +50,7 @@ curl -X GET https://api-client.bkend.ai/v1/data/{tableName} \
 curl -X GET https://api-client.bkend.ai/v1/data/{tableName} \
   -H "Authorization: Bearer {jwt_token}" \
   -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: prod"
+  -H "X-Environment: dev"
 ```
 
 ***

@@ -1,165 +1,76 @@
 # bkend란?
 
-> AI 도구와 자연스럽게 연동되는 백엔드 서비스 플랫폼입니다.
+{% hint style="info" %}
+💡 bkend는 AI 도구로 백엔드를 구축하는 서비스형 백엔드 플랫폼입니다.
+{% endhint %}
 
 ## 개요
 
-bkend는 **AI 도구에서 바로 사용할 수 있는 백엔드 서비스**입니다. [MCP(Model Context Protocol)](https://spec.modelcontextprotocol.io/2025-03-26)를 통해 AI 도구와 연결되어, 별도의 서버 구축 없이 Database, Authentication, Storage 기능을 즉시 사용할 수 있습니다.
+bkend는 서버 코드 없이 데이터베이스, 인증, 스토리지를 관리할 수 있는 백엔드 플랫폼입니다. Claude Code, Cursor 같은 AI 도구에서 자연어로 백엔드를 구축하고, REST API로 앱과 연동합니다.
+
+***
+
+## 왜 bkend인가?
 
 ```mermaid
-flowchart TD
-    A[AI 도구] -->|MCP Protocol| B[bkend]
-    B --> C[Database]
-    B --> D[Authentication]
-    B --> E[Storage]
+flowchart LR
+    A[AI 도구] -->|MCP 프로토콜| B[bkend]
+    B --> C[데이터베이스]
+    B --> D[인증]
+    B --> E[스토리지]
+    F[앱 / 웹] -->|REST API| B
 ```
 
----
-
-## 주요 특징
-
-### MCP 기반 연동
-
-bkend는 Anthropic이 제정한 [Model Context Protocol](https://spec.modelcontextprotocol.io/2025-03-26) 표준을 지원합니다. AI 도구에서 자연어로 명령하면, bkend가 데이터를 저장하고 조회합니다.
-
-Claude Code, Cursor 등 MCP를 지원하는 AI 도구에서 bkend를 연결할 수 있습니다. 자세한 설정 방법은 [빠른 시작](02-quickstart.md)을 참고하세요.
-
-### 즉시 사용 가능한 백엔드
-
-복잡한 인프라 설정 없이 즉시 프로젝트를 시작할 수 있습니다:
-
-- **Database** — 테이블 생성, CRUD 작업, 스키마 관리
-- **Authentication** — 이메일/소셜 로그인, 세션 관리
-- **Storage** — 파일 업로드, 다운로드, 접근 권한 관리
-
-### OAuth 2.1 기반 보안
-
-bkend는 [OAuth 2.1](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-12) + PKCE 표준을 사용하여 AI 도구와 안전하게 인증합니다. 별도의 API Key 설정 없이 브라우저에서 로그인하면 연동이 완료됩니다.
-
----
-
-## Tenant와 User
-
-bkend에는 두 가지 유형의 사용자가 있습니다:
-
-```mermaid
-flowchart TD
-    A[Tenant] -->|서비스 제공| B[User]
-    A -.- C[bkend를 사용해 서비스를 구축하는 개발자/팀]
-    B -.- D[Tenant가 만든 서비스의 최종 사용자]
-```
-
-| 사용자 | 설명 | 접근 방식 |
-|--------|------|----------|
-| **Tenant** | bkend를 사용해 서비스를 구축하는 개발자/팀 | bkend 콘솔, AI 도구 (MCP) |
-| **User** | Tenant가 만든 서비스의 최종 사용자 | Tenant가 만든 앱/웹 |
-
-> 💡 **Tip** - Tenant와 User의 차이를 더 자세히 알고 싶다면 [Tenant vs User](05-tenant-vs-user.md)를 참고하세요.
-
----
-
-## 리소스 계층 구조
-
-bkend의 리소스는 다음과 같은 계층 구조를 가집니다:
-
-```mermaid
-flowchart TD
-    A[Organization] --> B[Project]
-    A --> B2[Project]
-    B --> C[Environment]
-    B --> C2[Environment]
-    C --> D[Table]
-    C --> E[Storage]
-    C --> F[Auth]
-```
-
-| 리소스 | 설명 | 예시 |
-|--------|------|------|
-| **Organization** | 팀 또는 회사 단위의 최상위 리소스 | "My Startup" |
-| **Project** | Organization 하위의 서비스 단위 | "My First App" |
-| **Environment** | 프로젝트 내 배포 환경 (데이터 완전 격리) | dev, staging, prod |
-
-> 💡 **Tip** - Organization과 Project에 대해 더 알고 싶다면 [Organization & Project](06-org-and-project.md)를 참고하세요.
-
----
-
-## bkend를 사용하면 좋은 점
-
-### 기존 방식의 문제점
-
-전통적인 백엔드 개발은 많은 초기 설정이 필요합니다:
-
-- 서버 인프라 구축 및 관리
-- 데이터베이스 설치 및 설정
-- 인증 시스템 구현
-- API 설계 및 개발
-
-### bkend의 해결책
+기존 백엔드 개발에서는 서버 코드 작성, 데이터베이스 설정, 인증 구현, 배포 파이프라인 구성 등 많은 작업이 필요합니다. bkend는 이 모든 작업을 AI 도구의 자연어 명령이나 REST API 호출로 대체합니다.
 
 | 기존 방식 | bkend |
 |----------|-------|
-| 서버 구축 필요 | 서버리스 (관리형) |
-| DB 설치/설정 | 콘솔에서 테이블 생성 |
-| 인증 구현 | 내장 인증 시스템 |
-| API 개발 | MCP로 자동 연동 |
+| 서버 코드 작성 | AI 도구로 자연어 명령 |
+| 데이터베이스 직접 설정 | 콘솔 또는 MCP 도구로 관리 |
+| 인증 라이브러리 통합 | 내장 인증 시스템 |
+| 파일 서버 구축 | 내장 스토리지 |
+| 배포 파이프라인 구성 | 자동 프로비저닝 |
 
----
+***
 
-## 지원 기능
+## 핵심 기능
 
-### Database
+### 데이터베이스
 
-- 동적 테이블 생성 및 스키마 관리
-- 자동 CRUD API 생성
-- 환경별(dev/staging/prod) 데이터 격리
-- 인덱스 및 성능 최적화
+테이블 스키마를 설계하고 데이터를 CRUD합니다. 컬럼 타입, 제약 조건, 인덱스, 관계 설정을 지원합니다.
 
-### Authentication
+### 인증
 
-- 이메일/소셜 로그인 (Google, GitHub)
-- [JWT](https://datatracker.ietf.org/doc/html/rfc7519) 기반 세션 관리
-- 비밀번호 재설정, 이메일 인증
-- 역할 기반 접근 제어 (RBAC)
+이메일 회원가입, 소셜 로그인(Google, GitHub), 매직 링크, MFA를 제공합니다. JWT 기반 세션 관리와 토큰 갱신을 자동으로 처리합니다.
 
-### Storage
+### 스토리지
 
-- 파일 업로드/다운로드
-- 버킷 기반 파일 관리
-- 접근 권한 관리
+Presigned URL 기반 파일 업로드/다운로드를 제공합니다. 대용량 파일은 멀티파트 업로드를 지원합니다.
 
----
+### AI 도구 연동
 
-## 사용 예시
+[MCP(Model Context Protocol)](https://spec.modelcontextprotocol.io/2025-03-26) 표준을 지원합니다. Claude Code, Cursor 등에서 bkend의 모든 기능을 자연어로 사용할 수 있습니다.
 
-### AI 도구에서 데이터 저장하기
+### 콘솔
 
-AI 도구에서 자연어로 데이터를 저장할 수 있습니다:
+웹 기반 관리 콘솔에서 프로젝트, 환경, 팀원, 데이터를 시각적으로 관리합니다.
 
-```
-"users 테이블에 새 사용자를 추가해줘: 이름은 김철수, 이메일은 kim@example.com"
-```
+***
 
-bkend MCP가 자동으로 다음을 수행합니다:
+## 사용 방식
 
-1. `users` 테이블 존재 여부 확인
-2. 데이터 유효성 검사
-3. 레코드 삽입
-4. 결과 반환
+bkend는 세 가지 방식으로 사용할 수 있습니다.
 
-### REST API 예제
+| 방식 | 대상 | 설명 |
+|------|------|------|
+| **MCP 도구** | AI 도구 사용자 | Claude Code, Cursor에서 자연어로 백엔드 구축 |
+| **REST API** | 앱 개발자 | HTTP 요청으로 데이터 조회/수정 |
+| **콘솔** | 모든 사용자 | 웹 UI에서 시각적으로 관리 |
 
-```bash
-# 데이터 조회
-curl -X POST "https://api.bkend.ai/v1/data/{project_id}/{environment}/users/find" \
-  -H "Authorization: Bearer {your_token}" \
-  -H "Content-Type: application/json" \
-  -d '{"filter": {"author_id": "user_123"}, "sort": {"created_at": -1}}'
-```
-
----
+***
 
 ## 다음 단계
 
-- [빠른 시작](02-quickstart.md) — 5분 안에 첫 프로젝트를 시작하세요
-- [콘솔 화면 구성](03-console-overview.md) — 콘솔 UI 사용법을 익히세요
-- [핵심 개념](04-core-concepts.md) — bkend의 핵심 개념을 이해하세요
+- [빠른 시작](02-quickstart.md) — 5분 만에 첫 프로젝트를 만들어보세요
+- [핵심 개념](03-core-concepts.md) — Organization, Project, Environment 구조를 이해하세요
+- [콘솔 개요](../console/01-overview.md) — 콘솔 UI를 살펴보세요

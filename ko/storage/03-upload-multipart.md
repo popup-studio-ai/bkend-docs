@@ -1,0 +1,282 @@
+# 대용량 파일 업로드 (멀티파트)
+
+{% hint style="info" %}
+💡 대용량 파일을 여러 파트로 나누어 병렬 업로드하세요.
+{% endhint %}
+
+## 개요
+
+멀티파트 업로드는 대용량 파일을 여러 조각(파트)으로 나누어 업로드하는 방식입니다. 파트별 병렬 업로드가 가능하며, 실패한 파트만 재시도할 수 있습니다.
+
+```mermaid
+flowchart TD
+    A[1. 초기화] --> B[2. 파트별 URL 발급]
+    B --> C[3. 파트 업로드]
+    C --> D{모든 파트 완료?}
+    D -->|아니오| B
+    D -->|예| E[4. 완료 요청]
+    E --> F[5. 메타데이터 등록]
+```
+
+***
+
+## 1단계: 업로드 초기화
+
+### POST /v1/files/multipart/init
+
+```bash
+curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod" \
+  -d '{
+    "filename": "video.mp4",
+    "contentType": "video/mp4",
+    "fileSize": 104857600,
+    "visibility": "private",
+    "category": "media"
+  }'
+```
+
+### 요청 파라미터
+
+| 파라미터 | 타입 | 필수 | 설명 |
+|---------|------|:----:|------|
+| `filename` | `string` | ✅ | 원본 파일명 |
+| `contentType` | `string` | ✅ | MIME 타입 |
+| `fileSize` | `number` | ✅ | 전체 파일 크기 (바이트) |
+| `visibility` | `string` | - | `public`, `private`(기본값), `protected`, `shared` |
+| `category` | `string` | - | 파일 카테고리 |
+
+### 응답 (200 OK)
+
+```json
+{
+  "uploadId": "multipart-upload-id",
+  "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+  "filename": "video.mp4"
+}
+```
+
+***
+
+## 2단계: 파트별 URL 발급
+
+### POST /v1/files/multipart/presigned-url
+
+각 파트의 업로드 URL을 발급받습니다.
+
+```bash
+curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod" \
+  -d '{
+    "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+    "uploadId": "multipart-upload-id",
+    "partNumber": 1
+  }'
+```
+
+### 요청 파라미터
+
+| 파라미터 | 타입 | 필수 | 설명 |
+|---------|------|:----:|------|
+| `key` | `string` | ✅ | init 응답의 S3 키 |
+| `uploadId` | `string` | ✅ | init 응답의 업로드 ID |
+| `partNumber` | `number` | ✅ | 파트 번호 (1~10000) |
+
+### 응답 (200 OK)
+
+```json
+{
+  "url": "https://s3.amazonaws.com/bucket/...?partNumber=1&uploadId=...",
+  "partNumber": 1
+}
+```
+
+***
+
+## 3단계: 파트 업로드
+
+발급받은 URL로 파일 조각을 S3에 업로드합니다. 응답의 `ETag` 헤더를 저장해두세요.
+
+```javascript
+const response = await fetch(partUrl, {
+  method: 'PUT',
+  body: partData,
+});
+
+const etag = response.headers.get('ETag');
+// etag: "\"abc123def456\"" — 완료 단계에서 필요
+```
+
+***
+
+## 4단계: 업로드 완료
+
+### POST /v1/files/multipart/complete
+
+모든 파트 업로드가 끝나면 완료 요청을 보냅니다.
+
+```bash
+curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod" \
+  -d '{
+    "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+    "uploadId": "multipart-upload-id",
+    "parts": [
+      { "partNumber": 1, "etag": "\"abc123\"" },
+      { "partNumber": 2, "etag": "\"def456\"" },
+      { "partNumber": 3, "etag": "\"ghi789\"" }
+    ]
+  }'
+```
+
+### 요청 파라미터
+
+| 파라미터 | 타입 | 필수 | 설명 |
+|---------|------|:----:|------|
+| `key` | `string` | ✅ | S3 키 |
+| `uploadId` | `string` | ✅ | 업로드 ID |
+| `parts` | `array` | ✅ | 업로드된 파트 목록 |
+| `parts[].partNumber` | `number` | ✅ | 파트 번호 |
+| `parts[].etag` | `string` | ✅ | S3 응답의 ETag |
+
+### 응답 (200 OK)
+
+```json
+{
+  "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+  "location": "https://s3.amazonaws.com/bucket/org-123/..."
+}
+```
+
+***
+
+## 업로드 취소
+
+업로드를 중단해야 하는 경우 abort 요청을 보냅니다.
+
+### POST /v1/files/multipart/abort
+
+```bash
+curl -X POST https://api-client.bkend.ai/v1/files/multipart/abort \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: prod" \
+  -d '{
+    "key": "org-123/private/media/2025/01/15/uuid-abc.mp4",
+    "uploadId": "multipart-upload-id"
+  }'
+```
+
+### 응답 (200 OK)
+
+```json
+{
+  "success": true,
+  "key": "org-123/private/media/2025/01/15/uuid-abc.mp4"
+}
+```
+
+***
+
+## 전체 구현 예시
+
+```javascript
+const PART_SIZE = 10 * 1024 * 1024; // 10MB
+
+async function multipartUpload(file, accessToken) {
+  // 1. 초기화
+  const initRes = await fetch('https://api-client.bkend.ai/v1/files/multipart/init', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+      'X-Project-Id': '{project_id}',
+      'X-Environment': 'prod',
+    },
+    body: JSON.stringify({
+      filename: file.name,
+      contentType: file.type,
+      fileSize: file.size,
+    }),
+  }).then(res => res.json());
+
+  const { uploadId, key } = initRes;
+  const totalParts = Math.ceil(file.size / PART_SIZE);
+  const parts = [];
+
+  // 2-3. 파트별 URL 발급 + 업로드
+  for (let i = 0; i < totalParts; i++) {
+    const start = i * PART_SIZE;
+    const end = Math.min(start + PART_SIZE, file.size);
+    const partNumber = i + 1;
+
+    // URL 발급
+    const urlRes = await fetch('https://api-client.bkend.ai/v1/files/multipart/presigned-url', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+        'X-Project-Id': '{project_id}',
+        'X-Environment': 'prod',
+      },
+      body: JSON.stringify({ key, uploadId, partNumber }),
+    }).then(res => res.json());
+
+    // 파트 업로드
+    const partData = file.slice(start, end);
+    const uploadRes = await fetch(urlRes.url, {
+      method: 'PUT',
+      body: partData,
+    });
+
+    parts.push({
+      partNumber,
+      etag: uploadRes.headers.get('ETag'),
+    });
+  }
+
+  // 4. 완료
+  const completeRes = await fetch('https://api-client.bkend.ai/v1/files/multipart/complete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+      'X-Project-Id': '{project_id}',
+      'X-Environment': 'prod',
+    },
+    body: JSON.stringify({ key, uploadId, parts }),
+  }).then(res => res.json());
+
+  return { key: completeRes.key };
+}
+```
+
+***
+
+## 에러 응답
+
+| 에러 코드 | HTTP | 설명 |
+|----------|:----:|------|
+| `file/upload-init-failed` | 500 | 초기화 실패 |
+| `file/invalid-part-number-range` | 400 | 파트 번호가 1~10000 범위 밖 |
+| `file/invalid-parts-array` | 400 | 파트 배열이 유효하지 않음 |
+| `file/file-too-large` | 400 | 파일 크기 초과 |
+| `common/authentication-required` | 401 | 인증 필요 |
+
+***
+
+## 다음 단계
+
+- [파일 메타데이터](04-file-metadata.md) — 업로드 후 메타데이터 등록
+- [단일 파일 업로드](02-upload-single.md) — 소용량 파일 업로드
+- [파일 접근 권한](08-permissions.md) — Visibility 설정

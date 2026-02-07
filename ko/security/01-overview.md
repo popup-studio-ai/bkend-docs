@@ -1,55 +1,99 @@
 # 보안 개요
 
-> bkend의 보안 모델과 접근 제어 방식을 소개합니다.
+{% hint style="info" %}
+💡 bkend의 보안 아키텍처와 데이터 보호 방식을 이해합니다.
+{% endhint %}
 
 ## 개요
 
-bkend는 API Key 기반 인증, 역할 기반 접근 제어(RBAC), Row Level Security(RLS), 감사 로그를 통해 데이터를 안전하게 보호합니다.
-
----
-
-## 보안 계층
+bkend는 다계층 보안 모델을 통해 데이터를 보호합니다. API 키 기반 인증, Row Level Security(RLS), 암호화 등 여러 보안 계층이 함께 동작합니다.
 
 ```mermaid
 flowchart TD
-    A[API 요청] --> B[API Key / JWT 인증]
-    B --> C[Organization 역할 확인]
-    C --> D[테이블 CRUD 권한 확인]
-    D --> E[Row Level Security]
-    E --> F[데이터 접근]
-    F --> G[감사 로그 기록]
+    A[클라이언트 요청] --> B{인증}
+    B -->|API 키| C[API 키 검증]
+    B -->|JWT| D[JWT 검증]
+    C --> E[권한 확인]
+    D --> E
+    E --> F{RLS 정책}
+    F -->|admin| G[전체 접근]
+    F -->|user| H[권한 기반 접근]
+    F -->|guest| I[읽기 전용]
+    G --> J[데이터 암호화 계층]
+    H --> J
+    I --> J
 ```
 
----
+***
 
-## 주요 보안 기능
+## 보안 계층
 
-| 기능 | 설명 |
+| 계층 | 보호 대상 | 메커니즘 |
+|------|----------|---------|
+| **인증 (Authentication)** | API 접근 | API 키, JWT 토큰 |
+| **인가 (Authorization)** | 리소스 접근 | RLS 정책, 권한 그룹 |
+| **전송 암호화** | 네트워크 통신 | TLS 1.2+ |
+| **저장 암호화** | 저장 데이터 | AES-256-GCM, MongoDB Atlas Encryption at Rest |
+| **비밀번호 해싱** | 사용자 비밀번호 | Argon2id (OWASP 권장) |
+| **토큰 보안** | API 키 | SHA-256 단방향 해시 |
+
+***
+
+## 인증 방식
+
+### API 키
+
+콘솔에서 생성하는 인증 키입니다. `Authorization: Bearer {api_key}` 형식으로 사용합니다.
+
+- **Public Key**: 클라이언트 사이드에서 사용 (제한된 권한)
+- **Secret Key**: 서버 사이드에서만 사용 (전체 권한)
+
+→ [API 키 이해](02-api-keys.md), [Public Key vs Secret Key](03-public-vs-secret.md)
+
+### JWT 토큰
+
+사용자 로그인 시 발급되는 인증 토큰입니다. 사용자 인증 후 자동으로 관리됩니다.
+
+→ [인증 시스템 개요](../authentication/01-overview.md)
+
+***
+
+## 인가 (RLS)
+
+Row Level Security는 테이블 데이터에 대한 접근 권한을 세밀하게 제어합니다.
+
+| 사용자 그룹 | 설명 | 기본 권한 |
+|------------|------|----------|
+| `admin` | 관리자 | 모든 권한 |
+| `user` | 인증된 사용자 | 생성, 읽기, 목록 조회 |
+| `guest` | 미인증 사용자 | 읽기, 목록 조회 |
+| `self` | 본인 데이터 | createdBy 기반 접근 |
+
+→ [RLS 개요](04-rls-overview.md), [RLS 정책 작성](05-rls-policies.md)
+
+***
+
+## 암호화
+
+### 전송 암호화
+
+모든 API 통신은 TLS 1.2 이상으로 암호화됩니다.
+
+### 저장 암호화
+
+| 대상 | 방식 |
 |------|------|
-| **API Key** | 프로젝트별 API Key로 서비스 API 인증 |
-| **JWT 인증** | User별 Access Token + Refresh Token |
-| **Organization 역할** | Owner, Admin, Billing, Member 4단계 |
-| **테이블 권한** | admin, user, guest 그룹별 CRUD 권한 |
-| **Row Level Security** | 본인 데이터만 접근하는 self 권한 |
-| **감사 로그** | 모든 관리 작업 자동 기록 |
-| **토큰 해싱** | API Key를 SHA256 해시로 안전하게 저장 |
+| 데이터베이스 연결 정보 | AES-256-GCM (Application 레벨) |
+| MongoDB 저장 데이터 | Atlas Encryption at Rest |
+| API 키 | SHA-256 해시 (단방향) |
+| 비밀번호 | Argon2id (OWASP 2025 권장) |
 
----
+→ [데이터 암호화](06-data-encryption.md)
 
-## API 인증 방식
+***
 
-| 방식 | 용도 | 인증 헤더 |
-|------|------|----------|
-| **API Key** | 서비스 API 호출 | `x-project-id: {project_id}` |
-| **JWT Bearer** | 보호된 엔드포인트 | `Authorization: Bearer {accessToken}` |
-| **OAuth 2.1 + PKCE** | MCP 도구 연결 | OAuth 플로우 |
+## 다음 단계
 
----
-
-## 관련 문서
-
-- [API Key 관리](02-api-keys.md) — API Key 생성과 관리
-- [Public vs Secret Key](04-public-vs-secret.md) — Key 타입 차이
-- [RLS 개요](05-rls-overview.md) — Row Level Security
-- [감사 로그](08-audit-logs.md) — 감사 로그 조회
-- [보안 모범 사례](09-best-practices.md) — 보안 권장사항
+- [API 키 이해](02-api-keys.md) — API 키 구조와 관리
+- [RLS 개요](04-rls-overview.md) — 데이터 접근 제어
+- [보안 모범 사례](07-best-practices.md) — 보안 권장 사항

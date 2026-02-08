@@ -133,3 +133,4 @@ bkend 프로젝트에 등록된 User는 다음 역할을 가질 수 있습니다
 - [이메일 회원가입](02-email-signup.md) — 첫 번째 인증 구현
 - [Auth & User REST API 레퍼런스](19-api-reference.md) — 전체 API 목록
 - [콘솔에서 API 키 발급](../console/11-api-keys.md) — API 접근 토큰 생성
+- [실전 프로젝트 쿡북](../../cookbooks/README.md) — 인증이 포함된 실전 앱 만들기

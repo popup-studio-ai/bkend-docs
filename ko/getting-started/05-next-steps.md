@@ -1,7 +1,7 @@
 # 다음 단계
 
 {% hint style="info" %}
-💡 bkend의 핵심 개념을 이해했다면, 필요한 기능별 가이드로 이동하세요.
+💡 bkend의 핵심 개념을 이해했다면, 시나리오에 맞는 가이드로 이동하세요.
 {% endhint %}
 
 ## 개요
@@ -10,7 +10,57 @@ bkend의 기본 구조를 파악했습니다. 이제 구축하려는 서비스�
 
 ***
 
+## 시나리오별 체크리스트
+
+구축하려는 앱에 맞는 체크리스트를 따라가세요.
+
+### 블로그 / 게시판 앱
+
+| 단계 | 작업 | 문서 |
+|:----:|------|------|
+| 1 | 콘솔에서 `posts` 테이블 생성 | [테이블 관리](../console/07-table-management.md) |
+| 2 | 테이블 권한 설정 (user: CRUD, guest: read) | [테이블 관리](../console/07-table-management.md) |
+| 3 | API Key 발급 | [API 키 관리](../console/11-api-keys.md) |
+| 4 | 앱에 bkend 연동 (헤더 설정) | [앱 연동 가이드](06-app-integration.md) |
+| 5 | 회원가입 / 로그인 구현 | [인증 폼 패턴](../authentication/21-auth-form-patterns.md) |
+| 6 | 게시글 CRUD 구현 | [데이터 CRUD 앱 패턴](../database/12-crud-app-patterns.md) |
+| 7 | 이미지 첨부 구현 | [파일 업로드 앱 패턴](../storage/10-upload-app-patterns.md) |
+
+### 사용자 대시보드 앱
+
+| 단계 | 작업 | 문서 |
+|:----:|------|------|
+| 1 | 콘솔에서 데이터 테이블 설계 | [테이블 관리](../console/07-table-management.md) |
+| 2 | 인증 제공자 설정 (이메일 + Google) | [인증 제공자 설정](../authentication/17-provider-config.md) |
+| 3 | API Key 발급 | [API 키 관리](../console/11-api-keys.md) |
+| 4 | 앱에 bkend 연동 | [앱 연동 가이드](06-app-integration.md) |
+| 5 | 로그인 + 토큰 관리 구현 | [토큰 관리](../authentication/20-token-management.md) |
+| 6 | RLS로 데이터 접근 제어 | [RLS 정책 작성](../security/05-rls-policies.md) |
+
+### AI 기반 관리 도구
+
+| 단계 | 작업 | 문서 |
+|:----:|------|------|
+| 1 | AI 도구에서 MCP 연결 | [빠른 시작](02-quickstart.md) |
+| 2 | 자연어로 테이블 설계 | [Claude Code 사용법](../ai-tools/05-claude-code-usage.md) |
+| 3 | MCP 도구로 데이터 관리 | [Database MCP 도구](../ai-tools/12-mcp-db-tools.md) |
+
+***
+
 ## 기능별 가이드
+
+### 앱 개발하기
+
+앱에서 bkend REST API를 연동하는 방법을 알아보세요.
+
+- [앱에서 bkend 연동하기](06-app-integration.md) — 필수 헤더, fetch 헬퍼
+- [토큰 저장 및 갱신](../authentication/20-token-management.md) — 자동 갱신 로직
+- [인증 폼 구현 패턴](../authentication/21-auth-form-patterns.md) — 회원가입/로그인 폼
+- [데이터 CRUD 앱 패턴](../database/12-crud-app-patterns.md) — 목록/생성/수정/삭제
+- [파일 업로드 앱 패턴](../storage/10-upload-app-patterns.md) — 파일 선택부터 업로드까지
+- [에러 처리 가이드](../guides/11-error-handling.md) — 상태 코드별 처리
+
+***
 
 ### 콘솔 사용하기
 
@@ -73,8 +123,22 @@ API Key, RLS, 데이터 암호화로 서비스를 보호하는 방법을 알아�
 
 ***
 
+## 실전 프로젝트로 배우기
+
+쿡북을 따라 실전 앱을 처음부터 끝까지 구축해보세요.
+
+| 쿡북 | 난이도 | 주요 기능 |
+|------|:------:|----------|
+| [블로그](../../cookbooks/blog/) | ⭐ | 게시글 CRUD, 이미지, 태그 |
+| [소셜 네트워크](../../cookbooks/social-network/) | ⭐⭐ | 프로필, 게시물, 팔로우 |
+| [레시피 앱](../../cookbooks/recipe-app/) | ⭐⭐⭐ | 레시피, 식단 계획 |
+| [쇼핑몰](../../cookbooks/shopping-mall/) | ⭐⭐⭐ | 상품, 장바구니, 주문 |
+
+***
+
 ## 도움이 필요하면
 
 - [공통 에러 코드](../troubleshooting/01-common-errors.md) — 일반적인 문제 해결
+- [에러 처리 가이드](../guides/11-error-handling.md) — 앱에서 에러 대응하기
 - [자주 묻는 질문](../troubleshooting/05-faq.md) — FAQ
 - 기술 지원: `support@bkend.ai`

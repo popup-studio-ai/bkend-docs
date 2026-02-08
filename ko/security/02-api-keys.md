@@ -84,23 +84,50 @@ sequenceDiagram
 
 ### 콘솔에서 관리하기
 
-콘솔의 **프로젝트 설정** > **API 키** 메뉴에서 API 키를 관리할 수 있습니다.
+콘솔의 **MCP** 메뉴에서 API 키를 관리할 수 있습니다. 토큰 생성, 권한 설정, 폐기 등의 상세 방법은 콘솔 가이드를 참고하세요.
 
 → [API 키 관리 (콘솔)](../console/11-api-keys.md)
 
-### API 키 사용 예시
+### 5분 만에 API Key 발급하고 테스트하기
+
+1. 콘솔 → **MCP** → **새 토큰 생성**을 클릭하세요.
+2. 토큰 이름: `test-key`, 타입: `BEARER_TOKEN`, 권한: `Table Data (read, create)`.
+3. **생성** 후 표시된 토큰을 복사하세요.
+4. curl로 테스트하세요:
 
 ```bash
-curl -X GET https://api-client.bkend.ai/v1/data/users \
-  -H "Authorization: Bearer ak_your_api_key_here" \
+curl -X GET https://api-client.bkend.ai/v1/data/posts \
+  -H "Authorization: Bearer {발급받은_토큰}" \
   -H "X-Project-Id: {project_id}" \
   -H "X-Environment: dev"
 ```
+
+{% hint style="success" %}
+✅ 200 응답이 돌아오면 API Key가 정상 동작하는 것입니다.
+{% endhint %}
+
+### API 키 사용 예시 (JavaScript)
+
+```javascript
+// API Key를 Authorization 헤더에 포함
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
+  headers: {
+    'Authorization': 'Bearer {api_key}',
+    'X-Project-Id': '{project_id}',
+    'X-Environment': 'dev',
+  },
+});
+
+const data = await response.json();
+```
+
+앱에서 bkend API를 연동하는 상세 방법은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
 
 ***
 
 ## 다음 단계
 
 - [Public Key vs Secret Key](03-public-vs-secret.md) — 키 종류별 사용법
+- [API 키 관리 (콘솔)](../console/11-api-keys.md) — 콘솔에서 토큰 생성/관리
+- [앱에서 bkend 연동하기](../getting-started/06-app-integration.md) — 앱에 API Key 설정하기
 - [보안 모범 사례](07-best-practices.md) — API 키 보안 권장 사항
-- [보안 개요](01-overview.md) — 전체 보안 아키텍처

@@ -65,6 +65,23 @@ console.log(post.title);
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+const post = await bkendFetch('/v1/data/posts/{id}');
+console.log(post.title);
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 권한
 
 데이터 조회에는 해당 테이블의 `read` 권한이 필요합니다.

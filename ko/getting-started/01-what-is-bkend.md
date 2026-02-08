@@ -74,3 +74,4 @@ bkend는 세 가지 방식으로 사용할 수 있습니다.
 - [빠른 시작](02-quickstart.md) — 5분 만에 첫 프로젝트를 만들어보세요
 - [핵심 개념](03-core-concepts.md) — Organization, Project, Environment 구조를 이해하세요
 - [콘솔 개요](../console/01-overview.md) — 콘솔 UI를 살펴보세요
+- [실전 프로젝트 쿡북](../../cookbooks/README.md) — 블로그, 소셜 네트워크 등 실전 앱 따라 만들기

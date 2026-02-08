@@ -120,3 +120,8 @@ flowchart LR
 | [파일 삭제](07-file-delete.md) | 파일 삭제 |
 | [파일 접근 권한](08-permissions.md) | Visibility와 소유자 제어 |
 | [API 레퍼런스](09-api-reference.md) | 전체 엔드포인트 목록 |
+| [파일 업로드 앱 패턴](10-upload-app-patterns.md) | 앱에서 파일 업로드 구현 |
+
+{% hint style="info" %}
+💡 **실전으로 배우기**: 이미지 업로드를 실전 프로젝트에서 활용하는 방법은 [쿡북](../../cookbooks/README.md)을 참고하세요.
+{% endhint %}

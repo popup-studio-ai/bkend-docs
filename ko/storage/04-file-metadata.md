@@ -23,7 +23,7 @@ curl -X POST https://api-client.bkend.ai/v1/files \
   -H "X-Project-Id: {project_id}" \
   -H "X-Environment: dev" \
   -d '{
-    "s3Key": "org-123/private/images/2025/01/15/uuid-abc.jpg",
+    "s3Key": "{presigned 응답의 key}",
     "originalName": "profile.jpg",
     "mimeType": "image/jpeg",
     "size": 1048576,
@@ -91,7 +91,7 @@ console.log(fileData.id); // 파일 ID
 ```json
 {
   "id": "file-uuid-1234",
-  "s3Key": "org-123/private/images/2025/01/15/uuid-abc.jpg",
+  "s3Key": "files/a1b2c3d4/profile.jpg",
   "originalName": "profile.jpg",
   "mimeType": "image/jpeg",
   "size": 1048576,
@@ -125,7 +125,7 @@ curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
 ```json
 {
   "id": "file-uuid-1234",
-  "s3Key": "org-123/private/images/2025/01/15/uuid-abc.jpg",
+  "s3Key": "files/a1b2c3d4/profile.jpg",
   "originalName": "profile.jpg",
   "mimeType": "image/jpeg",
   "size": 1048576,
@@ -193,6 +193,64 @@ curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
 | `file/invalid-name` | 400 | 유효하지 않은 파일명 |
 | `file/access-denied` | 403 | 접근 권한 없음 |
 | `common/authentication-required` | 401 | 인증 필요 |
+
+***
+
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+// 메타데이터 등록
+async function registerFileMetadata(s3Key, file) {
+  const metadata = await bkendFetch('/v1/files', {
+    method: 'POST',
+    body: {
+      s3Key,
+      originalName: file.name,
+      mimeType: file.type,
+      size: file.size,
+      visibility: 'private',
+      metadata: {
+        category: 'profile',
+        tags: ['avatar', 'user'],
+        alt: '사용자 프로필 이미지',
+      },
+    },
+  });
+
+  return metadata; // { id, s3Key, originalName, ... }
+}
+
+// 파일 조회
+async function getFileMetadata(fileId) {
+  const file = await bkendFetch(`/v1/files/${fileId}`);
+  console.log(file.originalName, file.size);
+  return file;
+}
+
+// 메타데이터 수정
+async function updateFileMetadata(fileId, updates) {
+  const result = await bkendFetch(`/v1/files/${fileId}`, {
+    method: 'PATCH',
+    body: {
+      originalName: 'new-profile.jpg',
+      visibility: 'public',
+      metadata: {
+        description: '업데이트된 프로필 이미지',
+      },
+    },
+  });
+
+  return result; // { id, updatedAt }
+}
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
 
 ***
 

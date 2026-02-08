@@ -117,6 +117,32 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+const result = await bkendFetch('/v1/auth/email/signin', {
+  method: 'POST',
+  body: {
+    method: 'password',
+    email: 'user@example.com',
+    password: 'MyP@ssw0rd!',
+  },
+});
+
+localStorage.setItem('accessToken', result.accessToken);
+localStorage.setItem('refreshToken', result.refreshToken);
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 토큰 갱신
 
 Access Token이 만료되면 Refresh Token으로 새 토큰을 발급받으세요.

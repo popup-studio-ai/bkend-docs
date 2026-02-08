@@ -90,8 +90,24 @@ bkend의 접근 토큰은 Organization 레벨에서 관리됩니다. 토큰을 �
 
 ***
 
+## 앱에서 토큰 사용하기
+
+콘솔에서 발급한 토큰을 앱의 REST API 요청에 사용합니다. `Authorization: Bearer {토큰}` 헤더에 포함하세요.
+
+```bash
+curl -X GET https://api-client.bkend.ai/v1/data/posts \
+  -H "Authorization: Bearer {발급받은_토큰}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: dev"
+```
+
+앱에서 fetch 헬퍼를 활용한 연동 방법은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+
+***
+
 ## 다음 단계
 
+- [앱에서 bkend 연동하기](../getting-started/06-app-integration.md) — 앱에 API Key 설정하기
+- [API 키 이해](../security/02-api-keys.md) — 키 구조와 보안 특성
 - [AI 도구 연동 개요](../ai-tools/01-overview.md) — MCP 도구를 연결하세요
-- [API 키 이해](../security/02-api-keys.md) — Public Key vs Secret Key
 - [보안 모범 사례](../security/07-best-practices.md) — 키 관리 모범 사례

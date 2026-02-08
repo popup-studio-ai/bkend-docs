@@ -36,7 +36,6 @@ POST /v1/files/presigned-url
 | `fileSize` | `number` | - | 파일 크기 (바이트) |
 | `visibility` | `string` | - | `public`, `private`(기본값), `protected`, `shared` |
 | `category` | `string` | - | `images`, `documents`, `media`, `attachments`, `exports`, `backups`, `temp` |
-| `namespace` | `string` | ✅ | 조직 식별자 (예: `org_xxx`) |
 
 **응답:** `200 OK` — `{ url, key, filename, contentType }`
 
@@ -59,7 +58,6 @@ POST /v1/files/multipart/init
 | `fileSize` | `number` | ✅ | 파일 크기 (바이트) |
 | `visibility` | `string` | - | 접근 범위 |
 | `category` | `string` | - | 파일 카테고리 |
-| `namespace` | `string` | ✅ | 조직 식별자 (예: `org_xxx`) |
 
 **응답:** `200 OK` — `{ uploadId, key, filename }`
 

@@ -144,6 +144,67 @@ async function downloadToBlob(fileId, accessToken) {
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+// 브라우저에서 다운로드
+async function downloadFile(fileId) {
+  // 1. 다운로드 URL 발급
+  const { url, filename } = await bkendFetch(`/v1/files/${fileId}/download-url`, {
+    method: 'POST',
+  });
+
+  // 2. 다운로드 트리거
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+}
+
+// 프로그래밍 방식 다운로드 (Blob으로 가져오기)
+async function downloadToBlob(fileId) {
+  // 1. 다운로드 URL 발급
+  const { url, contentType } = await bkendFetch(`/v1/files/${fileId}/download-url`, {
+    method: 'POST',
+  });
+
+  // 2. S3에서 파일 데이터 가져오기 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
+  const fileRes = await fetch(url);
+  const blob = await fileRes.blob();
+
+  return blob;
+}
+
+// 이미지 미리보기
+async function previewImage(fileId, imgElement) {
+  const blob = await downloadToBlob(fileId);
+  const objectUrl = URL.createObjectURL(blob);
+
+  imgElement.src = objectUrl;
+
+  // 메모리 정리
+  imgElement.onload = () => URL.revokeObjectURL(objectUrl);
+}
+
+// 사용 예시
+const fileId = 'file-uuid-1234';
+await downloadFile(fileId); // 브라우저 다운로드
+
+// 또는 이미지 미리보기
+const img = document.querySelector('#preview');
+await previewImage(fileId, img);
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 다음 단계
 
 - [파일 목록 조회](05-file-list.md) — 다운로드할 파일 검색

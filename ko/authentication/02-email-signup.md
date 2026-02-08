@@ -123,6 +123,34 @@ const data = await response.json();
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+const result = await bkendFetch('/v1/auth/email/signup', {
+  method: 'POST',
+  body: {
+    method: 'password',
+    email: 'user@example.com',
+    password: 'MyP@ssw0rd!',
+    name: '홍길동',
+  },
+});
+
+// 토큰 저장
+localStorage.setItem('accessToken', result.accessToken);
+localStorage.setItem('refreshToken', result.refreshToken);
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 이메일 인증
 
 회원가입 후 이메일 인증을 요청하면 인증 이메일이 발송됩니다. 이메일 인증은 선택 사항이지만, 비밀번호 재설정 등의 기능을 사용하려면 인증이 필요합니다.

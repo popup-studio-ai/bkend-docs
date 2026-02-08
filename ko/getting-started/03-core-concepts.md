@@ -85,6 +85,37 @@ API Key는 REST API를 호출할 때 인증에 사용합니다. 환경별로 독
 
 ***
 
+## 설계 도구 vs 운영 도구
+
+bkend에서의 작업은 **설계 시점**과 **운영 시점**으로 나뉩니다. 각 시점에서 사용하는 도구가 다릅니다.
+
+```mermaid
+flowchart LR
+    subgraph 설계["🛠️ 설계 시점 (Tenant)"]
+        A[콘솔 UI] --> D[테이블 생성]
+        B[MCP 도구] --> D
+        A --> E[권한 설정]
+        A --> F[API Key 발급]
+    end
+    subgraph 운영["🚀 운영 시점 (앱)"]
+        G[REST API] --> H[데이터 CRUD]
+        G --> I[사용자 인증]
+        G --> J[파일 업로드]
+    end
+    설계 -->|설정 완료| 운영
+```
+
+| 시점 | 도구 | 하는 일 | 누가 |
+|------|------|---------|------|
+| **설계** | 콘솔 UI, MCP 도구 | 테이블 생성, 스키마 편집, 권한 설정, API Key 발급 | Tenant (개발자) |
+| **운영** | REST API | 데이터 CRUD, 사용자 인증, 파일 관리 | 앱 (User) |
+
+{% hint style="info" %}
+💡 콘솔과 MCP 도구로 **구조를 설계**하고, REST API로 **앱을 운영**합니다. 테이블을 만들었다면 다음은 REST API로 데이터를 넣을 차례입니다.
+{% endhint %}
+
+***
+
 ## MCP (Model Context Protocol)
 
 MCP는 AI 도구와 서비스 간 통신을 위한 표준 프로토콜입니다. bkend는 MCP 서버를 제공하여 Claude Code, Cursor 같은 AI 도구에서 자연어로 백엔드를 관리할 수 있습니다.
@@ -100,6 +131,7 @@ MCP는 AI 도구와 서비스 간 통신을 위한 표준 프로토콜입니다.
 ## 다음 단계
 
 - [Tenant vs User](04-tenant-vs-user.md) — 두 가지 사용자 유형의 차이
+- [앱에서 bkend 연동하기](06-app-integration.md) — REST API로 앱에 bkend 연결
 - [콘솔 개요](../console/01-overview.md) — 콘솔에서 리소스 관리하기
 - [API Key 관리](../security/02-api-keys.md) — API Key 생성과 사용
 

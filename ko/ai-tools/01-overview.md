@@ -137,6 +137,7 @@ MCP 연동 시 부여되는 권한입니다.
 - [OAuth 2.1 인증 설정](03-oauth-setup.md) — 인증 흐름과 토큰 관리
 - [Claude Code 설정](04-claude-code-setup.md) — Claude Code 연동
 - [Cursor 설정](06-cursor-setup.md) — Cursor 연동
+- [실전 프로젝트 쿡북](../../cookbooks/README.md) — MCP로 실전 앱 백엔드 구축하기
 
 ## 참조 표준
 

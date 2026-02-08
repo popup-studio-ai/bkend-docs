@@ -44,8 +44,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
     "contentType": "image/jpeg",
     "fileSize": 1048576,
     "visibility": "private",
-    "category": "images",
-    "namespace": "{namespace}"
+    "category": "images"
   }'
 ```
 {% endtab %}
@@ -65,7 +64,6 @@ const response = await fetch('https://api-client.bkend.ai/v1/files/presigned-url
     fileSize: 1048576,
     visibility: 'private',
     category: 'images',
-    namespace: '{namespace}',
   }),
 });
 
@@ -83,14 +81,13 @@ const { url, key, filename } = await response.json();
 | `fileSize` | `number` | - | 파일 크기 (바이트) |
 | `visibility` | `string` | - | `public`, `private`(기본값), `protected`, `shared` |
 | `category` | `string` | - | `images`, `documents`, `media`, `attachments`, `exports`, `backups`, `temp` |
-| `namespace` | `string` | ✅ | 조직 식별자 (예: `org_xxx`) |
 
 ### 응답 (200 OK)
 
 ```json
 {
   "url": "https://s3.amazonaws.com/bucket/...",
-  "key": "org_xxx/private/images/a1b2c3d4-e5f6-7890-abcd-ef1234567890/profile.jpg",
+  "key": "{서버가_생성한_키}",
   "filename": "profile.jpg",
   "contentType": "image/jpeg"
 }
@@ -99,7 +96,7 @@ const { url, key, filename } = await response.json();
 | 필드 | 타입 | 설명 |
 |------|------|------|
 | `url` | `string` | S3 Presigned URL (15분 유효) |
-| `key` | `string` | S3 오브젝트 키 |
+| `key` | `string` | 파일 식별 키 (메타데이터 등록 시 사용) |
 | `filename` | `string` | 원본 파일명 |
 | `contentType` | `string` | MIME 타입 |
 
@@ -149,7 +146,6 @@ const presigned = await fetch('https://api-client.bkend.ai/v1/files/presigned-ur
     fileSize: file.size,
     visibility: 'private',
     category: 'images',
-    namespace: '{namespace}',
   }),
 }).then(res => res.json());
 
@@ -185,21 +181,11 @@ console.log('파일 ID:', metadata.id);
 
 ## S3 키 구조
 
-업로드된 파일의 S3 키는 다음 구조를 따릅니다.
+API 응답의 `key` 필드가 S3 오브젝트 키입니다. 이 값을 그대로 사용하세요.
 
-```
-{namespace}/{visibility}/{category}/{fileId}/{filename}
-```
-
-| 세그먼트 | 설명 | 예시 |
-|---------|------|------|
-| `namespace` | 조직 식별자 | `org_xxx` |
-| `visibility` | 접근 범위 (기본: `private`) | `private` |
-| `category` | 파일 카테고리 (기본: `attachments`) | `images` |
-| `fileId` | UUID v4 (자동 생성) | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
-| `filename` | sanitized 파일명 (소문자, 특수문자 제거) | `profile.jpg` |
-
-**예시:** `org_xxx/private/images/a1b2c3d4-e5f6-7890-abcd-ef1234567890/profile.jpg`
+{% hint style="warning" %}
+⚠️ S3 키는 서버가 자동 생성합니다. 직접 조합하지 마세요.
+{% endhint %}
 
 ***
 
@@ -207,12 +193,68 @@ console.log('파일 ID:', metadata.id);
 
 | 에러 코드 | HTTP | 설명 |
 |----------|:----:|------|
-| `file/namespace-required` | 400 | namespace 누락 |
 | `file/invalid-name` | 400 | 유효하지 않은 파일명 |
 | `file/file-too-large` | 400 | 파일 크기 초과 |
 | `file/invalid-format` | 400 | 지원하지 않는 파일 형식 |
 | `file/bucket-not-configured` | 500 | S3 버킷 미설정 |
 | `common/authentication-required` | 401 | 인증 필요 |
+
+***
+
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+async function uploadFile(file) {
+  // 1. Presigned URL 발급
+  const presigned = await bkendFetch('/v1/files/presigned-url', {
+    method: 'POST',
+    body: {
+      filename: file.name,
+      contentType: file.type,
+      fileSize: file.size,
+      visibility: 'private',
+      category: 'images',
+    },
+  });
+
+  // 2. S3에 파일 업로드 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
+  await fetch(presigned.url, {
+    method: 'PUT',
+    headers: { 'Content-Type': file.type },
+    body: file,
+  });
+
+  // 3. 메타데이터 등록
+  const metadata = await bkendFetch('/v1/files', {
+    method: 'POST',
+    body: {
+      s3Key: presigned.key,
+      originalName: file.name,
+      mimeType: file.type,
+      size: file.size,
+      visibility: 'private',
+    },
+  });
+
+  return metadata; // { id, s3Key, ... }
+}
+
+// HTML 파일 입력과 함께 사용
+const fileInput = document.querySelector('input[type="file"]');
+fileInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  const result = await uploadFile(file);
+  console.log('업로드 완료:', result.id);
+});
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
 
 ***
 

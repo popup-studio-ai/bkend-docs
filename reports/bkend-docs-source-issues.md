@@ -28,29 +28,28 @@
 
 ---
 
-## 2. namespace 필수 여부 불명확
+## 2. namespace는 서버 자동 생성
 
 **현상**: 엔티티 스키마에 `namespace` 필드는 있지만 (선택, 최대 200자), presigned-url 요청 시 필수 파라미터인지 명시되지 않음.
 
-**실제 코드**: `namespace`는 presigned-url 요청 시 **필수** (`z.string().min(1)`).
+**실제 코드**: `namespace`는 **서버가 자동 생성**하는 값. Consumer API에서는 `resolveNamespace(ctx)` → `{projectId}-env-{envName}` 형태로 자동 주입됨. 클라이언트가 전달해도 서버가 덮어씀.
+
+```typescript
+// file.controller.ts:64-70
+const namespace = resolveNamespace(ctx);
+// Consumer: `{projectId}-env-{envName}`
+```
 
 ```typescript
 // create-file.schema.ts:61
-namespace: z.string().min(1).describe('Namespace for multi-tenancy isolation (Organization ID)')
+namespace: z.string().optional().describe('서버 자동 주입 (무시됨)')
 ```
 
-런타임에서도 이중 검증:
-
-```typescript
-// create-presigned-url.use-case.ts:40-42
-if (namespace === undefined || namespace === '') {
-  throw new CustomError(FileError.NAMESPACE_REQUIRED.code, FileError.NAMESPACE_REQUIRED.message)
-}
-```
+**결론**: 클라이언트 필수 파라미터가 아님. 문서에서 요청 파라미터로 노출하지 않음.
 
 **소스 경로**:
-- `backend/modules/content/src/application/dto/file/create-file.schema.ts:48-62`
-- `backend/modules/content/src/application/use-cases/file/create-presigned-url.use-case.ts:36-42`
+- `backend/modules/content/src/adapters/inbound/http/file.controller.ts:64-70`
+- `backend/modules/content/src/application/dto/file/create-file.schema.ts:61`
 
 ---
 
@@ -69,7 +68,7 @@ if (namespace === undefined || namespace === '') {
 | `fileSize` | number | - | 파일 크기 (바이트) |
 | `visibility` | enum | - | `public` \| `private` \| `protected` \| `shared` (기본: `private`) |
 | `category` | enum | - | `images` \| `documents` \| `media` \| `attachments` \| `exports` \| `backups` \| `temp` (기본: `attachments`) |
-| `namespace` | string | ✅ | 조직 식별자 (Organization ID) |
+| ~~`namespace`~~ | ~~string~~ | ~~-~~ | ~~서버 자동 생성 (클라이언트 전달 무시됨)~~ |
 
 ### 응답 (CreateFilePresignedUrlResponse)
 
@@ -89,7 +88,7 @@ if (namespace === undefined || namespace === '') {
 
 **현상**: multipart upload init 요청 파라미터도 동일하게 미기술.
 
-**실제 코드**: presigned-url과 동일한 필수 파라미터 구조 (`namespace` 필수, `fileSize` 필수).
+**실제 코드**: presigned-url과 동일한 파라미터 구조 (`namespace`는 서버 자동 생성, `fileSize` 필수).
 
 **소스 경로**:
 - `backend/modules/content/src/application/dto/file/multipart-upload.schema.ts:22-31`
@@ -100,4 +99,4 @@ if (namespace === undefined || namespace === '') {
 
 1. `file.md` 엔티티 문서에 S3 키 생성 구조 명시
 2. presigned-url / multipart-init 요청 파라미터 표 추가
-3. `namespace` 필수 여부 명확화
+3. `namespace`는 서버 자동 생성 — 클라이언트 필수 파라미터가 아님

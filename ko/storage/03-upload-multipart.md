@@ -35,8 +35,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
     "contentType": "video/mp4",
     "fileSize": 104857600,
     "visibility": "private",
-    "category": "media",
-    "namespace": "{namespace}"
+    "category": "media"
   }'
 ```
 
@@ -49,14 +48,13 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
 | `fileSize` | `number` | ✅ | 전체 파일 크기 (바이트) |
 | `visibility` | `string` | - | `public`, `private`(기본값), `protected`, `shared` |
 | `category` | `string` | - | 파일 카테고리 |
-| `namespace` | `string` | ✅ | 조직 식별자 (예: `org_xxx`) |
 
 ### 응답 (200 OK)
 
 ```json
 {
   "uploadId": "multipart-upload-id",
-  "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
+  "key": "files/a1b2c3d4/video.mp4",
   "filename": "video.mp4"
 }
 ```
@@ -76,7 +74,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
   -H "X-Project-Id: {project_id}" \
   -H "X-Environment: dev" \
   -d '{
-    "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
+    "key": "{init 응답의 key}",
     "uploadId": "multipart-upload-id",
     "partNumber": 1
   }'
@@ -130,7 +128,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
   -H "X-Project-Id: {project_id}" \
   -H "X-Environment: dev" \
   -d '{
-    "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
+    "key": "{init 응답의 key}",
     "uploadId": "multipart-upload-id",
     "parts": [
       { "partNumber": 1, "etag": "\"abc123\"" },
@@ -154,8 +152,8 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
 
 ```json
 {
-  "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
-  "location": "https://s3.amazonaws.com/bucket/org-123/..."
+  "key": "files/a1b2c3d4/video.mp4",
+  "location": "https://s3.amazonaws.com/bucket/..."
 }
 ```
 
@@ -174,7 +172,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/abort \
   -H "X-Project-Id: {project_id}" \
   -H "X-Environment: dev" \
   -d '{
-    "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4",
+    "key": "{init 응답의 key}",
     "uploadId": "multipart-upload-id"
   }'
 ```
@@ -184,7 +182,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/abort \
 ```json
 {
   "success": true,
-  "key": "org_xxx/private/media/a1b2c3d4-e5f6-7890-abcd-ef1234567890/video.mp4"
+  "key": "files/a1b2c3d4/video.mp4"
 }
 ```
 
@@ -209,7 +207,6 @@ async function multipartUpload(file, accessToken) {
       filename: file.name,
       contentType: file.type,
       fileSize: file.size,
-      namespace: '{namespace}',
     }),
   }).then(res => res.json());
 
@@ -275,6 +272,84 @@ async function multipartUpload(file, accessToken) {
 | `file/invalid-parts-array` | 400 | 파트 배열이 유효하지 않음 |
 | `file/file-too-large` | 400 | 파일 크기 초과 |
 | `common/authentication-required` | 401 | 인증 필요 |
+
+***
+
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+const PART_SIZE = 10 * 1024 * 1024; // 10MB
+
+async function multipartUpload(file) {
+  // 1. 초기화
+  const { uploadId, key } = await bkendFetch('/v1/files/multipart/init', {
+    method: 'POST',
+    body: {
+      filename: file.name,
+      contentType: file.type,
+      fileSize: file.size,
+      visibility: 'private',
+      category: 'media',
+    },
+  });
+
+  const totalParts = Math.ceil(file.size / PART_SIZE);
+  const parts = [];
+
+  // 2-3. 파트별 URL 발급 + 업로드
+  for (let i = 0; i < totalParts; i++) {
+    const start = i * PART_SIZE;
+    const end = Math.min(start + PART_SIZE, file.size);
+    const partNumber = i + 1;
+
+    // URL 발급
+    const { url } = await bkendFetch('/v1/files/multipart/presigned-url', {
+      method: 'POST',
+      body: { key, uploadId, partNumber },
+    });
+
+    // 파트 업로드 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
+    const partData = file.slice(start, end);
+    const uploadRes = await fetch(url, {
+      method: 'PUT',
+      body: partData,
+    });
+
+    parts.push({
+      partNumber,
+      etag: uploadRes.headers.get('ETag'),
+    });
+  }
+
+  // 4. 완료
+  const result = await bkendFetch('/v1/files/multipart/complete', {
+    method: 'POST',
+    body: { key, uploadId, parts },
+  });
+
+  return result; // { key, location }
+}
+
+// HTML 파일 입력과 함께 사용
+const fileInput = document.querySelector('input[type="file"]');
+fileInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+
+  if (file.size > 10 * 1024 * 1024) {
+    // 10MB 이상이면 멀티파트 업로드
+    const result = await multipartUpload(file);
+    console.log('멀티파트 업로드 완료:', result.key);
+  }
+});
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
 
 ***
 

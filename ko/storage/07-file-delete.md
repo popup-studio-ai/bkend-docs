@@ -83,6 +83,56 @@ if (response.ok) {
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+// 파일 삭제
+async function deleteFile(fileId) {
+  const result = await bkendFetch(`/v1/files/${fileId}`, {
+    method: 'DELETE',
+  });
+
+  return result; // { success: true }
+}
+
+// 삭제 확인 후 실행
+async function deleteFileWithConfirm(fileId, filename) {
+  const confirmed = confirm(`"${filename}" 파일을 삭제하시겠습니까? 삭제된 파일은 복구할 수 없습니다.`);
+
+  if (!confirmed) {
+    return { cancelled: true };
+  }
+
+  try {
+    await deleteFile(fileId);
+    console.log('파일 삭제 완료');
+    return { success: true };
+  } catch (error) {
+    console.error('삭제 실패:', error.message);
+    return { success: false, error };
+  }
+}
+
+// 사용 예시
+const fileId = 'file-uuid-1234';
+const result = await deleteFileWithConfirm(fileId, 'profile.jpg');
+
+if (result.success) {
+  // UI에서 파일 항목 제거
+  document.querySelector(`#file-${fileId}`).remove();
+}
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 다음 단계
 
 - [파일 목록 조회](05-file-list.md) — 삭제 후 목록 확인

@@ -107,6 +107,32 @@ flowchart LR
 | **Permissions** | 역할별 CRUD 권한 설정 |
 | **API Docs** | REST API 문서 |
 
+### Data 탭
+
+테이블에 저장된 데이터를 콘솔에서 직접 조회하고 편집할 수 있습니다. 개발 중 테스트 데이터를 확인하거나 수동으로 데이터를 추가/수정할 때 유용합니다.
+
+{% hint style="info" %}
+💡 Data 탭은 **테스트/확인 용도**입니다. 앱에서 데이터를 생성·조회·수정·삭제할 때는 REST API를 사용하세요. → [데이터 CRUD 앱 패턴](../database/12-crud-app-patterns.md)
+{% endhint %}
+
+### Permissions 탭
+
+역할별로 CRUD 권한을 세밀하게 설정할 수 있습니다.
+
+1. 테이블 상세 페이지에서 **Permissions** 탭을 클릭하세요.
+2. 각 역할(`admin`, `user`, `guest`)의 **생성 / 읽기 / 수정 / 삭제** 권한을 토글하세요.
+3. **저장**을 클릭하세요.
+
+| 역할 | 설명 | 기본 권한 |
+|------|------|----------|
+| `admin` | 모든 데이터에 접근 가능 | 생성 ✅ 읽기 ✅ 수정 ✅ 삭제 ✅ |
+| `user` | 인증된 사용자 | 생성 ✅ 읽기 ✅ 수정 ✅ 삭제 ❌ |
+| `guest` | 인증 없는 사용자 | 생성 ❌ 읽기 ✅ 수정 ❌ 삭제 ❌ |
+
+{% hint style="warning" %}
+⚠️ 앱에서 `403 Forbidden` 에러가 발생하면 이 탭에서 해당 역할에 필요한 권한이 부여되어 있는지 확인하세요.
+{% endhint %}
+
 ***
 
 ## 테이블 삭제하기
@@ -122,8 +148,31 @@ flowchart LR
 
 ***
 
+## 테이블 생성 후: 앱에서 REST API로 데이터 관리
+
+콘솔에서 테이블을 생성하고 권한을 설정했다면, 앱에서 REST API로 데이터를 CRUD할 수 있습니다.
+
+```mermaid
+flowchart LR
+    A["1. 콘솔에서<br/>테이블 생성"] --> B["2. Permissions<br/>권한 설정"]
+    B --> C["3. API Key<br/>발급"]
+    C --> D["4. 앱에서<br/>REST API CRUD"]
+```
+
+| 단계 | 확인 위치 | 다음 문서 |
+|:----:|----------|----------|
+| 1~2 | 이 문서 참고 | — |
+| 3 | 콘솔 → **MCP** → **새 토큰 생성** | [API 키 관리](11-api-keys.md) |
+| 4 | 앱 코드 | [앱에서 bkend 연동하기](../getting-started/06-app-integration.md) |
+
+데이터 CRUD 구현 패턴은 [데이터 CRUD 앱 패턴](../database/12-crud-app-patterns.md)을 참고하세요.
+
+***
+
 ## 다음 단계
 
 - [스키마 편집기](08-schema-editor.md) — 필드를 추가하고 수정하세요
 - [인덱스 관리](09-index-management.md) — 인덱스를 생성하세요
+- [앱에서 bkend 연동하기](../getting-started/06-app-integration.md) — REST API 연동 설정
+- [데이터 CRUD 앱 패턴](../database/12-crud-app-patterns.md) — 앱에서 데이터 관리하기
 - [데이터 생성](../database/03-insert.md) — REST API로 데이터를 삽입하세요

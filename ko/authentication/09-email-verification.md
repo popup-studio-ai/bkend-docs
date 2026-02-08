@@ -122,6 +122,35 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/verify/resend \
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+// 인증 메일 발송
+await bkendFetch('/v1/auth/email/verify/send', {
+  method: 'POST',
+  body: { email: 'user@example.com' },
+});
+
+// 인증 코드 확인
+await bkendFetch('/v1/auth/email/verify/confirm', {
+  method: 'POST',
+  body: {
+    email: 'user@example.com',
+    token: '{verification_token}',
+  },
+});
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 에러 응답
 
 | 에러 코드 | HTTP | 설명 |

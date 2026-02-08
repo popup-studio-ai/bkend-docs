@@ -93,6 +93,31 @@ console.log(data.id); // 생성된 데이터 ID
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+const post = await bkendFetch('/v1/data/posts', {
+  method: 'POST',
+  body: {
+    title: '새 게시글',
+    content: '안녕하세요!',
+    published: true,
+  },
+});
+
+console.log(post.id); // 생성된 데이터 ID
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 단축 경로
 
 표준 경로 외에 단축 경로도 사용할 수 있습니다.

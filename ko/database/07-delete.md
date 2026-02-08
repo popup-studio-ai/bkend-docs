@@ -63,6 +63,24 @@ console.log(result.success); // true
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+await bkendFetch('/v1/data/posts/{id}', {
+  method: 'DELETE',
+});
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 권한
 
 데이터 삭제에는 해당 테이블의 `delete` 권한이 필요합니다.

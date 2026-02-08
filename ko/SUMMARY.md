@@ -6,6 +6,7 @@
   * [핵심 개념](getting-started/03-core-concepts.md)
   * [Tenant와 User 이해](getting-started/04-tenant-vs-user.md)
   * [다음 단계](getting-started/05-next-steps.md)
+  * [앱에서 bkend 연동하기](getting-started/06-app-integration.md)
 
 * 콘솔
   * [콘솔 개요](console/01-overview.md)
@@ -57,6 +58,8 @@
   * [인증 제공자 설정](authentication/17-provider-config.md)
   * [이메일 템플릿 커스터마이징](authentication/18-email-templates.md)
   * [Auth & User REST API 레퍼런스](authentication/19-api-reference.md)
+  * [토큰 저장 및 갱신](authentication/20-token-management.md)
+  * [인증 폼 구현 패턴](authentication/21-auth-form-patterns.md)
 
 * 데이터베이스
   * [데이터베이스 개요](database/01-overview.md)
@@ -70,6 +73,7 @@
   * [정렬 & 페이지네이션](database/09-sorting-pagination.md)
   * [테이블 스키마 조회](database/10-table-spec.md)
   * [Database REST API 레퍼런스](database/11-api-reference.md)
+  * [데이터 CRUD 앱 패턴](database/12-crud-app-patterns.md)
 
 * 스토리지
   * [스토리지 개요](storage/01-overview.md)
@@ -81,6 +85,7 @@
   * [파일 삭제](storage/07-file-delete.md)
   * [파일 접근 권한](storage/08-permissions.md)
   * [Storage REST API 레퍼런스](storage/09-api-reference.md)
+  * [파일 업로드 앱 패턴](storage/10-upload-app-patterns.md)
 
 * 보안
   * [보안 개요](security/01-overview.md)
@@ -102,6 +107,7 @@
   * [웹훅](guides/08-webhooks.md)
   * [실시간 데이터](guides/09-realtime.md)
   * [커스텀 도메인](guides/10-custom-domain.md)
+  * [에러 처리 가이드](guides/11-error-handling.md)
 
 * 트러블슈팅
   * [공통 에러 코드](troubleshooting/01-common-errors.md)
@@ -109,3 +115,50 @@
   * [인증 문제 해결](troubleshooting/03-auth-issues.md)
   * [성능 문제 해결](troubleshooting/04-performance-issues.md)
   * [자주 묻는 질문](troubleshooting/05-faq.md)
+
+* 실전 프로젝트 쿡북
+  * [쿡북 소개](../cookbooks/README.md)
+  * 블로그
+    * [블로그 쿡북](../cookbooks/blog/README.md)
+    * [5분 만에 시작하기](../cookbooks/blog/quick-start.md)
+    * [프로젝트 개요](../cookbooks/blog/full-guide/00-overview.md)
+    * [인증 설정](../cookbooks/blog/full-guide/01-auth.md)
+    * [게시글 CRUD](../cookbooks/blog/full-guide/02-articles.md)
+    * [이미지 업로드](../cookbooks/blog/full-guide/03-files.md)
+    * [태그 관리](../cookbooks/blog/full-guide/04-tags.md)
+    * [북마크 기능](../cookbooks/blog/full-guide/05-bookmarks.md)
+    * [AI 프롬프트 모음](../cookbooks/blog/full-guide/06-ai-prompts.md)
+    * [문제 해결](../cookbooks/blog/full-guide/99-troubleshooting.md)
+  * 소셜 네트워크
+    * [소셜 네트워크 쿡북](../cookbooks/social-network/README.md)
+    * [10분 만에 시작하기](../cookbooks/social-network/quick-start.md)
+    * [프로젝트 개요](../cookbooks/social-network/full-guide/00-overview.md)
+    * [인증 설정](../cookbooks/social-network/full-guide/01-auth.md)
+    * [프로필 관리](../cookbooks/social-network/full-guide/02-profiles.md)
+    * [게시물 & 댓글](../cookbooks/social-network/full-guide/03-posts.md)
+    * [팔로우 시스템](../cookbooks/social-network/full-guide/04-follows.md)
+    * [피드 구성](../cookbooks/social-network/full-guide/05-feeds.md)
+    * [AI 프롬프트 모음](../cookbooks/social-network/full-guide/06-ai-prompts.md)
+    * [문제 해결](../cookbooks/social-network/full-guide/99-troubleshooting.md)
+  * 레시피 앱
+    * [레시피 앱 쿡북](../cookbooks/recipe-app/README.md)
+    * [10분 만에 시작하기](../cookbooks/recipe-app/quick-start.md)
+    * [프로젝트 개요](../cookbooks/recipe-app/full-guide/00-overview.md)
+    * [인증 설정](../cookbooks/recipe-app/full-guide/01-auth.md)
+    * [레시피 CRUD](../cookbooks/recipe-app/full-guide/02-recipes.md)
+    * [재료 관리](../cookbooks/recipe-app/full-guide/03-ingredients.md)
+    * [식단 계획](../cookbooks/recipe-app/full-guide/04-meal-plan.md)
+    * [쇼핑 목록](../cookbooks/recipe-app/full-guide/05-shopping-list.md)
+    * [AI 프롬프트 모음](../cookbooks/recipe-app/full-guide/06-ai-prompts.md)
+    * [문제 해결](../cookbooks/recipe-app/full-guide/99-troubleshooting.md)
+  * 쇼핑몰
+    * [쇼핑몰 쿡북](../cookbooks/shopping-mall/README.md)
+    * [10분 만에 시작하기](../cookbooks/shopping-mall/quick-start.md)
+    * [프로젝트 개요](../cookbooks/shopping-mall/full-guide/00-overview.md)
+    * [인증 설정](../cookbooks/shopping-mall/full-guide/01-auth.md)
+    * [상품 카탈로그](../cookbooks/shopping-mall/full-guide/02-products.md)
+    * [장바구니](../cookbooks/shopping-mall/full-guide/03-cart.md)
+    * [주문 관리](../cookbooks/shopping-mall/full-guide/04-orders.md)
+    * [리뷰 시스템](../cookbooks/shopping-mall/full-guide/05-reviews.md)
+    * [AI 프롬프트 모음](../cookbooks/shopping-mall/full-guide/06-ai-prompts.md)
+    * [문제 해결](../cookbooks/shopping-mall/full-guide/99-troubleshooting.md)

@@ -112,6 +112,24 @@ const { items, pagination } = await response.json();
 
 ***
 
+## 앱에서 사용하기
+
+`bkendFetch` 헬퍼를 사용하면 필수 헤더가 자동으로 포함됩니다.
+
+```javascript
+import { bkendFetch } from './bkend.js';
+
+const result = await bkendFetch('/v1/data/posts?page=1&limit=10');
+console.log(result.items);       // 데이터 배열
+console.log(result.pagination);  // 페이지네이션 정보
+```
+
+{% hint style="info" %}
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+{% endhint %}
+
+***
+
 ## 권한
 
 목록 조회에는 해당 테이블의 `list` 권한이 필요합니다.

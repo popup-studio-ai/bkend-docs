@@ -1,15 +1,13 @@
 # Table of contents
 
-* 시작하기
-  * [bkend 소개](getting-started/01-what-is-bkend.md)
+* [시작하기](getting-started/01-what-is-bkend.md)
   * [빠른 시작 가이드](getting-started/02-quickstart.md)
   * [핵심 개념](getting-started/03-core-concepts.md)
   * [Tenant와 User 이해](getting-started/04-tenant-vs-user.md)
   * [다음 단계](getting-started/05-next-steps.md)
   * [앱에서 bkend 연동하기](getting-started/06-app-integration.md)
 
-* 콘솔
-  * [콘솔 개요](console/01-overview.md)
+* [콘솔](console/01-overview.md)
   * [콘솔 회원가입 & 로그인](console/02-signup-login.md)
   * [조직 관리](console/03-org-management.md)
   * [프로젝트 관리](console/04-project-management.md)
@@ -22,8 +20,7 @@
   * [API 키 관리](console/11-api-keys.md)
   * [프로젝트 설정](console/12-settings.md)
 
-* AI 도구 연동
-  * [AI 도구 연동 개요](ai-tools/01-overview.md)
+* [AI 도구 연동](ai-tools/01-overview.md)
   * [MCP 프로토콜 이해](ai-tools/02-mcp-protocol.md)
   * [OAuth 2.1 인증 설정](ai-tools/03-oauth-setup.md)
   * [Claude Code 설정](ai-tools/04-claude-code-setup.md)
@@ -38,8 +35,7 @@
   * [Storage MCP 도구](ai-tools/13-mcp-storage-tools.md)
   * [MCP 리소스](ai-tools/15-mcp-resources.md)
 
-* 인증
-  * [인증 시스템 개요](authentication/01-overview.md)
+* [인증](authentication/01-overview.md)
   * [이메일 회원가입](authentication/02-email-signup.md)
   * [이메일 로그인](authentication/03-email-signin.md)
   * [매직 링크 인증](authentication/04-magic-link.md)
@@ -61,8 +57,7 @@
   * [토큰 저장 및 갱신](authentication/20-token-management.md)
   * [인증 폼 구현 패턴](authentication/21-auth-form-patterns.md)
 
-* 데이터베이스
-  * [데이터베이스 개요](database/01-overview.md)
+* [데이터베이스](database/01-overview.md)
   * [데이터 모델 이해](database/02-data-model.md)
   * [데이터 생성](database/03-insert.md)
   * [단건 데이터 조회](database/04-select.md)
@@ -75,8 +70,7 @@
   * [Database REST API 레퍼런스](database/11-api-reference.md)
   * [데이터 CRUD 앱 패턴](database/12-crud-app-patterns.md)
 
-* 스토리지
-  * [스토리지 개요](storage/01-overview.md)
+* [스토리지](storage/01-overview.md)
   * [단일 파일 업로드](storage/02-upload-single.md)
   * [대용량 파일 업로드](storage/03-upload-multipart.md)
   * [파일 메타데이터 관리](storage/04-file-metadata.md)
@@ -87,8 +81,7 @@
   * [Storage REST API 레퍼런스](storage/09-api-reference.md)
   * [파일 업로드 앱 패턴](storage/10-upload-app-patterns.md)
 
-* 보안
-  * [보안 개요](security/01-overview.md)
+* [보안](security/01-overview.md)
   * [API 키 이해](security/02-api-keys.md)
   * [Public Key vs Secret Key](security/03-public-vs-secret.md)
   * [Row Level Security 개요](security/04-rls-overview.md)
@@ -97,8 +90,7 @@
   * [보안 모범 사례](security/07-best-practices.md)
   * [Security REST API 레퍼런스](security/08-api-reference.md)
 
-* 가이드
-  * [서비스 비교](guides/01-comparison.md)
+* [가이드](guides/01-comparison.md)
   * [Firebase 마이그레이션](guides/02-migration-firebase.md)
   * [Supabase 마이그레이션](guides/03-migration-supabase.md)
   * [성능 최적화](guides/04-performance.md)
@@ -109,17 +101,14 @@
   * [커스텀 도메인](guides/10-custom-domain.md)
   * [에러 처리 가이드](guides/11-error-handling.md)
 
-* 트러블슈팅
-  * [공통 에러 코드](troubleshooting/01-common-errors.md)
+* [트러블슈팅](troubleshooting/01-common-errors.md)
   * [연결 문제 해결](troubleshooting/02-connection-issues.md)
   * [인증 문제 해결](troubleshooting/03-auth-issues.md)
   * [성능 문제 해결](troubleshooting/04-performance-issues.md)
   * [자주 묻는 질문](troubleshooting/05-faq.md)
 
-* 실전 프로젝트 쿡북
-  * [쿡북 소개](../cookbooks/README.md)
-  * 블로그
-    * [블로그 쿡북](../cookbooks/blog/README.md)
+* [실전 프로젝트 쿡북](../cookbooks/README.md)
+  * [블로그](../cookbooks/blog/README.md)
     * [5분 만에 시작하기](../cookbooks/blog/quick-start.md)
     * [프로젝트 개요](../cookbooks/blog/full-guide/00-overview.md)
     * [인증 설정](../cookbooks/blog/full-guide/01-auth.md)
@@ -129,8 +118,7 @@
     * [북마크 기능](../cookbooks/blog/full-guide/05-bookmarks.md)
     * [AI 프롬프트 모음](../cookbooks/blog/full-guide/06-ai-prompts.md)
     * [문제 해결](../cookbooks/blog/full-guide/99-troubleshooting.md)
-  * 소셜 네트워크
-    * [소셜 네트워크 쿡북](../cookbooks/social-network/README.md)
+  * [소셜 네트워크](../cookbooks/social-network/README.md)
     * [10분 만에 시작하기](../cookbooks/social-network/quick-start.md)
     * [프로젝트 개요](../cookbooks/social-network/full-guide/00-overview.md)
     * [인증 설정](../cookbooks/social-network/full-guide/01-auth.md)
@@ -140,8 +128,7 @@
     * [피드 구성](../cookbooks/social-network/full-guide/05-feeds.md)
     * [AI 프롬프트 모음](../cookbooks/social-network/full-guide/06-ai-prompts.md)
     * [문제 해결](../cookbooks/social-network/full-guide/99-troubleshooting.md)
-  * 레시피 앱
-    * [레시피 앱 쿡북](../cookbooks/recipe-app/README.md)
+  * [레시피 앱](../cookbooks/recipe-app/README.md)
     * [10분 만에 시작하기](../cookbooks/recipe-app/quick-start.md)
     * [프로젝트 개요](../cookbooks/recipe-app/full-guide/00-overview.md)
     * [인증 설정](../cookbooks/recipe-app/full-guide/01-auth.md)
@@ -151,8 +138,7 @@
     * [쇼핑 목록](../cookbooks/recipe-app/full-guide/05-shopping-list.md)
     * [AI 프롬프트 모음](../cookbooks/recipe-app/full-guide/06-ai-prompts.md)
     * [문제 해결](../cookbooks/recipe-app/full-guide/99-troubleshooting.md)
-  * 쇼핑몰
-    * [쇼핑몰 쿡북](../cookbooks/shopping-mall/README.md)
+  * [쇼핑몰](../cookbooks/shopping-mall/README.md)
     * [10분 만에 시작하기](../cookbooks/shopping-mall/quick-start.md)
     * [프로젝트 개요](../cookbooks/shopping-mall/full-guide/00-overview.md)
     * [인증 설정](../cookbooks/shopping-mall/full-guide/01-auth.md)

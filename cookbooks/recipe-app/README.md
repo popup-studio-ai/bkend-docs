@@ -121,6 +121,13 @@ erDiagram
 
 ***
 
+## 참고 문서
+
+- [recipe-web 예제 프로젝트](../../examples/recipe-web/) — 이 쿡북의 웹 구현 코드
+- [recipe-app 예제 프로젝트](../../examples/recipe-app/) — 이 쿡북의 앱 구현 코드
+
+***
+
 ## 다음 단계
 
 바로 시작하려면 [Quick Start](quick-start.md)를 따라하세요. 상세 구현을 원하면 [Full Guide](./full-guide/)로 이동하세요.

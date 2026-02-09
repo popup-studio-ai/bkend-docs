@@ -1,0 +1,43 @@
+{
+  "name": "shopping-mall-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^16.1.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "@tanstack/react-query": "^5.72.0",
+    "zustand": "^5.0.3",
+    "react-hook-form": "^7.54.2",
+    "@hookform/resolvers": "^4.1.3",
+    "zod": "^3.24.2",
+    "framer-motion": "^12.6.3",
+    "next-themes": "^0.4.6",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.0.2",
+    "class-variance-authority": "^0.7.1",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-separator": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.1.3",
+    "@radix-ui/react-progress": "^1.1.2",
+    "@radix-ui/react-avatar": "^1.1.3",
+    "@radix-ui/react-slot": "^1.1.2",
+    "lucide-react": "^0.476.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2",
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@tailwindcss/postcss": "^4.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

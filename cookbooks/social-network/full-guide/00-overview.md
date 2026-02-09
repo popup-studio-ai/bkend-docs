@@ -199,6 +199,7 @@ flowchart LR
 
 - [데이터베이스 개요](../../../ko/database/01-overview.md) — 동적 테이블 개념
 - [핵심 개념](../../../ko/getting-started/03-core-concepts.md) — bkend 아키텍처
+- [social-network-app 예제 프로젝트](../../../examples/social-network-app/) — 이 쿡북을 Flutter로 구현한 전체 코드
 
 ***
 

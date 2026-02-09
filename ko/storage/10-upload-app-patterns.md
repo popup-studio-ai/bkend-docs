@@ -436,3 +436,4 @@ async function deleteFile(fileId) {
 - [파일 메타데이터](04-file-metadata.md) — 메타데이터 등록/수정
 - [파일 접근 권한](08-permissions.md) — Visibility 설정
 - [API 레퍼런스](09-api-reference.md) — 전체 스토리지 API 목록
+- 예제 프로젝트 — [blog-web](../../examples/blog-web/) · [recipe-web](../../examples/recipe-web/) · [social-network-app](../../examples/social-network-app/)에서 파일 업로드 구현 코드 확인

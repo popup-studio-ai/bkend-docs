@@ -195,6 +195,12 @@ AI가 products 테이블에서 데이터를 조회하여 결과를 보여줍니�
 
 ***
 
+## 참고 문서
+
+- [shopping-mall-web 예제 프로젝트](../../examples/shopping-mall-web/) — 이 쿡북을 Next.js로 구현한 전체 코드
+
+***
+
 ## 다음 단계
 
 - [Full Guide](full-guide/00-overview.md)에서 전체 쇼핑몰 기능을 단계별로 구현하세요.

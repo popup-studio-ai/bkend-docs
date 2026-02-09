@@ -243,3 +243,5 @@ flowchart TD
 - [파일 업로드 앱 패턴](../storage/10-upload-app-patterns.md) — 파일 업로드 구현
 - [에러 처리 가이드](../guides/11-error-handling.md) — 에러 응답 처리 전략
 - [실전 프로젝트 쿡북](../../cookbooks/README.md) — 연동 패턴을 실전 앱에서 바로 적용하기
+- 예제 프로젝트 — Mock 모드를 지원하여 바로 실행할 수 있는 전체 코드
+  - [blog-web (Next.js)](../../examples/blog-web/) · [social-network-app (Flutter)](../../examples/social-network-app/) · [recipe-web (Next.js)](../../examples/recipe-web/) · [recipe-app (Flutter)](../../examples/recipe-app/) · [shopping-mall-web (Next.js)](../../examples/shopping-mall-web/)

@@ -250,3 +250,4 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDire
 
 - [데이터 생성](../../ko/database/03-insert.md) — 데이터 생성 API 상세
 - [데이터 조회](../../ko/database/04-select.md) — 데이터 조회 API 상세
+- [social-network-app 예제 프로젝트](../../examples/social-network-app/) — 이 쿡북을 Flutter로 구현한 전체 코드

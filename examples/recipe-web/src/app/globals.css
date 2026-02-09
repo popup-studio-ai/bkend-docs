@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-orange-200;
+  }
+
+  body {
+    @apply bg-amber-50 text-stone-900 antialiased;
+    font-family: "Pretendard Variable", Pretendard, -apple-system,
+      BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  }
+
+  .dark {
+    --tw-border-opacity: 1;
+  }
+
+  .dark body,
+  .dark {
+    @apply bg-stone-900 text-stone-100;
+  }
+
+  .dark * {
+    @apply border-stone-700;
+  }
+}
+
+/* Scrollbar styling */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-stone-300;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-stone-600;
+  }
+}

@@ -188,6 +188,13 @@ AI가 저장된 레시피 목록을 조회하여 보여줍니다.
 
 ***
 
+## 참고 문서
+
+- [recipe-web 예제 프로젝트](../../examples/recipe-web/) — 이 쿡북의 웹 구현 코드
+- [recipe-app 예제 프로젝트](../../examples/recipe-app/) — 이 쿡북의 앱 구현 코드
+
+***
+
 ## 다음 단계
 
 - [Full Guide](./full-guide/)에서 인증, 재료 관리, 식단 계획까지 상세하게 구현하세요.

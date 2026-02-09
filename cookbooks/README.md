@@ -88,6 +88,19 @@ flowchart LR
 
 ***
 
+## 예제 프로젝트
+
+각 쿡북을 실제 코드로 구현한 예제 프로젝트입니다. Mock 모드를 지원하여 bkend 서버 없이 바로 실행할 수 있습니다.
+
+| 쿡북 | 예제 프로젝트 | 플랫폼 |
+|------|-------------|--------|
+| 블로그 | [blog-web](../examples/blog-web/) | Next.js |
+| 소셜 네트워크 | [social-network-app](../examples/social-network-app/) | Flutter |
+| 레시피 앱 | [recipe-web](../examples/recipe-web/) · [recipe-app](../examples/recipe-app/) | Next.js · Flutter |
+| 쇼핑몰 | [shopping-mall-web](../examples/shopping-mall-web/) | Next.js |
+
+***
+
 ## 참고 문서
 
 - [빠른 시작 가이드](../ko/getting-started/02-quickstart.md) — bkend 첫 설정

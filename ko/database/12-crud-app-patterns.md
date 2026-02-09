@@ -498,3 +498,4 @@ function handleError(error) {
 - [정렬 & 페이지네이션](09-sorting-pagination.md) — 정렬 옵션 추가
 - [테이블 스펙](10-table-spec.md) — 테이블 제약 조건 이해
 - [API 레퍼런스](11-api-reference.md) — 전체 데이터 API 목록
+- 예제 프로젝트 — [blog-web](../../examples/blog-web/) · [recipe-web](../../examples/recipe-web/) · [shopping-mall-web](../../examples/shopping-mall-web/)에서 CRUD 구현 코드 확인

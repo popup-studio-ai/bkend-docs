@@ -322,3 +322,4 @@ async function signOut() {
 - [인증 폼 구현 패턴](21-auth-form-patterns.md) — 회원가입/로그인 폼 구현
 - [세션 관리](10-session-management.md) — 세션 목록 조회 및 원격 종료
 - [보안 모범 사례](../security/07-best-practices.md) — 토큰 보안 권장 사항
+- 예제 프로젝트 — [blog-web](../../examples/blog-web/) · [recipe-web](../../examples/recipe-web/) · [shopping-mall-web](../../examples/shopping-mall-web/)에서 토큰 관리 구현 코드 확인

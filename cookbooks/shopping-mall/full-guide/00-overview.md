@@ -195,6 +195,7 @@ stateDiagram-v2
 
 - [데이터 삽입 (Insert)](../../ko/database/03-insert.md) — 동적 테이블에 데이터 생성하기
 - [데이터 조회 (Select / List)](../../ko/database/04-select.md) — 필터, 정렬, 페이징
+- [shopping-mall-web 예제 프로젝트](../../../examples/shopping-mall-web/) — 이 쿡북을 Next.js로 구현한 전체 코드
 
 ***
 

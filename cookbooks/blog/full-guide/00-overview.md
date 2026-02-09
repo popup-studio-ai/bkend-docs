@@ -158,6 +158,7 @@ flowchart LR
 
 - [데이터베이스 개요](../../../ko/database/01-overview.md) — 동적 테이블 개념
 - [스토리지 개요](../../../ko/storage/01-overview.md) — 파일 업로드 개념
+- [blog-web 예제 프로젝트](../../../examples/blog-web/) — 이 쿡북을 Next.js로 구현한 전체 코드
 
 ## 다음 단계
 

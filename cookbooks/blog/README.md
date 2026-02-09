@@ -108,6 +108,7 @@ erDiagram
 - [빠른 시작 가이드](../../ko/getting-started/02-quickstart.md) — bkend 첫 설정
 - [앱에서 bkend 연동하기](../../ko/getting-started/06-app-integration.md) — bkendFetch 헬퍼
 - [에러 처리 가이드](../../ko/guides/11-error-handling.md) — 공통 에러 대응
+- [blog-web 예제 프로젝트](../../examples/blog-web/) — 이 쿡북을 Next.js로 구현한 전체 코드
 
 ***
 

@@ -148,3 +148,9 @@
     * [리뷰 시스템](cookbooks/shopping-mall/full-guide/05-reviews.md)
     * [AI 프롬프트 모음](cookbooks/shopping-mall/full-guide/06-ai-prompts.md)
     * [문제 해결](cookbooks/shopping-mall/full-guide/99-troubleshooting.md)
+* 예제 프로젝트
+  * [blog-web (Next.js)](examples/blog-web/README.md)
+  * [social-network-app (Flutter)](examples/social-network-app/README.md)
+  * [recipe-web (Next.js)](examples/recipe-web/README.md)
+  * [recipe-app (Flutter)](examples/recipe-app/README.md)
+  * [shopping-mall-web (Next.js)](examples/shopping-mall-web/README.md)

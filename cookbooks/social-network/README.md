@@ -125,6 +125,12 @@ erDiagram
 
 ***
 
+## 참고 문서
+
+- [social-network-app 예제 프로젝트](../../examples/social-network-app/) — 이 쿡북을 Flutter로 구현한 전체 코드
+
+***
+
 ## 다음 단계
 
 - 빠르게 체험하려면 [Quick Start](quick-start.md)부터 시작하세요.

@@ -115,6 +115,12 @@ erDiagram
 
 ***
 
+## 참고 문서
+
+- [shopping-mall-web 예제 프로젝트](../../examples/shopping-mall-web/) — 이 쿡북을 Next.js로 구현한 전체 코드
+
+***
+
 ## 다음 단계
 
 - [Quick Start](quick-start.md) — 10분 만에 상품 등록하기

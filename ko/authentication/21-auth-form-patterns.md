@@ -454,3 +454,4 @@ async function checkAuthStatus() {
 - [비밀번호 관리](08-password-management.md) — 비밀번호 재설정 폼
 - [다중 인증 (MFA)](11-mfa.md) — MFA 코드 입력 폼
 - [소셜 계정 연동](12-account-linking.md) — 기존 계정에 소셜 로그인 추가
+- 예제 프로젝트 — [blog-web](../../examples/blog-web/) · [social-network-app](../../examples/social-network-app/)에서 인증 폼 구현 코드 확인

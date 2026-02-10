@@ -60,7 +60,7 @@ fvm flutter run -d android
 
 ```
 Email: demo@bkend.ai
-Password: Bkend123$
+Password: abc123
 ```
 
 ### Run (bkend API Integration)

@@ -19,7 +19,7 @@
 | 항목 | 확인 위치 | 설명 |
 |------|----------|------|
 | Project ID | 콘솔 → **프로젝트 설정** | 프로젝트 고유 식별자 |
-| API Key | 콘솔 → **MCP** → **새 토큰 생성** | REST API 접근 토큰 |
+| API Key | 콘솔 → **액세스 토큰** → **새 토큰 생성** | REST API 접근 토큰 |
 | Environment | 콘솔 → **환경** 탭 | `dev` / `staging` / `prod` |
 
 {% hint style="warning" %}

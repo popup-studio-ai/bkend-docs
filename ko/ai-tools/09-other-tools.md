@@ -100,7 +100,7 @@ https://api.bkend.ai/mcp
 ### 연결은 되지만 도구 목록이 비어있을 때
 
 1. 인증이 완료되었는지 확인하세요
-2. bkend 콘솔에서 Organization에 프로젝트가 있는지 확인하세요
+2. bkend 콘솔에서 Organization이 있는지 확인하세요
 3. AI 도구를 재시작하세요
 
 ***

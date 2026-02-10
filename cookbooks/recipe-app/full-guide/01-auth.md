@@ -51,7 +51,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -d '{
     "method": "password",
     "email": "chef@example.com",
-    "password": "MyP@ssw0rd!",
+    "password": "abc123",
     "name": "김셰프"
   }'
 ```
@@ -92,11 +92,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
 
 | 조건 | 요구사항 |
 |------|---------|
-| 최소 길이 | 8자 이상 |
-| 대문자 | 1개 이상 |
-| 소문자 | 1개 이상 |
-| 숫자 | 1개 이상 |
-| 특수문자 | 1개 이상 (`!@#$%^&*` 등) |
+| 최소 길이 | 6자 이상 |
 
 {% hint style="warning" %}
 ⚠️ 비밀번호 정책을 충족하지 않으면 `400 Bad Request` 에러가 발생합니다.
@@ -119,7 +115,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -d '{
     "method": "password",
     "email": "chef@example.com",
-    "password": "MyP@ssw0rd!"
+    "password": "abc123"
   }'
 ```
 

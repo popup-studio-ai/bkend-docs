@@ -122,12 +122,13 @@ claude mcp add bkend --transport http https://api.bkend.ai/mcp
 
 ### 인증 후 연결이 안 될 때
 
-1. bkend 콘솔에서 Organization에 프로젝트가 있는지 확인하세요
-2. MCP 설정을 제거하고 다시 추가하세요
+1. bkend 콘솔에서 Organization이 있는지 확인하세요
+2. OAuth 인증이 정상적으로 완료되었는지 확인하세요
+3. MCP 설정을 제거하고 다시 추가하세요
 
 ### Token이 만료되었을 때
 
-Access Token은 1시간, Refresh Token은 30일 후 만료됩니다. 만료되면 자동으로 재인증이 요청됩니다.
+토큰이 콘솔에서 취소된 경우입니다. AI 도구를 재시작하면 브라우저에서 재인증이 진행됩니다.
 
 ***
 

@@ -67,7 +67,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -d '{
     "method": "password",
     "email": "blogger@example.com",
-    "password": "MyP@ssw0rd!",
+    "password": "abc123",
     "name": "홍길동"
   }'
 ```
@@ -82,7 +82,7 @@ const result = await bkendFetch('/v1/auth/email/signup', {
   body: {
     method: 'password',
     email: 'blogger@example.com',
-    password: 'MyP@ssw0rd!',
+    password: 'abc123',
     name: '홍길동',
   },
 });
@@ -98,7 +98,7 @@ localStorage.setItem('refreshToken', result.refreshToken);
 |---------|------|:----:|------|
 | `method` | `string` | ✅ | `"password"` 고정 |
 | `email` | `string` | ✅ | 사용자 이메일 주소 |
-| `password` | `string` | ✅ | 비밀번호 (최소 8자) |
+| `password` | `string` | ✅ | 비밀번호 (최소 6자) |
 | `name` | `string` | ✅ | 사용자 이름 |
 
 ### 성공 응답
@@ -143,7 +143,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -d '{
     "method": "password",
     "email": "blogger@example.com",
-    "password": "MyP@ssw0rd!"
+    "password": "abc123"
   }'
 ```
 
@@ -155,7 +155,7 @@ const result = await bkendFetch('/v1/auth/email/signin', {
   body: {
     method: 'password',
     email: 'blogger@example.com',
-    password: 'MyP@ssw0rd!',
+    password: 'abc123',
   },
 });
 
@@ -300,7 +300,7 @@ console.log(user);
 | 에러 코드 | HTTP | 설명 |
 |----------|:----:|------|
 | `auth/invalid-email` | 400 | 이메일 형식이 올바르지 않음 |
-| `auth/invalid-password-format` | 400 | 비밀번호 정책 위반 (최소 8자) |
+| `auth/invalid-password-format` | 400 | 비밀번호 정책 위반 (최소 6자) |
 | `auth/email-already-exists` | 409 | 이미 등록된 이메일 |
 
 ### 로그인 에러

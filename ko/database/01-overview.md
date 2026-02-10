@@ -89,7 +89,7 @@ flowchart LR
 |:----:|------|------|----------|
 | 1 | 콘솔 | 테이블 생성, 컬럼 정의 | 콘솔 → **데이터베이스** |
 | 2 | 콘솔 | 역할별 CRUD 권한 설정 | 콘솔 → **데이터베이스** → 테이블 → **Permissions** |
-| 3 | 콘솔 | API Key (Bearer Token) 발급 | 콘솔 → **MCP** → **새 토큰 생성** |
+| 3 | 콘솔 | API Key (Bearer Token) 발급 | 콘솔 → **액세스 토큰** → **새 토큰 생성** |
 | 4 | REST API | 앱에서 데이터 CRUD | `POST/GET/PATCH/DELETE /v1/data/:tableName` |
 
 {% hint style="info" %}

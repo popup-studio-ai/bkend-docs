@@ -42,7 +42,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -d '{
     "method": "password",
     "email": "blogger@example.com",
-    "password": "MyP@ssw0rd!"
+    "password": "abc123"
   }'
 ```
 

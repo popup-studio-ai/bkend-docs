@@ -33,6 +33,10 @@ Project는 Organization 내에서 하나의 서비스를 구성하는 단위입�
 {% endhint %}
 
 {% hint style="info" %}
+💡 프로젝트 생성 화면에 `staging`, `production` 환경 옵션도 표시되지만, 현재는 비활성화 상태입니다. `dev` 환경만 생성됩니다.
+{% endhint %}
+
+{% hint style="info" %}
 💡 현재 Organization당 최대 **3개** 프로젝트를 생성할 수 있습니다.
 {% endhint %}
 

@@ -47,7 +47,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -d '{
     "method": "password",
     "email": "user@example.com",
-    "password": "MyP@ssw0rd!",
+    "password": "abc123",
     "name": "홍길동"
   }'
 ```
@@ -67,7 +67,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
 |---------|------|:----:|------|
 | `method` | String | ✅ | `"password"` 고정 |
 | `email` | String | ✅ | 이메일 주소 |
-| `password` | String | ✅ | 비밀번호 (8자 이상, 영문+숫자+특수문자) |
+| `password` | String | ✅ | 비밀번호 (최소 6자) |
 | `name` | String | ✅ | 사용자 이름 |
 {% endtab %}
 
@@ -81,7 +81,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
 {% endtabs %}
 
 {% hint style="warning" %}
-⚠️ 비밀번호 정책: 8자 이상, 영문 대소문자 + 숫자 + 특수문자를 포함해야 합니다.
+⚠️ 비밀번호는 최소 6자 이상이어야 합니다.
 {% endhint %}
 
 ***
@@ -98,7 +98,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -d '{
     "method": "password",
     "email": "user@example.com",
-    "password": "MyP@ssw0rd!"
+    "password": "abc123"
   }'
 ```
 
@@ -219,7 +219,7 @@ const result = await bkendFetch('/v1/auth/email/signin', {
   body: JSON.stringify({
     method: 'password',
     email: 'user@example.com',
-    password: 'MyP@ssw0rd!',
+    password: 'abc123',
   }),
 });
 
@@ -281,7 +281,7 @@ AI가 인증 상태를 확인하고 현재 사용자 정보를 보여줍니다.
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `auth/invalid-password-format` | 비밀번호 정책 미충족 | 8자 이상, 영문+숫자+특수문자 포함 |
+| 400 | `auth/invalid-password-format` | 비밀번호 정책 미충족 | 최소 6자 이상 |
 | 400 | `auth/invalid-email` | 이메일 형식이 올바르지 않음 | 이메일 형식 확인 |
 | 401 | `auth/invalid-credentials` | 이메일 또는 비밀번호 오류 | 입력 내용 재확인 |
 | 401 | `auth/token-expired` | Access Token 만료 | Refresh Token으로 갱신 |

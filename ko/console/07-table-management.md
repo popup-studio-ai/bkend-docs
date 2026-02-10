@@ -162,7 +162,7 @@ flowchart LR
 | 단계 | 확인 위치 | 다음 문서 |
 |:----:|----------|----------|
 | 1~2 | 이 문서 참고 | — |
-| 3 | 콘솔 → **MCP** → **새 토큰 생성** | [API 키 관리](11-api-keys.md) |
+| 3 | 콘솔 → **액세스 토큰** → **새 토큰 생성** | [API 키 관리](11-api-keys.md) |
 | 4 | 앱 코드 | [앱에서 bkend 연동하기](../getting-started/06-app-integration.md) |
 
 데이터 CRUD 구현 패턴은 [데이터 CRUD 앱 패턴](../database/12-crud-app-patterns.md)을 참고하세요.

@@ -6,7 +6,7 @@
 
 ## 개요
 
-bkend는 AI 도구 연동(MCP)과 멀티테넌트 아키텍처를 기본 제공하는 Backend 서비스입니다. 기존 BaaS(Backend as a Service)와의 주요 차이점을 비교합니다.
+bkend는 MCP 네이티브 통합과 멀티테넌트 아키텍처를 기본 제공하는 Backend 서비스입니다. Firebase, Supabase 등 주요 BaaS(Backend as a Service)와의 차이점을 비교합니다.
 
 ***
 
@@ -16,14 +16,15 @@ bkend는 AI 도구 연동(MCP)과 멀티테넌트 아키텍처를 기본 제공�
 |------|-------|----------|----------|
 | **데이터베이스** | MongoDB | Firestore (NoSQL) | PostgreSQL (SQL) |
 | **스키마** | 동적 BSON Schema | 스키마리스 | 정적 SQL Schema |
-| **인증** | Email, OAuth, 매직링크 | Email, OAuth, Phone | Email, OAuth, Phone |
+| **인증** | Email, OAuth, 매직링크 | Email, OAuth, Phone, 매직링크 | Email, OAuth, Phone, 매직링크 |
 | **파일 저장소** | S3 기반 | Cloud Storage | S3 호환 |
-| **AI 도구 연동** | MCP 기본 지원 | ❌ | ❌ |
-| **멀티테넌시** | 기본 제공 | ❌ | ❌ |
+| **AI 도구 연동** | MCP 내장 | MCP 서버 (별도 설치) | MCP 서버 (별도 설치) |
+| **멀티테넌시** | 기본 제공 | ❌ | ❌ (RLS 기반 구현 가능) |
 | **환경 분리** | Dev / Staging / Prod | 프로젝트 분리 | 브랜칭 |
+| **실시간** | ❌ | ✅ (Firestore Realtime) | ✅ (Realtime Channels) |
 | **접근 제어** | RLS (4그룹 RBAC) | Security Rules | RLS (SQL) |
-| **API 방식** | REST + MCP | SDK 중심 | REST + GraphQL |
-| **오픈소스** | — | ❌ | ✅ |
+| **API 방식** | REST + MCP | SDK 중심 + REST | REST + GraphQL |
+| **오픈소스** | — | ⚠️ (SDK만) | ✅ |
 
 ***
 
@@ -38,7 +39,7 @@ bkend는 AI 도구 연동(MCP)과 멀티테넌트 아키텍처를 기본 제공�
 ### Firebase (Firestore)
 
 - **문서 기반 NoSQL** — 컬렉션과 문서 구조
-- **스키마 검증 없음** — 별도 검증 도구 필요
+- **Security Rules 기반 검증** — 쓰기 시점에 타입·필드 유효성 검증 가능 (DB 레벨 스키마 강제는 아님)
 - **실시간 동기화** — 클라이언트에서 실시간 데이터 변경 감지
 
 ### Supabase (PostgreSQL)
@@ -56,27 +57,31 @@ bkend는 AI 도구 연동(MCP)과 멀티테넌트 아키텍처를 기본 제공�
 | 이메일/비밀번호 | ✅ | ✅ | ✅ |
 | Google OAuth | ✅ | ✅ | ✅ |
 | GitHub OAuth | ✅ | ✅ | ✅ |
-| 매직 링크 | ✅ | ❌ | ✅ |
+| 매직 링크 | ✅ | ✅ (Email Link) | ✅ |
+| Phone (SMS) | ❌ | ✅ | ✅ |
 | JWT 토큰 | ✅ | ✅ | ✅ |
 | 세션 관리 | ✅ (디바이스별) | ✅ | ✅ |
-| 계정 연결 | ✅ (다중 프로바이더) | ✅ | ❌ |
-| MFA (다중 인증) | ✅ | ✅ | ✅ |
+| 계정 연결 | ✅ (다중 프로바이더) | ✅ | ✅ (linkIdentity) |
+| MFA (다중 인증) | ✅ | ✅ (SMS + TOTP) | ✅ (SMS + TOTP) |
 
 ***
 
 ## AI 도구 연동
 
-bkend의 가장 큰 차별점은 **MCP (Model Context Protocol)** 기본 지원입니다.
+Firebase, Supabase도 MCP를 지원하지만, 연동 방식에 차이가 있습니다.
 
 | 항목 | bkend | Firebase | Supabase |
 |------|-------|----------|----------|
-| MCP 서버 내장 | ✅ | ❌ | ❌ |
-| AI 도구에서 직접 관리 | ✅ | ❌ | ❌ |
-| Claude Code 연동 | ✅ | ❌ | ❌ |
-| Cursor 연동 | ✅ | ❌ | ❌ |
-| 자연어로 데이터 조작 | ✅ | ❌ | ❌ |
+| MCP 서버 | ✅ 서비스 내장 | ✅ 별도 서버 설치 | ✅ 별도 서버 설치 |
+| 설치 방식 | URL만 등록 | npm 패키지 설치 + 로컬 실행 | npm 패키지 설치 + 로컬 실행 |
+| 인증 | OAuth 2.1 (브라우저 로그인) | Google Cloud 인증 | API Key 또는 OAuth |
+| 프로젝트 관리 | ✅ | ✅ | ✅ |
+| 테이블/스키마 관리 | ✅ | ⚠️ (Firestore 컬렉션) | ✅ (SQL DDL) |
+| 데이터 CRUD | ✅ | ✅ | ✅ (SQL 쿼리) |
 
-MCP를 통해 Claude Code, Cursor 등 AI 도구에서 직접 테이블 생성, 데이터 조회, 스키마 관리 등을 자연어로 수행할 수 있습니다.
+{% hint style="info" %}
+💡 bkend MCP는 서비스에 내장되어 있으므로 URL 등록만으로 바로 사용할 수 있습니다. Firebase와 Supabase는 MCP 서버를 별도로 설치하고 로컬에서 실행해야 합니다.
+{% endhint %}
 
 ***
 
@@ -129,10 +134,10 @@ USING (auth.uid() = user_id);
 
 | 요구사항 | 추천 서비스 |
 |---------|-----------|
-| AI 도구로 백엔드 관리 | **bkend** |
+| 설치 없이 MCP로 바로 시작 | **bkend** |
 | 유연한 스키마가 필요 | **bkend**, Firebase |
 | SQL과 강력한 조인이 필요 | Supabase |
-| 실시간 데이터 동기화가 핵심 | Firebase |
+| 실시간 데이터 동기화가 핵심 | Firebase, Supabase |
 | 멀티테넌트 SaaS 구축 | **bkend** |
 | 오픈소스 선호 | Supabase |
 

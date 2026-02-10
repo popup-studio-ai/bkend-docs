@@ -205,7 +205,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -d '{
     "method": "password",
     "email": "user@example.com",
-    "password": "MyP@ssw0rd!",
+    "password": "abc123",
     "name": "홍길동"
   }'
 ```
@@ -231,7 +231,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -d '{
     "method": "password",
     "email": "user@example.com",
-    "password": "MyP@ssw0rd!"
+    "password": "abc123"
   }'
 ```
 

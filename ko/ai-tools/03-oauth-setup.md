@@ -47,8 +47,8 @@ AI 도구(Claude Code, Cursor 등)에서 bkend MCP 서버 URL을 설정하면, �
 
 로그인 후 MCP에서 사용할 Organization을 선택합니다.
 
-{% hint style="warning" %}
-⚠️ Organization에 프로젝트가 없으면 MCP 도구를 사용할 수 없습니다. 먼저 [콘솔에서 프로젝트를 생성](../console/04-project-management.md)하세요.
+{% hint style="info" %}
+💡 Organization만 있으면 MCP 도구를 사용할 수 있습니다. 프로젝트가 없더라도 MCP 도구로 직접 생성할 수 있습니다.
 {% endhint %}
 
 ### 4단계: 권한 승인
@@ -144,8 +144,9 @@ curl -X POST https://api.bkend.ai/mcp/oauth/register \
 
 ### 인증 후 연결이 안 될 때
 
-1. bkend 콘솔에서 Organization에 프로젝트가 있는지 확인하세요
-2. AI 도구의 MCP 설정을 제거하고 다시 추가하세요
+1. bkend 콘솔에서 Organization이 있는지 확인하세요
+2. OAuth 인증이 정상적으로 완료되었는지 확인하세요
+3. AI 도구의 MCP 설정을 제거하고 다시 추가하세요
 
 ### "Token expired" 오류
 

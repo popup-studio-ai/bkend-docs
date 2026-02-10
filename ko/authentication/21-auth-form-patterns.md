@@ -44,7 +44,7 @@ flowchart TD
 <form id="signup-form">
   <input type="text" name="name" placeholder="이름" required />
   <input type="email" name="email" placeholder="이메일" required />
-  <input type="password" name="password" placeholder="비밀번호 (8자 이상)" required />
+  <input type="password" name="password" placeholder="비밀번호 (6자 이상)" required />
   <button type="submit">회원가입</button>
   <p id="signup-error" style="color: red;"></p>
 </form>
@@ -94,7 +94,7 @@ signupForm.addEventListener('submit', async (e) => {
 function getSignupErrorMessage(code) {
   const messages = {
     'auth/invalid-email': '올바른 이메일 주소를 입력하세요.',
-    'auth/invalid-password-format': '비밀번호는 8자 이상이어야 합니다.',
+    'auth/invalid-password-format': '비밀번호는 6자 이상이어야 합니다.',
     'auth/email-already-exists': '이미 가입된 이메일입니다.',
   };
   return messages[code] || '회원가입에 실패했습니다. 다시 시도하세요.';
@@ -107,7 +107,7 @@ function getSignupErrorMessage(code) {
 |---------|------|:----:|------|
 | `method` | `string` | ✅ | `"password"` 고정 |
 | `email` | `string` | ✅ | 사용자 이메일 주소 |
-| `password` | `string` | ✅ | 비밀번호 (최소 8자) |
+| `password` | `string` | ✅ | 비밀번호 (최소 6자) |
 | `name` | `string` | ✅ | 사용자 이름 |
 
 ### 에러 처리
@@ -115,7 +115,7 @@ function getSignupErrorMessage(code) {
 | 에러 코드 | HTTP | 설명 | 사용자 메시지 예시 |
 |----------|:----:|------|-----------------|
 | `auth/invalid-email` | 400 | 이메일 형식 오류 | "올바른 이메일 주소를 입력하세요." |
-| `auth/invalid-password-format` | 400 | 비밀번호 정책 위반 | "비밀번호는 8자 이상이어야 합니다." |
+| `auth/invalid-password-format` | 400 | 비밀번호 정책 위반 | "비밀번호는 6자 이상이어야 합니다." |
 | `auth/email-already-exists` | 409 | 이미 등록된 이메일 | "이미 가입된 이메일입니다." |
 
 ***

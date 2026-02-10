@@ -62,7 +62,7 @@ Open `http://localhost:3000` in your browser.
 
 ```
 Email: demo@bkend.ai
-Password: Bkend123$
+Password: abc123
 ```
 
 ### Running (bkend API Integration)

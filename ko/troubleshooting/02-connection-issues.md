@@ -129,7 +129,7 @@ export default async function handler(req, res) {
 ### MCP 도구 목록이 비어있을 때
 
 1. OAuth 인증이 완료되었는지 확인하세요
-2. Organization에 프로젝트가 있는지 확인하세요
+2. Organization이 있는지 확인하세요
 3. 프로젝트에 활성 환경이 있는지 확인하세요
 
 ***

@@ -51,6 +51,20 @@ sequenceDiagram
 ## 1단계: Presigned URL 발급
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="warning" %}
+⚠️ 파일 업로드는 클라이언트에서 직접 수행하는 기능입니다. Presigned URL 발급과 S3 업로드는 REST API로 구현하세요.
+{% endhint %}
+
+MCP 도구는 테이블/데이터 관리에 사용합니다. 파일 업로드 후 게시글에 이미지를 연결하는 작업은 MCP로 수행할 수 있습니다.
+
+{% hint style="success" %}
+✅ **이미지 업로드 후 게시글에 연결하려면**
+"게시글에 대표 이미지를 설정하고 싶어요. 이 이미지 URL을 사용해주세요: (URL)"
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -116,20 +130,6 @@ console.log(presigned.key); // 파일 식별 키
 {% endhint %}
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="warning" %}
-⚠️ 파일 업로드는 클라이언트에서 직접 수행하는 기능입니다. Presigned URL 발급과 S3 업로드는 REST API로 구현하세요.
-{% endhint %}
-
-MCP 도구는 테이블/데이터 관리에 사용합니다. 파일 업로드 후 게시글에 이미지를 연결하는 작업은 MCP로 수행할 수 있습니다.
-
-{% hint style="success" %}
-✅ **이미지 업로드 후 게시글에 연결하려면**
-"게시글에 대표 이미지를 설정하고 싶어요. 이 이미지 URL을 사용해주세요: (URL)"
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -160,6 +160,13 @@ await fetch(presigned.url, {
 S3 업로드 완료 후, bkend API에 파일 메타데이터를 등록합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="warning" %}
+⚠️ 메타데이터 등록은 클라이언트에서 REST API로 수행합니다.
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -221,13 +228,6 @@ console.log(fileMetadata.id); // 파일 ID
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="warning" %}
-⚠️ 메타데이터 등록은 클라이언트에서 REST API로 수행합니다.
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -237,6 +237,14 @@ console.log(fileMetadata.id); // 파일 ID
 업로드한 이미지를 게시글의 `coverImage` 필드에 설정합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"제주도 여행 글의 대표 이미지를 이 URL로 설정해주세요: https://cdn.example.com/cover-jeju.jpg"
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -310,14 +318,6 @@ fileInput.addEventListener('change', async (e) => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-"제주도 여행 글의 대표 이미지를 이 URL로 설정해주세요: https://cdn.example.com/cover-jeju.jpg"
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -325,6 +325,14 @@ fileInput.addEventListener('change', async (e) => {
 ## 5단계: 파일 메타데이터 조회
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"업로드한 이미지 정보를 확인해주세요"
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -361,14 +369,6 @@ console.log(file.size);         // 2048000
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-"업로드한 이미지 정보를 확인해주세요"
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -376,6 +376,14 @@ console.log(file.size);         // 2048000
 ## 6단계: 이미지 삭제
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"방금 확인한 이미지 파일을 삭제해주세요"
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -409,14 +417,6 @@ await bkendFetch(`/v1/files/${fileId}`, {
 
 {% hint style="warning" %}
 ⚠️ 파일을 삭제하면 게시글의 `coverImage`에 설정된 URL이 더 이상 유효하지 않습니다. 파일 삭제 후 게시글의 `coverImage`도 함께 초기화하세요.
-{% endhint %}
-
-{% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-"방금 확인한 이미지 파일을 삭제해주세요"
 {% endhint %}
 
 {% endtab %}

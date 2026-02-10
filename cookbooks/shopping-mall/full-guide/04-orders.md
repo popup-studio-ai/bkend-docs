@@ -80,16 +80,6 @@ stateDiagram-v2
 | `recipientPhone` | String | - | 수령인 연락처 |
 
 {% tabs %}
-{% tab title="콘솔" %}
-1. 콘솔에서 **테이블** 메뉴로 이동하세요.
-2. **새 테이블 추가**를 클릭하세요.
-3. 테이블 이름에 `orders`를 입력하세요.
-4. 위 스키마대로 필드를 추가하세요.
-5. **저장**을 클릭하면 테이블이 생성됩니다.
-
-<!-- 📸 IMG: 콘솔에서 orders 테이블 생성 화면 -->
-{% endtab %}
-
 {% tab title="MCP (AI 도구)" %}
 {% hint style="success" %}
 ✅ **AI에게 이렇게 말해보세요**
@@ -109,6 +99,16 @@ stateDiagram-v2
 | shippingAddress | 배송 주소 | "서울시 강남구..." |
 | recipientName | 수령인 이름 | "김고객" |
 | recipientPhone | 수령인 연락처 | "010-1234-5678" |
+{% endtab %}
+
+{% tab title="콘솔" %}
+1. 콘솔에서 **테이블** 메뉴로 이동하세요.
+2. **새 테이블 추가**를 클릭하세요.
+3. 테이블 이름에 `orders`를 입력하세요.
+4. 위 스키마대로 필드를 추가하세요.
+5. **저장**을 클릭하면 테이블이 생성됩니다.
+
+<!-- 📸 IMG: 콘솔에서 orders 테이블 생성 화면 -->
 {% endtab %}
 {% endtabs %}
 
@@ -133,6 +133,16 @@ flowchart LR
 ```
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"장바구니에 담긴 상품으로 주문해주세요. 배송지는 서울시 서초구 반포대로 45, 수령인 김고객, 연락처 010-1234-5678이에요. 주문 후 장바구니는 비워주세요."
+{% endhint %}
+
+AI가 장바구니를 확인하고, 총 금액을 계산한 뒤, 주문을 생성하고 장바구니를 비웁니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 
 ### 2-1. 장바구니 조회
@@ -222,16 +232,6 @@ for (const item of cartItems) {
 }
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"장바구니에 담긴 상품으로 주문해주세요. 배송지는 서울시 서초구 반포대로 45, 수령인 김고객, 연락처 010-1234-5678이에요. 주문 후 장바구니는 비워주세요."
-{% endhint %}
-
-AI가 장바구니를 확인하고, 총 금액을 계산한 뒤, 주문을 생성하고 장바구니를 비웁니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -241,6 +241,22 @@ AI가 장바구니를 확인하고, 총 금액을 계산한 뒤, 주문을 생�
 내 주문 내역을 확인하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내 주문 내역을 최근 순서로 보여주세요."
+{% endhint %}
+
+AI가 주문 목록을 최신순으로 보여줍니다.
+
+{% hint style="success" %}
+✅ **상태별 조회도 가능합니다:**
+
+"배송 중인 주문만 보여주세요."
+{% endhint %}
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/orders?sortBy=createdAt&sortDirection=desc" \
@@ -298,22 +314,6 @@ orders.items.forEach(order => {
 }
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내 주문 내역을 최근 순서로 보여주세요."
-{% endhint %}
-
-AI가 주문 목록을 최신순으로 보여줍니다.
-
-{% hint style="success" %}
-✅ **상태별 조회도 가능합니다:**
-
-"배송 중인 주문만 보여주세요."
-{% endhint %}
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -323,6 +323,16 @@ AI가 주문 목록을 최신순으로 보여줍니다.
 특정 주문의 상세 정보를 확인하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"가장 최근 주문의 상세 정보를 보여주세요."
+{% endhint %}
+
+AI가 주문에 포함된 상품, 금액, 배송지, 현재 상태 등을 보여줍니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/orders/{order_id} \
@@ -345,16 +355,6 @@ items.forEach(item => {
 });
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"가장 최근 주문의 상세 정보를 보여주세요."
-{% endhint %}
-
-AI가 주문에 포함된 상품, 금액, 배송지, 현재 상태 등을 보여줍니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -364,6 +364,35 @@ AI가 주문에 포함된 상품, 금액, 배송지, 현재 상태 등을 보여
 주문 상태를 다음 단계로 변경하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"가장 최근 주문 상태를 '배송 중'으로 바꿔주세요."
+{% endhint %}
+
+AI가 주문 상태를 변경합니다.
+
+{% hint style="success" %}
+✅ **단계별 변경 예시:**
+
+- "주문 상태를 '주문 확인'으로 바꿔주세요."
+- "주문 상태를 '배송 중'으로 바꿔주세요."
+- "주문 상태를 '배달 완료'로 바꿔주세요."
+{% endhint %}
+
+{% hint style="info" %}
+💡 주문 상태는 아래 순서를 따릅니다.
+
+| 말하는 표현 | 저장되는 값 |
+|------------|-----------|
+| 주문 대기 | pending |
+| 주문 확인 | confirmed |
+| 배송 중 | shipped |
+| 배달 완료 | delivered |
+{% endhint %}
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 
 ### 주문 확인 (pending → confirmed)
@@ -424,35 +453,6 @@ await updateOrderStatus('order_xyz789', 'confirmed');  // 주문 확인
 await updateOrderStatus('order_xyz789', 'shipped');     // 배송 시작
 await updateOrderStatus('order_xyz789', 'delivered');   // 배달 완료
 ```
-{% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"가장 최근 주문 상태를 '배송 중'으로 바꿔주세요."
-{% endhint %}
-
-AI가 주문 상태를 변경합니다.
-
-{% hint style="success" %}
-✅ **단계별 변경 예시:**
-
-- "주문 상태를 '주문 확인'으로 바꿔주세요."
-- "주문 상태를 '배송 중'으로 바꿔주세요."
-- "주문 상태를 '배달 완료'로 바꿔주세요."
-{% endhint %}
-
-{% hint style="info" %}
-💡 주문 상태는 아래 순서를 따릅니다.
-
-| 말하는 표현 | 저장되는 값 |
-|------------|-----------|
-| 주문 대기 | pending |
-| 주문 확인 | confirmed |
-| 배송 중 | shipped |
-| 배달 완료 | delivered |
-{% endhint %}
 {% endtab %}
 {% endtabs %}
 

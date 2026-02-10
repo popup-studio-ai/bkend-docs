@@ -38,6 +38,17 @@ sequenceDiagram
 ## 1단계: 회원가입
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"쇼핑몰 앱의 이메일 회원가입과 로그인 코드를 만들어줘. bkendFetch 헬퍼를 사용해서 구현해줘."
+{% endhint %}
+
+{% hint style="info" %}
+💡 회원가입과 로그인은 사용자가 앱에서 직접 수행하는 기능입니다. AI에게 코드 생성을 요청하고, 생성된 코드를 앱에 추가하세요. 구현 코드는 **콘솔 + REST API** 탭에서도 확인할 수 있습니다.
+{% endhint %}
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
@@ -70,14 +81,6 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
 | `password` | String | ✅ | 비밀번호 (최소 6자) |
 | `name` | String | ✅ | 사용자 이름 |
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="warning" %}
-⚠️ 회원가입은 앱에서 사용자가 직접 수행하는 기능입니다. MCP 도구가 아닌 REST API로 구현하세요.
-{% endhint %}
-
-인증 관련 API는 앱의 프론트엔드에서 REST API를 직접 호출합니다. MCP 도구는 테이블 생성, 데이터 관리 등 백엔드 설정 작업에 사용합니다.
-{% endtab %}
 {% endtabs %}
 
 {% hint style="warning" %}
@@ -89,6 +92,17 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
 ## 2단계: 로그인
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"로그인 후 토큰을 localStorage에 저장하고, 401 에러 시 자동 갱신하는 코드를 만들어줘."
+{% endhint %}
+
+{% hint style="info" %}
+💡 AI가 토큰 관리 로직이 포함된 완성 코드를 생성합니다. 생성된 코드의 상세 구현은 **콘솔 + REST API** 탭을 참고하세요.
+{% endhint %}
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
@@ -118,14 +132,6 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 | `method` | String | ✅ | `"password"` 고정 |
 | `email` | String | ✅ | 가입한 이메일 |
 | `password` | String | ✅ | 비밀번호 |
-{% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="warning" %}
-⚠️ 로그인은 앱에서 사용자가 직접 수행하는 기능입니다. MCP 도구가 아닌 REST API로 구현하세요.
-{% endhint %}
-
-인증 관련 API는 앱의 프론트엔드에서 REST API를 직접 호출합니다.
 {% endtab %}
 {% endtabs %}
 
@@ -239,6 +245,13 @@ window.location.href = '/';
 ## 4단계: 인증 상태 확인
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"현재 로그인한 사용자 정보를 표시하는 프로필 컴포넌트를 만들어줘. /v1/auth/me API를 사용해줘."
+{% endhint %}
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 저장된 토큰으로 현재 로그인된 사용자 정보를 확인하세요.
 
@@ -260,16 +273,6 @@ curl -X GET https://api-client.bkend.ai/v1/auth/me \
   "createdAt": "2026-02-08T10:00:00Z"
 }
 ```
-{% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내 로그인 상태 확인해줘."
-{% endhint %}
-
-AI가 인증 상태를 확인하고 현재 사용자 정보를 보여줍니다.
 {% endtab %}
 {% endtabs %}
 

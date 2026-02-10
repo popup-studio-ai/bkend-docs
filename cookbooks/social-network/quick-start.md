@@ -17,32 +17,6 @@
 소셜 네트워크에 필요한 `profiles`와 `posts` 테이블을 생성하세요.
 
 {% tabs %}
-{% tab title="콘솔 + REST API" %}
-
-**콘솔에서 테이블 생성:**
-
-1. **데이터베이스** 메뉴로 이동하세요.
-2. **테이블 추가** 버튼을 클릭하세요.
-3. 테이블 이름: `profiles`를 입력하세요.
-4. 다음 필드를 추가하세요.
-
-| 필드명 | 타입 | 설명 |
-|--------|------|------|
-| `userId` | String | 사용자 ID |
-| `nickname` | String | 닉네임 |
-| `bio` | String | 소개 |
-| `avatarUrl` | String | 프로필 사진 URL |
-
-5. 같은 방법으로 `posts` 테이블을 생성하세요.
-
-| 필드명 | 타입 | 설명 |
-|--------|------|------|
-| `content` | String | 본문 |
-| `imageUrl` | String | 이미지 URL |
-| `likesCount` | Number | 좋아요 수 |
-| `commentsCount` | Number | 댓글 수 |
-
-{% endtab %}
 {% tab title="MCP (AI 도구)" %}
 
 {% hint style="success" %}
@@ -70,6 +44,32 @@
 {% endhint %}
 
 {% endtab %}
+{% tab title="콘솔 + REST API" %}
+
+**콘솔에서 테이블 생성:**
+
+1. **데이터베이스** 메뉴로 이동하세요.
+2. **테이블 추가** 버튼을 클릭하세요.
+3. 테이블 이름: `profiles`를 입력하세요.
+4. 다음 필드를 추가하세요.
+
+| 필드명 | 타입 | 설명 |
+|--------|------|------|
+| `userId` | String | 사용자 ID |
+| `nickname` | String | 닉네임 |
+| `bio` | String | 소개 |
+| `avatarUrl` | String | 프로필 사진 URL |
+
+5. 같은 방법으로 `posts` 테이블을 생성하세요.
+
+| 필드명 | 타입 | 설명 |
+|--------|------|------|
+| `content` | String | 본문 |
+| `imageUrl` | String | 이미지 URL |
+| `likesCount` | Number | 좋아요 수 |
+| `commentsCount` | Number | 댓글 수 |
+
+{% endtab %}
 {% endtabs %}
 
 ***
@@ -79,6 +79,15 @@
 나의 프로필을 만드세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내 프로필을 만들어주세요. 닉네임은 '홍길동', 자기소개는 'bkend로 소셜 네트워크를 만들고 있습니다'로 해주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -108,15 +117,6 @@ curl -X POST https://api-client.bkend.ai/v1/data/profiles \
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내 프로필을 만들어주세요. 닉네임은 '홍길동', 자기소개는 'bkend로 소셜 네트워크를 만들고 있습니다'로 해주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -126,6 +126,15 @@ curl -X POST https://api-client.bkend.ai/v1/data/profiles \
 첫 번째 게시물을 올리세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"게시물을 하나 올려주세요. 내용은 '안녕하세요! bkend로 만든 소셜 네트워크에 첫 글을 올립니다.'로 해주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -155,15 +164,6 @@ curl -X POST https://api-client.bkend.ai/v1/data/posts \
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"게시물을 하나 올려주세요. 내용은 '안녕하세요! bkend로 만든 소셜 네트워크에 첫 글을 올립니다.'로 해주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -173,6 +173,15 @@ curl -X POST https://api-client.bkend.ai/v1/data/posts \
 작성한 게시물 목록을 확인하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"최근에 올라온 게시물 10개만 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -206,15 +215,6 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDire
   }
 }
 ```
-
-{% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"최근에 올라온 게시물 10개만 보여주세요."
-{% endhint %}
 
 {% endtab %}
 {% endtabs %}

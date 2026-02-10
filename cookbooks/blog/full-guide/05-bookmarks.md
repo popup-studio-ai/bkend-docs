@@ -67,19 +67,6 @@ sequenceDiagram
 {% endhint %}
 
 {% tabs %}
-{% tab title="콘솔" %}
-
-bkend 콘솔에서 테이블을 생성합니다.
-
-1. **콘솔** > **테이블 관리** 메뉴로 이동합니다.
-2. **테이블 추가** 버튼을 클릭합니다.
-3. 테이블 이름에 `bookmarks`를 입력합니다.
-4. `articleId` 필드를 추가합니다 (타입: String, 필수: 예).
-5. **저장** 버튼을 클릭합니다.
-
-<!-- 📸 IMG: 콘솔에서 bookmarks 테이블 생성 화면 -->
-
-{% endtab %}
 {% tab title="MCP (AI 도구)" %}
 
 {% hint style="success" %}
@@ -96,6 +83,19 @@ bkend 콘솔에서 테이블을 생성합니다.
 {% endhint %}
 
 {% endtab %}
+{% tab title="콘솔" %}
+
+bkend 콘솔에서 테이블을 생성합니다.
+
+1. **콘솔** > **테이블 관리** 메뉴로 이동합니다.
+2. **테이블 추가** 버튼을 클릭합니다.
+3. 테이블 이름에 `bookmarks`를 입력합니다.
+4. `articleId` 필드를 추가합니다 (타입: String, 필수: 예).
+5. **저장** 버튼을 클릭합니다.
+
+<!-- 📸 IMG: 콘솔에서 bookmarks 테이블 생성 화면 -->
+
+{% endtab %}
 {% endtabs %}
 
 ***
@@ -103,6 +103,14 @@ bkend 콘솔에서 테이블을 생성합니다.
 ## 2단계: 북마크 추가
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"제주도 여행 글을 북마크에 저장해주세요"
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -145,14 +153,6 @@ console.log(bookmark.id); // 생성된 북마크 ID
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-"제주도 여행 글을 북마크에 저장해주세요"
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -160,6 +160,21 @@ console.log(bookmark.id); // 생성된 북마크 ID
 ## 3단계: 내 북마크 목록 조회
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"내가 북마크한 글 목록을 보여주세요"
+{% endhint %}
+
+{% hint style="success" %}
+✅ **북마크한 글의 제목까지 보려면**
+"내 북마크 목록에 글 제목도 함께 보여주세요"
+{% endhint %}
+
+AI가 북마크 목록을 조회한 후, 각 게시글의 상세 정보를 함께 조회합니다.
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -239,21 +254,6 @@ bookmarkList.forEach(item => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-"내가 북마크한 글 목록을 보여주세요"
-{% endhint %}
-
-{% hint style="success" %}
-✅ **북마크한 글의 제목까지 보려면**
-"내 북마크 목록에 글 제목도 함께 보여주세요"
-{% endhint %}
-
-AI가 북마크 목록을 조회한 후, 각 게시글의 상세 정보를 함께 조회합니다.
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -261,6 +261,16 @@ AI가 북마크 목록을 조회한 후, 각 게시글의 상세 정보를 함�
 ## 4단계: 북마크 삭제
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"제주도 여행 글의 북마크를 해제해주세요"
+{% endhint %}
+
+AI가 해당 게시글의 북마크를 찾아서 삭제합니다.
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -289,16 +299,6 @@ await bkendFetch(`/v1/data/bookmarks/${bookmarkId}`, {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-"제주도 여행 글의 북마크를 해제해주세요"
-{% endhint %}
-
-AI가 해당 게시글의 북마크를 찾아서 삭제합니다.
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -308,6 +308,19 @@ AI가 해당 게시글의 북마크를 찾아서 삭제합니다.
 북마크 추가/삭제를 하나의 함수로 구현합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"이 글의 북마크를 토글해주세요. 이미 북마크되어 있으면 해제하고, 아니면 추가해주세요."
+{% endhint %}
+
+AI가 순차적으로 처리합니다:
+
+1. 해당 글의 북마크 존재 여부 확인
+2. 결과에 따라 추가 또는 삭제
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### bkendFetch — 토글 구현
@@ -367,19 +380,6 @@ articles.forEach(article => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-"이 글의 북마크를 토글해주세요. 이미 북마크되어 있으면 해제하고, 아니면 추가해주세요."
-{% endhint %}
-
-AI가 순차적으로 처리합니다:
-
-1. 해당 글의 북마크 존재 여부 확인
-2. 결과에 따라 추가 또는 삭제
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -389,6 +389,14 @@ AI가 순차적으로 처리합니다:
 게시글별 북마크 수를 확인합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"제주도 여행 글에 북마크가 몇 개인지 확인해주세요"
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### bkendFetch
@@ -410,14 +418,6 @@ console.log(`북마크 수: ${count}`);
 
 {% hint style="info" %}
 💡 `limit=1`로 설정하면 실제 데이터는 1건만 가져오지만, `pagination.total`에서 전체 수를 확인할 수 있습니다.
-{% endhint %}
-
-{% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-"제주도 여행 글에 북마크가 몇 개인지 확인해주세요"
 {% endhint %}
 
 {% endtab %}

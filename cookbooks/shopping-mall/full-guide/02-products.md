@@ -46,17 +46,6 @@
 {% endhint %}
 
 {% tabs %}
-{% tab title="콘솔" %}
-1. 콘솔에 로그인하세요.
-2. **테이블** 메뉴로 이동하세요.
-3. **새 테이블 추가**를 클릭하세요.
-4. 테이블 이름에 `products`를 입력하세요.
-5. 위 스키마대로 필드를 추가하세요.
-6. **저장**을 클릭하면 테이블이 생성됩니다.
-
-<!-- 📸 IMG: 콘솔에서 products 테이블 생성 화면 -->
-{% endtab %}
-
 {% tab title="MCP (AI 도구)" %}
 {% hint style="success" %}
 ✅ **AI에게 이렇게 말해보세요**
@@ -78,6 +67,17 @@
 | imageUrl | 상품 사진 URL | (업로드 후 연결) |
 | isActive | 판매 중 여부 | true / false |
 {% endtab %}
+
+{% tab title="콘솔" %}
+1. 콘솔에 로그인하세요.
+2. **테이블** 메뉴로 이동하세요.
+3. **새 테이블 추가**를 클릭하세요.
+4. 테이블 이름에 `products`를 입력하세요.
+5. 위 스키마대로 필드를 추가하세요.
+6. **저장**을 클릭하면 테이블이 생성됩니다.
+
+<!-- 📸 IMG: 콘솔에서 products 테이블 생성 화면 -->
+{% endtab %}
 {% endtabs %}
 
 ***
@@ -87,6 +87,16 @@
 테이블이 생성되었으면 첫 번째 상품을 등록하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"새 상품을 등록해주세요. 프리미엄 면 티셔츠, 부드러운 100% 면 소재 기본 티셔츠예요. 가격 29,000원, 카테고리는 의류, 재고 100개입니다."
+{% endhint %}
+
+AI가 상품을 등록하고 결과를 알려줍니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/products \
@@ -138,16 +148,6 @@ console.log('등록된 상품:', product);
 }
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"새 상품을 등록해주세요. 프리미엄 면 티셔츠, 부드러운 100% 면 소재 기본 티셔츠예요. 가격 29,000원, 카테고리는 의류, 재고 100개입니다."
-{% endhint %}
-
-AI가 상품을 등록하고 결과를 알려줍니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -157,6 +157,16 @@ AI가 상품을 등록하고 결과를 알려줍니다.
 상품에 이미지를 추가하려면 Presigned URL을 발급받아 파일을 업로드한 후, 반환된 URL을 상품에 연결하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"프리미엄 면 티셔츠에 상품 사진을 추가하고 싶어요. 이미지 파일을 업로드해주세요."
+{% endhint %}
+
+AI가 이미지를 업로드하고, 상품 사진을 자동으로 연결합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 
 ### 3-1. Presigned URL 발급
@@ -209,16 +219,6 @@ await fetch(presigned.url, {
 });
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"프리미엄 면 티셔츠에 상품 사진을 추가하고 싶어요. 이미지 파일을 업로드해주세요."
-{% endhint %}
-
-AI가 이미지를 업로드하고, 상품 사진을 자동으로 연결합니다.
-{% endtab %}
 {% endtabs %}
 
 {% hint style="info" %}
@@ -232,6 +232,16 @@ AI가 이미지를 업로드하고, 상품 사진을 자동으로 연결합니�
 등록된 상품을 다양한 조건으로 조회할 수 있습니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"의류 카테고리 상품 중에서 5만원 이하인 것만 가격이 낮은 순서로 보여주세요."
+{% endhint %}
+
+AI가 조건에 맞는 상품 목록을 조회하여 보여줍니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 
 ### 전체 상품 목록
@@ -307,16 +317,6 @@ console.log('총 개수:', products.pagination.total);
 }
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"의류 카테고리 상품 중에서 5만원 이하인 것만 가격이 낮은 순서로 보여주세요."
-{% endhint %}
-
-AI가 조건에 맞는 상품 목록을 조회하여 보여줍니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -326,6 +326,16 @@ AI가 조건에 맞는 상품 목록을 조회하여 보여줍니다.
 특정 상품의 상세 정보를 조회하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"프리미엄 면 티셔츠 상세 정보를 보여주세요."
+{% endhint %}
+
+AI가 해당 상품의 가격, 재고, 카테고리 등 전체 정보를 보여줍니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/products/{product_id} \
@@ -359,16 +369,6 @@ console.log('상품 상세:', product);
 }
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"프리미엄 면 티셔츠 상세 정보를 보여주세요."
-{% endhint %}
-
-AI가 해당 상품의 가격, 재고, 카테고리 등 전체 정보를 보여줍니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -378,6 +378,16 @@ AI가 해당 상품의 가격, 재고, 카테고리 등 전체 정보를 보여�
 가격, 설명, 재고 등을 부분 수정할 수 있습니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"프리미엄 면 티셔츠 가격을 25,000원으로 내려주세요. 설명도 '시즌 할인! 부드러운 100% 면 소재 티셔츠.'로 바꿔주세요."
+{% endhint %}
+
+AI가 해당 상품의 가격과 설명을 수정합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/products/{product_id} \
@@ -405,16 +415,6 @@ const updated = await bkendFetch(`/v1/data/products/${productId}`, {
 console.log('수정 완료:', updated);
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"프리미엄 면 티셔츠 가격을 25,000원으로 내려주세요. 설명도 '시즌 할인! 부드러운 100% 면 소재 티셔츠.'로 바꿔주세요."
-{% endhint %}
-
-AI가 해당 상품의 가격과 설명을 수정합니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -424,6 +424,16 @@ AI가 해당 상품의 가격과 설명을 수정합니다.
 더 이상 판매하지 않는 상품을 삭제하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"프리미엄 면 티셔츠 상품을 삭제해주세요."
+{% endhint %}
+
+AI가 해당 상품을 삭제합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/products/{product_id} \
@@ -442,16 +452,6 @@ await bkendFetch(`/v1/data/products/${productId}`, {
 console.log('상품 삭제 완료');
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"프리미엄 면 티셔츠 상품을 삭제해주세요."
-{% endhint %}
-
-AI가 해당 상품을 삭제합니다.
-{% endtab %}
 {% endtabs %}
 
 {% hint style="warning" %}
@@ -465,6 +465,22 @@ AI가 해당 상품을 삭제합니다.
 주문이 들어오면 재고를 차감하고, 재입고 시 재고를 추가합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"재고가 10개 이하인 상품 목록을 보여주세요."
+{% endhint %}
+
+AI가 판매 중인 상품 중 재고가 부족한 상품을 찾아 보여줍니다.
+
+{% hint style="success" %}
+✅ **재입고 시:**
+
+"프리미엄 면 티셔츠 재고를 150개로 늘려주세요."
+{% endhint %}
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 
 ### 재고 업데이트
@@ -500,22 +516,6 @@ const activeProducts = await bkendFetch(
 const lowStock = activeProducts.items.filter(p => p.stock <= 10);
 console.log('재고 부족 상품:', lowStock);
 ```
-{% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"재고가 10개 이하인 상품 목록을 보여주세요."
-{% endhint %}
-
-AI가 판매 중인 상품 중 재고가 부족한 상품을 찾아 보여줍니다.
-
-{% hint style="success" %}
-✅ **재입고 시:**
-
-"프리미엄 면 티셔츠 재고를 150개로 늘려주세요."
-{% endhint %}
 {% endtab %}
 {% endtabs %}
 

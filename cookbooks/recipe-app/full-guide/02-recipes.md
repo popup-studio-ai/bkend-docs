@@ -45,18 +45,6 @@
 {% endhint %}
 
 {% tabs %}
-{% tab title="콘솔" %}
-
-1. **테이블 관리** 메뉴로 이동하세요.
-2. **테이블 추가** 버튼을 클릭하세요.
-3. 테이블 이름에 `recipes`를 입력하세요.
-4. 위 테이블 구조에 맞게 필드를 추가하세요.
-5. `difficulty` 필드는 **Enum** 타입으로 `easy`, `medium`, `hard` 값을 설정하세요.
-6. **저장** 버튼을 클릭하세요.
-
-<!-- 📸 IMG: recipes 테이블 생성 화면 -->
-
-{% endtab %}
 {% tab title="MCP (AI 도구)" %}
 
 {% hint style="success" %}
@@ -80,6 +68,18 @@
 | imageUrl | 레시피 사진 URL | (업로드 후 연결) |
 
 {% endtab %}
+{% tab title="콘솔" %}
+
+1. **테이블 관리** 메뉴로 이동하세요.
+2. **테이블 추가** 버튼을 클릭하세요.
+3. 테이블 이름에 `recipes`를 입력하세요.
+4. 위 테이블 구조에 맞게 필드를 추가하세요.
+5. `difficulty` 필드는 **Enum** 타입으로 `easy`, `medium`, `hard` 값을 설정하세요.
+6. **저장** 버튼을 클릭하세요.
+
+<!-- 📸 IMG: recipes 테이블 생성 화면 -->
+
+{% endtab %}
 {% endtabs %}
 
 ### 난이도 기준
@@ -97,6 +97,15 @@
 테이블이 생성되었으면 레시피를 등록하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"새 레시피를 등록해주세요. 김치찌개, 조리시간 30분, 난이도 쉬움, 2인분, 한식이에요. 설명은 '돼지고기와 잘 익은 김치로 만드는 얼큰한 찌개'로 해주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -151,15 +160,6 @@ console.log('레시피 ID:', recipe.id);
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"새 레시피를 등록해주세요. 김치찌개, 조리시간 30분, 난이도 쉬움, 2인분, 한식이에요. 설명은 '돼지고기와 잘 익은 김치로 만드는 얼큰한 찌개'로 해주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ### 요청 파라미터
@@ -201,6 +201,17 @@ sequenceDiagram
 ```
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"김치찌개 레시피에 사진을 추가하고 싶어요. 이미지 파일을 업로드하고 레시피에 연결해주세요."
+{% endhint %}
+
+AI가 이미지 업로드와 레시피 연결을 순차적으로 처리합니다.
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 **Step 1: Presigned URL 발급**
@@ -304,17 +315,6 @@ async function uploadRecipeImage(recipeId, file) {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"김치찌개 레시피에 사진을 추가하고 싶어요. 이미지 파일을 업로드하고 레시피에 연결해주세요."
-{% endhint %}
-
-AI가 이미지 업로드와 레시피 연결을 순차적으로 처리합니다.
-
-{% endtab %}
 {% endtabs %}
 
 {% hint style="warning" %}
@@ -328,6 +328,21 @@ AI가 이미지 업로드와 레시피 연결을 순차적으로 처리합니다
 등록된 레시피를 다양한 조건으로 조회하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"쉬운 난이도 레시피만 조리시간 짧은 순으로 보여주세요."
+{% endhint %}
+
+{% hint style="success" %}
+✅ **30분 이내 레시피 조회**
+
+"30분 안에 만들 수 있는 레시피를 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 **전체 목록 조회:**
@@ -400,21 +415,6 @@ const koreanRecipes = await bkendFetch(
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"쉬운 난이도 레시피만 조리시간 짧은 순으로 보여주세요."
-{% endhint %}
-
-{% hint style="success" %}
-✅ **30분 이내 레시피 조회**
-
-"30분 안에 만들 수 있는 레시피를 보여주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ### 필터링 옵션 요약
@@ -433,6 +433,15 @@ const koreanRecipes = await bkendFetch(
 특정 레시피의 상세 정보를 조회하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"김치찌개 레시피의 상세 정보를 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -450,15 +459,6 @@ console.log(recipe.difficulty);    // "easy"
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"김치찌개 레시피의 상세 정보를 보여주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -468,6 +468,15 @@ console.log(recipe.difficulty);    // "easy"
 레시피 정보를 수정하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"김치찌개 레시피를 수정해주세요. 4인분으로 바꾸고, 조리시간도 40분으로 변경해주세요. 설명도 '4인분으로 넉넉하게 끓이는 김치찌개'로 바꿔주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -495,15 +504,6 @@ const updated = await bkendFetch(`/v1/data/recipes/${recipeId}`, {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"김치찌개 레시피를 수정해주세요. 4인분으로 바꾸고, 조리시간도 40분으로 변경해주세요. 설명도 '4인분으로 넉넉하게 끓이는 김치찌개'로 바꿔주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -513,6 +513,15 @@ const updated = await bkendFetch(`/v1/data/recipes/${recipeId}`, {
 더 이상 필요 없는 레시피를 삭제하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"김치찌개 레시피를 삭제해주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -529,15 +538,6 @@ await bkendFetch(`/v1/data/recipes/${recipeId}`, {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"김치찌개 레시피를 삭제해주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 {% hint style="danger" %}
@@ -551,6 +551,15 @@ await bkendFetch(`/v1/data/recipes/${recipeId}`, {
 로그인한 사용자가 직접 등록한 레시피만 조회하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내가 등록한 레시피 목록을 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -573,15 +582,6 @@ myRecipes.items.forEach(r => {
   console.log(`- ${r.title} (${r.difficulty}, ${r.cookingTime}분)`);
 });
 ```
-
-{% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내가 등록한 레시피 목록을 보여주세요."
-{% endhint %}
 
 {% endtab %}
 {% endtabs %}

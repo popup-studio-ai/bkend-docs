@@ -42,16 +42,6 @@
 {% endhint %}
 
 {% tabs %}
-{% tab title="콘솔" %}
-1. 콘솔에서 **테이블** 메뉴로 이동하세요.
-2. **새 테이블 추가**를 클릭하세요.
-3. 테이블 이름에 `reviews`를 입력하세요.
-4. 위 스키마대로 필드를 추가하세요.
-5. **저장**을 클릭하면 테이블이 생성됩니다.
-
-<!-- 📸 IMG: 콘솔에서 reviews 테이블 생성 화면 -->
-{% endtab %}
-
 {% tab title="MCP (AI 도구)" %}
 {% hint style="success" %}
 ✅ **AI에게 이렇게 말해보세요**
@@ -70,6 +60,16 @@
 | rating | 별점 (1~5) | 5 |
 | content | 리뷰 내용 | "음질이 좋아요" |
 {% endtab %}
+
+{% tab title="콘솔" %}
+1. 콘솔에서 **테이블** 메뉴로 이동하세요.
+2. **새 테이블 추가**를 클릭하세요.
+3. 테이블 이름에 `reviews`를 입력하세요.
+4. 위 스키마대로 필드를 추가하세요.
+5. **저장**을 클릭하면 테이블이 생성됩니다.
+
+<!-- 📸 IMG: 콘솔에서 reviews 테이블 생성 화면 -->
+{% endtab %}
 {% endtabs %}
 
 ***
@@ -79,6 +79,16 @@
 배달 완료(delivered)된 주문의 상품에 리뷰를 작성하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"프리미엄 면 티셔츠에 별점 5점으로 리뷰를 남겨주세요. 내용은 '품질이 정말 좋아요! 면 소재가 부드럽고 핏도 편합니다.'로 해주세요."
+{% endhint %}
+
+AI가 해당 상품의 최근 배달 완료 주문을 찾아 리뷰를 작성합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/reviews \
@@ -128,16 +138,6 @@ console.log('리뷰 작성 완료:', review);
 ⚠️ 리뷰는 배달 완료(`delivered`) 상태의 주문에 대해서만 작성하는 것을 권장합니다. 앱에서 주문 상태를 확인한 후 리뷰 작성 버튼을 노출하세요.
 {% endhint %}
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"프리미엄 면 티셔츠에 별점 5점으로 리뷰를 남겨주세요. 내용은 '품질이 정말 좋아요! 면 소재가 부드럽고 핏도 편합니다.'로 해주세요."
-{% endhint %}
-
-AI가 해당 상품의 최근 배달 완료 주문을 찾아 리뷰를 작성합니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -147,6 +147,22 @@ AI가 해당 상품의 최근 배달 완료 주문을 찾아 리뷰를 작성합
 특정 상품에 달린 리뷰를 조회하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"프리미엄 면 티셔츠에 달린 리뷰를 보여주세요."
+{% endhint %}
+
+AI가 해당 상품의 리뷰를 최신순으로 보여줍니다.
+
+{% hint style="success" %}
+✅ **별점별 조회도 가능합니다:**
+
+"프리미엄 면 티셔츠의 별점 5점 리뷰만 보여주세요."
+{% endhint %}
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 
 ### 전체 리뷰 (최신순)
@@ -223,22 +239,6 @@ reviews.items.forEach(review => {
 }
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"프리미엄 면 티셔츠에 달린 리뷰를 보여주세요."
-{% endhint %}
-
-AI가 해당 상품의 리뷰를 최신순으로 보여줍니다.
-
-{% hint style="success" %}
-✅ **별점별 조회도 가능합니다:**
-
-"프리미엄 면 티셔츠의 별점 5점 리뷰만 보여주세요."
-{% endhint %}
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -248,6 +248,16 @@ AI가 해당 상품의 리뷰를 최신순으로 보여줍니다.
 상품의 평균 별점을 계산하여 표시하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"프리미엄 면 티셔츠의 리뷰를 요약해주세요. 평균 별점이 몇 점인지, 별점별로 몇 개씩인지 알려주세요."
+{% endhint %}
+
+AI가 리뷰를 조회하고, 평균 별점과 분포를 자동으로 계산하여 보여줍니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 
 bkend의 데이터 API에는 집계(aggregation) 기능이 없으므로, 리뷰 목록을 조회한 후 클라이언트에서 평균을 계산합니다.
@@ -295,16 +305,6 @@ if (items.length === 0) {
   ★☆☆☆☆: 0개 (0%)
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"프리미엄 면 티셔츠의 리뷰를 요약해주세요. 평균 별점이 몇 점인지, 별점별로 몇 개씩인지 알려주세요."
-{% endhint %}
-
-AI가 리뷰를 조회하고, 평균 별점과 분포를 자동으로 계산하여 보여줍니다.
-{% endtab %}
 {% endtabs %}
 
 {% hint style="info" %}
@@ -318,6 +318,16 @@ AI가 리뷰를 조회하고, 평균 별점과 분포를 자동으로 계산하�
 작성한 리뷰의 별점이나 내용을 수정하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내가 쓴 티셔츠 리뷰 별점을 4점으로 바꾸고, 내용도 '전체적으로 만족합니다. 다만 사이즈가 약간 크네요.'로 수정해주세요."
+{% endhint %}
+
+AI가 리뷰의 별점과 내용을 수정합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/reviews/{review_id} \
@@ -345,16 +355,6 @@ const updated = await bkendFetch(`/v1/data/reviews/${reviewId}`, {
 console.log('리뷰 수정 완료:', updated);
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내가 쓴 티셔츠 리뷰 별점을 4점으로 바꾸고, 내용도 '전체적으로 만족합니다. 다만 사이즈가 약간 크네요.'로 수정해주세요."
-{% endhint %}
-
-AI가 리뷰의 별점과 내용을 수정합니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -364,6 +364,16 @@ AI가 리뷰의 별점과 내용을 수정합니다.
 작성한 리뷰를 삭제하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내가 쓴 티셔츠 리뷰를 삭제해주세요."
+{% endhint %}
+
+AI가 해당 리뷰를 삭제합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/reviews/{review_id} \
@@ -381,16 +391,6 @@ await bkendFetch(`/v1/data/reviews/${reviewId}`, {
 
 console.log('리뷰 삭제 완료');
 ```
-{% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내가 쓴 티셔츠 리뷰를 삭제해주세요."
-{% endhint %}
-
-AI가 해당 리뷰를 삭제합니다.
 {% endtab %}
 {% endtabs %}
 

@@ -40,16 +40,6 @@
 {% endhint %}
 
 {% tabs %}
-{% tab title="콘솔" %}
-1. 콘솔에서 **테이블** 메뉴로 이동하세요.
-2. **새 테이블 추가**를 클릭하세요.
-3. 테이블 이름에 `carts`를 입력하세요.
-4. 위 스키마대로 필드를 추가하세요.
-5. **저장**을 클릭하면 테이블이 생성됩니다.
-
-<!-- 📸 IMG: 콘솔에서 carts 테이블 생성 화면 -->
-{% endtab %}
-
 {% tab title="MCP (AI 도구)" %}
 {% hint style="success" %}
 ✅ **AI에게 이렇게 말해보세요**
@@ -66,6 +56,16 @@
 | productId | 어떤 상품인지 | (상품 ID) |
 | quantity | 수량 | 2 |
 {% endtab %}
+
+{% tab title="콘솔" %}
+1. 콘솔에서 **테이블** 메뉴로 이동하세요.
+2. **새 테이블 추가**를 클릭하세요.
+3. 테이블 이름에 `carts`를 입력하세요.
+4. 위 스키마대로 필드를 추가하세요.
+5. **저장**을 클릭하면 테이블이 생성됩니다.
+
+<!-- 📸 IMG: 콘솔에서 carts 테이블 생성 화면 -->
+{% endtab %}
 {% endtabs %}
 
 ***
@@ -75,6 +75,16 @@
 상품을 장바구니에 추가하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"프리미엄 면 티셔츠를 장바구니에 2개 담아주세요."
+{% endhint %}
+
+AI가 해당 상품을 장바구니에 추가합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/carts \
@@ -114,16 +124,6 @@ console.log('장바구니에 추가:', cartItem);
 }
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"프리미엄 면 티셔츠를 장바구니에 2개 담아주세요."
-{% endhint %}
-
-AI가 해당 상품을 장바구니에 추가합니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -133,6 +133,16 @@ AI가 해당 상품을 장바구니에 추가합니다.
 내 장바구니에 담긴 상품을 확인하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내 장바구니에 뭐가 있는지 보여주세요."
+{% endhint %}
+
+AI가 장바구니에 담긴 상품과 수량을 보여줍니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/carts" \
@@ -187,16 +197,6 @@ cart.items.forEach(item => {
 💡 인증된 사용자의 장바구니만 조회됩니다. Access Token에 포함된 사용자 정보를 기반으로 자동 필터링됩니다.
 {% endhint %}
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내 장바구니에 뭐가 있는지 보여주세요."
-{% endhint %}
-
-AI가 장바구니에 담긴 상품과 수량을 보여줍니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -206,6 +206,16 @@ AI가 장바구니에 담긴 상품과 수량을 보여줍니다.
 장바구니에 담긴 상품의 수량을 변경하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"장바구니에 있는 프리미엄 면 티셔츠 수량을 3개로 바꿔주세요."
+{% endhint %}
+
+AI가 장바구니 수량을 변경합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/carts/{cart_item_id} \
@@ -231,16 +241,6 @@ const updated = await bkendFetch(`/v1/data/carts/${cartItemId}`, {
 console.log('수량 변경 완료:', updated);
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"장바구니에 있는 프리미엄 면 티셔츠 수량을 3개로 바꿔주세요."
-{% endhint %}
-
-AI가 장바구니 수량을 변경합니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -250,6 +250,16 @@ AI가 장바구니 수량을 변경합니다.
 특정 상품을 장바구니에서 제거하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"장바구니에서 프리미엄 면 티셔츠를 빼주세요."
+{% endhint %}
+
+AI가 장바구니에서 해당 상품을 제거합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/carts/{cart_item_id} \
@@ -268,16 +278,6 @@ await bkendFetch(`/v1/data/carts/${cartItemId}`, {
 console.log('장바구니에서 제거 완료');
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"장바구니에서 프리미엄 면 티셔츠를 빼주세요."
-{% endhint %}
-
-AI가 장바구니에서 해당 상품을 제거합니다.
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -287,6 +287,16 @@ AI가 장바구니에서 해당 상품을 제거합니다.
 장바구니의 모든 항목을 한 번에 삭제하려면, 목록을 조회한 후 각 항목을 개별 삭제합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내 장바구니를 전부 비워주세요."
+{% endhint %}
+
+AI가 장바구니에 담긴 모든 상품을 제거합니다.
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 **bkendFetch 예시:**
 
@@ -306,16 +316,6 @@ console.log('장바구니 비우기 완료');
 {% hint style="info" %}
 💡 bkend의 데이터 API는 개별 삭제 방식입니다. 여러 항목을 삭제하려면 반복 호출하세요.
 {% endhint %}
-{% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내 장바구니를 전부 비워주세요."
-{% endhint %}
-
-AI가 장바구니에 담긴 모든 상품을 제거합니다.
 {% endtab %}
 {% endtabs %}
 

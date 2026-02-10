@@ -19,21 +19,6 @@
 ## 1단계: follows 테이블 생성
 
 {% tabs %}
-{% tab title="콘솔" %}
-
-1. bkend 콘솔에서 **데이터베이스** > **테이블 관리**로 이동하세요.
-2. **테이블 추가**를 클릭하고 다음과 같이 설정하세요.
-
-| 필드명 | 타입 | 필수 | 설명 |
-|--------|------|:----:|------|
-| `followerId` | String | O | 팔로우하는 사용자 ID |
-| `followingId` | String | O | 팔로우받는 사용자 ID |
-
-{% hint style="info" %}
-💡 테이블 관리에 대한 자세한 내용은 [테이블 관리](../../../ko/console/07-table-management.md)를 참고하세요.
-{% endhint %}
-
-{% endtab %}
 {% tab title="MCP (AI 도구)" %}
 
 {% hint style="success" %}
@@ -49,6 +34,21 @@
 |------|------|---------|
 | followerId | 팔로우 하는 사람 | (사용자 ID) |
 | followingId | 팔로우 받는 사람 | (사용자 ID) |
+{% endhint %}
+
+{% endtab %}
+{% tab title="콘솔" %}
+
+1. bkend 콘솔에서 **데이터베이스** > **테이블 관리**로 이동하세요.
+2. **테이블 추가**를 클릭하고 다음과 같이 설정하세요.
+
+| 필드명 | 타입 | 필수 | 설명 |
+|--------|------|:----:|------|
+| `followerId` | String | O | 팔로우하는 사용자 ID |
+| `followingId` | String | O | 팔로우받는 사용자 ID |
+
+{% hint style="info" %}
+💡 테이블 관리에 대한 자세한 내용은 [테이블 관리](../../../ko/console/07-table-management.md)를 참고하세요.
 {% endhint %}
 
 {% endtab %}
@@ -74,6 +74,15 @@ sequenceDiagram
 ```
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"'김소셜'님을 팔로우해주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### 중복 확인 후 팔로우
@@ -162,15 +171,6 @@ const followUser = async (myUserId, targetUserId) => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"'김소셜'님을 팔로우해주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -178,6 +178,15 @@ const followUser = async (myUserId, targetUserId) => {
 ## 3단계: 언팔로우
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"'김소셜'님을 언팔로우해주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### 팔로우 관계 찾기 후 삭제
@@ -224,15 +233,6 @@ const unfollowUser = async (myUserId, targetUserId) => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"'김소셜'님을 언팔로우해주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -242,6 +242,15 @@ const unfollowUser = async (myUserId, targetUserId) => {
 "나를 팔로우하는 사람들"의 목록을 조회합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"나를 팔로우하는 사람들 목록을 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### 팔로워 목록
@@ -313,15 +322,6 @@ const getFollowersWithProfiles = async (myUserId) => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"나를 팔로우하는 사람들 목록을 보여주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -331,6 +331,15 @@ const getFollowersWithProfiles = async (myUserId) => {
 "내가 팔로우하는 사람들"의 목록을 조회합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내가 팔로우하는 사람들 목록을 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### 팔로잉 목록
@@ -398,15 +407,6 @@ const getFollowingWithProfiles = async (myUserId) => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내가 팔로우하는 사람들 목록을 보여주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -424,6 +424,15 @@ flowchart TD
 ```
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내가 '김소셜'님을 팔로우하고 있는지 확인해주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```javascript
@@ -452,15 +461,6 @@ const toggleFollow = async (myUserId, targetUserId) => {
   }
 };
 ```
-
-{% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내가 '김소셜'님을 팔로우하고 있는지 확인해주세요."
-{% endhint %}
 
 {% endtab %}
 {% endtabs %}

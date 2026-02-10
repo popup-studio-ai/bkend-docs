@@ -39,6 +39,15 @@ flowchart LR
 전체 공개 게시물을 최신순으로 조회합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"최근에 올라온 게시물 20개를 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### 전체 최신 피드
@@ -136,15 +145,6 @@ const getLatestFeed = async (page = 1, limit = 20) => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"최근에 올라온 게시물 20개를 보여주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -166,6 +166,19 @@ sequenceDiagram
 ```
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내가 팔로우하는 사람들의 최신 게시물을 보여주세요."
+{% endhint %}
+
+{% hint style="info" %}
+💡 AI가 자동으로 팔로우 목록을 먼저 확인한 뒤, 해당 사용자들의 게시물을 조회합니다.
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### 팔로잉 피드 조회
@@ -228,19 +241,6 @@ const getHomeFeed = async (myUserId, page = 1, limit = 20) => {
 {% endhint %}
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내가 팔로우하는 사람들의 최신 게시물을 보여주세요."
-{% endhint %}
-
-{% hint style="info" %}
-💡 AI가 자동으로 팔로우 목록을 먼저 확인한 뒤, 해당 사용자들의 게시물을 조회합니다.
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -250,6 +250,15 @@ const getHomeFeed = async (myUserId, page = 1, limit = 20) => {
 다양한 조건으로 피드를 필터링합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"오늘 올라온 게시물 중에서 이미지가 있는 것만 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### 이미지가 있는 게시물만
@@ -303,15 +312,6 @@ const getFeedByDateRange = async (startDate, endDate, page = 1, limit = 20) => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"오늘 올라온 게시물 중에서 이미지가 있는 것만 보여주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -319,6 +319,23 @@ const getFeedByDateRange = async (startDate, endDate, page = 1, limit = 20) => {
 ## 4단계: 인기 게시물 정렬
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"좋아요가 가장 많은 게시물 10개를 보여주세요."
+{% endhint %}
+
+댓글이 많은 순서로 볼 때:
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"댓글이 가장 많은 게시물 10개를 보여주세요."
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### 좋아요 순 정렬
@@ -380,23 +397,6 @@ const getFeed = async (type, myUserId, page = 1) => {
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"좋아요가 가장 많은 게시물 10개를 보여주세요."
-{% endhint %}
-
-댓글이 많은 순서로 볼 때:
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"댓글이 가장 많은 게시물 10개를 보여주세요."
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -406,6 +406,19 @@ const getFeed = async (type, myUserId, page = 1) => {
 앱에서 스크롤하면 다음 페이지를 자동으로 로드하는 패턴입니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"아까 보여준 피드의 다음 페이지를 보여주세요."
+{% endhint %}
+
+{% hint style="info" %}
+💡 무한 스크롤은 앱에서 구현하는 UI 패턴입니다. MCP에서는 페이지 단위로 조회합니다.
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```javascript
@@ -465,19 +478,6 @@ window.addEventListener('scroll', async () => {
 {% endhint %}
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"아까 보여준 피드의 다음 페이지를 보여주세요."
-{% endhint %}
-
-{% hint style="info" %}
-💡 무한 스크롤은 앱에서 구현하는 UI 패턴입니다. MCP에서는 페이지 단위로 조회합니다.
-{% endhint %}
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -487,6 +487,23 @@ window.addEventListener('scroll', async () => {
 지금까지 구현한 모든 기능을 하나의 피드 화면으로 통합합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"내 피드를 보여주세요. 각 게시물을 누가 썼는지 프로필 정보도 함께 알려주세요."
+{% endhint %}
+
+{% hint style="info" %}
+💡 AI가 자동으로 여러 단계를 순차적으로 처리합니다.
+1. 팔로우 중인 사람 확인
+2. 그 사람들의 게시물 조회
+3. 각 게시물 작성자의 프로필 조회
+4. 결과를 하나로 정리하여 표시
+{% endhint %}
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```javascript
@@ -531,23 +548,6 @@ const initFeedScreen = async (myUserId) => {
   };
 };
 ```
-
-{% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"내 피드를 보여주세요. 각 게시물을 누가 썼는지 프로필 정보도 함께 알려주세요."
-{% endhint %}
-
-{% hint style="info" %}
-💡 AI가 자동으로 여러 단계를 순차적으로 처리합니다.
-1. 팔로우 중인 사람 확인
-2. 그 사람들의 게시물 조회
-3. 각 게시물 작성자의 프로필 조회
-4. 결과를 하나로 정리하여 표시
-{% endhint %}
 
 {% endtab %}
 {% endtabs %}

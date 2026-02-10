@@ -30,6 +30,45 @@
 
 ***
 
+## 사전 준비
+
+이 가이드를 시작하기 전에 아래 항목을 완료하세요.
+
+{% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+| 순서 | 항목 | 참고 문서 |
+|:----:|------|----------|
+| 1 | bkend 콘솔 회원가입 | [콘솔 회원가입](../../../ko/console/02-signup-login.md) |
+| 2 | 프로젝트 생성 | [프로젝트 관리](../../../ko/console/04-project-management.md) |
+| 3 | AI 도구 설치 | [AI 도구 개요](../../../ko/ai-tools/01-overview.md) |
+| 4 | MCP OAuth 연결 | [OAuth 설정](../../../ko/ai-tools/03-oauth-setup.md) |
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"bkend에 연결된 프로젝트 목록을 보여줘"
+
+프로젝트 목록이 표시되면 준비 완료입니다.
+{% endhint %}
+
+{% endtab %}
+{% tab title="콘솔 + REST API" %}
+
+| 순서 | 항목 | 참고 문서 |
+|:----:|------|----------|
+| 1 | bkend 콘솔 회원가입 | [콘솔 회원가입](../../../ko/console/02-signup-login.md) |
+| 2 | 프로젝트 생성 | [프로젝트 관리](../../../ko/console/04-project-management.md) |
+| 3 | API Key 발급 | [API 키 관리](../../../ko/console/11-api-keys.md) |
+
+{% endtab %}
+{% endtabs %}
+
+{% hint style="warning" %}
+⚠️ 여기서 말하는 "회원가입"은 **bkend 콘솔 계정** 생성입니다. 앱 사용자의 회원가입은 [인증](01-auth.md)에서 구현합니다.
+{% endhint %}
+
+***
+
 ## 사용 기능 요약
 
 | bkend 기능 | 용도 | 테이블 / API |

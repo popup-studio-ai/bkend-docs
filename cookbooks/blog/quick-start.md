@@ -18,23 +18,6 @@
 게시글을 저장할 동적 테이블을 생성합니다.
 
 {% tabs %}
-{% tab title="콘솔" %}
-
-1. 콘솔에 로그인하세요.
-2. 좌측 메뉴에서 **데이터베이스**를 클릭하세요.
-3. **테이블 생성** 버튼을 클릭하세요.
-4. 테이블 이름에 `articles`를 입력하세요.
-5. 다음 필드를 추가하세요:
-
-| 필드명 | 타입 | 필수 | 비고 |
-|--------|------|:----:|------|
-| `title` | String | ✅ | 게시글 제목 |
-| `content` | String | ✅ | 본문 내용 |
-| `isPublished` | Boolean | - | 기본값: `false` |
-
-6. **생성**을 클릭하세요.
-
-{% endtab %}
 {% tab title="MCP (AI 도구)" %}
 
 {% hint style="success" %}
@@ -56,6 +39,23 @@
 AI가 테이블 생성 도구를 호출하여 articles 테이블을 만듭니다.
 
 {% endtab %}
+{% tab title="콘솔" %}
+
+1. 콘솔에 로그인하세요.
+2. 좌측 메뉴에서 **데이터베이스**를 클릭하세요.
+3. **테이블 생성** 버튼을 클릭하세요.
+4. 테이블 이름에 `articles`를 입력하세요.
+5. 다음 필드를 추가하세요:
+
+| 필드명 | 타입 | 필수 | 비고 |
+|--------|------|:----:|------|
+| `title` | String | ✅ | 게시글 제목 |
+| `content` | String | ✅ | 본문 내용 |
+| `isPublished` | Boolean | - | 기본값: `false` |
+
+6. **생성**을 클릭하세요.
+
+{% endtab %}
 {% endtabs %}
 
 ***
@@ -65,6 +65,17 @@ AI가 테이블 생성 도구를 호출하여 articles 테이블을 만듭니다
 articles 테이블에 데이터를 추가합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"블로그에 새 글을 작성해주세요. 제목은 '나의 첫 블로그', 내용은 'bkend로 만든 블로그입니다'로 하고, 바로 공개해주세요."
+{% endhint %}
+
+AI가 데이터 생성 도구를 호출하여 게시글을 추가합니다.
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -105,17 +116,6 @@ console.log(article);
 {% endhint %}
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"블로그에 새 글을 작성해주세요. 제목은 '나의 첫 블로그', 내용은 'bkend로 만든 블로그입니다'로 하고, 바로 공개해주세요."
-{% endhint %}
-
-AI가 데이터 생성 도구를 호출하여 게시글을 추가합니다.
-
-{% endtab %}
 {% endtabs %}
 
 ### 성공 응답
@@ -139,6 +139,17 @@ AI가 데이터 생성 도구를 호출하여 게시글을 추가합니다.
 작성한 게시글을 조회합니다.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"블로그에 작성된 글 목록을 보여주세요"
+{% endhint %}
+
+AI가 데이터 조회 도구를 호출하여 게시글 목록을 반환합니다.
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ### curl
@@ -158,17 +169,6 @@ const articles = await bkendFetch('/v1/data/articles');
 console.log(articles);
 // { items: [{ id: "...", title: "나의 첫 블로그", ... }], total: 1, ... }
 ```
-
-{% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"블로그에 작성된 글 목록을 보여주세요"
-{% endhint %}
-
-AI가 데이터 조회 도구를 호출하여 게시글 목록을 반환합니다.
 
 {% endtab %}
 {% endtabs %}

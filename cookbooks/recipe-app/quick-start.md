@@ -19,24 +19,6 @@
 레시피 데이터를 저장할 동적 테이블을 생성하세요.
 
 {% tabs %}
-{% tab title="콘솔 + REST API" %}
-
-1. 콘솔 → **테이블 관리** → **테이블 추가**를 클릭하세요.
-2. 테이블 이름에 `recipes`를 입력하세요.
-3. 다음 컬럼을 추가하세요:
-
-| 컬럼명 | 타입 | 설명 |
-|--------|------|------|
-| `title` | String | 레시피 이름 |
-| `description` | String | 레시피 설명 |
-| `cookingTime` | Number | 조리 시간 (분) |
-| `servings` | Number | 인분 수 |
-| `difficulty` | String | 난이도 (`easy` / `medium` / `hard`) |
-| `category` | String | 카테고리 (한식, 양식 등) |
-
-4. **저장**을 클릭하세요.
-
-{% endtab %}
 {% tab title="MCP (AI 도구)" %}
 
 {% hint style="success" %}
@@ -59,6 +41,24 @@
 | category | 카테고리 | "한식" |
 
 {% endtab %}
+{% tab title="콘솔 + REST API" %}
+
+1. 콘솔 → **테이블 관리** → **테이블 추가**를 클릭하세요.
+2. 테이블 이름에 `recipes`를 입력하세요.
+3. 다음 컬럼을 추가하세요:
+
+| 컬럼명 | 타입 | 설명 |
+|--------|------|------|
+| `title` | String | 레시피 이름 |
+| `description` | String | 레시피 설명 |
+| `cookingTime` | Number | 조리 시간 (분) |
+| `servings` | Number | 인분 수 |
+| `difficulty` | String | 난이도 (`easy` / `medium` / `hard`) |
+| `category` | String | 카테고리 (한식, 양식 등) |
+
+4. **저장**을 클릭하세요.
+
+{% endtab %}
 {% endtabs %}
 
 ***
@@ -68,6 +68,17 @@
 recipes 테이블에 김치찌개 레시피를 등록하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"새 레시피를 등록해주세요. 김치찌개, 조리시간 30분, 난이도 쉬움, 2인분, 한식이에요. 설명은 '돼지고기와 잘 익은 김치로 만드는 얼큰한 찌개'로 해주세요."
+{% endhint %}
+
+AI가 레시피를 저장합니다.
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -103,17 +114,6 @@ curl -X POST https://api-client.bkend.ai/v1/data/recipes \
 ```
 
 {% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"새 레시피를 등록해주세요. 김치찌개, 조리시간 30분, 난이도 쉬움, 2인분, 한식이에요. 설명은 '돼지고기와 잘 익은 김치로 만드는 얼큰한 찌개'로 해주세요."
-{% endhint %}
-
-AI가 레시피를 저장합니다.
-
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -123,6 +123,17 @@ AI가 레시피를 저장합니다.
 등록한 레시피 목록을 조회하세요.
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"등록된 레시피 목록을 보여주세요."
+{% endhint %}
+
+AI가 저장된 레시피 목록을 조회하여 보여줍니다.
+
+{% endtab %}
 {% tab title="콘솔 + REST API" %}
 
 ```bash
@@ -157,17 +168,6 @@ curl -X GET "https://api-client.bkend.ai/v1/data/recipes?limit=10" \
   }
 }
 ```
-
-{% endtab %}
-{% tab title="MCP (AI 도구)" %}
-
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"등록된 레시피 목록을 보여주세요."
-{% endhint %}
-
-AI가 저장된 레시피 목록을 조회하여 보여줍니다.
 
 {% endtab %}
 {% endtabs %}

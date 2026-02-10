@@ -17,25 +17,6 @@
 ## 1단계: products 테이블 만들기
 
 {% tabs %}
-{% tab title="콘솔 + REST API" %}
-1. 콘솔 → **테이블** 메뉴로 이동하세요.
-2. **새 테이블** 버튼을 클릭하세요.
-3. 테이블 이름에 `products`를 입력하세요.
-4. 다음 컬럼을 추가하세요.
-
-| 컬럼명 | 타입 | 설명 |
-|--------|------|------|
-| `name` | String | 상품명 |
-| `description` | String | 상품 설명 |
-| `price` | Number | 가격 |
-| `imageUrl` | String | 상품 이미지 URL |
-| `category` | String | 카테고리 |
-| `stock` | Number | 재고 수량 |
-| `isActive` | Boolean | 판매 활성 여부 |
-
-5. **저장**을 클릭하면 테이블이 생성됩니다.
-{% endtab %}
-
 {% tab title="MCP (AI 도구)" %}
 {% hint style="success" %}
 ✅ **AI에게 이렇게 말해보세요**
@@ -57,6 +38,25 @@
 | imageUrl | 상품 사진 URL | (업로드 후 연결) |
 | isActive | 판매 중 여부 | true / false |
 {% endtab %}
+
+{% tab title="콘솔 + REST API" %}
+1. 콘솔 → **테이블** 메뉴로 이동하세요.
+2. **새 테이블** 버튼을 클릭하세요.
+3. 테이블 이름에 `products`를 입력하세요.
+4. 다음 컬럼을 추가하세요.
+
+| 컬럼명 | 타입 | 설명 |
+|--------|------|------|
+| `name` | String | 상품명 |
+| `description` | String | 상품 설명 |
+| `price` | Number | 가격 |
+| `imageUrl` | String | 상품 이미지 URL |
+| `category` | String | 카테고리 |
+| `stock` | Number | 재고 수량 |
+| `isActive` | Boolean | 판매 활성 여부 |
+
+5. **저장**을 클릭하면 테이블이 생성됩니다.
+{% endtab %}
 {% endtabs %}
 
 ***
@@ -64,6 +64,21 @@
 ## 2단계: 상품 등록
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"새 상품을 등록해주세요. 프리미엄 면 티셔츠, 가격 29,000원, 카테고리는 의류, 재고 100개예요."
+{% endhint %}
+
+AI가 상품을 등록하고 결과를 보여줍니다.
+
+```
+등록 완료:
+- 프리미엄 면 티셔츠 — 29,000원, 의류, 재고 100개
+```
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/products \
@@ -97,21 +112,6 @@ curl -X POST https://api-client.bkend.ai/v1/data/products \
 }
 ```
 {% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"새 상품을 등록해주세요. 프리미엄 면 티셔츠, 가격 29,000원, 카테고리는 의류, 재고 100개예요."
-{% endhint %}
-
-AI가 상품을 등록하고 결과를 보여줍니다.
-
-```
-등록 완료:
-- 프리미엄 면 티셔츠 — 29,000원, 의류, 재고 100개
-```
-{% endtab %}
 {% endtabs %}
 
 ***
@@ -119,6 +119,21 @@ AI가 상품을 등록하고 결과를 보여줍니다.
 ## 3단계: 상품 조회
 
 {% tabs %}
+{% tab title="MCP (AI 도구)" %}
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+
+"등록된 상품 목록 보여줘."
+{% endhint %}
+
+AI가 products 테이블에서 데이터를 조회하여 결과를 보여줍니다.
+
+```
+등록된 상품 목록:
+1. 프리미엄 면 티셔츠 — 29,000원 (재고 100개)
+```
+{% endtab %}
+
 {% tab title="콘솔 + REST API" %}
 **전체 상품 목록 조회:**
 
@@ -161,21 +176,6 @@ curl -X GET "https://api-client.bkend.ai/v1/data/products?andFilters=%7B%22categ
     "hasPrev": false
   }
 }
-```
-{% endtab %}
-
-{% tab title="MCP (AI 도구)" %}
-{% hint style="success" %}
-✅ **AI에게 이렇게 말해보세요**
-
-"등록된 상품 목록 보여줘."
-{% endhint %}
-
-AI가 products 테이블에서 데이터를 조회하여 결과를 보여줍니다.
-
-```
-등록된 상품 목록:
-1. 프리미엄 면 티셔츠 — 29,000원 (재고 100개)
 ```
 {% endtab %}
 {% endtabs %}

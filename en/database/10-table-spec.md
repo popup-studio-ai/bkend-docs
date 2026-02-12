@@ -1,0 +1,184 @@
+# Table Schema Query
+
+{% hint style="info" %}
+Retrieve the schema, indexes, and permission settings of a table via the REST API.
+{% endhint %}
+
+## Overview
+
+Use the `GET /v1/data/:tableName/spec` endpoint to query a table's schema definition, index settings, and permission settings. Use this in your client app to dynamically generate forms or validate data.
+
+***
+
+## Query Schema
+
+### GET /v1/data/:tableName/spec
+
+{% tabs %}
+{% tab title="cURL" %}
+```bash
+curl -X GET https://api-client.bkend.ai/v1/data/posts/spec \
+  -H "Authorization: Bearer {accessToken}" \
+  -H "X-Project-Id: {project_id}" \
+  -H "X-Environment: dev"
+```
+{% endtab %}
+{% tab title="JavaScript" %}
+```javascript
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts/spec', {
+  headers: {
+    'Authorization': `Bearer ${accessToken}`,
+    'X-Project-Id': '{project_id}',
+    'X-Environment': 'dev',
+  },
+});
+
+const spec = await response.json();
+console.log(spec.schema);      // Field definitions
+console.log(spec.permissions);  // Permission settings
+```
+{% endtab %}
+{% endtabs %}
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|:--------:|-------------|
+| `tableName` | `string` | ✅ | Table name |
+
+### Response (200 OK)
+
+```json
+{
+  "tableName": "posts",
+  "schema": {
+    "bsonType": "object",
+    "required": ["title", "content"],
+    "properties": {
+      "title": {
+        "bsonType": "string",
+        "maxLength": 200
+      },
+      "content": {
+        "bsonType": "string"
+      },
+      "category": {
+        "bsonType": "string",
+        "enum": ["notice", "general", "event"]
+      },
+      "published": {
+        "bsonType": "bool"
+      },
+      "viewCount": {
+        "bsonType": "int",
+        "minimum": 0
+      }
+    }
+  },
+  "indexes": [
+    {
+      "key": { "category": 1 }
+    },
+    {
+      "key": { "createdAt": -1 }
+    }
+  ],
+  "permissions": {
+    "admin": {
+      "create": true,
+      "read": true,
+      "list": true,
+      "update": true,
+      "delete": true
+    },
+    "user": {
+      "create": true,
+      "read": true,
+      "list": true
+    },
+    "guest": {
+      "read": true,
+      "list": true
+    },
+    "self": {
+      "update": true,
+      "delete": true
+    }
+  }
+}
+```
+
+### Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `tableName` | `string` | Table name |
+| `schema` | `object` | Schema definition (fields, types, constraints) |
+| `indexes` | `array` | Index list |
+| `permissions` | `object` | CRUD permissions per role |
+
+***
+
+## Usage Examples
+
+### Dynamic Form Generation
+
+Use schema information to dynamically generate input forms on the client.
+
+```javascript
+const spec = await fetchTableSpec('posts');
+const { properties, required } = spec.schema;
+
+Object.entries(properties).forEach(([field, def]) => {
+  const isRequired = required?.includes(field);
+  const type = def.bsonType;
+
+  // Render the appropriate input component based on field type
+  if (type === 'string' && def.enum) {
+    // Select component (dropdown)
+  } else if (type === 'string') {
+    // Text Input
+  } else if (type === 'bool') {
+    // Checkbox
+  } else if (type === 'int' || type === 'double') {
+    // Number Input (with min/max applied)
+  }
+});
+```
+
+### Permission Check
+
+Show or hide UI elements based on the current user's role.
+
+```javascript
+const spec = await fetchTableSpec('posts');
+const userRole = 'user'; // Current user's role
+
+const canCreate = spec.permissions[userRole]?.create ?? false;
+const canUpdate = spec.permissions[userRole]?.update ?? false;
+const canDelete = spec.permissions[userRole]?.delete ?? false;
+
+// Show/hide buttons based on permissions
+```
+
+***
+
+## Error Responses
+
+| Error Code | HTTP | Description |
+|------------|:----:|-------------|
+| `data/table-not-found` | 404 | Table does not exist |
+| `data/permission-denied` | 403 | No access permission |
+| `data/invalid-header` | 400 | Missing required header |
+
+***
+
+{% hint style="warning" %}
+The table schema query is available only to the `admin` role or roles that have `read` permission on the table. To query with `guest` permissions, verify the table permission settings.
+{% endhint %}
+
+## Next Steps
+
+- [Data Model](02-data-model.md) — Understand schema and permission structure
+- [Create Data](03-insert.md) — Create data that conforms to the schema
+- [Table Management](../console/07-table-management.md) — Edit schema in the console

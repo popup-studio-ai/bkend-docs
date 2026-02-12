@@ -8,7 +8,7 @@
 
 ### Base URL
 
-```
+```text
 https://api-client.bkend.ai
 ```
 
@@ -40,7 +40,7 @@ https://api-client.bkend.ai
 
 ### 회원가입
 
-```
+```http
 POST /v1/auth/email/signup
 ```
 
@@ -58,7 +58,7 @@ POST /v1/auth/email/signup
 
 ### 로그인
 
-```
+```http
 POST /v1/auth/email/signin
 ```
 
@@ -75,7 +75,7 @@ POST /v1/auth/email/signin
 
 ### 매직 링크 회원가입
 
-```
+```http
 POST /v1/auth/email/signup
 ```
 
@@ -90,7 +90,7 @@ POST /v1/auth/email/signup
 
 ### 매직 링크 로그인
 
-```
+```http
 POST /v1/auth/email/signin
 ```
 
@@ -108,25 +108,9 @@ POST /v1/auth/email/signin
 
 ## 소셜 로그인 (OAuth)
 
-### 인증 URL 요청
-
-```
-GET /v1/auth/:provider/authorize
-```
-
-| 경로 파라미터 | 설명 |
-|-------------|------|
-| `:provider` | `google` 또는 `github` |
-
-| 쿼리 파라미터 | 타입 | 필수 | 설명 |
-|-------------|------|:----:|------|
-| `callbackUrl` | `string` | ✅ | 인증 후 리다이렉트 URL |
-
-**응답:** `302 Redirect` — OAuth 제공자 인증 페이지로 리다이렉트
-
 ### 콜백 처리
 
-```
+```http
 GET /v1/auth/:provider/callback
 POST /v1/auth/:provider/callback
 ```
@@ -134,6 +118,7 @@ POST /v1/auth/:provider/callback
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
 | `code` | `string` | ✅ | OAuth 인가 코드 |
+| `redirectUri` | `string` | ✅ | OAuth 인증 시 사용한 redirect URI |
 | `state` | `string` | ✅ | CSRF 방지 상태값 |
 
 **응답:** `302 Redirect` — `callbackUrl?accessToken=...&refreshToken=...`
@@ -146,7 +131,7 @@ POST /v1/auth/:provider/callback
 
 ### 재설정 요청
 
-```
+```http
 POST /v1/auth/password/reset/request
 ```
 
@@ -158,7 +143,7 @@ POST /v1/auth/password/reset/request
 
 ### 재설정 확인
 
-```
+```http
 POST /v1/auth/password/reset/confirm
 ```
 
@@ -171,7 +156,7 @@ POST /v1/auth/password/reset/confirm
 
 ### 비밀번호 변경
 
-```
+```http
 POST /v1/auth/password/change
 ```
 
@@ -192,7 +177,7 @@ POST /v1/auth/password/change
 
 ### 가입 인증 메일 재발송
 
-```
+```http
 POST /v1/auth/signup/email/resend
 ```
 
@@ -204,7 +189,7 @@ POST /v1/auth/signup/email/resend
 
 ### 가입 이메일 인증 확인
 
-```
+```http
 GET /v1/auth/signup/email/confirm
 ```
 
@@ -216,7 +201,7 @@ GET /v1/auth/signup/email/confirm
 
 ### 인증 메일 발송
 
-```
+```http
 POST /v1/auth/email/verify/send
 ```
 
@@ -230,7 +215,7 @@ POST /v1/auth/email/verify/send
 
 ### 인증 확인
 
-```
+```http
 POST /v1/auth/email/verify/confirm
 ```
 
@@ -244,7 +229,7 @@ POST /v1/auth/email/verify/confirm
 
 ### 인증 메일 재발송
 
-```
+```http
 POST /v1/auth/email/verify/resend
 ```
 
@@ -264,7 +249,7 @@ POST /v1/auth/email/verify/resend
 
 ### 현재 사용자 조회
 
-```
+```http
 GET /v1/auth/me
 ```
 
@@ -274,7 +259,7 @@ GET /v1/auth/me
 
 ### 토큰 갱신
 
-```
+```http
 POST /v1/auth/refresh
 ```
 
@@ -286,7 +271,7 @@ POST /v1/auth/refresh
 
 ### 세션 목록 조회
 
-```
+```http
 GET /v1/auth/sessions
 ```
 
@@ -296,7 +281,7 @@ GET /v1/auth/sessions
 
 ### 특정 세션 종료
 
-```
+```http
 DELETE /v1/auth/sessions/:sessionId
 ```
 
@@ -306,7 +291,7 @@ DELETE /v1/auth/sessions/:sessionId
 
 ### 로그아웃
 
-```
+```http
 POST /v1/auth/signout
 ```
 
@@ -316,7 +301,7 @@ POST /v1/auth/signout
 
 ### 조직 전환
 
-```
+```http
 POST /v1/auth/switch-organization
 ```
 
@@ -336,7 +321,7 @@ POST /v1/auth/switch-organization
 
 ### MFA 활성화 요청
 
-```
+```http
 POST /v1/auth/mfa/enable
 ```
 
@@ -350,7 +335,7 @@ POST /v1/auth/mfa/enable
 
 ### MFA 활성화 확인
 
-```
+```http
 POST /v1/auth/mfa/confirm
 ```
 
@@ -364,7 +349,7 @@ POST /v1/auth/mfa/confirm
 
 ### MFA 비활성화
 
-```
+```http
 POST /v1/auth/mfa/disable
 ```
 
@@ -385,7 +370,7 @@ POST /v1/auth/mfa/disable
 
 ### 계정 연동
 
-```
+```http
 POST /v1/auth/accounts
 ```
 
@@ -400,7 +385,7 @@ POST /v1/auth/accounts
 
 ### 연동 계정 목록
 
-```
+```http
 GET /v1/auth/accounts
 ```
 
@@ -410,7 +395,7 @@ GET /v1/auth/accounts
 
 ### 계정 연동 해제
 
-```
+```http
 DELETE /v1/auth/accounts/:provider
 ```
 
@@ -420,7 +405,7 @@ DELETE /v1/auth/accounts/:provider
 
 ### 계정 연동 확인
 
-```
+```http
 POST /v1/auth/accounts/check
 ```
 
@@ -440,7 +425,7 @@ POST /v1/auth/accounts/check
 
 ### 초대 생성
 
-```
+```http
 POST /v1/auth/invitations
 ```
 
@@ -455,7 +440,7 @@ POST /v1/auth/invitations
 
 ### 초대 목록 조회
 
-```
+```http
 GET /v1/auth/invitations
 ```
 
@@ -467,11 +452,11 @@ GET /v1/auth/invitations
 | `limit` | `number` | - | 페이지당 항목 수 |
 | `status` | `string` | - | `pending`, `accepted`, `rejected`, `expired`, `revoked` |
 
-**응답:** `200 OK` — `{ data: [...], pageInfo }`
+**응답:** `200 OK` — `{ items: [...], pagination }`
 
 ### 초대 상세 조회
 
-```
+```http
 GET /v1/auth/invitations/:id
 ```
 
@@ -479,7 +464,7 @@ GET /v1/auth/invitations/:id
 
 ### 초대 수락
 
-```
+```http
 POST /v1/auth/invitations/accept
 ```
 
@@ -491,7 +476,7 @@ POST /v1/auth/invitations/accept
 
 ### 초대 거절
 
-```
+```http
 POST /v1/auth/invitations/reject
 ```
 
@@ -503,7 +488,7 @@ POST /v1/auth/invitations/reject
 
 ### 초대 취소
 
-```
+```http
 DELETE /v1/auth/invitations/:id
 ```
 
@@ -517,7 +502,7 @@ DELETE /v1/auth/invitations/:id
 
 ## 회원 탈퇴
 
-```
+```http
 DELETE /v1/auth/withdraw
 ```
 
@@ -533,7 +518,7 @@ DELETE /v1/auth/withdraw
 
 ### 전체 설정 조회
 
-```
+```http
 GET /v1/auth/providers
 ```
 
@@ -543,7 +528,7 @@ GET /v1/auth/providers
 
 ### 이메일 설정 조회
 
-```
+```http
 GET /v1/auth/providers/email
 ```
 
@@ -553,7 +538,7 @@ GET /v1/auth/providers/email
 
 ### 이메일 설정 수정
 
-```
+```http
 PUT /v1/auth/providers/email
 ```
 
@@ -575,7 +560,7 @@ PUT /v1/auth/providers/email
 
 ### OAuth 설정 목록 조회
 
-```
+```http
 GET /v1/auth/providers/oauth
 ```
 
@@ -585,7 +570,7 @@ GET /v1/auth/providers/oauth
 
 ### 개별 OAuth 설정 조회
 
-```
+```http
 GET /v1/auth/providers/oauth/:provider
 ```
 
@@ -595,7 +580,7 @@ GET /v1/auth/providers/oauth/:provider
 
 ### OAuth 설정 수정
 
-```
+```http
 PUT /v1/auth/providers/oauth/:provider
 ```
 
@@ -613,7 +598,7 @@ PUT /v1/auth/providers/oauth/:provider
 
 ### OAuth 설정 삭제
 
-```
+```http
 DELETE /v1/auth/providers/oauth/:provider
 ```
 
@@ -629,7 +614,7 @@ DELETE /v1/auth/providers/oauth/:provider
 
 ### 전역 설정 조회
 
-```
+```http
 GET /v1/auth/email-templates/config
 ```
 
@@ -639,7 +624,7 @@ GET /v1/auth/email-templates/config
 
 ### 전역 설정 수정
 
-```
+```http
 PUT /v1/auth/email-templates/config
 ```
 
@@ -657,7 +642,7 @@ PUT /v1/auth/email-templates/config
 
 ### 템플릿 목록 조회
 
-```
+```http
 GET /v1/auth/email-templates
 ```
 
@@ -667,7 +652,7 @@ GET /v1/auth/email-templates
 
 ### 개별 템플릿 조회
 
-```
+```http
 GET /v1/auth/email-templates/:templateId
 ```
 
@@ -677,7 +662,7 @@ GET /v1/auth/email-templates/:templateId
 
 ### 템플릿 수정
 
-```
+```http
 PUT /v1/auth/email-templates/:templateId
 ```
 
@@ -692,7 +677,7 @@ PUT /v1/auth/email-templates/:templateId
 
 ### 템플릿 미리보기
 
-```
+```http
 GET /v1/auth/email-templates/preview/:templateId
 ```
 
@@ -712,7 +697,7 @@ GET /v1/auth/email-templates/preview/:templateId
 
 ### 사용자 목록 조회
 
-```
+```http
 GET /v1/users
 ```
 
@@ -728,11 +713,11 @@ GET /v1/users
 | `sortDirection` | `string` | `asc` 또는 `desc` |
 | `includeAccounts` | `boolean` | 연동 계정 포함 |
 
-**응답:** `200 OK` — `{ data: [...], pageInfo }`
+**응답:** `200 OK` — `{ items: [...], pagination }`
 
 ### 사용자 생성
 
-```
+```http
 POST /v1/users
 ```
 
@@ -748,7 +733,7 @@ POST /v1/users
 
 ### 사용자 상세 조회
 
-```
+```http
 GET /v1/users/:userId
 ```
 
@@ -758,7 +743,7 @@ GET /v1/users/:userId
 
 ### 사용자 수정
 
-```
+```http
 PATCH /v1/users/:userId
 ```
 
@@ -772,7 +757,7 @@ PATCH /v1/users/:userId
 
 ### 사용자 삭제
 
-```
+```http
 DELETE /v1/users/:userId
 ```
 
@@ -782,7 +767,7 @@ DELETE /v1/users/:userId
 
 ### 역할 변경
 
-```
+```http
 PATCH /v1/users/:userId/role
 ```
 
@@ -802,7 +787,7 @@ PATCH /v1/users/:userId/role
 
 ### 프로필 조회
 
-```
+```http
 GET /v1/users/:userId/profile
 ```
 
@@ -812,7 +797,7 @@ GET /v1/users/:userId/profile
 
 ### 프로필 수정
 
-```
+```http
 PATCH /v1/users/:userId/profile
 ```
 
@@ -837,7 +822,7 @@ PATCH /v1/users/:userId/profile
 
 ### 업로드 URL 생성
 
-```
+```http
 POST /v1/users/:userId/avatar/upload-url
 ```
 
@@ -852,7 +837,7 @@ POST /v1/users/:userId/avatar/upload-url
 
 ### 아바타 저장
 
-```
+```http
 PATCH /v1/users/:userId/avatar
 ```
 
@@ -866,7 +851,7 @@ PATCH /v1/users/:userId/avatar
 
 ### 아바타 삭제
 
-```
+```http
 DELETE /v1/users/:userId/avatar
 ```
 
@@ -882,7 +867,7 @@ DELETE /v1/users/:userId/avatar
 
 ### 선호도 조회
 
-```
+```http
 GET /v1/users/:userId/preferences
 ```
 
@@ -892,7 +877,7 @@ GET /v1/users/:userId/preferences
 
 ### 선호도 수정
 
-```
+```http
 PATCH /v1/users/:userId/preferences
 ```
 
@@ -914,7 +899,7 @@ PATCH /v1/users/:userId/preferences
 
 ### 알림 설정 조회
 
-```
+```http
 GET /v1/users/:userId/notifications
 ```
 
@@ -924,7 +909,7 @@ GET /v1/users/:userId/notifications
 
 ### 알림 설정 수정
 
-```
+```http
 PATCH /v1/users/:userId/notifications
 ```
 
@@ -950,7 +935,7 @@ PATCH /v1/users/:userId/notifications
 
 ### 온보딩 상태 조회
 
-```
+```http
 GET /v1/users/:userId/onboarding
 ```
 
@@ -960,7 +945,7 @@ GET /v1/users/:userId/onboarding
 
 ### 온보딩 상태 수정
 
-```
+```http
 PATCH /v1/users/:userId/onboarding
 ```
 
@@ -976,7 +961,7 @@ PATCH /v1/users/:userId/onboarding
 
 ### 공개 설정 조회
 
-```
+```http
 GET /v1/users/:userId/public-settings
 ```
 
@@ -986,7 +971,7 @@ GET /v1/users/:userId/public-settings
 
 ### 공개 설정 수정
 
-```
+```http
 PATCH /v1/users/:userId/public-settings
 ```
 
@@ -1002,6 +987,10 @@ PATCH /v1/users/:userId/public-settings
 → [사용자 관리](15-user-management.md)
 
 ***
+
+{% hint style="warning" %}
+인증 제공자 설정(`/v1/auth/providers/*`) 및 이메일 템플릿(`/v1/auth/email-templates/*`) API는 관리 목적의 엔드포인트입니다. 클라이언트 앱에서 직접 호출하지 말고 콘솔에서 설정하세요.
+{% endhint %}
 
 ## 에러 코드
 
@@ -1050,7 +1039,6 @@ PATCH /v1/users/:userId/public-settings
 |--------|------|:----:|------|
 | `POST` | `/v1/auth/email/signup` | - | 이메일 회원가입 |
 | `POST` | `/v1/auth/email/signin` | - | 이메일 로그인 |
-| `GET` | `/v1/auth/:provider/authorize` | - | OAuth 인증 URL |
 | `GET` | `/v1/auth/:provider/callback` | - | OAuth 콜백 (GET) |
 | `POST` | `/v1/auth/:provider/callback` | - | OAuth 콜백 (POST) |
 | `GET` | `/v1/auth/me` | ✅ | 현재 사용자 조회 |

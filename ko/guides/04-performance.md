@@ -52,7 +52,7 @@ bkend는 테이블 생성 시 다음 인덱스를 자동 생성합니다.
 
 인덱스 관리는 **콘솔** 또는 **MCP 도구**에서 설정하세요.
 
-→ [인덱스 관리 (콘솔)](../console/09-index-management.md), [Database MCP 도구](../ai-tools/12-mcp-db-tools.md)
+→ [인덱스 관리 (콘솔)](../console/09-index-management.md), [테이블 관리 도구](../mcp/04-table-tools.md)
 
 ***
 

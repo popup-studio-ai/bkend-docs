@@ -47,7 +47,7 @@ flowchart LR
 
 ## 각 쿡북 구조
 
-```
+```text
 {쿡북}/
 ├── README.md                    # 소개 + 테이블 설계
 ├── quick-start.md               # 빠르게 시작하기

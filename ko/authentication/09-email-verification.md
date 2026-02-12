@@ -53,7 +53,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/signup/email/resend \
 
 `callbackUrl`이 있으면 인증 결과와 함께 리다이렉트됩니다.
 
-```
+```text
 https://myapp.com/verify?verified=true&email=user@example.com
 ```
 
@@ -146,7 +146,7 @@ await bkendFetch('/v1/auth/email/verify/confirm', {
 ```
 
 {% hint style="info" %}
-💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 참고하세요.
 {% endhint %}
 
 ***

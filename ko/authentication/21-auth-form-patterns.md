@@ -23,7 +23,7 @@ flowchart TD
 
     C -->|"POST /v1/auth/email/signup"| F[토큰 발급]
     D -->|"POST /v1/auth/email/signin"| F
-    E -->|"GET /v1/auth/:provider/authorize"| G[OAuth 제공자]
+    E --> G[OAuth 제공자 URL로 리다이렉트]
     G -->|"POST /v1/auth/:provider/callback"| F
 
     F --> H[토큰 저장]
@@ -216,9 +216,7 @@ sequenceDiagram
     participant Provider as OAuth 제공자
 
     User->>App: 소셜 로그인 버튼 클릭
-    App->>API: GET /v1/auth/{provider}/authorize
-    API-->>App: authorizationUrl
-    App->>Provider: 리다이렉트
+    App->>Provider: OAuth 인증 URL로 리다이렉트
     Provider->>User: 로그인 + 권한 동의
     Provider-->>App: code + state (콜백 URL)
     App->>API: POST /v1/auth/{provider}/callback
@@ -236,26 +234,33 @@ sequenceDiagram
 ```
 
 ```javascript
-async function socialLogin(provider) {
-  try {
-    const redirectUrl = encodeURIComponent(window.location.origin + '/auth/callback');
+// OAuth 제공자별 인증 URL
+const OAUTH_URLS = {
+  google: 'https://accounts.google.com/o/oauth2/v2/auth',
+  github: 'https://github.com/login/oauth/authorize',
+};
 
-    const response = await bkendFetch(
-      `/v1/auth/${provider}/authorize?redirect=${redirectUrl}`
-    );
+const OAUTH_SCOPES = {
+  google: 'openid email profile',
+  github: 'user:email',
+};
 
-    if (!response.ok) {
-      const { error } = await response.json();
-      throw error;
-    }
+function socialLogin(provider) {
+  const redirectUri = window.location.origin + '/auth/callback';
+  const state = crypto.randomUUID();
+  const params = new URLSearchParams({
+    client_id: getOAuthClientId(provider), // 앱 설정에서 가져오기
+    redirect_uri: redirectUri,
+    response_type: 'code',
+    scope: OAUTH_SCOPES[provider],
+    state,
+  });
 
-    const { authorizationUrl } = await response.json();
+  // 콜백에서 provider와 state를 검증할 수 있도록 저장
+  sessionStorage.setItem('oauth_provider', provider);
+  sessionStorage.setItem('oauth_state', state);
 
-    // OAuth 제공자 페이지로 이동
-    window.location.href = authorizationUrl;
-  } catch (error) {
-    alert('소셜 로그인을 시작할 수 없습니다. 다시 시도하세요.');
-  }
+  window.location.href = `${OAUTH_URLS[provider]}?${params}`;
 }
 ```
 
@@ -277,9 +282,10 @@ async function handleOAuthCallback() {
   }
 
   try {
+    const redirectUri = window.location.origin + '/auth/callback';
     const response = await bkendFetch(`/v1/auth/${provider}/callback`, {
       method: 'POST',
-      body: JSON.stringify({ code, state }),
+      body: JSON.stringify({ code, redirectUri, state }),
     });
 
     if (!response.ok) {

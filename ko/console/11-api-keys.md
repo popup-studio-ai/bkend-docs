@@ -1,113 +1,74 @@
 # API 키 관리
 
 {% hint style="info" %}
-💡 접근 토큰을 생성하여 MCP 도구와 REST API에서 bkend에 접근하세요.
+💡 REST API를 호출하기 위한 API Key(액세스 토큰)를 발급하고 관리하는 방법을 안내합니다.
 {% endhint %}
 
 ## 개요
 
-bkend의 접근 토큰은 Organization 레벨에서 관리됩니다. 토큰을 생성하면 MCP 도구 또는 REST API로 프로젝트의 데이터에 접근할 수 있습니다.
+앱에서 bkend REST API를 호출하려면 API Key가 필요합니다. API Key는 환경별로 독립적으로 관리되며, 권한 범위를 설정할 수 있습니다.
 
 ***
 
-## 토큰 목록 조회하기
+## API Key 발급하기
 
-1. 사이드바에서 **액세스 토큰**을 클릭하세요.
-2. 활성 토큰과 비활성 토큰이 분리되어 표시됩니다.
+1. 프로젝트 레벨 사이드바에서 **설정**을 클릭하세요.
+2. **액세스 토큰** 섹션에서 **새 토큰 생성** 버튼을 클릭하세요.
+3. 다음 정보를 입력하세요.
 
-<!-- 📸 IMG: API 키 목록 화면 -->
-![API 키 목록](../.gitbook/assets/2026-02/console-api-keys.png)
-
-### 활성 토큰 테이블
-
-| 컬럼 | 설명 |
+| 필드 | 설명 |
 |------|------|
-| 이름 | 토큰 이름 |
-| 타입 | API_KEY / BEARER_TOKEN |
-| 권한 범위 | 부여된 권한 목록 |
-| 생성자 | 생성한 사용자와 역할 |
-| 마지막 사용 | 마지막으로 사용된 날짜 |
-| 생성일 | 토큰 생성 날짜 |
-| 액션 | 권한 보기, 취소 |
+| **토큰 이름** | 식별을 위한 이름 (예: `web-app-key`) |
+| **토큰 타입** | BEARER_TOKEN |
+| **권한 범위** | 접근할 수 있는 리소스 선택 |
 
-### 비활성 토큰 테이블
-
-취소되었거나 만료된 토큰이 표시됩니다. 비활성 토큰으로는 API에 접근할 수 없습니다.
-
-***
-
-## 토큰 생성하기
-
-1. **새 토큰 생성** 버튼을 클릭하세요.
-2. 다음 정보를 입력하세요.
-
-| 필드 | 필수 | 설명 |
-|------|:----:|------|
-| **토큰 이름** | ✅ | 토큰을 식별하는 이름 |
-| **토큰 타입** | ✅ | API_KEY 또는 BEARER_TOKEN |
-| **권한 범위** | ✅ | 하나 이상의 권한 선택 |
-
-<!-- 📸 IMG: API 키 생성 모달 -->
-![API 키 생성](../.gitbook/assets/2026-02/console-api-key-create.png)
-
-### 권한 범위 (Scopes)
-
-| 그룹 | 권한 | 설명 |
-|------|------|------|
-| **Project** | `project:read`, `project:create`, `project:update`, `project:delete` | 프로젝트 CRUD |
-| **Environment** | `environment:read`, `environment:create`, `environment:update`, `environment:delete` | 환경 CRUD |
-| **Table** | `table:read`, `table:create`, `table:update`, `table:delete` | 테이블 스키마 CRUD |
-| **Table Data** | `table:data:read`, `table:data:create`, `table:data:update`, `table:data:delete` | 테이블 데이터 CRUD |
-| **Dashboard** | `dashboard:read` | 대시보드 조회 |
-| **전체** | `*:*` | 모든 권한 |
-
-{% hint style="info" %}
-💡 `*:*` (전체 권한)를 선택하면 모든 리소스에 대한 모든 액션이 자동으로 선택됩니다.
-{% endhint %}
-
-3. **생성**을 클릭하세요.
-
-### 토큰 확인
+4. **생성**을 클릭하세요.
 
 {% hint style="danger" %}
-🚨 **위험** — 생성된 토큰은 **한 번만** 표시됩니다. 대화상자를 닫으면 다시 확인할 수 없으므로 반드시 안전한 곳에 저장하세요.
-{% endhint %}
-
-- **복사** 버튼을 클릭하여 토큰을 클립보드에 복사하세요.
-- 비밀번호 관리자나 환경 변수에 저장하세요.
-
-***
-
-## 토큰 취소하기
-
-1. 토큰 목록에서 해당 토큰의 **더보기(⋯)** 메뉴를 클릭하세요.
-2. **Revoke**를 선택하세요.
-3. 확인 대화상자에서 **취소**를 클릭하세요.
-
-{% hint style="warning" %}
-⚠️ 취소된 토큰은 즉시 비활성화되며, 해당 토큰으로는 더 이상 API에 접근할 수 없습니다.
+🚨 **위험** — 토큰은 생성 시 한 번만 표시됩니다. 분실 시 재생성해야 합니다. 안전하게 복사하여 보관하세요.
 {% endhint %}
 
 ***
 
-## 앱에서 토큰 사용하기
+## API Key 사용하기
 
-콘솔에서 발급한 토큰을 앱의 REST API 요청에 사용합니다. `Authorization: Bearer {토큰}` 헤더에 포함하세요.
+발급받은 API Key를 REST API 요청의 `Authorization` 헤더에 포함합니다.
 
 ```bash
-curl -X GET https://api-client.bkend.ai/v1/data/posts \
-  -H "Authorization: Bearer {발급받은_토큰}" \
+curl https://api-client.bkend.ai/v1/data/posts \
+  -H "Authorization: Bearer {accessToken}" \
   -H "X-Project-Id: {project_id}" \
   -H "X-Environment: dev"
 ```
 
-앱에서 fetch 헬퍼를 활용한 연동 방법은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+***
+
+## API Key 목록 확인하기
+
+**설정** → **액세스 토큰** 섹션에서 현재 환경의 모든 토큰을 확인합니다.
+
+| 표시 정보 | 설명 |
+|----------|------|
+| **토큰 이름** | 토큰 식별 이름 |
+| **생성일** | 토큰 발급 일시 |
+| **마지막 사용** | 마지막 API 호출 일시 |
+
+***
+
+## API Key 삭제하기
+
+1. 토큰 목록에서 삭제할 토큰을 찾으세요.
+2. **삭제** 버튼을 클릭하세요.
+3. 확인 후 즉시 해당 토큰이 무효화됩니다.
+
+{% hint style="warning" %}
+⚠️ 토큰을 삭제하면 해당 토큰을 사용하는 모든 앱에서 API 호출이 실패합니다. 앱의 토큰을 먼저 교체한 후 삭제하세요.
+{% endhint %}
 
 ***
 
 ## 다음 단계
 
-- [앱에서 bkend 연동하기](../getting-started/06-app-integration.md) — 앱에 API Key 설정하기
-- [API 키 이해](../security/02-api-keys.md) — 키 구조와 보안 특성
-- [AI 도구 연동 개요](../ai-tools/01-overview.md) — MCP 도구를 연결하세요
-- [보안 모범 사례](../security/07-best-practices.md) — 키 관리 모범 사례
+- [프로젝트 설정](12-settings.md) — Project ID 확인 및 기타 설정
+- [API 키 이해](../security/02-api-keys.md) — Public Key vs Secret Key
+- [앱에서 bkend 연동하기](../getting-started/03-app-integration.md) — fetch 헬퍼로 API 연동

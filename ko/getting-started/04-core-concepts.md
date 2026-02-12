@@ -91,13 +91,13 @@ bkend에서의 작업은 **설계 시점**과 **운영 시점**으로 나뉩니�
 
 ```mermaid
 flowchart LR
-    subgraph 설계["🛠️ 설계 시점 (Tenant)"]
+    subgraph 설계["설계 시점 — Tenant"]
         A[콘솔 UI] --> D[테이블 생성]
         B[MCP 도구] --> D
         A --> E[권한 설정]
         A --> F[API Key 발급]
     end
-    subgraph 운영["🚀 운영 시점 (앱)"]
+    subgraph 운영["운영 시점 — 앱"]
         G[REST API] --> H[데이터 CRUD]
         G --> I[사용자 인증]
         G --> J[파일 업로드]
@@ -130,10 +130,11 @@ MCP는 AI 도구와 서비스 간 통신을 위한 표준 프로토콜입니다.
 
 ## 다음 단계
 
-- [Tenant vs User](04-tenant-vs-user.md) — 두 가지 사용자 유형의 차이
-- [앱에서 bkend 연동하기](06-app-integration.md) — REST API로 앱에 bkend 연결
+- [Tenant와 User 이해](05-tenant-vs-user.md) — 두 가지 사용자 유형의 차이
+- [앱에서 bkend 연동하기](03-app-integration.md) — REST API로 앱에 bkend 연결
 - [콘솔 개요](../console/01-overview.md) — 콘솔에서 리소스 관리하기
-- [API Key 관리](../security/02-api-keys.md) — API Key 생성과 사용
+- [API 키 이해](../security/02-api-keys.md) — API Key 생성과 사용
+- [MCP 도구 개요](../mcp/01-overview.md) — AI 도구에서 사용할 수 있는 MCP 도구
 
 > **MCP Specification 2025-03-26**
 > "The Model Context Protocol (MCP) is an open protocol that standardizes how applications provide context to LLMs."

@@ -28,7 +28,7 @@ MongoDB를 사용합니다. 동적 BSON Schema를 지원하여 테이블과 컬�
 
 **Q: 테이블 간 조인(JOIN)이 가능한가요?**
 
-🚧 확인 필요 — 관계(Relation) 설정 후 조인 쿼리 가능 여부를 확인 중입니다.
+bkend는 문서 기반 NoSQL 데이터베이스로 관계형 JOIN을 지원하지 않습니다. 대신 참조 패턴(ID 저장)과 클라이언트 사이드 조인으로 관계를 구현합니다. 자세한 내용은 [테이블 간 관계](../database/13-relations.md)를 참고하세요.
 
 ***
 
@@ -115,6 +115,10 @@ Public Key는 클라이언트에서 제한된 권한(RLS 기반)으로, Secret K
 → [Public Key vs Secret Key](../security/03-public-vs-secret.md)
 
 ***
+
+{% hint style="info" %}
+💡 이 FAQ에서 원하는 답을 찾지 못했다면, [공통 에러 코드](01-common-errors.md)와 각 카테고리별 트러블슈팅 문서를 확인하세요.
+{% endhint %}
 
 ## 용어집
 

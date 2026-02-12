@@ -109,7 +109,7 @@ function redirectToLogin() {
 ```
 
 {% hint style="info" %}
-💡 `bkendFetch` 헬퍼를 사용하면 401 → 토큰 갱신 → 재시도가 자동으로 처리됩니다. 상세 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+💡 `bkendFetch` 헬퍼를 사용하면 401 → 토큰 갱신 → 재시도가 자동으로 처리됩니다. 상세 설정은 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 참고하세요.
 {% endhint %}
 
 ***
@@ -301,7 +301,7 @@ function clearInlineError(fieldId) {
 
 ## 다음 단계
 
-- [앱에서 bkend 연동하기](../getting-started/06-app-integration.md) — fetch 헬퍼 설정
+- [앱에서 bkend 연동하기](../getting-started/03-app-integration.md) — fetch 헬퍼 설정
 - [토큰 저장 및 갱신](../authentication/20-token-management.md) — 토큰 자동 갱신 상세
 - [공통 에러 코드](../troubleshooting/01-common-errors.md) — 전체 에러 코드 레퍼런스
 - [인증 문제 해결](../troubleshooting/03-auth-issues.md) — 인증 에러 해결

@@ -12,7 +12,7 @@
 
 ## 베이스 URL
 
-```
+```text
 https://api-client.bkend.ai
 ```
 
@@ -182,6 +182,10 @@ permissions 미설정 시 적용되는 기본 권한입니다.
 | `MISSING_PROJECT_ID` | 400 | 프로젝트 ID 헤더 없음 | `X-Project-Id` 헤더 추가 |
 
 ***
+
+{% hint style="warning" %}
+⚠️ Secret Key(`sk_`)는 서버 사이드에서만 사용하세요. 클라이언트 코드(JavaScript 번들, 모바일 앱 등)에 포함하면 노출 위험이 있습니다.
+{% endhint %}
 
 ## Rate Limiting
 

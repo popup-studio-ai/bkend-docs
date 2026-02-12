@@ -173,6 +173,10 @@ const canDelete = spec.permissions[userRole]?.delete ?? false;
 
 ***
 
+{% hint style="warning" %}
+⚠️ 테이블 스키마 조회는 `admin` 또는 해당 테이블에 `read` 권한이 있는 역할만 사용할 수 있습니다. `guest` 권한으로 조회하려면 테이블 권한 설정을 확인하세요.
+{% endhint %}
+
 ## 다음 단계
 
 - [데이터 모델](02-data-model.md) — 스키마와 권한 구조 이해

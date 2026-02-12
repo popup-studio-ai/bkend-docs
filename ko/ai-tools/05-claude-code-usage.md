@@ -6,7 +6,7 @@
 
 ## 개요
 
-Claude Code와 bkend MCP가 연결되면 자연어로 Database, Auth, Storage를 관리할 수 있습니다.
+Claude Code와 bkend MCP가 연결되면 터미널에서 자연어로 백엔드를 관리할 수 있습니다. 프로젝트 생성, 테이블 설계, 데이터 CRUD를 직접 수행합니다.
 
 {% hint style="warning" %}
 ⚠️ 설정이 완료되지 않았다면 [Claude Code 설정](04-claude-code-setup.md)을 먼저 참고하세요.
@@ -14,56 +14,47 @@ Claude Code와 bkend MCP가 연결되면 자연어로 Database, Auth, Storage를
 
 ***
 
-## 기본 사용 패턴
+## 기본 패턴
 
 ### 프로젝트 관리하기
 
-```
+```text
 "bkend에 연결된 프로젝트 목록을 보여줘"
 
-"Seoul 리전에 'my-app'이라는 프로젝트를 만들어줘"
-
-"my-app 프로젝트의 환경 목록을 보여줘"
+"my-app 프로젝트의 dev 환경 상태를 확인해줘"
 ```
 
-### 테이블 관리하기
+### 테이블 생성하기
 
-```
-"dev 환경의 테이블 목록을 보여줘"
-
-"users 테이블을 만들어줘. name, email, age 필드가 필요해"
-
-"users 테이블에 phone 필드를 추가해줘"
+```text
+"dev 환경에 users 테이블을 만들어줘.
+name(문자열, 필수), email(문자열, 필수), role(문자열) 필드가 필요해"
 ```
 
 ### 데이터 CRUD 수행하기
 
-```
-"users 테이블에 데이터를 추가해줘: name=홍길동, email=hong@example.com"
+```text
+"users 테이블에 테스트 데이터 5개를 추가해줘"
 
-"users 테이블의 모든 데이터를 보여줘"
-
-"홍길동의 이메일을 newhong@example.com으로 변경해줘"
-
-"홍길동 데이터를 삭제해줘"
+"users 테이블에서 role이 admin인 사용자를 보여줘"
 ```
 
 ***
 
-## 고급 사용 패턴
+## 고급 패턴
 
 ### 여러 테이블 한 번에 생성하기
 
-```
-"블로그 백엔드를 위한 테이블을 만들어줘:
-1. posts: title(문자열), content(문자열), published(불리언), created_at(날짜)
-2. comments: post_id(문자열), content(문자열), author(문자열), created_at(날짜)
-3. categories: name(문자열), description(문자열)"
+```text
+"블로그 서비스를 만들 거야. 다음 테이블이 필요해:
+- posts: title(문자열, 필수), content(문자열), published(불리언, 기본 false)
+- categories: name(문자열, 필수), slug(문자열, 필수)
+- comments: postId(문자열, 필수), content(문자열, 필수), author(문자열)"
 ```
 
 ### 조건부 데이터 조회하기
 
-```
+```text
 "posts 테이블에서 published가 true인 글만 최신순으로 보여줘"
 
 "users 테이블에서 age가 20 이상인 사용자를 이름순으로 보여줘"
@@ -71,7 +62,7 @@ Claude Code와 bkend MCP가 연결되면 자연어로 Database, Auth, Storage를
 
 ### 스키마 확인 및 수정하기
 
-```
+```text
 "users 테이블의 스키마를 보여줘"
 
 "users 테이블의 email 필드를 필수로 변경해줘"
@@ -83,7 +74,7 @@ Claude Code와 bkend MCP가 연결되면 자연어로 Database, Auth, Storage를
 
 ## 세션 컨텍스트
 
-Claude Code가 bkend에 처음 연결할 때 `0_get_context` 도구를 자동으로 호출합니다. 이 도구가 반환하는 정보:
+Claude Code가 bkend에 처음 연결할 때 `get_context` 도구를 자동으로 호출합니다. 이 도구가 반환하는 정보:
 
 | 항목 | 설명 |
 |------|------|
@@ -92,7 +83,7 @@ Claude Code가 bkend에 처음 연결할 때 `0_get_context` 도구를 자동으
 | API 엔드포인트 | 사용 가능한 API 정보 |
 | 주의사항 | 제한 사항 및 경고 |
 
-→ 상세는 [MCP 컨텍스트](11-mcp-context.md)를 참고하세요.
+→ 상세는 [MCP 컨텍스트](../mcp/02-context.md)를 참고하세요.
 
 ***
 
@@ -100,7 +91,7 @@ Claude Code가 bkend에 처음 연결할 때 `0_get_context` 도구를 자동으
 
 ### 명확하게 요청하기
 
-```
+```text
 # 좋은 예시
 "my-app 프로젝트의 dev 환경에 users 테이블을 만들어줘"
 
@@ -110,7 +101,7 @@ Claude Code가 bkend에 처음 연결할 때 `0_get_context` 도구를 자동으
 
 ### 필드 타입 명시하기
 
-```
+```text
 # 좋은 예시
 "products 테이블을 만들어줘:
 - name: 문자열 (필수)
@@ -144,5 +135,5 @@ MCP 연결이 끊어졌을 수 있습니다.
 ## 다음 단계
 
 - [Claude Code 설정](04-claude-code-setup.md) — 초기 설정 가이드
-- [Database MCP 도구](12-mcp-db-tools.md) — Database 도구 상세 파라미터
+- [데이터 CRUD 도구](../mcp/05-data-tools.md) — 데이터 도구 상세 파라미터
 - [AI 도구 연동 개요](01-overview.md) — 지원 도구 목록

@@ -14,7 +14,7 @@ API 키는 bkend 서비스 API에 접근하기 위한 인증 수단입니다. �
 
 ### 키 형식
 
-```
+```text
 ak_a1b2c3d4e5f6...  (ak_ + 64자 hex)
 ```
 
@@ -121,7 +121,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
 const data = await response.json();
 ```
 
-앱에서 bkend API를 연동하는 상세 방법은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+앱에서 bkend API를 연동하는 상세 방법은 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 참고하세요.
 
 ***
 
@@ -129,5 +129,5 @@ const data = await response.json();
 
 - [Public Key vs Secret Key](03-public-vs-secret.md) — 키 종류별 사용법
 - [API 키 관리 (콘솔)](../console/11-api-keys.md) — 콘솔에서 토큰 생성/관리
-- [앱에서 bkend 연동하기](../getting-started/06-app-integration.md) — 앱에 API Key 설정하기
+- [앱에서 bkend 연동하기](../getting-started/03-app-integration.md) — 앱에 API Key 설정하기
 - [보안 모범 사례](07-best-practices.md) — API 키 보안 권장 사항

@@ -9,7 +9,7 @@
 이 문서에서는 bkend 데이터 API를 활용하여 **생성 → 목록 조회 → 수정 → 삭제** 흐름을 앱에 구현하는 방법을 설명합니다. `bkendFetch` 헬퍼 함수가 설정되어 있다고 가정합니다.
 
 {% hint style="warning" %}
-⚠️ `bkendFetch` 설정이 완료되지 않았다면 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 먼저 참고하세요.
+⚠️ `bkendFetch` 설정이 완료되지 않았다면 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 먼저 참고하세요.
 {% endhint %}
 
 ```mermaid

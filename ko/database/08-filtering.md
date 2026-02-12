@@ -171,6 +171,10 @@ const andFilters = JSON.stringify({
 
 ***
 
+{% hint style="warning" %}
+⚠️ `andFilters`와 `orFilters`의 값은 반드시 URL 인코딩된 JSON 문자열이어야 합니다. 인코딩하지 않으면 파라미터가 올바르게 파싱되지 않습니다.
+{% endhint %}
+
 ## 다음 단계
 
 - [정렬 & 페이지네이션](09-sorting-pagination.md) — 결과 정렬과 페이지 제어

@@ -49,7 +49,7 @@ MCP 서버를 추가한 후 첫 요청 시 브라우저에서 인증이 진행�
 
 Antigravity의 AI Chat에서 자연어로 요청하세요:
 
-```
+```text
 "bkend에 연결된 프로젝트 목록을 보여줘"
 
 "dev 환경에 products 테이블을 만들어줘"
@@ -70,6 +70,10 @@ Antigravity의 AI Chat에서 자연어로 요청하세요:
    ```
 3. Antigravity를 재시작하세요
 4. MCP 설정을 삭제하고 다시 추가하세요
+
+{% hint style="warning" %}
+⚠️ Antigravity는 `mcp-remote`를 통해 Streamable HTTP를 stdio로 변환합니다. `mcp-remote` 프로세스가 비정상 종료되면 연결이 끊길 수 있으니, 문제 발생 시 Antigravity 재시작을 먼저 시도하세요.
+{% endhint %}
 
 ***
 

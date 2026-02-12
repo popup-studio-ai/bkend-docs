@@ -85,7 +85,7 @@ VS Code의 Copilot Chat MCP 설정에 다음을 추가하세요.
 
 MCP를 지원하는 도구에서는 일반적으로 URL만으로 연결할 수 있습니다.
 
-```
+```text
 https://api.bkend.ai/mcp
 ```
 
@@ -109,7 +109,11 @@ https://api.bkend.ai/mcp
 
 - [AI 도구 연동 개요](01-overview.md) — 지원 도구 목록
 - [MCP 프로토콜 이해](02-mcp-protocol.md) — MCP 프로토콜 상세
-- [MCP 직접 연동](10-direct-mcp.md) — MCP 프로토콜 직접 구현
+- [MCP 도구 개요](../mcp/01-overview.md) — MCP 도구 상세 파라미터
+
+{% hint style="success" %}
+✅ AI 도구 설정을 마쳤다면, MCP 도구로 실제 백엔드를 관리해보세요. → [MCP 도구 개요](../mcp/01-overview.md)
+{% endhint %}
 
 ## 참조 표준
 

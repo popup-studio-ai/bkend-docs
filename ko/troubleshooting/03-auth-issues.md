@@ -170,6 +170,10 @@ async function fetchWithAuth(url, options = {}) {
 
 ***
 
+{% hint style="warning" %}
+⚠️ 인증 토큰(`accessToken`)은 클라이언트 저장소(localStorage, cookie)에 안전하게 보관하세요. 토큰이 만료되면 Refresh Token으로 자동 갱신하는 로직을 구현하는 것을 권장합니다. → [토큰 관리](../authentication/20-token-management.md)
+{% endhint %}
+
 ## 다음 단계
 
 - [공통 에러 코드](01-common-errors.md) — 에러 코드 상세

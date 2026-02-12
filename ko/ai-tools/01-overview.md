@@ -56,9 +56,13 @@ flowchart LR
 
 ### API 도구
 
-bkend 백엔드의 관리 기능을 호출하는 도구입니다. Organization, Project, Environment, Table, Auth, Storage 등을 관리할 수 있습니다.
+bkend 백엔드의 관리 기능을 호출하는 도구입니다. Organization, Project, Environment, Table 등을 관리할 수 있습니다.
 
-→ 각 도구의 상세 파라미터와 응답은 [Database MCP 도구](12-mcp-db-tools.md), [Auth & User MCP 도구](14-mcp-auth-tools.md), [Storage MCP 도구](13-mcp-storage-tools.md)를 참고하세요.
+→ 각 도구의 상세 파라미터와 응답은 [MCP 도구 개요](../mcp/01-overview.md)를 참고하세요.
+
+{% hint style="warning" %}
+⚠️ MCP 도구는 **관리 기능**(테이블 스키마, 프로젝트, 환경 등)을 제어합니다. 앱 사용자 데이터를 다루는 Consumer API와는 다릅니다. Consumer API 연동은 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 참고하세요.
+{% endhint %}
 
 ***
 
@@ -85,7 +89,7 @@ claude mcp add bkend --transport http https://api.bkend.ai/mcp
 {% tab title="기타 도구" %}
 MCP를 지원하는 도구에서 다음 URL로 연결하세요:
 
-```
+```text
 https://api.bkend.ai/mcp
 ```
 {% endtab %}
@@ -137,6 +141,7 @@ MCP 연동 시 부여되는 권한입니다.
 - [OAuth 2.1 인증 설정](03-oauth-setup.md) — 인증 흐름과 토큰 관리
 - [Claude Code 설정](04-claude-code-setup.md) — Claude Code 연동
 - [Cursor 설정](06-cursor-setup.md) — Cursor 연동
+- [MCP 도구 레퍼런스](../mcp/01-overview.md) — MCP 도구 상세 파라미터
 - [실전 프로젝트 쿡북](../../cookbooks/README.md) — MCP로 실전 앱 백엔드 구축하기
 
 ## 참조 표준

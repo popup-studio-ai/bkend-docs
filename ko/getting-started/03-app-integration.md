@@ -43,7 +43,7 @@
 
 ## API Base URL
 
-```
+```text
 https://api-client.bkend.ai
 ```
 
@@ -184,9 +184,9 @@ console.log(post.id); // 생성된 데이터 ID
 import { bkendFetch } from './bkend.js';
 
 // 목록 조회 — GET 요청
-const result = await bkendFetch('/v1/data/posts?page=1&pageSize=10');
-console.log(result.data);  // 게시글 배열
-console.log(result.total); // 전체 개수
+const result = await bkendFetch('/v1/data/posts?page=1&limit=10');
+console.log(result.items);       // 게시글 배열
+console.log(result.pagination);  // { page, limit, total, totalPages }
 ```
 
 ***
@@ -213,6 +213,23 @@ curl -X POST https://api-client.bkend.ai/v1/data/posts \
 ## CORS
 
 bkend API는 브라우저에서의 직접 호출을 지원합니다. 별도의 CORS 설정 없이 클라이언트 앱에서 `fetch`를 사용하여 API를 호출할 수 있습니다.
+
+***
+
+## 에러 처리
+
+| 상태 코드 | 원인 | 처리 |
+|----------|------|------|
+| `400` | 필수 필드 누락, 타입 불일치 | 요청 body 확인 |
+| `401` | 토큰 만료 또는 누락 | `refreshAccessToken()` 자동 갱신 |
+| `403` | 권한 없음 (RLS 거부) | 권한 설정 확인 |
+| `404` | 리소스 없음 (테이블/데이터) | 경로, 테이블명 확인 |
+| `429` | Rate Limit 초과 | 재시도 간격 두기 |
+| `500` | 서버 에러 | 잠시 후 재시도 |
+
+{% hint style="info" %}
+💡 `bkendFetch` 헬퍼는 401 에러 시 자동으로 토큰을 갱신하고 재시도합니다. 갱신에 실패하면 에러를 throw합니다.
+{% endhint %}
 
 ***
 
@@ -243,5 +260,3 @@ flowchart TD
 - [파일 업로드 앱 패턴](../storage/10-upload-app-patterns.md) — 파일 업로드 구현
 - [에러 처리 가이드](../guides/11-error-handling.md) — 에러 응답 처리 전략
 - [실전 프로젝트 쿡북](../../cookbooks/README.md) — 연동 패턴을 실전 앱에서 바로 적용하기
-- 예제 프로젝트 — Mock 모드를 지원하여 바로 실행할 수 있는 전체 코드
-  - [blog-web (Next.js)](../../examples/blog-web/) · [social-network-app (Flutter)](../../examples/social-network-app/) · [recipe-web (Next.js)](../../examples/recipe-web/) · [recipe-app (Flutter)](../../examples/recipe-app/) · [shopping-mall-web (Next.js)](../../examples/shopping-mall-web/)

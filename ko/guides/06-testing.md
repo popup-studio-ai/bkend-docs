@@ -73,7 +73,7 @@ async function apiRequest(endpoint, options = {}) {
     ...options,
     headers: {
       ...options.headers,
-      'X-API-Key': config.apiKey,
+      'Authorization': `Bearer ${config.apiKey}`,
       'X-Project-Id': config.projectId,
       'X-Environment': config.environment
     }
@@ -744,6 +744,6 @@ jobs:
 - [CI/CD 연동](07-ci-cd.md) — 배포 파이프라인 구성
 - [확장 가이드](05-scaling.md) — 환경별 구성 전략
 - [성능 최적화](04-performance.md) — 쿼리 최적화 전략
-- [인증 API 레퍼런스](../authentication/04-api-reference.md) — 인증 엔드포인트
-- [데이터베이스 CRUD](../database/03-crud.md) — Portal API 사용법
-- [권한 설정](../database/04-permissions.md) — RLS 정책 설정
+- [인증 API 레퍼런스](../authentication/19-api-reference.md) — 인증 엔드포인트
+- [데이터베이스 CRUD](../database/01-overview.md) — 데이터 API 사용법
+- [권한 설정](../security/05-rls-policies.md) — RLS 정책 설정

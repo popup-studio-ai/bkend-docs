@@ -59,7 +59,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users?${params}`, {
 
 ```json
 {
-  "data": [
+  "items": [
     {
       "id": "user-uuid",
       "role": "user",
@@ -71,7 +71,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users?${params}`, {
       "updatedAt": "2025-01-20T00:00:00.000Z"
     }
   ],
-  "pageInfo": {
+  "pagination": {
     "page": 1,
     "limit": 20,
     "total": 150,

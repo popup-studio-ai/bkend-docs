@@ -162,6 +162,10 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
 | `subject` | `string` | ✅ | 이메일 제목 |
 | `body` | `string` | ✅ | 이메일 본문 (HTML) |
 
+{% hint style="warning" %}
+템플릿 변수(`{{userName}}` 등)를 잘못 입력하면 실제 발송 시 빈 값으로 렌더링됩니다. 미리보기를 통해 반드시 확인하세요.
+{% endhint %}
+
 ### 템플릿 변수
 
 이메일 본문에서 사용할 수 있는 변수입니다.

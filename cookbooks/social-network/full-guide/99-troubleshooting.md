@@ -413,7 +413,7 @@ const getFollowingIds = async (myUserId) => {
 
 ### AI가 테이블을 찾지 못함
 
-```
+```text
 AI 응답: "posts 테이블을 찾을 수 없습니다."
 ```
 
@@ -443,7 +443,7 @@ AI 응답: "posts 테이블을 찾을 수 없습니다."
 
 ### MCP 연결 실패
 
-```
+```text
 Error: Connection refused
 ```
 

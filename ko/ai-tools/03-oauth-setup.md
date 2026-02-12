@@ -41,8 +41,6 @@ AI 도구(Claude Code, Cursor 등)에서 bkend MCP 서버 URL을 설정하면, �
 
 브라우저가 자동으로 열리며 bkend 콘솔 로그인 페이지가 표시됩니다.
 
-<!-- 📸 IMG: MCP OAuth 로그인 페이지 -->
-
 ### 3단계: Organization 선택
 
 로그인 후 MCP에서 사용할 Organization을 선택합니다.
@@ -69,7 +67,7 @@ AI 도구(Claude Code, Cursor 등)에서 bkend MCP 서버 URL을 설정하면, �
 
 ### 자동 갱신
 
-대부분의 AI 도구는 Access Token이 만료되면 Refresh Token으로 자동 갱신합니다. 수동 개입이 필요한 경우는 다음과 같습니다:
+대부분의 AI 도구는 Access Token이 만료되면 Refresh Token으로 자동 갱신합니다.
 
 | 상황 | 해결 방법 |
 |------|----------|
@@ -140,7 +138,7 @@ curl -X POST https://api.bkend.ai/mcp/oauth/register \
 ### 인증 페이지가 열리지 않을 때
 
 1. 기본 브라우저가 설정되어 있는지 확인하세요
-2. 방화벽이나 프록시가 `https://api.bkend.ai` 접근을 차단하지 않는지 확인하세요
+2. 방화벽이나 프록시가 `https://api.bkend.ai/mcp` 접근을 차단하지 않는지 확인하세요
 
 ### 인증 후 연결이 안 될 때
 
@@ -158,7 +156,7 @@ Refresh Token이 만료(30일)된 경우입니다. AI 도구를 재시작하면 
 
 - [Claude Code 설정](04-claude-code-setup.md) — Claude Code 연동
 - [Cursor 설정](06-cursor-setup.md) — Cursor 연동
-- [MCP 직접 연동](10-direct-mcp.md) — OAuth 흐름 직접 구현
+- [MCP 도구 개요](../mcp/01-overview.md) — MCP 도구 목록과 파라미터
 
 ## 참조 표준
 

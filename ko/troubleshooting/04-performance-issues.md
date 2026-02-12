@@ -149,6 +149,10 @@ await fetch('/v1/data/posts', {
 
 ***
 
+{% hint style="warning" %}
+⚠️ 목록 조회 API의 `limit` 최대값은 100입니다. 대량 데이터를 처리할 때는 페이지네이션을 활용하고, 불필요한 필드를 줄여 응답 크기를 최소화하세요. → [정렬과 페이지네이션](../database/09-sorting-pagination.md)
+{% endhint %}
+
 ## 다음 단계
 
 - [성능 최적화 가이드](../guides/04-performance.md) — 상세 최적화 전략

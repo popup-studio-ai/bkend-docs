@@ -39,29 +39,27 @@ GitHub OAuth는 OAuth 2.0 프로토콜을 사용합니다. 개발자 중심 서�
 
 ## GitHub 로그인 구현
 
-### 1단계: 인증 URL 생성
+### 1단계: GitHub 인증 URL로 리다이렉트
 
-```bash
-curl -X GET "https://api-client.bkend.ai/v1/auth/github/authorize?redirect=https://myapp.com/auth/callback" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
-```
-
-**응답:**
-
-```json
-{
-  "authorizationUrl": "https://github.com/login/oauth/authorize?client_id=...&redirect_uri=...&scope=user:email&state=..."
-}
-```
-
-### 2단계: User를 GitHub으로 리다이렉트
+앱에서 GitHub OAuth 인증 URL을 구성하여 User를 직접 리다이렉트합니다.
 
 ```javascript
-window.location.href = data.authorizationUrl;
+const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
+const params = new URLSearchParams({
+  client_id: '{github_client_id}',
+  redirect_uri: 'https://myapp.com/auth/callback',
+  scope: 'user:email',
+  state: crypto.randomUUID(),
+});
+
+window.location.href = `${GITHUB_AUTH_URL}?${params}`;
 ```
 
-### 3단계: 콜백에서 토큰 발급
+{% hint style="info" %}
+💡 `client_id`는 GitHub Developer Settings에서 발급받은 OAuth App의 Client ID입니다. `state`는 CSRF 공격 방지를 위한 랜덤 값으로, 콜백에서 반드시 검증하세요.
+{% endhint %}
+
+### 2단계: 콜백에서 토큰 발급
 
 {% tabs %}
 {% tab title="cURL" %}
@@ -72,6 +70,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/github/callback \
   -H "X-Environment: dev" \
   -d '{
     "code": "{authorization_code}",
+    "redirectUri": "https://myapp.com/auth/callback",
     "state": "{state_value}"
   }'
 ```
@@ -89,7 +88,11 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/github/callbac
     'X-Project-Id': '{project_id}',
     'X-Environment': 'dev',
   },
-  body: JSON.stringify({ code, state }),
+  body: JSON.stringify({
+    code,
+    redirectUri: window.location.origin + '/auth/callback',
+    state,
+  }),
 });
 
 const { accessToken, refreshToken, is_new_user } = await response.json();

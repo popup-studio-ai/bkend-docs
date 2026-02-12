@@ -221,12 +221,12 @@ RLS 정책은 **콘솔** 또는 **MCP 도구**를 통해 설정합니다.
 {% tab title="MCP" %}
 AI 도구에서 자연어로 요청하세요:
 
-```
+```text
 "posts 테이블의 user 권한을 create, read, list만 허용하고
 self에는 update, delete도 허용해줘"
 ```
 
-→ [Database MCP 도구](../ai-tools/12-mcp-db-tools.md)
+→ [테이블 관리 도구](../mcp/04-table-tools.md)
 {% endtab %}
 {% endtabs %}
 

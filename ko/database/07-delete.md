@@ -76,7 +76,7 @@ await bkendFetch('/v1/data/posts/{id}', {
 ```
 
 {% hint style="info" %}
-💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 참고하세요.
 {% endhint %}
 
 ***

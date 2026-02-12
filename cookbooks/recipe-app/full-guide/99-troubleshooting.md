@@ -382,7 +382,7 @@ AI에게 데이터 조회를 요청했지만, 테이블이 없다는 응답이 �
 
 ### MCP 연결 실패
 
-```
+```text
 Error: Failed to connect to MCP server
 ```
 

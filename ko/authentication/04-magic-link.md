@@ -114,7 +114,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 
 User가 이메일의 매직 링크를 클릭하면 `callbackUrl`로 리다이렉트되며, URL에 `token` 파라미터가 포함됩니다.
 
-```
+```text
 https://myapp.com/auth/callback?token={magic_link_token}
 ```
 

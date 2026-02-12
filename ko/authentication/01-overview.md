@@ -30,11 +30,11 @@ flowchart TD
     A[User] --> B{인증 방식 선택}
     B -->|이메일 + 비밀번호| C[POST /auth/email/signup]
     B -->|매직 링크| D[POST /auth/email/signup<br>method: magiclink]
-    B -->|소셜 로그인| E[GET /auth/:provider/authorize]
+    B -->|소셜 로그인| E[OAuth 제공자 URL로 리다이렉트]
     C --> F[JWT 토큰 발급]
     D --> G[이메일 링크 클릭]
     G --> F
-    E --> H[OAuth 콜백]
+    E --> H[POST /auth/:provider/callback]
     H --> F
     F --> I[API 접근]
 ```
@@ -52,7 +52,7 @@ bkend는 JWT(JSON Web Token) 기반 인증을 사용합니다.
 
 ### 인증 헤더
 
-```
+```text
 Authorization: Bearer {accessToken}
 ```
 

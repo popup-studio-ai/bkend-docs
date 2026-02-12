@@ -8,7 +8,7 @@
 
 ### Base URL
 
-```
+```text
 https://api-client.bkend.ai
 ```
 
@@ -45,7 +45,7 @@ https://api-client.bkend.ai
 
 ## 데이터 생성
 
-```
+```http
 POST /v1/data/:tableName
 ```
 
@@ -62,7 +62,7 @@ POST /v1/data/:tableName
 
 ## 단건 조회
 
-```
+```http
 GET /v1/data/:tableName/:id
 ```
 
@@ -79,7 +79,7 @@ GET /v1/data/:tableName/:id
 
 ## 목록 조회
 
-```
+```http
 GET /v1/data/:tableName
 ```
 
@@ -103,7 +103,7 @@ GET /v1/data/:tableName
 
 ## 데이터 수정
 
-```
+```http
 PATCH /v1/data/:tableName/:id
 ```
 
@@ -121,7 +121,7 @@ PATCH /v1/data/:tableName/:id
 
 ## 데이터 삭제
 
-```
+```http
 DELETE /v1/data/:tableName/:id
 ```
 
@@ -138,7 +138,7 @@ DELETE /v1/data/:tableName/:id
 
 ## 테이블 스키마 조회
 
-```
+```http
 GET /v1/data/:tableName/spec
 ```
 

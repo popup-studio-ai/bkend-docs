@@ -8,7 +8,7 @@
 
 ### Base URL
 
-```
+```text
 https://api-client.bkend.ai
 ```
 
@@ -25,7 +25,7 @@ https://api-client.bkend.ai
 
 ## Presigned URL 업로드
 
-```
+```http
 POST /v1/files/presigned-url
 ```
 
@@ -47,7 +47,7 @@ POST /v1/files/presigned-url
 
 ### 초기화
 
-```
+```http
 POST /v1/files/multipart/init
 ```
 
@@ -63,7 +63,7 @@ POST /v1/files/multipart/init
 
 ### 파트 URL 발급
 
-```
+```http
 POST /v1/files/multipart/presigned-url
 ```
 
@@ -77,7 +77,7 @@ POST /v1/files/multipart/presigned-url
 
 ### 완료
 
-```
+```http
 POST /v1/files/multipart/complete
 ```
 
@@ -91,7 +91,7 @@ POST /v1/files/multipart/complete
 
 ### 취소
 
-```
+```http
 POST /v1/files/multipart/abort
 ```
 
@@ -108,7 +108,7 @@ POST /v1/files/multipart/abort
 
 ## 파일 메타데이터 생성
 
-```
+```http
 POST /v1/files
 ```
 
@@ -132,7 +132,7 @@ POST /v1/files
 
 ## 파일 조회
 
-```
+```http
 GET /v1/files/:fileId
 ```
 
@@ -148,7 +148,7 @@ GET /v1/files/:fileId
 
 ## 파일 목록 조회
 
-```
+```http
 GET /v1/files
 ```
 
@@ -173,7 +173,7 @@ GET /v1/files
 
 ## 파일 메타데이터 수정
 
-```
+```http
 PATCH /v1/files/:fileId
 ```
 
@@ -192,7 +192,7 @@ PATCH /v1/files/:fileId
 
 ## 파일 삭제
 
-```
+```http
 DELETE /v1/files/:fileId
 ```
 
@@ -208,7 +208,7 @@ DELETE /v1/files/:fileId
 
 ## 파일 다운로드
 
-```
+```http
 POST /v1/files/:fileId/download-url
 ```
 
@@ -239,6 +239,10 @@ POST /v1/files/:fileId/download-url
 | `POST` | `/v1/files/:fileId/download-url` | ✅ | 다운로드 URL 발급 |
 
 ***
+
+{% hint style="warning" %}
+⚠️ 모든 스토리지 API는 인증이 필요합니다. `Authorization: Bearer {accessToken}` 헤더가 없으면 `401 common/authentication-required` 에러가 반환됩니다.
+{% endhint %}
 
 ## 에러 코드
 

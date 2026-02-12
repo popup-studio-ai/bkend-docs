@@ -79,7 +79,7 @@ async function apiRequest(endpoint, options = {}) {
     ...options,
     headers: {
       ...options.headers,
-      'X-API-Key': config.apiKey,
+      'Authorization': `Bearer ${config.apiKey}`,
       'X-Project-Id': config.projectId,
       'X-Environment': config.environment
     }
@@ -102,9 +102,9 @@ async function syncProdToStaging(tableName) {
   // 1. 프로덕션 데이터 조회
   const prodData = await fetch(`https://api-client.bkend.ai/v1/data/${tableName}`, {
     headers: {
-      'X-API-Key': process.env.BKEND_API_KEY_PROD,
+      'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
       'X-Project-Id': process.env.BKEND_PROJECT_ID,
-      'X-Environment': 'prod'
+      'X-Environment': process.env.BKEND_SOURCE_ENV
     }
   }).then(r => r.json());
 
@@ -112,9 +112,9 @@ async function syncProdToStaging(tableName) {
   await fetch(`https://api-client.bkend.ai/v1/data/${tableName}`, {
     method: 'DELETE',
     headers: {
-      'X-API-Key': process.env.BKEND_API_KEY_STAGING,
+      'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
       'X-Project-Id': process.env.BKEND_PROJECT_ID,
-      'X-Environment': 'staging'
+      'X-Environment': process.env.BKEND_TARGET_ENV
     }
   });
 
@@ -124,9 +124,9 @@ async function syncProdToStaging(tableName) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': process.env.BKEND_API_KEY_STAGING,
+        'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
         'X-Project-Id': process.env.BKEND_PROJECT_ID,
-        'X-Environment': 'staging'
+        'X-Environment': process.env.BKEND_TARGET_ENV
       },
       body: JSON.stringify(row)
     });
@@ -158,7 +158,7 @@ syncProdToStaging('posts');
 
 #### 예시: 전자상거래 앱 구조
 
-```
+```text
 조직: MyCompany
 ├── 프로젝트: Auth Service
 │   ├── dev
@@ -199,9 +199,9 @@ syncProdToStaging('posts');
 async function getUserInfo(userId) {
   const response = await fetch(`https://api-client.bkend.ai/v1/data/users/${userId}`, {
     headers: {
-      'X-API-Key': process.env.USER_SERVICE_API_KEY,
+      'Authorization': `Bearer ${process.env.USER_SERVICE_API_KEY}`,
       'X-Project-Id': process.env.USER_PROJECT_ID,
-      'X-Environment': 'prod'
+      'X-Environment': process.env.BKEND_ENVIRONMENT
     }
   });
 
@@ -265,7 +265,7 @@ CREATE UNIQUE INDEX idx_users_email ON users(email);
 console.time('without index');
 await fetch('https://api-client.bkend.ai/v1/data/posts?user_id=eq.{userId}', {
   headers: {
-    'X-API-Key': process.env.BKEND_API_KEY,
+    'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
     'X-Project-Id': '{project-id}',
     'X-Environment': 'dev'
   }
@@ -276,7 +276,7 @@ console.timeEnd('without index'); // 예: 850ms
 console.time('with index');
 await fetch('https://api-client.bkend.ai/v1/data/posts?user_id=eq.{userId}', {
   headers: {
-    'X-API-Key': process.env.BKEND_API_KEY,
+    'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
     'X-Project-Id': '{project-id}',
     'X-Environment': 'dev'
   }
@@ -382,7 +382,7 @@ CREATE TABLE posts (
 ```javascript
 // ❌ 나쁜 예: 모든 데이터 조회 후 필터링
 const allPosts = await fetch('https://api-client.bkend.ai/v1/data/posts', {
-  headers: { 'X-API-Key': '...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
+  headers: { 'Authorization': 'Bearer ...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
 }).then(r => r.json());
 
 const myPosts = allPosts.filter(p => p.author_id === userId);
@@ -391,7 +391,7 @@ const myPosts = allPosts.filter(p => p.author_id === userId);
 const myPosts = await fetch(
   `https://api-client.bkend.ai/v1/data/posts?author_id=eq.${userId}&select=id,title,created_at`,
   {
-    headers: { 'X-API-Key': '...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
+    headers: { 'Authorization': 'Bearer ...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
   }
 ).then(r => r.json());
 ```
@@ -408,7 +408,7 @@ async function fetchPosts(page = 1, pageSize = 20) {
     `https://api-client.bkend.ai/v1/data/posts?limit=${pageSize}&offset=${offset}&order=created_at.desc`,
     {
       headers: {
-        'X-API-Key': process.env.BKEND_API_KEY,
+        'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
         'X-Project-Id': '{project-id}',
         'X-Environment': 'dev'
       }
@@ -451,7 +451,7 @@ const categories = await fetchWithCache(
   'https://api-client.bkend.ai/v1/data/categories',
   {
     headers: {
-      'X-API-Key': process.env.BKEND_API_KEY,
+      'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
       'X-Project-Id': '{project-id}',
       'X-Environment': 'dev'
     }
@@ -469,7 +469,7 @@ const categories = await fetchWithCache(
 // ❌ 나쁜 예: 10번의 개별 요청
 for (const postId of postIds) {
   const post = await fetch(`https://api-client.bkend.ai/v1/data/posts/${postId}`, {
-    headers: { 'X-API-Key': '...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
+    headers: { 'Authorization': 'Bearer ...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
   }).then(r => r.json());
 }
 
@@ -477,7 +477,7 @@ for (const postId of postIds) {
 const posts = await fetch(
   `https://api-client.bkend.ai/v1/data/posts?id=in.(${postIds.join(',')})`,
   {
-    headers: { 'X-API-Key': '...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
+    headers: { 'Authorization': 'Bearer ...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
   }
 ).then(r => r.json());
 ```
@@ -621,5 +621,5 @@ async function apiRequestWithMetrics(url, options) {
 - [성능 최적화](04-performance.md) — 쿼리 및 인덱스 최적화
 - [CI/CD 연동](07-ci-cd.md) — 배포 파이프라인 구성
 - [테스트 전략](06-testing.md) — 환경별 테스트 전략
-- [권한 설정](../database/04-permissions.md) — RLS 정책 설계
-- [콘솔 환경 관리](../console/03-environments.md) — 환경 설정 가이드
+- [권한 설정](../security/05-rls-policies.md) — RLS 정책 설계
+- [콘솔 환경 관리](../console/05-environment.md) — 환경 설정 가이드

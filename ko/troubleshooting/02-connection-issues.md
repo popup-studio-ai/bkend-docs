@@ -71,7 +71,7 @@ curl -X GET https://api-client.bkend.ai/v1/data/posts \
 
 ### 증상
 
-```
+```text
 Access to fetch at 'https://api-client.bkend.ai/...'
 from origin 'http://localhost:3000' has been blocked by CORS policy
 ```

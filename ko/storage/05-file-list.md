@@ -51,7 +51,7 @@ const { items, pagination } = await response.json();
 | 파라미터 | 타입 | 기본값 | 설명 |
 |---------|------|:------:|------|
 | `page` | `number` | `1` | 페이지 번호 |
-| `limit` | `number` | `20` | 페이지당 항목 수 |
+| `limit` | `number` | `20` | 페이지당 항목 수 (1~100) |
 | `sortBy` | `string` | - | 정렬 필드 |
 | `sortDirection` | `string` | `desc` | `asc` / `desc` |
 | `visibility` | `string` | - | `public`, `private`, `protected`, `shared` |
@@ -82,8 +82,8 @@ const { items, pagination } = await response.json();
     "page": 1,
     "limit": 20,
     "totalPages": 3,
-    "hasNextPage": true,
-    "hasPrevPage": false
+    "hasNext": true,
+    "hasPrev": false
   }
 }
 ```
@@ -204,7 +204,7 @@ console.log('전체 페이지:', files.pagination.totalPages);
 ```
 
 {% hint style="info" %}
-💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 참고하세요.
+💡 `bkendFetch` 설정은 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 참고하세요.
 {% endhint %}
 
 ***

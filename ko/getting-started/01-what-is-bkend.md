@@ -1,7 +1,7 @@
 # bkend란?
 
 {% hint style="info" %}
-💡 bkend는 AI 도구로 백엔드를 구축하는 서비스형 백엔드 플랫폼입니다.
+💡 bkend는 AI 도구로 백엔드를 구축하고, REST API로 앱과 연동하는 서비스형 백엔드(BaaS) 플랫폼입니다.
 {% endhint %}
 
 ## 개요
@@ -21,7 +21,7 @@ flowchart LR
     F[앱 / 웹] -->|REST API| B
 ```
 
-기존 백엔드 개발에서는 서버 코드 작성, 데이터베이스 설정, 인증 구현, 배포 파이프라인 구성 등 많은 작업이 필요합니다. bkend는 이 모든 작업을 AI 도구의 자연어 명령이나 REST API 호출로 대체합니다.
+기존 백엔드 개발은 서버 코드 작성, 데이터베이스 설정, 인증 구현, 배포 파이프라인 구성 등 많은 작업을 요구합니다. bkend는 이 모든 작업을 AI 도구의 자연어 명령이나 REST API 호출로 대체합니다.
 
 | 기존 방식 | bkend |
 |----------|-------|
@@ -37,11 +37,11 @@ flowchart LR
 
 ### 데이터베이스
 
-테이블 스키마를 설계하고 데이터를 CRUD합니다. 컬럼 타입, 제약 조건, 인덱스, 관계 설정을 지원합니다.
+테이블 스키마를 설계하고 데이터를 CRUD합니다. 7가지 컬럼 타입, 제약 조건, 인덱스, 관계 설정을 지원합니다.
 
 ### 인증
 
-이메일 회원가입, 소셜 로그인(Google, GitHub), 매직 링크, MFA를 제공합니다. JWT 기반 세션 관리와 토큰 갱신을 자동으로 처리합니다.
+이메일 회원가입, 소셜 로그인(Google, GitHub), 매직 링크, MFA를 제공합니다. JWT 기반 세션 관리와 토큰 자동 갱신을 처리합니다.
 
 ### 스토리지
 
@@ -64,14 +64,34 @@ bkend는 세 가지 방식으로 사용할 수 있습니다.
 | 방식 | 대상 | 설명 |
 |------|------|------|
 | **MCP 도구** | AI 도구 사용자 | Claude Code, Cursor에서 자연어로 백엔드 구축 |
-| **REST API** | 앱 개발자 | HTTP 요청으로 데이터 조회/수정 |
+| **REST API** | 앱 개발자 | HTTP 요청으로 데이터 조회/수정, 사용자 인증, 파일 관리 |
 | **콘솔** | 모든 사용자 | 웹 UI에서 시각적으로 관리 |
+
+```mermaid
+flowchart TD
+    subgraph 설계["설계 시점"]
+        A[콘솔 UI]
+        B[MCP 도구]
+    end
+    subgraph 운영["운영 시점"]
+        C[REST API]
+    end
+    A --> D[bkend]
+    B --> D
+    C --> D
+    D --> E[데이터베이스 / 인증 / 스토리지]
+```
 
 ***
 
+{% hint style="success" %}
+✅ bkend를 처음 사용한다면 [빠른 시작](02-quickstart.md)에서 10분 만에 첫 프로젝트를 만들어보세요. 프레임워크별 연동은 [프레임워크 QuickStart](07-quickstart-framework.md)를 참고하세요.
+{% endhint %}
+
 ## 다음 단계
 
-- [빠른 시작](02-quickstart.md) — 5분 만에 첫 프로젝트를 만들어보세요
-- [핵심 개념](03-core-concepts.md) — Organization, Project, Environment 구조를 이해하세요
-- [콘솔 개요](../console/01-overview.md) — 콘솔 UI를 살펴보세요
+- [빠른 시작](02-quickstart.md) — 10분 만에 첫 프로젝트를 만들어보세요
+- [앱에서 bkend 연동하기](03-app-integration.md) — REST API로 앱에 bkend를 연결하세요
+- [핵심 개념](04-core-concepts.md) — Organization, Project, Environment 구조를 이해하세요
+- [MCP 도구 개요](../mcp/01-overview.md) — AI 도구에서 사용할 수 있는 MCP 도구를 확인하세요
 - [실전 프로젝트 쿡북](../../cookbooks/README.md) — 블로그, 소셜 네트워크 등 실전 앱 따라 만들기

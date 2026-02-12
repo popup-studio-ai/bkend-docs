@@ -516,7 +516,7 @@ async function writeReviewWithValidation(orderId, productId, rating, content) {
 2. 상품명이나 ID를 정확하게 지정하세요.
 3. 복잡한 작업은 단계별로 나눠서 요청하세요.
 
-```
+```text
 ❌ "상품 정리해줘"
 ✅ "재고 0인 상품을 찾아서 목록으로 보여줘"
 ```
@@ -606,7 +606,7 @@ A: Presigned URL은 일정 시간 후 만료됩니다. 파일 메타데이터를
 
 ### 1. 요청 헤더 확인
 
-```
+```text
 ✅ Authorization: Bearer {accessToken}
 ✅ X-Project-Id: {project_id}
 ✅ X-Environment: dev
@@ -615,7 +615,7 @@ A: Presigned URL은 일정 시간 후 만료됩니다. 파일 메타데이터를
 
 ### 2. 테이블 상태 확인
 
-```
+```text
 ✅ products 테이블 존재 여부
 ✅ carts 테이블 존재 여부
 ✅ orders 테이블 존재 여부
@@ -624,7 +624,7 @@ A: Presigned URL은 일정 시간 후 만료됩니다. 파일 메타데이터를
 
 ### 3. 데이터 정합성 확인
 
-```
+```text
 ✅ 장바구니의 productId가 실제 존재하는 상품인지
 ✅ 주문의 items에 포함된 상품이 유효한지
 ✅ 리뷰의 productId와 orderId가 유효한지
@@ -633,7 +633,7 @@ A: Presigned URL은 일정 시간 후 만료됩니다. 파일 메타데이터를
 
 ### 4. 환경 확인
 
-```
+```text
 ✅ 올바른 프로젝트에 연결되어 있는지
 ✅ X-Environment가 올바른지 (dev/staging/prod)
 ✅ MCP 연결이 활성 상태인지

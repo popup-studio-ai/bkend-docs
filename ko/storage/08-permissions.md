@@ -156,6 +156,10 @@ await uploadFile({
 
 ***
 
+{% hint style="warning" %}
+⚠️ `public` Visibility로 업로드된 파일은 URL을 알면 누구나 접근할 수 있습니다. 민감한 파일은 반드시 `private`으로 설정하세요.
+{% endhint %}
+
 ## 다음 단계
 
 - [파일 메타데이터](04-file-metadata.md) — Visibility 설정 변경

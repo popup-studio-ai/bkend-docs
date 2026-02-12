@@ -28,7 +28,7 @@ sequenceDiagram
 ```
 
 {% hint style="warning" %}
-⚠️ `bkendFetch` 설정이 완료되지 않았다면 [앱에서 bkend 연동하기](../getting-started/06-app-integration.md)를 먼저 참고하세요.
+⚠️ `bkendFetch` 설정이 완료되지 않았다면 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 먼저 참고하세요.
 {% endhint %}
 
 ***

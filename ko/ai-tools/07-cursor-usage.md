@@ -20,7 +20,7 @@ Cursor의 AI Chat (`Cmd+L` / `Ctrl+L`)에서 자연어로 요청하세요.
 
 ### 프로젝트 관리하기
 
-```
+```text
 "bkend에 연결된 프로젝트 목록을 보여줘"
 
 "my-app 프로젝트의 dev 환경 상태를 확인해줘"
@@ -28,7 +28,7 @@ Cursor의 AI Chat (`Cmd+L` / `Ctrl+L`)에서 자연어로 요청하세요.
 
 ### 테이블 관리하기
 
-```
+```text
 "dev 환경에 users 테이블을 만들어줘.
 name(문자열, 필수), email(문자열, 필수), role(문자열) 필드가 필요해"
 
@@ -37,7 +37,7 @@ name(문자열, 필수), email(문자열, 필수), role(문자열) 필드가 필
 
 ### 데이터 CRUD 수행하기
 
-```
+```text
 "users 테이블에 테스트 데이터 5개를 추가해줘"
 
 "users 테이블에서 role이 admin인 사용자를 보여줘"
@@ -51,14 +51,14 @@ Cursor에서는 코드 작성과 bkend 관리를 동시에 수행할 수 있습�
 
 ### Frontend 코드와 함께
 
-```
+```text
 "users 테이블의 스키마를 확인하고,
 이 테이블에 맞는 TypeScript 인터페이스를 만들어줘"
 ```
 
 ### API 코드 생성하기
 
-```
+```text
 "bkend의 users 테이블 CRUD를 위한
 서비스 API 호출 코드를 TypeScript로 작성해줘"
 ```
@@ -69,7 +69,7 @@ Cursor에서는 코드 작성과 bkend 관리를 동시에 수행할 수 있습�
 
 Cursor의 Composer (`Cmd+I` / `Ctrl+I`)에서도 bkend MCP를 활용할 수 있습니다.
 
-```
+```text
 "bkend에 products 테이블을 생성하고,
 이 테이블의 CRUD API를 호출하는 React 컴포넌트를 작성해줘"
 ```
@@ -94,5 +94,5 @@ Cursor의 Composer (`Cmd+I` / `Ctrl+I`)에서도 bkend MCP를 활용할 수 있�
 ## 다음 단계
 
 - [Cursor 설정](06-cursor-setup.md) — 초기 설정 가이드
-- [Database MCP 도구](12-mcp-db-tools.md) — Database 도구 상세 파라미터
+- [데이터 CRUD 도구](../mcp/05-data-tools.md) — 데이터 도구 상세 파라미터
 - [AI 도구 연동 개요](01-overview.md) — 지원 도구 목록

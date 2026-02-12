@@ -112,7 +112,7 @@ Cursor 설정에서 MCP 서버를 추가하세요.
 
 AI 도구에서 다음과 같이 요청하세요.
 
-```
+```text
 "posts 테이블을 만들어줘.
 - title: 문자열 (필수)
 - content: 문자열 (필수)
@@ -143,6 +143,10 @@ AI 도구에서 다음과 같이 요청하세요.
 | **권한 범위** | Table Data (read, create, update, delete) |
 
 4. **생성**을 클릭하면 토큰이 표시됩니다. 이 값을 안전하게 복사해두세요.
+
+{% hint style="warning" %}
+⚠️ 이 토큰은 **Public Key**입니다. 클라이언트(브라우저, 앱)에서 사용하며, 제한된 권한만 가집니다. 서버 전용의 **Secret Key**와의 차이는 [Public Key vs Secret Key](../security/03-public-vs-secret.md)를 참고하세요.
+{% endhint %}
 
 {% hint style="danger" %}
 🚨 **위험** — 토큰은 생성 시 한 번만 표시됩니다. 분실 시 재생성해야 합니다.
@@ -192,6 +196,19 @@ console.log(data.id); // 생성된 데이터 ID
 {% endtab %}
 {% endtabs %}
 
+### 응답 예시
+
+```json
+{
+  "id": "abc123",
+  "title": "Hello bkend!",
+  "content": "첫 번째 게시글입니다.",
+  "published": true,
+  "createdAt": "2026-02-12T00:00:00.000Z",
+  "updatedAt": "2026-02-12T00:00:00.000Z"
+}
+```
+
 콘솔의 **데이터베이스** → **posts** 테이블에서 생성된 데이터를 확인하세요.
 
 {% hint style="success" %}
@@ -200,11 +217,79 @@ console.log(data.id); // 생성된 데이터 ID
 
 ***
 
+## 보너스: 인증 연동하기
+
+데이터 생성까지 성공했다면, 사용자 인증을 추가하여 "누가 만든 데이터인지" 관리할 수 있습니다.
+
+### 8단계: 회원가입 API 호출
+
+```javascript
+const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Project-Id': '{project_id}',
+    'X-Environment': 'dev',
+  },
+  body: JSON.stringify({
+    method: 'password',
+    email: 'user@example.com',
+    password: 'MyP@ssw0rd!',
+    name: '홍길동',
+  }),
+});
+
+const { accessToken, refreshToken } = await response.json();
+// 토큰을 안전하게 저장하세요
+```
+
+### 9단계: 인증된 데이터 생성
+
+발급받은 `accessToken`으로 데이터를 생성하면 `createdBy` 필드에 사용자 ID가 자동 기록됩니다.
+
+```javascript
+const post = await fetch('https://api-client.bkend.ai/v1/data/posts', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`,
+    'X-Project-Id': '{project_id}',
+    'X-Environment': 'dev',
+  },
+  body: JSON.stringify({
+    title: '인증된 게시글',
+    content: '로그인한 사용자가 작성했습니다.',
+    published: true,
+  }),
+});
+
+const data = await post.json();
+console.log(data.createdBy); // 사용자 ID
+```
+
+{% hint style="info" %}
+💡 인증을 연동하면 RLS(Row Level Security)로 "본인이 만든 데이터만 수정/삭제 가능"과 같은 정책을 적용할 수 있습니다. → [RLS 정책 작성](../security/05-rls-policies.md)
+{% endhint %}
+
+***
+
+## 에러가 발생했다면
+
+| 에러 코드 | 원인 | 해결 |
+|----------|------|------|
+| `401 Unauthorized` | API Key가 잘못되었거나 누락됨 | `Authorization` 헤더 확인 |
+| `404 Not Found` | 테이블이 존재하지 않음 | 콘솔에서 테이블 생성 여부 확인 |
+| `400 Bad Request` | 필수 필드 누락 또는 타입 불일치 | 요청 body 확인 |
+| `403 Forbidden` | 환경이 Active 상태가 아님 | 콘솔에서 환경 상태 확인 |
+
+***
+
 ## 다음 단계
 
-- [핵심 개념](03-core-concepts.md) — Organization, Project, Environment 구조
-- [앱에서 bkend 연동하기](06-app-integration.md) — 앱에 bkend 연결하는 방법
+- [앱에서 bkend 연동하기](03-app-integration.md) — 앱에 bkend 연결하는 방법
+- [핵심 개념](04-core-concepts.md) — Organization, Project, Environment 구조
 - [콘솔 개요](../console/01-overview.md) — 콘솔 UI 둘러보기
-- [AI 도구 연동 개요](../ai-tools/01-overview.md) — MCP 도구 상세 가이드
+- [AI 도구 연동 개요](../ai-tools/01-overview.md) — AI 도구 설정 상세 가이드
+- [MCP 도구 개요](../mcp/01-overview.md) — MCP 도구 레퍼런스
 - [테이블 관리](../console/07-table-management.md) — 콘솔에서 테이블 설계하기
 - [실전 프로젝트 쿡북](../../cookbooks/README.md) — 블로그부터 쇼핑몰까지, 실전 앱 구축 튜토리얼

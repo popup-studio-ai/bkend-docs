@@ -32,12 +32,16 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts \
 {% endtab %}
 {% tab title="JavaScript" %}
 ```javascript
-// 1. OAuth 인증 URL 생성
-const authRes = await fetch(
-  'https://api-client.bkend.ai/v1/auth/google/authorize?redirect=https://myapp.com/link-callback',
-  { headers: { 'X-Project-Id': '{project_id}', 'X-Environment': 'dev' } }
-);
-const { authorizationUrl } = await authRes.json();
+// 1. Google 인증 URL로 리다이렉트
+const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
+const params = new URLSearchParams({
+  client_id: '{google_client_id}',
+  redirect_uri: 'https://myapp.com/link-callback',
+  response_type: 'code',
+  scope: 'openid email profile',
+  state: crypto.randomUUID(),
+});
+window.location.href = `${GOOGLE_AUTH_URL}?${params}`;
 
 // 2. Google 인증 후 콜백에서 code 추출
 // 3. 계정 연결

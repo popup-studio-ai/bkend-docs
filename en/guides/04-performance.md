@@ -65,9 +65,8 @@ Use indexed fields as your primary filter conditions.
 ```bash
 # Good example — filtering by indexed fields
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published&sort=-createdAt&limit=20" \
-  -H "Authorization: Bearer {api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {api_key}"
 ```
 
 ### Use Pagination
@@ -89,9 +88,8 @@ const response = await fetch(
   `https://api-client.bkend.ai/v1/data/posts?limit=${limit}&offset=${offset}`,
   {
     headers: {
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${apiKey}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   }
 );
@@ -104,9 +102,8 @@ Reduce response size by selecting only the fields you need.
 ```bash
 # Query only required fields
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?fields=title,status,createdAt" \
-  -H "Authorization: Bearer {api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {api_key}"
 ```
 
 ***

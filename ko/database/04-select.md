@@ -4,6 +4,21 @@
 💡 ID를 사용하여 특정 데이터를 조회하세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- [테이블 생성](../console/07-table-management.md) 완료
+- 인증 설정 — 공개 테이블은 인증 없이, RLS 적용 테이블은 JWT 필요
+{% endhint %}
+
+{% hint style="info" %}
+💡 **이 문서에서 사용하는 API**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/data/:tableName/:id` | GET | 조건부 | 단건 조회 |
+{% endhint %}
+
 ## 개요
 
 `GET /v1/data/:tableName/:id` 엔드포인트로 특정 데이터를 ID로 조회합니다.
@@ -18,9 +33,8 @@
 {% tab title="cURL" %}
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/posts/507f1f77bcf86cd799439011 \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -29,9 +43,8 @@ const postId = '507f1f77bcf86cd799439011';
 
 const response = await fetch(`https://api-client.bkend.ai/v1/data/posts/${postId}`, {
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -106,6 +119,7 @@ console.log(post.title);
 | `data/table-not-found` | 404 | 테이블이 존재하지 않음 |
 | `data/not-found` | 404 | 데이터를 찾을 수 없음 |
 | `data/permission-denied` | 403 | read 권한 없음 |
+| `data/scope-insufficient` | 403 | API 키 scope에 필요한 권한이 포함되지 않음 |
 
 ***
 

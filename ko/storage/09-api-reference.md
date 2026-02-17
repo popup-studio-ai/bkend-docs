@@ -16,8 +16,7 @@ https://api-client.bkend.ai
 
 | 헤더 | 필수 | 설명 |
 |------|:----:|------|
-| `X-Project-Id` | ✅ | 프로젝트 ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | `{pk_publishable_key}` |
 | `Authorization` | ✅ | `Bearer {accessToken}` |
 | `Content-Type` | 조건부 | `application/json` — POST, PATCH 요청 시 |
 

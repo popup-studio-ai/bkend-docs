@@ -16,9 +16,7 @@ flowchart TD
     D -->|Missing/Incorrect| E[Fix auth headers]
     D -->|Correct| F{Check CORS}
     F -->|CORS error| G[Call from server side]
-    F -->|OK| H{Check environment}
-    H -->|Wrong environment| I[Fix X-Environment]
-    H -->|OK| J[Contact support]
+    F -->|OK| H[Contact support]
 ```
 
 ***
@@ -48,19 +46,21 @@ Make sure you are using the correct API URL.
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/posts \
-  -H "Authorization: Bearer {api_key_or_jwt}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 | Header | Required | Notes |
 |------|:----:|------|
-| `Authorization` | Conditional | `Bearer ` prefix required (note the space) |
-| `X-Project-Id` | Yes | Project ID (find it in the console) |
-| `X-Environment` | Yes | `dev` / `staging` / `prod` |
+| `X-API-Key` | Yes | Publishable Key (`pk_` prefix). Contains project ID + environment |
+| `Authorization` | Conditional | `Bearer ` prefix required (note the space). Only for authenticated APIs |
 
 {% hint style="warning" %}
 In `Authorization: Bearer {token}`, there must be a **space** between `Bearer` and the token. `Bearer{token}` is invalid.
+{% endhint %}
+
+{% hint style="info" %}
+Since `pk_` keys contain project ID and environment information, the `X-Project-Id` and `X-Environment` headers are not needed.
 {% endhint %}
 
 ***
@@ -89,9 +89,7 @@ from origin 'http://localhost:3000' has been blocked by CORS policy
 export default async function handler(req, res) {
   const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
     headers: {
-      'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-      'X-Project-Id': process.env.BKEND_PROJECT_ID,
-      'X-Environment': 'dev',
+      'X-API-Key': process.env.BKEND_SECRET_KEY, // sk_xxx (server side)
     },
   });
   const data = await response.json();
@@ -141,9 +139,7 @@ When an issue occurs, use curl to test the API directly and determine whether th
 ```bash
 # Test data retrieval
 curl -v -X GET "https://api-client.bkend.ai/v1/data/posts?limit=1" \
-  -H "Authorization: Bearer ak_{your_api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 The `-v` flag lets you inspect the request and response headers.

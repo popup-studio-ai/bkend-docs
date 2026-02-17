@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,12 +20,13 @@ import { useSignIn } from "@/hooks/queries/use-auth";
 
 const signInSchema = z.object({
   email: z.string().email("Please enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(1, "Please enter your password"),
 });
 
 type SignInFormData = z.infer<typeof signInSchema>;
 
 export function SignInForm() {
+  const router = useRouter();
   const signIn = useSignIn();
 
   const {
@@ -36,11 +38,15 @@ export function SignInForm() {
   });
 
   const onSubmit = (data: SignInFormData) => {
-    signIn.mutate(data);
+    signIn.mutate(data, {
+      onSuccess: () => {
+        router.push("/recipes");
+      },
+    });
   };
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md border-orange-200 dark:border-stone-700">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Sign In</CardTitle>
         <CardDescription>
@@ -55,6 +61,7 @@ export function SignInForm() {
               id="email"
               type="email"
               placeholder="name@example.com"
+              autoComplete="email"
               {...register("email")}
             />
             {errors.email && (
@@ -68,6 +75,7 @@ export function SignInForm() {
               id="password"
               type="password"
               placeholder="Enter your password"
+              autoComplete="current-password"
               {...register("password")}
             />
             {errors.password && (
@@ -76,14 +84,14 @@ export function SignInForm() {
           </div>
 
           {signIn.isError && (
-            <p className="text-sm text-red-500">
-              Invalid email or password.
-            </p>
+            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+              {(signIn.error as Error)?.message || "Sign in failed."}
+            </div>
           )}
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white"
             disabled={signIn.isPending}
           >
             {signIn.isPending && (
@@ -96,7 +104,7 @@ export function SignInForm() {
         <div className="mt-4 text-center text-sm text-stone-500 dark:text-stone-400">
           Don&apos;t have an account?{" "}
           <Link
-            href="/signup"
+            href="/sign-up"
             className="text-orange-600 hover:underline dark:text-orange-400"
           >
             Sign Up

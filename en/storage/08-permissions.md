@@ -31,9 +31,8 @@ const presigned = await fetch('https://api-client.bkend.ai/v1/files/presigned-ur
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     filename: 'document.pdf',
@@ -48,9 +47,8 @@ const presigned = await fetch('https://api-client.bkend.ai/v1/files/presigned-ur
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "visibility": "public"
   }'

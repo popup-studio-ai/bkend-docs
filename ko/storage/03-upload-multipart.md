@@ -4,6 +4,21 @@
 💡 대용량 파일을 여러 파트로 나누어 병렬 업로드하세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- 사용자 인증 완료 (JWT 토큰 필요 — 모든 파일 API는 인증 필수)
+{% endhint %}
+
+**이 문서에서 사용하는 API:**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/files/multipart/init` | POST | JWT | 멀티파트 초기화 |
+| `/v1/files/multipart/presigned-url` | POST | JWT | 파트 URL 발급 |
+| `/v1/files/multipart/complete` | POST | JWT | 멀티파트 완료 |
+| `/v1/files/multipart/abort` | POST | JWT | 멀티파트 취소 |
+
 ## 개요
 
 멀티파트 업로드는 대용량 파일을 여러 조각(파트)으로 나누어 업로드하는 방식입니다. 파트별 병렬 업로드가 가능하며, 실패한 파트만 재시도할 수 있습니다.
@@ -27,9 +42,8 @@ flowchart TD
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "video.mp4",
     "contentType": "video/mp4",
@@ -70,9 +84,8 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "key": "{init 응답의 key}",
     "uploadId": "multipart-upload-id",
@@ -124,9 +137,8 @@ const etag = response.headers.get('ETag');
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "key": "{init 응답의 key}",
     "uploadId": "multipart-upload-id",
@@ -168,9 +180,8 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/multipart/abort \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "key": "{init 응답의 key}",
     "uploadId": "multipart-upload-id"
@@ -199,9 +210,8 @@ async function multipartUpload(file, accessToken) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
     body: JSON.stringify({
       filename: file.name,
@@ -225,9 +235,8 @@ async function multipartUpload(file, accessToken) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-API-Key': '{pk_publishable_key}',
         'Authorization': `Bearer ${accessToken}`,
-        'X-Project-Id': '{project_id}',
-        'X-Environment': 'dev',
       },
       body: JSON.stringify({ key, uploadId, partNumber }),
     }).then(res => res.json());
@@ -250,9 +259,8 @@ async function multipartUpload(file, accessToken) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
     body: JSON.stringify({ key, uploadId, parts }),
   }).then(res => res.json());

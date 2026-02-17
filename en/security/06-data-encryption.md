@@ -79,7 +79,7 @@ API keys are stored as **SHA-256** one-way hashes.
 
 ```mermaid
 flowchart LR
-    A[Key Generation] -->|randomBytes 32| B["ak_{64-char hex}"]
+    A[Key Generation] -->|randomBytes 32| B["pk_ / sk_{64-char hex}"]
     B -->|SHA-256| C[Only Hash Stored]
     B -->|Shown Once| D[Displayed to User]
 ```

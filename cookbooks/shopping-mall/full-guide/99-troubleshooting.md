@@ -59,7 +59,7 @@ const result = await bkendFetch('/v1/data/products');
 **해결 방법**:
 
 1. 본인이 생성한 리소스인지 확인하세요.
-2. `X-Project-Id`와 `X-Environment` 헤더가 올바른지 확인하세요.
+2. `X-API-Key` 헤더에 올바른 Publishable Key가 설정되어 있는지 확인하세요.
 
 ***
 
@@ -92,9 +92,8 @@ const result = await bkendFetch('/v1/data/products');
 # 올바른 등록 요청
 curl -X POST https://api-client.bkend.ai/v1/data/products \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "name": "프리미엄 면 티셔츠",
     "description": "부드러운 100% 면 소재 티셔츠",
@@ -144,9 +143,8 @@ curl -X POST https://api-client.bkend.ai/v1/data/products \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "product-image.jpg",
     "contentType": "image/jpeg"
@@ -165,9 +163,8 @@ curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/products/{product_id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "stock": 0,
     "isActive": false
@@ -199,9 +196,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/products/{product_id} \
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/products" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***
@@ -607,9 +603,8 @@ A: Presigned URL은 일정 시간 후 만료됩니다. 파일 메타데이터를
 ### 1. 요청 헤더 확인
 
 ```text
+✅ X-API-Key: {pk_publishable_key}
 ✅ Authorization: Bearer {accessToken}
-✅ X-Project-Id: {project_id}
-✅ X-Environment: dev
 ✅ Content-Type: application/json (POST/PATCH 요청)
 ```
 
@@ -635,7 +630,7 @@ A: Presigned URL은 일정 시간 후 만료됩니다. 파일 메타데이터를
 
 ```text
 ✅ 올바른 프로젝트에 연결되어 있는지
-✅ X-Environment가 올바른지 (dev/staging/prod)
+✅ X-API-Key가 올바른 환경(dev/staging/prod)의 키인지
 ✅ MCP 연결이 활성 상태인지
 ```
 

@@ -93,9 +93,8 @@ flowchart TD
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/profiles?andFilters=%7B%22userId%22%3A%22{userId}%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답 (프로필 없음):**
@@ -119,9 +118,8 @@ curl -X GET "https://api-client.bkend.ai/v1/data/profiles?andFilters=%7B%22userI
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/profiles \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "nickname": "김소셜",
     "bio": "여행과 맛집을 좋아합니다",
@@ -153,8 +151,7 @@ async function bkendFetch(path, options = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
       ...options.headers,
     },
@@ -211,18 +208,16 @@ const createProfile = async ({ nickname, bio, userId }) => {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/profiles?andFilters=%7B%22userId%22%3A%22{userId}%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### ID로 프로필 조회
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/profiles/{profileId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**
@@ -278,9 +273,8 @@ const getProfile = async (profileId) => {
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/profiles/{profileId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "nickname": "소셜킹",
     "bio": "여행, 맛집, 일상을 공유합니다"
@@ -362,9 +356,8 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "avatar.jpg",
     "contentType": "image/jpeg"
@@ -392,9 +385,8 @@ curl -X PUT "{url}" \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/profiles/{profileId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "avatarUrl": "{업로드된 파일의 URL}"
   }'
@@ -459,9 +451,8 @@ const uploadAvatar = async (file, profileId) => {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/profiles?andFilters=%7B%22nickname%22%3A%7B%22%24contains%22%3A%22소셜%22%7D%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**

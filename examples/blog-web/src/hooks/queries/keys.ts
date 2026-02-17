@@ -12,7 +12,8 @@ export const queryKeys = {
   },
   tags: {
     all: ["tags"] as const,
-    list: () => [...queryKeys.tags.all, "list"] as const,
+    list: (params?: Record<string, unknown>) =>
+      [...queryKeys.tags.all, "list", params] as const,
   },
   bookmarks: {
     all: ["bookmarks"] as const,

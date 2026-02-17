@@ -4,6 +4,20 @@
 💡 이메일과 비밀번호로 새 User 계정을 생성하세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- [이메일 인증 제공자 활성화](17-provider-config.md) (기본 활성화됨)
+{% endhint %}
+
+{% hint style="info" %}
+💡 **이 문서에서 사용하는 API**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/auth/email/signup` | POST | 불필요 | 이메일 회원가입 |
+{% endhint %}
+
 ## 개요
 
 이메일 회원가입은 가장 기본적인 인증 방식입니다. User는 이메일과 비밀번호를 입력하여 계정을 생성하고, 즉시 JWT 토큰을 발급받습니다.
@@ -37,8 +51,7 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -53,8 +66,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     method: 'password',

@@ -48,28 +48,20 @@ Use bkend's environment separation feature to isolate development, test, and pro
 
 ```bash
 # .env.development
-BKEND_API_KEY={dev-api-key}
-BKEND_PROJECT_ID={project-id}
-BKEND_ENVIRONMENT=dev
+BKEND_PUBLISHABLE_KEY={pk_dev_publishable_key}
 
 # .env.staging
-BKEND_API_KEY={staging-api-key}
-BKEND_PROJECT_ID={project-id}
-BKEND_ENVIRONMENT=staging
+BKEND_PUBLISHABLE_KEY={pk_staging_publishable_key}
 
 # .env.production
-BKEND_API_KEY={prod-api-key}
-BKEND_PROJECT_ID={project-id}
-BKEND_ENVIRONMENT=prod
+BKEND_PUBLISHABLE_KEY={pk_prod_publishable_key}
 ```
 
 #### Environment-Specific Configuration in Client Code
 
 ```javascript
 const config = {
-  apiKey: process.env.BKEND_API_KEY,
-  projectId: process.env.BKEND_PROJECT_ID,
-  environment: process.env.BKEND_ENVIRONMENT || 'dev',
+  publishableKey: process.env.BKEND_PUBLISHABLE_KEY,
   baseURL: 'https://api-client.bkend.ai'
 };
 
@@ -79,9 +71,7 @@ async function apiRequest(endpoint, options = {}) {
     ...options,
     headers: {
       ...options.headers,
-      'Authorization': `Bearer ${config.apiKey}`,
-      'X-Project-Id': config.projectId,
-      'X-Environment': config.environment
+      'X-API-Key': config.publishableKey,
     }
   });
 
@@ -102,9 +92,7 @@ async function syncProdToStaging(tableName) {
   // 1. Fetch production data
   const prodData = await fetch(`https://api-client.bkend.ai/v1/data/${tableName}`, {
     headers: {
-      'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-      'X-Project-Id': process.env.BKEND_PROJECT_ID,
-      'X-Environment': process.env.BKEND_SOURCE_ENV
+      'X-API-Key': process.env.BKEND_SOURCE_PUBLISHABLE_KEY,
     }
   }).then(r => r.json());
 
@@ -112,9 +100,7 @@ async function syncProdToStaging(tableName) {
   await fetch(`https://api-client.bkend.ai/v1/data/${tableName}`, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-      'X-Project-Id': process.env.BKEND_PROJECT_ID,
-      'X-Environment': process.env.BKEND_TARGET_ENV
+      'X-API-Key': process.env.BKEND_TARGET_PUBLISHABLE_KEY,
     }
   });
 
@@ -124,9 +110,7 @@ async function syncProdToStaging(tableName) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-        'X-Project-Id': process.env.BKEND_PROJECT_ID,
-        'X-Environment': process.env.BKEND_TARGET_ENV
+        'X-API-Key': process.env.BKEND_TARGET_PUBLISHABLE_KEY,
       },
       body: JSON.stringify(row)
     });
@@ -199,9 +183,7 @@ When multiple services need to reference the same data, choose one of the follow
 async function getUserInfo(userId) {
   const response = await fetch(`https://api-client.bkend.ai/v1/data/users/${userId}`, {
     headers: {
-      'Authorization': `Bearer ${process.env.USER_SERVICE_API_KEY}`,
-      'X-Project-Id': process.env.USER_PROJECT_ID,
-      'X-Environment': process.env.BKEND_ENVIRONMENT
+      'X-API-Key': process.env.USER_SERVICE_PUBLISHABLE_KEY,
     }
   });
 
@@ -261,26 +243,23 @@ CREATE UNIQUE INDEX idx_users_email ON users(email);
 Compare query performance before and after adding an index.
 
 ```javascript
+const headers = {
+  'X-API-Key': '{pk_publishable_key}',
+  'Authorization': 'Bearer {accessToken}',
+};
+
+const url = 'https://api-client.bkend.ai/v1/data/posts?' + new URLSearchParams({
+  andFilters: JSON.stringify({ userId: '{userId}' })
+});
+
 // Query 10,000 records without index
 console.time('without index');
-await fetch('https://api-client.bkend.ai/v1/data/posts?user_id=eq.{userId}', {
-  headers: {
-    'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-    'X-Project-Id': '{project-id}',
-    'X-Environment': 'dev'
-  }
-});
+await fetch(url, { headers });
 console.timeEnd('without index'); // e.g., 850ms
 
 // After adding index
 console.time('with index');
-await fetch('https://api-client.bkend.ai/v1/data/posts?user_id=eq.{userId}', {
-  headers: {
-    'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-    'X-Project-Id': '{project-id}',
-    'X-Environment': 'dev'
-  }
-});
+await fetch(url, { headers });
 console.timeEnd('with index'); // e.g., 45ms
 ```
 
@@ -382,16 +361,25 @@ Reduce network traffic by fetching only the data you need.
 ```javascript
 // Bad example: fetch all data then filter on client
 const allPosts = await fetch('https://api-client.bkend.ai/v1/data/posts', {
-  headers: { 'Authorization': 'Bearer ...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
+  headers: {
+    'X-API-Key': '{pk_publishable_key}',
+    'Authorization': 'Bearer {accessToken}',
+  }
 }).then(r => r.json());
 
-const myPosts = allPosts.filter(p => p.author_id === userId);
+const myPosts = allPosts.items.filter(p => p.authorId === userId);
 
 // Good example: filter on the server
 const myPosts = await fetch(
-  `https://api-client.bkend.ai/v1/data/posts?author_id=eq.${userId}&select=id,title,created_at`,
+  'https://api-client.bkend.ai/v1/data/posts?' + new URLSearchParams({
+    andFilters: JSON.stringify({ authorId: userId }),
+    select: 'id,title,createdAt'
+  }),
   {
-    headers: { 'Authorization': 'Bearer ...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
+    headers: {
+      'X-API-Key': '{pk_publishable_key}',
+      'Authorization': 'Bearer {accessToken}',
+    }
   }
 ).then(r => r.json());
 ```
@@ -401,20 +389,23 @@ const myPosts = await fetch(
 Break large datasets into pages.
 
 ```javascript
-async function fetchPosts(page = 1, pageSize = 20) {
-  const offset = (page - 1) * pageSize;
-
+async function fetchPosts(page = 1, limit = 20) {
   const posts = await fetch(
-    `https://api-client.bkend.ai/v1/data/posts?limit=${pageSize}&offset=${offset}&order=created_at.desc`,
+    'https://api-client.bkend.ai/v1/data/posts?' + new URLSearchParams({
+      page: String(page),
+      limit: String(limit),
+      sortBy: 'createdAt',
+      sortDirection: 'desc'
+    }),
     {
       headers: {
-        'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-        'X-Project-Id': '{project-id}',
-        'X-Environment': 'dev'
+        'X-API-Key': '{pk_publishable_key}',
+        'Authorization': 'Bearer {accessToken}',
       }
     }
   ).then(r => r.json());
 
+  // Response: { items: [...], pagination: { page, limit, total } }
   return posts;
 }
 
@@ -451,9 +442,8 @@ const categories = await fetchWithCache(
   'https://api-client.bkend.ai/v1/data/categories',
   {
     headers: {
-      'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-      'X-Project-Id': '{project-id}',
-      'X-Environment': 'dev'
+      'X-API-Key': '{pk_publishable_key}',
+      'Authorization': 'Bearer {accessToken}',
     }
   },
   'categories',
@@ -466,20 +456,28 @@ const categories = await fetchWithCache(
 Fetch multiple resources in a single request.
 
 ```javascript
-// Bad example: 10 individual requests
+// Bad example: 10 sequential requests
 for (const postId of postIds) {
   const post = await fetch(`https://api-client.bkend.ai/v1/data/posts/${postId}`, {
-    headers: { 'Authorization': 'Bearer ...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
+    headers: {
+      'X-API-Key': '{pk_publishable_key}',
+      'Authorization': 'Bearer {accessToken}',
+    }
   }).then(r => r.json());
 }
 
-// Good example: 1 batch request
-const posts = await fetch(
-  `https://api-client.bkend.ai/v1/data/posts?id=in.(${postIds.join(',')})`,
-  {
-    headers: { 'Authorization': 'Bearer ...', 'X-Project-Id': '...', 'X-Environment': 'dev' }
-  }
-).then(r => r.json());
+// Good example: parallel requests with Promise.all
+const headers = {
+  'X-API-Key': '{pk_publishable_key}',
+  'Authorization': 'Bearer {accessToken}',
+};
+
+const posts = await Promise.all(
+  postIds.map(id =>
+    fetch(`https://api-client.bkend.ai/v1/data/posts/${id}`, { headers })
+      .then(r => r.json())
+  )
+);
 ```
 
 ***
@@ -492,10 +490,10 @@ Separate API Keys by environment to prevent accidental modification of productio
 
 ```bash
 # .env.development
-BKEND_API_KEY={dev-key-with-full-permissions}
+BKEND_PUBLISHABLE_KEY={pk_dev_publishable_key}
 
 # .env.production
-BKEND_API_KEY={prod-key-with-limited-permissions}
+BKEND_PUBLISHABLE_KEY={pk_prod_publishable_key}
 ```
 
 ### 6.2 Key Rotation Policy
@@ -580,7 +578,7 @@ async function apiRequestWithMetrics(url, options) {
     tags: {
       endpoint: url,
       status: response.status,
-      environment: process.env.BKEND_ENVIRONMENT
+      environment: process.env.NODE_ENV
     }
   });
 

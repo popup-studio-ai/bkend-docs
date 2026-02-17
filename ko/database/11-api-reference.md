@@ -25,10 +25,13 @@ https://api-client.bkend.ai
 
 | 헤더 | 필수 | 설명 |
 |------|:----:|------|
-| `X-Project-Id` | ✅ | 프로젝트 ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | `{pk_publishable_key}` — Publishable Key |
 | `Authorization` | 조건부 | `Bearer {accessToken}` — 권한에 따라 필요 |
 | `Content-Type` | 조건부 | `application/json` — POST, PATCH 요청 시 |
+
+{% hint style="info" %}
+💡 Publishable Key에 프로젝트와 환경 정보가 포함되어 있어 별도 헤더가 필요하지 않습니다.
+{% endhint %}
 
 ### 시스템 필드
 
@@ -94,6 +97,7 @@ GET /v1/data/:tableName
 | `searchType` | query | `string` | - | 검색 대상 필드 |
 | `andFilters` | query | `JSON` | - | AND 조건 필터 |
 | `orFilters` | query | `JSON` | - | OR 조건 필터 |
+| `select` | query | `string[]` | - | 응답에 포함할 필드 (쉼표 구분) |
 
 **응답:** `200 OK` — `{ items: [...], pagination: { total, page, limit, totalPages, hasNext, hasPrev } }`
 
@@ -152,6 +156,33 @@ GET /v1/data/:tableName/spec
 
 ***
 
+## OpenAPI 스펙 조회
+
+```http
+GET /v1/data/:tableName/openapi
+```
+
+| 파라미터 | 위치 | 타입 | 필수 | 설명 |
+|---------|------|------|:----:|------|
+| `tableName` | path | `string` | ✅ | 테이블 이름 |
+
+**응답:** `200 OK` — OpenAPI 3.0 스펙 문서
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": { "title": "...", "version": "1.0.0" },
+  "paths": { "..." : { "..." } },
+  "components": { "..." }
+}
+```
+
+{% hint style="info" %}
+지정한 테이블의 CRUD 작업에 대한 OpenAPI 3.0 스펙을 반환합니다. 클라이언트 SDK 자동 생성이나 API 테스트 도구 연동에 활용할 수 있습니다.
+{% endhint %}
+
+***
+
 ## 필터 연산자
 
 | 연산자 | 설명 | 예시 |
@@ -192,6 +223,7 @@ GET /v1/data/:tableName/spec
 | `PATCH` | `/v1/data/:tableName/:id` | 데이터 수정 |
 | `DELETE` | `/v1/data/:tableName/:id` | 데이터 삭제 |
 | `GET` | `/v1/data/:tableName/spec` | 스키마 조회 |
+| `GET` | `/v1/data/:tableName/openapi` | OpenAPI 3.0 스펙 |
 
 {% hint style="info" %}
 💡 모든 엔드포인트는 `/v1/:tableName` 단축 경로도 지원합니다.
@@ -210,5 +242,7 @@ GET /v1/data/:tableName/spec
 | `data/duplicate-value` | 409 | Unique 제약 위반 |
 | `data/permission-denied` | 403 | 권한 없음 |
 | `data/system-table-access` | 403 | 시스템 테이블 접근 불가 |
+| `data/scope-insufficient` | 403 | API 키 scope에 필요한 권한이 포함되지 않음 |
+| `data/project-access-denied` | 403 | Access Token의 프로젝트 ID 불일치 |
 | `data/invalid-header` | 400 | 필수 헤더 누락 |
 | `data/rate-limit-exceeded` | 429 | API 호출 한도 초과 |

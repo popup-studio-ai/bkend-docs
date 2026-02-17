@@ -4,6 +4,14 @@
 💡 AND/OR 필터와 검색으로 원하는 데이터를 정확하게 찾으세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **이 문서에서 사용하는 API**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/data/:tableName` | GET | 조건부 | 필터링 조회 |
+{% endhint %}
+
 ## 개요
 
 목록 조회 시 `andFilters`, `orFilters`, `search` 파라미터를 사용하여 데이터를 필터링할 수 있습니다. 쿼리 파라미터로 JSON 형식의 필터를 전달합니다.
@@ -17,8 +25,7 @@
 ```bash
 # status가 "active"이고 age가 18 이상인 데이터
 curl -X GET "https://api-client.bkend.ai/v1/data/users?andFilters=%7B%22status%22%3A%22active%22%2C%22age%22%3A%7B%22%24gte%22%3A18%7D%7D" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ```javascript
@@ -31,8 +38,7 @@ const response = await fetch(
   `https://api-client.bkend.ai/v1/data/users?andFilters=${encodeURIComponent(andFilters)}`,
   {
     headers: {
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
   }
 );
@@ -119,8 +125,7 @@ const url = `https://api-client.bkend.ai/v1/data/posts?andFilters=${encodeURICom
 ```bash
 # 모든 필드에서 "bkend" 검색
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?search=bkend" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ### 특정 필드 검색
@@ -130,8 +135,7 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?search=bkend" \
 ```bash
 # title 필드에서만 "bkend" 검색
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?search=bkend&searchType=title" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 | 파라미터 | 타입 | 설명 |
@@ -170,6 +174,27 @@ const andFilters = JSON.stringify({
 ```
 
 ***
+
+### 필터 인코딩 패턴
+
+{% tabs %}
+{% tab title="올바른 사용" %}
+```javascript
+const filters = { status: 'active', age: { $gte: 18 } };
+const encoded = encodeURIComponent(JSON.stringify(filters));
+const url = `https://api-client.bkend.ai/v1/data/users?andFilters=${encoded}`;
+```
+{% endtab %}
+{% tab title="잘못된 사용" %}
+```javascript
+// ❌ JSON.stringify 없이 직접 전달
+const url = `/v1/data/users?andFilters={status:'active'}`;
+
+// ❌ encodeURIComponent 없이 전달
+const url = `/v1/data/users?andFilters={"status":"active"}`;
+```
+{% endtab %}
+{% endtabs %}
 
 {% hint style="warning" %}
 ⚠️ `andFilters`와 `orFilters`의 값은 반드시 URL 인코딩된 JSON 문자열이어야 합니다. 인코딩하지 않으면 파라미터가 올바르게 파싱되지 않습니다.

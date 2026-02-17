@@ -18,9 +18,8 @@ bkend는 JWT 기반 인증과 함께 세션 관리 기능을 제공합니다. Us
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/me \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**
@@ -51,8 +50,7 @@ Access Token이 만료되었을 때 Refresh Token으로 새 토큰 쌍을 발급
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'
@@ -64,8 +62,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/refresh', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     refreshToken: localStorage.getItem('refreshToken'),
@@ -107,9 +104,8 @@ const { accessToken, refreshToken } = await response.json();
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/sessions?page=1&limit=10" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 | 파라미터 | 위치 | 타입 | 필수 | 설명 |
@@ -150,9 +146,8 @@ curl -X GET "https://api-client.bkend.ai/v1/auth/sessions?page=1&limit=10" \
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/auth/sessions/{sessionId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 {% hint style="warning" %}
@@ -169,9 +164,8 @@ curl -X DELETE https://api-client.bkend.ai/v1/auth/sessions/{sessionId} \
 
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/signout \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***
@@ -182,8 +176,10 @@ curl -X POST https://api-client.bkend.ai/v1/auth/signout \
 |----------|:----:|------|
 | `auth/unauthorized` | 401 | 인증이 필요함 |
 | `auth/invalid-token` | 401 | 토큰이 유효하지 않음 |
-| `auth/token-expired` | 401 | Refresh Token이 만료됨 |
+| `auth/invalid-refresh-token` | 401 | Refresh Token 불일치 또는 세션 없음 |
+| `auth/session-expired` | 401 | 세션 만료 (7일) |
 | `auth/session-not-found` | 404 | 세션을 찾을 수 없음 |
+| `auth/user-not-found` | 404 | 사용자가 삭제됨 |
 
 ***
 

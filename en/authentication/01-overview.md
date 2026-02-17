@@ -6,7 +6,36 @@ bkend provides various authentication methods including email, social login, and
 
 ## Overview
 
+To separate data per user and enforce permissions like "only the author can edit their own posts," you need user authentication.
+
 The bkend authentication system is a core feature that manages Users in your project. It provides authentication features through REST API, from sign-up and sign-in to session management and multi-factor authentication (MFA).
+
+***
+
+## Authentication Decision Tree
+
+The following diagram guides you on which authentication method to use when calling the API.
+
+```mermaid
+flowchart TD
+    A[API Call] --> B{Is the endpoint public?}
+    B -->|Yes| C[No auth required — call directly]
+    B -->|No| D{Who is calling?}
+    D -->|App user| E["JWT Token<br/>Authorization: Bearer {accessToken}"]
+    D -->|Server / Batch| F["API Key<br/>X-API-Key: sk_..."]
+    E --> G{Token expired?}
+    G -->|Yes| H["POST /v1/auth/refresh<br/>Issue new accessToken"]
+    G -->|No| I[Proceed with API call]
+    H --> I
+    F --> I
+```
+
+| Auth Method | Use Case | Header |
+|-------------|----------|--------|
+| JWT (User Token) | API calls on behalf of a user from the app | `Authorization: Bearer {accessToken}` |
+| API Key (Publishable) | Client-side API calls | `X-API-Key: pk_...` |
+| API Key (Secret) | Server-side API calls | `X-API-Key: sk_...` |
+| No Auth | Public endpoints (isPublic) | None |
 
 ***
 
@@ -68,12 +97,11 @@ All authentication API requests require the following headers.
 
 | Header | Value | Required | Description |
 |--------|-------|:--------:|-------------|
+| `X-API-Key` | `{pk_publishable_key}` | Yes | Publishable Key issued from the console |
 | `Authorization` | `Bearer {accessToken}` | Conditional | For endpoints that require authentication |
-| `X-Project-Id` | `{project_id}` | Yes | Project ID |
-| `X-Environment` | `dev` \| `staging` \| `prod` | Yes | Environment |
 
 {% hint style="info" %}
-You can find `X-Project-Id` in the project settings of the console. See [Project Settings](../console/12-settings.md) for details.
+You can issue a Publishable Key from the console. See [API Keys](../console/11-api-keys.md) for details.
 {% endhint %}
 
 ***

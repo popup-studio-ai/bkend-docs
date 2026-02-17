@@ -4,7 +4,8 @@ import type { PaginatedResponse } from "@/application/dto/pagination.dto";
 
 export async function getBookmarks(
   page = 1,
-  limit = 20
+  limit = 20,
+  userId?: string
 ): Promise<PaginatedResponse<Bookmark>> {
   const params = new URLSearchParams({
     page: String(page),
@@ -12,6 +13,11 @@ export async function getBookmarks(
     sortBy: "createdAt",
     sortDirection: "desc",
   });
+
+  // Explicit filter (redundant with backend self permission, but clarifies intent)
+  if (userId) {
+    params.set("andFilters", JSON.stringify({ createdBy: userId }));
+  }
 
   return bkendFetch<PaginatedResponse<Bookmark>>(
     `/v1/data/bookmarks?${params.toString()}`

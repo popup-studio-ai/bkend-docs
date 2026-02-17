@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/layout/app-shell";
 import { useMe } from "@/hooks/queries/use-auth";
@@ -14,23 +14,35 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuthStore();
-  useMe();
+  const setUser = useAuthStore((s) => s.setUser);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const [mounted, setMounted] = useState(false);
+  const { data: user, isLoading } = useMe();
 
   useEffect(() => {
-    if (!tokenStorage.hasTokens()) {
-      router.replace("/signin");
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !tokenStorage.hasTokens()) {
+      router.replace("/sign-in");
     }
-  }, [router]);
+  }, [mounted, router]);
 
-  if (!tokenStorage.hasTokens()) {
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      setUser(user);
+    }
+  }, [user, setUser]);
 
-  if (isLoading && !isAuthenticated) {
+  // Show loading state until mounted to prevent hydration mismatch
+  if (!mounted || (isLoading && !isAuthenticated)) {
     return (
       <div className="flex h-screen items-center justify-center bg-amber-50 dark:bg-stone-900">
-        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+          <p className="text-sm text-stone-500 dark:text-stone-400">Loading...</p>
+        </div>
       </div>
     );
   }

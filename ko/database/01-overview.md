@@ -6,7 +6,7 @@
 
 ## 데이터베이스란?
 
-bkend는 프로젝트별로 독립된 데이터베이스를 제공합니다. 별도의 서버 설정 없이 테이블을 생성하고, REST API로 데이터를 생성 · 조회 · 수정 · 삭제(CRUD)할 수 있습니다.
+테이블 구조를 미리 정의하지 않아도, API 호출만으로 데이터를 저장하고 조회하려면 bkend의 동적 테이블을 사용하세요. bkend는 프로젝트별로 독립된 데이터베이스를 제공합니다. 별도의 서버 설정 없이 테이블을 생성하고, REST API로 데이터를 생성 · 조회 · 수정 · 삭제(CRUD)할 수 있습니다.
 
 ```mermaid
 flowchart LR
@@ -68,9 +68,12 @@ flowchart LR
 
 | 헤더 | 필수 | 설명 |
 |------|:----:|------|
-| `X-Project-Id` | ✅ | 프로젝트 ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | `{pk_publishable_key}` — Publishable Key |
 | `Authorization` | 조건부 | `Bearer {accessToken}` — 권한에 따라 필요 |
+
+{% hint style="info" %}
+💡 Publishable Key에 프로젝트와 환경 정보가 포함되어 있어 별도 헤더가 필요하지 않습니다.
+{% endhint %}
 
 ***
 
@@ -89,11 +92,11 @@ flowchart LR
 |:----:|------|------|----------|
 | 1 | 콘솔 | 테이블 생성, 컬럼 정의 | 콘솔 → **데이터베이스** |
 | 2 | 콘솔 | 역할별 CRUD 권한 설정 | 콘솔 → **데이터베이스** → 테이블 → **Permissions** |
-| 3 | 콘솔 | API Key (Bearer Token) 발급 | 콘솔 → **액세스 토큰** → **새 토큰 생성** |
+| 3 | 콘솔 | API Key (Bearer Token) 발급 | 콘솔 → **API 키** → **새 토큰 생성** |
 | 4 | REST API | 앱에서 데이터 CRUD | `POST/GET/PATCH/DELETE /v1/data/:tableName` |
 
 {% hint style="info" %}
-💡 **Project ID**는 콘솔 → **프로젝트 설정**에서, **X-Environment** 값은 콘솔 → **환경** 탭에서 확인할 수 있습니다.
+💡 **Publishable Key**는 콘솔 → **프로젝트 설정** → **API 키**에서 확인할 수 있습니다.
 {% endhint %}
 
 앱에서 REST API를 처음 연동한다면 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 먼저 참고하세요.

@@ -1,21 +1,60 @@
 @import "tailwindcss";
 
-@theme {
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --accent-color: 25 95% 53%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 25 95% 53%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --accent-color: 25 95% 60%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 25 95% 60%;
+  }
 }
 
 @layer base {
-  *,
-  *::before,
-  *::after {
-    @apply border-slate-200 dark:border-slate-700;
+  * {
+    @apply border-border;
   }
-
   body {
-    @apply bg-white text-slate-950 antialiased dark:bg-slate-950 dark:text-slate-50;
+    @apply bg-background text-foreground;
     font-family: "Pretendard Variable", Pretendard, -apple-system,
       BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
       "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
@@ -23,35 +62,125 @@
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+@utility bg-background {
+  background-color: hsl(var(--background));
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+@utility text-foreground {
+  color: hsl(var(--foreground));
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+@utility bg-card {
+  background-color: hsl(var(--card));
 }
 
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
+@utility text-card-foreground {
+  color: hsl(var(--card-foreground));
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: #475569;
+@utility bg-popover {
+  background-color: hsl(var(--popover));
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+@utility text-popover-foreground {
+  color: hsl(var(--popover-foreground));
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+@utility bg-primary {
+  background-color: hsl(var(--primary));
+}
+
+@utility text-primary {
+  color: hsl(var(--primary));
+}
+
+@utility text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
+
+@utility bg-secondary {
+  background-color: hsl(var(--secondary));
+}
+
+@utility text-secondary-foreground {
+  color: hsl(var(--secondary-foreground));
+}
+
+@utility bg-muted {
+  background-color: hsl(var(--muted));
+}
+
+@utility text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+@utility bg-accent {
+  background-color: hsl(var(--accent));
+}
+
+@utility text-accent-foreground {
+  color: hsl(var(--accent-foreground));
+}
+
+@utility text-accent-color {
+  color: hsl(var(--accent-color));
+}
+
+@utility bg-accent-color {
+  background-color: hsl(var(--accent-color));
+}
+
+@utility bg-destructive {
+  background-color: hsl(var(--destructive));
+}
+
+@utility text-destructive {
+  color: hsl(var(--destructive));
+}
+
+@utility text-destructive-foreground {
+  color: hsl(var(--destructive-foreground));
+}
+
+@utility border-border {
+  border-color: hsl(var(--border));
+}
+
+@utility border-input {
+  border-color: hsl(var(--input));
+}
+
+@utility ring-ring {
+  --tw-ring-color: hsl(var(--ring));
+}
+
+@utility ring-offset-background {
+  --tw-ring-offset-color: hsl(var(--background));
+}
+
+@utility bg-gradient-brand {
+  background: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(350 80% 55%) 100%);
+}
+
+@utility bg-gradient-brand-subtle {
+  background: linear-gradient(135deg, hsl(25 95% 53% / 0.08) 0%, hsl(350 80% 55% / 0.08) 100%);
+}
+
+@utility text-gradient-brand {
+  background: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(350 80% 55%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility bg-success {
+  background-color: hsl(142 76% 36%);
+}
+
+@utility text-success {
+  color: hsl(142 76% 36%);
+}
+
+@utility border-success {
+  border-color: hsl(142 76% 36% / 0.3);
 }

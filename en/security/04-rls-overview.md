@@ -80,12 +80,60 @@ If you set `user` group to `update: false` and `self.update: true`:
 
 ***
 
+## Permission Modes
+
+bkend supports two permission modes. Both can be configured through the console or MCP tools.
+
+| Mode | Description | Use Case |
+|------|-------------|----------|
+| **Boolean** | Per-group on/off switches for each CRUD operation | Simple access control |
+| **Expression** | Rule-based expressions that combine groups and conditions | Fine-grained access control |
+
+{% hint style="info" %}
+Both modes are fully compatible. If expression-based permissions are set, they take priority. Otherwise, the boolean permissions are used as a fallback.
+{% endhint %}
+
+### Expression-Based Permissions
+
+Expression-based permissions let you write rules that combine multiple conditions. For example, you can allow access for the `user` group **or** the data owner in a single expression.
+
+```text
+group:user OR self
+```
+
+Common expressions:
+
+| Expression | Meaning |
+|-----------|---------|
+| `group:user` | Allow authenticated users |
+| `group:guest` | Allow unauthenticated users |
+| `self` | Allow the data owner (where `createdBy` matches the requester) |
+| `group:user OR self` | Allow authenticated users and the data owner |
+
+> [Writing RLS Policies](05-rls-policies.md) -- Expression examples and configuration
+
+***
+
+## Column-Level Permissions
+
+In addition to table-level CRUD permissions, you can configure per-field read/write permissions. This allows hiding sensitive fields from certain user groups or restricting who can modify specific fields.
+
+> [Column-Level Permissions](05-rls-policies.md#column-level-permissions)
+
+## Row Filters
+
+Row filters automatically restrict which rows a user can access based on conditions. Unlike `self` permissions (which filter by `createdBy`), row filters support arbitrary field-based conditions.
+
+> [Row Filters](05-rls-policies.md#row-filters)
+
+***
+
 ## System Tables
 
 Tables whose names start with `_` are system tables.
 
 {% hint style="warning" %}
-System tables are accessible only to the `admin` group. Regardless of permission settings, `user` and `guest` access is always blocked.
+System tables are accessible only to the `admin` group by default. If no permissions are configured, `user` and `guest` access is blocked.
 {% endhint %}
 
 ***
@@ -93,5 +141,5 @@ System tables are accessible only to the `admin` group. Regardless of permission
 ## Next Steps
 
 - [Writing RLS Policies](05-rls-policies.md) -- Setting permissions per table
-- [Public Key vs Secret Key](03-public-vs-secret.md) -- Permission differences by key type
+- [Publishable Key vs Secret Key](03-public-vs-secret.md) -- Permission differences by key type
 - [Security Best Practices](07-best-practices.md) -- Recommended RLS configurations

@@ -6,6 +6,8 @@
 
 ## 개요
 
+게시판에서 다른 사용자의 글을 수정하거나 삭제할 수 없도록 하려면 데이터 접근 제어가 필요합니다. bkend의 보안 기능으로 Row/Column 수준의 세밀한 권한을 설정할 수 있습니다.
+
 bkend는 다계층 보안 모델을 통해 데이터를 보호합니다. API 키 기반 인증, Row Level Security(RLS), 암호화 등 여러 보안 계층이 함께 동작합니다.
 
 ```mermaid
@@ -45,10 +47,10 @@ flowchart TD
 
 콘솔에서 생성하는 인증 키입니다. `Authorization: Bearer {api_key}` 형식으로 사용합니다.
 
-- **Public Key**: 클라이언트 사이드에서 사용 (제한된 권한)
+- **Publishable Key**: 클라이언트 사이드에서 사용 (제한된 권한)
 - **Secret Key**: 서버 사이드에서만 사용 (전체 권한)
 
-→ [API 키 이해](02-api-keys.md), [Public Key vs Secret Key](03-public-vs-secret.md)
+→ [API 키 이해](02-api-keys.md), [Publishable Key vs Secret Key](03-public-vs-secret.md)
 
 ### JWT 토큰
 
@@ -93,7 +95,7 @@ Row Level Security는 테이블 데이터에 대한 접근 권한을 세밀하�
 ***
 
 {% hint style="warning" %}
-⚠️ Public Key는 클라이언트에 노출되어도 안전하지만, Secret Key는 반드시 서버 환경에서만 사용하세요. 자세한 내용은 [Public Key vs Secret Key](03-public-vs-secret.md)를 참고하세요.
+⚠️ Publishable Key는 클라이언트에 노출되어도 안전하지만, Secret Key는 반드시 서버 환경에서만 사용하세요. 자세한 내용은 [Publishable Key vs Secret Key](03-public-vs-secret.md)를 참고하세요.
 {% endhint %}
 
 ***

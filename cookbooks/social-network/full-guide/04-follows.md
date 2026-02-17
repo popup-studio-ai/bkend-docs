@@ -90,18 +90,16 @@ sequenceDiagram
 ```bash
 # 1. 이미 팔로우 중인지 확인
 curl -X GET "https://api-client.bkend.ai/v1/data/follows?andFilters=%7B%22followerId%22%3A%22{myUserId}%22%2C%22followingId%22%3A%22{targetUserId}%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```bash
 # 2. 팔로우 생성
 curl -X POST https://api-client.bkend.ai/v1/data/follows \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "followerId": "{myUserId}",
     "followingId": "{targetUserId}"
@@ -130,8 +128,7 @@ async function bkendFetch(path, options = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
       ...options.headers,
     },
@@ -194,17 +191,15 @@ const followUser = async (myUserId, targetUserId) => {
 ```bash
 # 1. 팔로우 관계 조회
 curl -X GET "https://api-client.bkend.ai/v1/data/follows?andFilters=%7B%22followerId%22%3A%22{myUserId}%22%2C%22followingId%22%3A%22{targetUserId}%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```bash
 # 2. 팔로우 삭제
 curl -X DELETE https://api-client.bkend.ai/v1/data/follows/{followId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch 구현
@@ -257,9 +252,8 @@ const unfollowUser = async (myUserId, targetUserId) => {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/follows?andFilters=%7B%22followingId%22%3A%22{myUserId}%22%7D&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**
@@ -346,9 +340,8 @@ const getFollowersWithProfiles = async (myUserId) => {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/follows?andFilters=%7B%22followerId%22%3A%22{myUserId}%22%7D&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**

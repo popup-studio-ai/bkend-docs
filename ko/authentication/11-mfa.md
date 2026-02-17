@@ -35,9 +35,8 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/mfa/enable \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "password": "MyP@ssw0rd!"
   }'
@@ -72,9 +71,8 @@ Authenticator 앱에서 생성된 6자리 코드를 입력하세요.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/mfa/confirm \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "code": "123456"
   }'
@@ -97,9 +95,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/mfa/confirm \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/mfa/disable \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "password": "MyP@ssw0rd!",
     "code": "123456"
@@ -124,8 +121,7 @@ MFA가 활성화된 상태에서 로그인할 때는 `mfaCode`를 함께 전달�
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",

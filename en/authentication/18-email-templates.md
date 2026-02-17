@@ -18,9 +18,8 @@ Retrieve the global email settings (sender, logo, brand color).
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/email-templates/config \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **Response:**
@@ -44,9 +43,8 @@ curl -X GET https://api-client.bkend.ai/v1/auth/email-templates/config \
 ```bash
 curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/config \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "senderEmail": "hello@myapp.com",
     "senderName": "MyApp Team",
@@ -74,9 +72,8 @@ Retrieve the list of available email templates.
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/email-templates \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **Response:**
@@ -120,9 +117,8 @@ curl -X GET https://api-client.bkend.ai/v1/auth/email-templates \
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **Response:**
@@ -148,9 +144,8 @@ curl -X GET https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
 ```bash
 curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "subject": "[MyApp] Please reset your password",
     "body": "<html><body><h1>Password Reset</h1><p>Click the button below to reset your password.</p><a href=\"{{resetLink}}\">Reset Password</a></body></html>"
@@ -190,9 +185,8 @@ Preview a modified template.
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/email-templates/preview/password_reset?locale=ko" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **Response:**

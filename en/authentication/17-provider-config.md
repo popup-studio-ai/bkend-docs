@@ -18,9 +18,8 @@ Retrieve all authentication provider settings at once.
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/providers \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***
@@ -31,9 +30,8 @@ curl -X GET https://api-client.bkend.ai/v1/auth/providers \
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/providers/email \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **Response:**
@@ -60,9 +58,8 @@ Update email authentication settings.
 ```bash
 curl -X PUT https://api-client.bkend.ai/v1/auth/providers/email \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "passwordPolicy": {
       "minLength": 10,
@@ -104,9 +101,8 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/email \
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/providers/oauth \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### Get Individual OAuth Provider
@@ -115,9 +111,8 @@ curl -X GET https://api-client.bkend.ai/v1/auth/providers/oauth \
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/providers/oauth/google \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **Response:**
@@ -145,9 +140,8 @@ For security, `clientSecret` is not included in the response.
 ```bash
 curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/google \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "clientId": "{google_client_id}",
     "clientSecret": "{google_client_secret}",
@@ -161,9 +155,8 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/google \
 ```bash
 curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/github \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "clientId": "{github_client_id}",
     "clientSecret": "{github_client_secret}",
@@ -191,9 +184,8 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/github \
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/auth/providers/oauth/github \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***

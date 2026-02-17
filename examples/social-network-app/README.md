@@ -71,12 +71,11 @@ To connect with a real bkend project, configure via `--dart-define`.
 fvm flutter run \
   --dart-define=MOCK_MODE=false \
   --dart-define=API_BASE_URL=https://api-client.bkend.ai \
-  --dart-define=PROJECT_ID=your-project-id \
-  --dart-define=ENVIRONMENT=dev
+  --dart-define=PUBLISHABLE_KEY=pk_your_publishable_key
 ```
 
 1. Create a project in the [bkend console](https://console.bkend.ai)
-2. Set your project ID in `PROJECT_ID`
+2. Set your publishable key in `PUBLISHABLE_KEY`
 3. Create the table structures from the cookbook (profiles, posts, comments, likes, follows) in the console
 4. Run with the command above
 
@@ -84,10 +83,10 @@ fvm flutter run \
 
 ```bash
 # Android
-fvm flutter build apk --dart-define=MOCK_MODE=false --dart-define=PROJECT_ID=your-project-id
+fvm flutter build apk --dart-define=MOCK_MODE=false --dart-define=PUBLISHABLE_KEY=pk_your_publishable_key
 
 # iOS
-fvm flutter build ios --dart-define=MOCK_MODE=false --dart-define=PROJECT_ID=your-project-id
+fvm flutter build ios --dart-define=MOCK_MODE=false --dart-define=PUBLISHABLE_KEY=pk_your_publishable_key
 ```
 
 ## Project Structure

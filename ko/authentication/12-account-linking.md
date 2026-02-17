@@ -21,9 +21,8 @@
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/accounts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "provider": "google",
     "code": "{authorization_code}"
@@ -49,9 +48,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/accounts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     provider: 'google',
@@ -77,9 +75,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/accounts', {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/accounts?page=1&limit=10" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**
@@ -118,9 +115,8 @@ curl -X GET "https://api-client.bkend.ai/v1/auth/accounts?page=1&limit=10" \
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/auth/accounts/google \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 {% hint style="warning" %}
@@ -138,8 +134,7 @@ curl -X DELETE https://api-client.bkend.ai/v1/auth/accounts/google \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/accounts/check \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "type": "email",
     "provider": "email",

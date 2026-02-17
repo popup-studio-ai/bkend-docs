@@ -18,9 +18,8 @@
 {% tab title="cURL" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/users?page=1&limit=20&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -34,9 +33,8 @@ const params = new URLSearchParams({
 
 const response = await fetch(`https://api-client.bkend.ai/v1/users?${params}`, {
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 ```
@@ -92,9 +90,8 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users?${params}`, {
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/users/{userId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***
@@ -108,9 +105,8 @@ curl -X GET https://api-client.bkend.ai/v1/users/{userId} \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/users \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "name": "새 사용자",
     "email": "newuser@example.com",
@@ -127,9 +123,8 @@ curl -X POST https://api-client.bkend.ai/v1/users \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/users/{userId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "name": "수정된 이름"
   }'
@@ -143,9 +138,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId} \
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/users/{userId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 {% hint style="danger" %}
@@ -161,9 +155,8 @@ curl -X DELETE https://api-client.bkend.ai/v1/users/{userId} \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/role \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "role": "admin"
   }'
@@ -183,9 +176,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/role \
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/users/{userId}/preferences \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### PATCH /v1/users/:userId/preferences
@@ -193,9 +185,8 @@ curl -X GET https://api-client.bkend.ai/v1/users/{userId}/preferences \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/preferences \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "locale": "ko",
     "timezone": "Asia/Seoul",
@@ -217,9 +208,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/preferences \
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/users/{userId}/notifications \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### PATCH /v1/users/:userId/notifications
@@ -227,9 +217,8 @@ curl -X GET https://api-client.bkend.ai/v1/users/{userId}/notifications \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/notifications \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "marketing": false,
     "push": true,
@@ -260,9 +249,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/notifications \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/public-settings \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "slug": "gildong",
     "isPublic": true

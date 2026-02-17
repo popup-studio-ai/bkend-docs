@@ -4,6 +4,18 @@
 💡 등록된 파일을 삭제하세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- 사용자 인증 완료 (JWT 토큰 필요 — 모든 파일 API는 인증 필수)
+{% endhint %}
+
+**이 문서에서 사용하는 API:**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/files/:fileId` | DELETE | JWT | 파일 삭제 |
+
 ## 개요
 
 `DELETE /v1/files/:fileId` 엔드포인트로 파일 메타데이터를 삭제합니다.
@@ -18,9 +30,8 @@
 {% tab title="cURL" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/files/{fileId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -28,9 +39,8 @@ curl -X DELETE https://api-client.bkend.ai/v1/files/{fileId} \
 const response = await fetch(`https://api-client.bkend.ai/v1/files/${fileId}`, {
   method: 'DELETE',
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 

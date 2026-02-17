@@ -54,9 +54,8 @@ flowchart LR
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDirection=desc&limit=20" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**
@@ -99,15 +98,13 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDire
 ```bash
 # 1페이지 (처음 20개)
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDirection=desc&limit=20&offset=0" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 
 # 2페이지 (21~40번째)
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDirection=desc&limit=20&offset=20" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch 구현
@@ -120,8 +117,7 @@ async function bkendFetch(path, options = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
       ...options.headers,
     },
@@ -265,9 +261,8 @@ const getHomeFeed = async (myUserId, page = 1, limit = 20) => {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters=%7B%22imageUrl%22%3A%7B%22%24ne%22%3Anull%7D%7D&sortBy=createdAt&sortDirection=desc&limit=20" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 특정 기간 게시물
@@ -275,9 +270,8 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters=%7B%22imageUrl
 ```bash
 # 오늘 게시물만
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters=%7B%22createdAt%22%3A%7B%22%24gte%22%3A%222025-01-15T00%3A00%3A00Z%22%7D%7D&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch 구현
@@ -342,18 +336,16 @@ const getFeedByDateRange = async (startDate, endDate, page = 1, limit = 20) => {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=likesCount&sortDirection=desc&limit=20" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 댓글 순 정렬
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=commentsCount&sortDirection=desc&limit=20" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch 구현

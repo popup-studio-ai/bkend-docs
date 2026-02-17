@@ -4,6 +4,22 @@
 💡 이메일과 비밀번호로 로그인하여 JWT 토큰을 발급받으세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- [이메일 회원가입](02-email-signup.md) 완료 (로그인할 계정 필요)
+- [이메일 인증 제공자 활성화](17-provider-config.md) (기본 활성화됨)
+{% endhint %}
+
+{% hint style="info" %}
+💡 **이 문서에서 사용하는 API**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/auth/email/signin` | POST | 불필요 | 이메일 로그인 |
+| `/v1/auth/refresh` | POST | 불필요 | 토큰 갱신 |
+{% endhint %}
+
 ## 개요
 
 등록된 이메일과 비밀번호로 로그인하면 Access Token과 Refresh Token이 발급됩니다. MFA가 활성화된 계정은 TOTP 코드도 함께 제출해야 합니다.
@@ -38,8 +54,7 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -53,8 +68,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signin',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     method: 'password',
@@ -84,8 +98,7 @@ MFA가 활성화된 계정은 `mfaCode`를 함께 전달해야 합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -150,8 +163,7 @@ Access Token이 만료되면 Refresh Token으로 새 토큰을 발급받으세�
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'

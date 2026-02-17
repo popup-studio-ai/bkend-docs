@@ -39,8 +39,7 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "magiclink",
     "email": "user@example.com",
@@ -54,8 +53,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     method: 'magiclink',
@@ -97,8 +95,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "magiclink",
     "email": "user@example.com",
@@ -125,8 +122,7 @@ https://myapp.com/auth/callback?token={magic_link_token}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/callback \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "token": "{magic_link_token}"
   }'

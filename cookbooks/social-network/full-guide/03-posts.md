@@ -157,9 +157,8 @@ flowchart LR
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "content": "오늘 새로운 프로젝트를 시작했습니다!"
   }'
@@ -221,8 +220,7 @@ async function bkendFetch(path, options = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
       ...options.headers,
     },
@@ -271,18 +269,16 @@ const createPost = async ({ content, imageUrl }) => {
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/posts/{postId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 특정 사용자 게시물 목록
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters=%7B%22createdBy%22%3A%22{userId}%22%7D&sortBy=createdAt&sortDirection=desc&limit=20" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**
@@ -361,9 +357,8 @@ const getPost = async (postId) => {
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/posts/{postId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "content": "수정된 게시물 내용입니다"
   }'
@@ -373,9 +368,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/posts/{postId} \
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/posts/{postId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 {% hint style="warning" %}
@@ -433,9 +427,8 @@ const deletePost = async (postId) => {
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/comments \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "postId": "{postId}",
     "content": "축하합니다! 화이팅!"
@@ -458,9 +451,8 @@ curl -X POST https://api-client.bkend.ai/v1/data/comments \
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/comments?andFilters=%7B%22postId%22%3A%22{postId}%22%7D&sortBy=createdAt&sortDirection=asc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**
@@ -563,9 +555,8 @@ flowchart TD
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/likes?andFilters=%7B%22postId%22%3A%22{postId}%22%2C%22createdBy%22%3A%22{userId}%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 좋아요 추가
@@ -573,9 +564,8 @@ curl -X GET "https://api-client.bkend.ai/v1/data/likes?andFilters=%7B%22postId%2
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/likes \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "postId": "{postId}"
   }'
@@ -585,9 +575,8 @@ curl -X POST https://api-client.bkend.ai/v1/data/likes \
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/likes/{likeId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch 구현 (토글)

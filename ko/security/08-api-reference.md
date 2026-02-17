@@ -24,33 +24,38 @@ https://api-client.bkend.ai
 
 | 헤더 | 필수 | 설명 |
 |------|:----:|------|
-| `X-Project-Id` | ✅ | 프로젝트 ID |
-| `X-Environment` | ✅ | 환경 (`dev`, `staging`, `prod`) |
+| `X-API-Key` | ✅ | Publishable Key (`pk_`) 또는 Secret Key (`sk_`). 프로젝트 ID와 환경 정보 포함 |
 
 ### 인증 헤더 (선택)
 
 | 헤더 | 값 | 결과 |
 |------|-----|------|
-| `Authorization: Bearer {api_key}` | API 키 (`ak_` prefix) | 키 유형에 따라 권한 부여 |
 | `Authorization: Bearer {jwt}` | JWT 토큰 | 사용자 인증 (user 그룹) |
-| (없음) | — | 미인증 (guest 그룹) |
+| (없음) | — | 미인증 (pk_ 단독 → guest 그룹) |
 
-### API 키 인증
+{% hint style="info" %}
+💡 `pk_`/`sk_` 키에 프로젝트 ID와 환경 정보가 포함되어 있으므로, `X-Project-Id`와 `X-Environment` 헤더는 불필요합니다.
+{% endhint %}
+
+### Publishable Key 인증
 
 ```bash
+# 공개 엔드포인트 (pk_ 단독)
 curl -X GET https://api-client.bkend.ai/v1/data/{tableName} \
-  -H "Authorization: Bearer ak_{your_api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
+
+# 인증 필요 엔드포인트 (pk_ + JWT)
+curl -X GET https://api-client.bkend.ai/v1/data/{tableName} \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
-### JWT 인증
+### Secret Key 인증
 
 ```bash
+# 서버 사이드 (sk_ 단독, admin 권한)
 curl -X GET https://api-client.bkend.ai/v1/data/{tableName} \
-  -H "Authorization: Bearer {jwt_token}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {sk_secret_key}"
 ```
 
 ***
@@ -62,16 +67,18 @@ sequenceDiagram
     participant C as 클라이언트
     participant A as bkend API
 
-    C->>A: Authorization: Bearer {token}
-    alt API 키 (ak_ prefix)
+    C->>A: X-API-Key: pk_/sk_ + (선택) Authorization: Bearer {jwt}
+    alt Secret Key (sk_)
         A->>A: SHA-256 해시로 키 검증
-        A->>A: 프로젝트 접근 권한 확인
-    else JWT 토큰
-        A->>A: JWT 서명 검증
-        A->>A: 사용자 역할 확인
-    else 토큰 없음
+        A->>A: admin 권한 부여
+    else Publishable Key (pk_) + JWT
+        A->>A: pk_ 검증 → 프로젝트 식별
+        A->>A: JWT 서명 검증 → 사용자 역할 확인
+    else Publishable Key (pk_) 단독
+        A->>A: pk_ 검증 → 프로젝트 식별
         A->>A: guest 그룹 적용
     end
+    A->>A: 스코프 검사 (API 키)
     A->>A: RLS 권한 검사
     A-->>C: 응답
 ```
@@ -82,22 +89,21 @@ sequenceDiagram
 
 | 인증 | 조건 | 사용자 그룹 |
 |------|------|-----------|
-| Secret Key | API 키 인증 | `admin` |
-| Public Key + JWT | 조직 관리자 역할 | `admin` |
-| Public Key + JWT | 일반 사용자 | `user` |
-| Public Key (JWT 없음) | — | `guest` |
-| 인증 없음 | — | `guest` |
+| Secret Key (`sk_`) | — | `admin` |
+| Publishable Key (`pk_`) + JWT | 조직 관리자 역할 | `admin` |
+| Publishable Key (`pk_`) + JWT | 일반 사용자 | `user` |
+| Publishable Key (`pk_`) 단독 | — | `guest` |
 
 ***
 
 ## API 키 형식
 
-| 항목 | 값 |
-|------|-----|
-| **Prefix** | `ak_` |
-| **형식** | `ak_` + 64자 hex (32바이트 랜덤) |
-| **정규식** | `^ak_[a-fA-F0-9]{64}$` |
-| **저장 방식** | SHA-256 해시 (원본 미저장) |
+| 항목 | Publishable Key | Secret Key |
+|------|----------------|------------|
+| **Prefix** | `pk_` | `sk_` |
+| **형식** | `pk_` + 64자 hex | `sk_` + 64자 hex |
+| **정규식** | `^pk_[a-fA-F0-9]{64}$` | `^sk_[a-fA-F0-9]{64}$` |
+| **저장 방식** | SHA-256 해시 (원본 미저장) | SHA-256 해시 (원본 미저장) |
 
 ### 키 생성
 
@@ -135,14 +141,43 @@ permissions 미설정 시 적용되는 기본 권한입니다.
 
 ***
 
+## API 키 스코프 검사
+
+API 키에 스코프가 설정되어 있으면, RLS 권한 검사 **이전에** 스코프를 먼저 확인합니다. `admin` 그룹이라도 스코프 제한을 우회할 수 없습니다.
+
+### 검사 순서
+
+```mermaid
+flowchart TD
+    A[API 요청] --> B{API 키 + 스코프 설정?}
+    B -->|예| C{스코프가 tableName:operation 포함?}
+    C -->|아니오| D[403 SCOPE_INSUFFICIENT]
+    C -->|예| E{admin 그룹?}
+    B -->|스코프 없음 / JWT| E
+    E -->|예| F[허용]
+    E -->|아니오| G[RLS 권한 검사]
+```
+
+### 스코프 에러 응답
+
+```json
+{
+  "statusCode": 403,
+  "error": "SCOPE_INSUFFICIENT",
+  "message": "API Key scope does not include posts:delete"
+}
+```
+
+***
+
 ## 보안 관련 에러 코드
 
 ### 인증 에러 (401)
 
 | 에러 코드 | 설명 | 대응 |
 |----------|------|------|
-| `UNAUTHORIZED` | 인증 토큰 없음 | `Authorization` 헤더 추가 |
-| `INVALID_TOKEN` | 잘못된 토큰 형식 | 토큰 형식 확인 (ak_ prefix 또는 유효한 JWT) |
+| `UNAUTHORIZED` | 인증 토큰 없음 | `X-API-Key` 헤더 추가 |
+| `INVALID_TOKEN` | 잘못된 토큰 형식 | 토큰 형식 확인 (pk_/sk_ prefix 또는 유효한 JWT) |
 | `TOKEN_EXPIRED` | 토큰 만료 | 새 토큰 발급 또는 Refresh Token으로 갱신 |
 | `TOKEN_REVOKED` | 폐기된 API 키 | 새 API 키 생성 |
 
@@ -161,6 +196,7 @@ permissions 미설정 시 적용되는 기본 권한입니다.
 | 에러 코드 | 설명 | 대응 |
 |----------|------|------|
 | `PERMISSION_DENIED` | 해당 그룹에 권한 없음 | RLS 정책 확인 또는 인증 방식 변경 |
+| `SCOPE_INSUFFICIENT` | API 키 스코프에 요청한 작업 미포함 | API 키에 필요한 스코프 추가 |
 | `SYSTEM_TABLE_ACCESS` | 시스템 테이블 접근 차단 | admin 인증(Secret Key) 사용 |
 
 ### 인가 에러 응답 예시
@@ -177,9 +213,8 @@ permissions 미설정 시 적용되는 기본 권한입니다.
 
 | 에러 코드 | HTTP | 설명 | 대응 |
 |----------|:----:|------|------|
-| `PROJECT_NOT_FOUND` | 404 | 프로젝트 ID가 잘못됨 | `X-Project-Id` 확인 |
-| `ENVIRONMENT_NOT_FOUND` | 404 | 환경이 잘못됨 | `X-Environment` 확인 |
-| `MISSING_PROJECT_ID` | 400 | 프로젝트 ID 헤더 없음 | `X-Project-Id` 헤더 추가 |
+| `PROJECT_NOT_FOUND` | 404 | API 키의 프로젝트가 잘못됨 | 올바른 API 키 사용 확인 |
+| `ENVIRONMENT_NOT_FOUND` | 404 | API 키의 환경이 잘못됨 | 올바른 환경의 API 키 사용 확인 |
 
 ***
 

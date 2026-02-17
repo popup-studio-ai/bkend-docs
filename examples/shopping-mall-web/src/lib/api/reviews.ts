@@ -1,4 +1,4 @@
-import { apiClient } from "@/infrastructure/api/client";
+import { bkendFetch } from "@/infrastructure/api/client";
 import type { ReviewDto, ReviewFormInput } from "@/application/dto/review.dto";
 import type { PaginatedResponse, PaginationParams } from "@/application/dto/pagination.dto";
 
@@ -14,7 +14,7 @@ export const reviewsApi = {
     if (params.sortBy) searchParams.set("sortBy", params.sortBy);
     if (params.sortDirection) searchParams.set("sortDirection", params.sortDirection);
 
-    return apiClient<PaginatedResponse<ReviewDto>>(
+    return bkendFetch<PaginatedResponse<ReviewDto>>(
       `/v1/data/reviews?${searchParams.toString()}`
     );
   },
@@ -26,13 +26,13 @@ export const reviewsApi = {
     if (params.sortBy) searchParams.set("sortBy", params.sortBy);
     if (params.sortDirection) searchParams.set("sortDirection", params.sortDirection);
 
-    return apiClient<PaginatedResponse<ReviewDto>>(
+    return bkendFetch<PaginatedResponse<ReviewDto>>(
       `/v1/data/reviews?${searchParams.toString()}`
     );
   },
 
   create(input: ReviewFormInput): Promise<ReviewDto> {
-    return apiClient<ReviewDto>("/v1/data/reviews", {
+    return bkendFetch<ReviewDto>("/v1/data/reviews", {
       method: "POST",
       body: input,
     });
@@ -42,14 +42,14 @@ export const reviewsApi = {
     id: string,
     input: Pick<ReviewFormInput, "rating" | "content">
   ): Promise<ReviewDto> {
-    return apiClient<ReviewDto>(`/v1/data/reviews/${id}`, {
+    return bkendFetch<ReviewDto>(`/v1/data/reviews/${id}`, {
       method: "PATCH",
       body: input,
     });
   },
 
   delete(id: string): Promise<void> {
-    return apiClient<void>(`/v1/data/reviews/${id}`, {
+    return bkendFetch<void>(`/v1/data/reviews/${id}`, {
       method: "DELETE",
     });
   },

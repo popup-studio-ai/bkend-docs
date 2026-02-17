@@ -1,12 +1,13 @@
 import { create } from "zustand";
 
 interface UiState {
-  isSidebarOpen: boolean;
+  sidebarOpen: boolean;
+  mobileSidebarOpen: boolean;
   isCartDrawerOpen: boolean;
   isQuickViewOpen: boolean;
   quickViewProductId: string | null;
   toggleSidebar: () => void;
-  setSidebarOpen: (open: boolean) => void;
+  setMobileSidebarOpen: (open: boolean) => void;
   openCartDrawer: () => void;
   closeCartDrawer: () => void;
   openQuickView: (productId: string) => void;
@@ -14,13 +15,14 @@ interface UiState {
 }
 
 export const useUiStore = create<UiState>((set) => ({
-  isSidebarOpen: false,
+  sidebarOpen: true,
+  mobileSidebarOpen: false,
   isCartDrawerOpen: false,
   isQuickViewOpen: false,
   quickViewProductId: null,
 
-  toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
-  setSidebarOpen: (open) => set({ isSidebarOpen: open }),
+  toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
+  setMobileSidebarOpen: (open) => set({ mobileSidebarOpen: open }),
   openCartDrawer: () => set({ isCartDrawerOpen: true }),
   closeCartDrawer: () => set({ isCartDrawerOpen: false }),
   openQuickView: (productId) =>

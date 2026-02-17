@@ -6,6 +6,8 @@ Understand bkend's security architecture and how your data is protected.
 
 ## Overview
 
+To prevent users from editing or deleting other users' posts, you need data access control. With bkend's security features, you can set fine-grained permissions at the Row and Column level.
+
 bkend protects your data through a multi-layered security model. Multiple security layers -- API key-based authentication, Row Level Security (RLS), and encryption -- work together to keep your data safe.
 
 ```mermaid
@@ -45,10 +47,10 @@ flowchart TD
 
 Authentication keys generated from the console. Use them in the `Authorization: Bearer {api_key}` format.
 
-- **Public Key**: Used on the client side (limited permissions)
+- **Publishable Key**: Used on the client side (limited permissions)
 - **Secret Key**: Used on the server side only (full permissions)
 
-> [Understanding API Keys](02-api-keys.md), [Public Key vs Secret Key](03-public-vs-secret.md)
+> [Understanding API Keys](02-api-keys.md), [Publishable Key vs Secret Key](03-public-vs-secret.md)
 
 ### JWT Tokens
 
@@ -93,7 +95,7 @@ All API communication is encrypted with TLS 1.2 or higher.
 ***
 
 {% hint style="warning" %}
-Public Keys are safe to expose on the client side, but you must use Secret Keys only in server environments. See [Public Key vs Secret Key](03-public-vs-secret.md) for details.
+Publishable Keys are safe to expose on the client side, but you must use Secret Keys only in server environments. See [Publishable Key vs Secret Key](03-public-vs-secret.md) for details.
 {% endhint %}
 
 ***

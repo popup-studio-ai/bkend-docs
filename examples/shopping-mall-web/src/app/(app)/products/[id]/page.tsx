@@ -19,7 +19,7 @@ export default function ProductDetailPage({
   const { data: product, isLoading, isError, error, refetch } = useProduct(id);
 
   return (
-    <PageTransition>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
       <div className="space-y-6">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/products">
@@ -38,6 +38,6 @@ export default function ProductDetailPage({
           {product && <ProductDetail product={product} />}
         </QueryBoundary>
       </div>
-    </PageTransition>
+    </div>
   );
 }

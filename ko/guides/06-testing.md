@@ -47,9 +47,7 @@ flowchart TD
 
 ```bash
 # .env.test
-BKEND_API_KEY={test-api-key}
-BKEND_PROJECT_ID={project-id}
-BKEND_ENVIRONMENT=dev
+BKEND_API_KEY={pk_test_publishable_key}
 BKEND_BASE_URL=https://api-client.bkend.ai
 ```
 
@@ -63,8 +61,6 @@ require('dotenv').config({ path: '.env.test' });
 
 const config = {
   apiKey: process.env.BKEND_API_KEY,
-  projectId: process.env.BKEND_PROJECT_ID,
-  environment: process.env.BKEND_ENVIRONMENT,
   baseURL: process.env.BKEND_BASE_URL
 };
 
@@ -73,9 +69,8 @@ async function apiRequest(endpoint, options = {}) {
     ...options,
     headers: {
       ...options.headers,
+      'X-API-Key': config.apiKey,
       'Authorization': `Bearer ${config.apiKey}`,
-      'X-Project-Id': config.projectId,
-      'X-Environment': config.environment
     }
   });
 
@@ -89,13 +84,13 @@ async function apiRequest(endpoint, options = {}) {
 }
 
 async function login(email, password) {
-  const data = await apiRequest('/v1/auth/login', {
+  const data = await apiRequest('/v1/auth/email/signin', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password, method: 'password' })
   });
 
-  return data.access_token;
+  return data.accessToken;
 }
 
 module.exports = { apiRequest, login, config };
@@ -155,7 +150,7 @@ async function setup() {
 
   // 테스트 사용자 생성
   for (const user of testUsers) {
-    const data = await apiRequest('/v1/auth/register', {
+    const data = await apiRequest('/v1/auth/email/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
@@ -196,19 +191,20 @@ const { apiRequest, login } = require('./helpers');
 
 describe('Authentication', () => {
   test('회원가입 성공', async () => {
-    const response = await apiRequest('/v1/auth/register', {
+    const response = await apiRequest('/v1/auth/email/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'newuser@test.com',
-        password: 'password123',
-        displayName: 'New User'
+        password: 'Password123$',
+        method: 'password',
+        name: 'New User'
       })
     });
 
     expect(response.user).toBeDefined();
     expect(response.user.email).toBe('newuser@test.com');
-    expect(response.access_token).toBeDefined();
+    expect(response.accessToken).toBeDefined();
   });
 
   test('로그인 성공', async () => {
@@ -223,12 +219,13 @@ describe('Authentication', () => {
   });
 
   test('토큰 갱신 성공', async () => {
-    const loginData = await apiRequest('/v1/auth/login', {
+    const loginData = await apiRequest('/v1/auth/email/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'user1@test.com',
-        password: 'password123'
+        password: 'password123',
+        method: 'password'
       })
     });
 
@@ -236,12 +233,12 @@ describe('Authentication', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        refresh_token: loginData.refresh_token
+        refreshToken: loginData.refreshToken
       })
     });
 
-    expect(refreshData.access_token).toBeDefined();
-    expect(refreshData.access_token).not.toBe(loginData.access_token);
+    expect(refreshData.accessToken).toBeDefined();
+    expect(refreshData.accessToken).not.toBe(loginData.accessToken);
   });
 });
 ```
@@ -282,12 +279,12 @@ describe('CRUD Operations', () => {
   });
 
   test('게시글 조회 (SELECT)', async () => {
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${postId}`, {
+    const post = await apiRequest(`/v1/data/posts/${postId}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    expect(posts.length).toBe(1);
-    expect(posts[0].title).toBe('Test Post');
+    expect(post.id).toBe(postId);
+    expect(post.title).toBe('Test Post');
   });
 
   test('게시글 수정 (UPDATE)', async () => {
@@ -311,11 +308,12 @@ describe('CRUD Operations', () => {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${postId}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-
-    expect(posts.length).toBe(0);
+    // 삭제된 게시글 조회 시 404 에러 발생
+    await expect(
+      apiRequest(`/v1/data/posts/${postId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+    ).rejects.toThrow();
 
     // 삭제됨으로 표시
     const index = createdPostIds.indexOf(postId);
@@ -339,44 +337,54 @@ describe('Query Filters', () => {
     token = await login('user1@test.com', 'password123');
   });
 
-  test('eq (같음) 필터', async () => {
-    const posts = await apiRequest('/v1/data/posts?title=eq.Test Post', {
+  test('andFilters (같음) 필터', async () => {
+    const url = '/v1/data/posts?' + new URLSearchParams({
+      andFilters: JSON.stringify({ title: 'Test Post' })
+    });
+    const result = await apiRequest(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    posts.forEach(post => {
+    result.items.forEach(post => {
       expect(post.title).toBe('Test Post');
     });
   });
 
-  test('like (패턴) 필터', async () => {
-    const posts = await apiRequest('/v1/data/posts?title=like.*Test*', {
+  test('search (검색) 필터', async () => {
+    const url = '/v1/data/posts?' + new URLSearchParams({
+      search: 'Test'
+    });
+    const result = await apiRequest(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    posts.forEach(post => {
+    result.items.forEach(post => {
       expect(post.title).toContain('Test');
     });
   });
 
-  test('order (정렬)', async () => {
-    const posts = await apiRequest('/v1/data/posts?order=created_at.desc', {
+  test('sortBy + sortDirection (정렬)', async () => {
+    const url = '/v1/data/posts?' + new URLSearchParams({
+      sortBy: 'createdAt',
+      sortDirection: 'desc'
+    });
+    const result = await apiRequest(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    for (let i = 1; i < posts.length; i++) {
-      const prev = new Date(posts[i - 1].created_at);
-      const curr = new Date(posts[i].created_at);
+    for (let i = 1; i < result.items.length; i++) {
+      const prev = new Date(result.items[i - 1].createdAt);
+      const curr = new Date(result.items[i].createdAt);
       expect(prev >= curr).toBe(true);
     }
   });
 
   test('limit (개수 제한)', async () => {
-    const posts = await apiRequest('/v1/data/posts?limit=5', {
+    const result = await apiRequest('/v1/data/posts?limit=5', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    expect(posts.length).toBeLessThanOrEqual(5);
+    expect(result.items.length).toBeLessThanOrEqual(5);
   });
 });
 ```
@@ -457,11 +465,11 @@ describe('Permissions (RLS)', () => {
       headers: { 'Authorization': `Bearer ${user1Token}` }
     });
 
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${user1PostId}`, {
-      headers: { 'Authorization': `Bearer ${user1Token}` }
-    });
-
-    expect(posts.length).toBe(0);
+    await expect(
+      apiRequest(`/v1/data/posts/${user1PostId}`, {
+        headers: { 'Authorization': `Bearer ${user1Token}` }
+      })
+    ).rejects.toThrow();
   });
 });
 ```
@@ -500,11 +508,11 @@ describe('Role-Based Permissions', () => {
       headers: { 'Authorization': `Bearer ${adminToken}` }
     });
 
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${userPostId}`, {
-      headers: { 'Authorization': `Bearer ${adminToken}` }
-    });
-
-    expect(posts.length).toBe(0);
+    await expect(
+      apiRequest(`/v1/data/posts/${userPostId}`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      })
+    ).rejects.toThrow();
   });
 });
 ```
@@ -522,20 +530,21 @@ describe('Role-Based Permissions', () => {
 const { apiRequest } = require('./helpers');
 
 describe('User Flow Integration', () => {
-  test('회원가입 → 로그인 → 게시글 작성 → 조회 → 삭제', async () => {
+  test('회원가입 → 게시글 작성 → 조회 → 삭제', async () => {
     // 1. 회원가입
-    const registerData = await apiRequest('/v1/auth/register', {
+    const registerData = await apiRequest('/v1/auth/email/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'flow@test.com',
-        password: 'password123',
-        displayName: 'Flow User'
+        password: 'Password123$',
+        method: 'password',
+        name: 'Flow User'
       })
     });
 
     expect(registerData.user).toBeDefined();
-    const token = registerData.access_token;
+    const token = registerData.accessToken;
 
     // 2. 게시글 작성
     const post = await apiRequest('/v1/data/posts', {
@@ -553,12 +562,12 @@ describe('User Flow Integration', () => {
     expect(post.id).toBeDefined();
 
     // 3. 게시글 조회
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${post.id}`, {
+    const fetched = await apiRequest(`/v1/data/posts/${post.id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    expect(posts.length).toBe(1);
-    expect(posts[0].title).toBe('Integration Test Post');
+    expect(fetched.id).toBe(post.id);
+    expect(fetched.title).toBe('Integration Test Post');
 
     // 4. 게시글 삭제
     await apiRequest(`/v1/data/posts/${post.id}`, {
@@ -566,12 +575,12 @@ describe('User Flow Integration', () => {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    // 5. 삭제 확인
-    const deletedPosts = await apiRequest(`/v1/data/posts?id=eq.${post.id}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-
-    expect(deletedPosts.length).toBe(0);
+    // 5. 삭제 확인 (404 에러 발생)
+    await expect(
+      apiRequest(`/v1/data/posts/${post.id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+    ).rejects.toThrow();
   });
 });
 ```
@@ -609,8 +618,12 @@ describe('Performance', () => {
   test('인덱스 활용 시 응답 시간 < 100ms', async () => {
     const start = performance.now();
 
-    // user_id에 인덱스가 있다고 가정
-    await apiRequest('/v1/data/posts?user_id=eq.{user-id}&limit=100', {
+    // userId에 인덱스가 있다고 가정
+    const url = '/v1/data/posts?' + new URLSearchParams({
+      andFilters: JSON.stringify({ userId: '{user-id}' }),
+      limit: '100'
+    });
+    await apiRequest(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -683,8 +696,6 @@ jobs:
     - name: Run tests
       env:
         BKEND_API_KEY: ${{ secrets.BKEND_API_KEY_TEST }}
-        BKEND_PROJECT_ID: ${{ secrets.BKEND_PROJECT_ID }}
-        BKEND_ENVIRONMENT: dev
       run: npm test
 
     - name: Cleanup test data

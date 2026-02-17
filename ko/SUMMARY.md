@@ -97,7 +97,7 @@
 
 * [보안](security/01-overview.md)
   * [API 키 이해](security/02-api-keys.md)
-  * [Public Key vs Secret Key](security/03-public-vs-secret.md)
+  * [Publishable Key vs Secret Key](security/03-public-vs-secret.md)
   * [Row Level Security 개요](security/04-rls-overview.md)
   * [RLS 정책 작성](security/05-rls-policies.md)
   * [데이터 암호화](security/06-data-encryption.md)

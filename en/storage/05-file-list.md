@@ -4,6 +4,18 @@
 Filter, sort, and search registered files to retrieve them as a list.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Project creation](../getting-started/02-quickstart.md) completed
+- User authentication completed (JWT token required — all file APIs require authentication)
+{% endhint %}
+
+**APIs used in this document:**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/files` | GET | JWT | Retrieve file list |
+
 ## Overview
 
 Use the `GET /v1/files` endpoint to retrieve a list of file metadata. You can filter by visibility, MIME type, owner, and more.
@@ -18,9 +30,8 @@ Use the `GET /v1/files` endpoint to retrieve a list of file metadata. You can fi
 {% tab title="cURL" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?page=1&limit=20&visibility=private&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -36,8 +47,7 @@ const params = new URLSearchParams({
 const response = await fetch(`https://api-client.bkend.ai/v1/files?${params}`, {
   headers: {
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
 });
 
@@ -82,8 +92,8 @@ const { items, pagination } = await response.json();
     "page": 1,
     "limit": 20,
     "totalPages": 3,
-    "hasNext": true,
-    "hasPrev": false
+    "hasNextPage": true,
+    "hasPrevPage": false
   }
 }
 ```
@@ -96,26 +106,23 @@ const { items, pagination } = await response.json();
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?mimeType=image/jpeg" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### Retrieve Only Public Files
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?visibility=public" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ### Search by File Name
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?search=profile" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***

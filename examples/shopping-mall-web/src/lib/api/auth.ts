@@ -1,40 +1,44 @@
-import { apiClient } from "@/infrastructure/api/client";
-import type { AuthResponse, SignInInput, SignUpInput, UserDto } from "@/application/dto/auth.dto";
+import { bkendFetch } from "@/infrastructure/api/client";
+import type {
+  SignInRequest,
+  AuthResponse,
+  UserProfile,
+  GoogleCallbackRequest,
+  OAuthResponse,
+} from "@/application/dto/auth.dto";
 
-export const authApi = {
-  signUp(input: SignUpInput): Promise<AuthResponse> {
-    return apiClient<AuthResponse>("/v1/auth/email/signup", {
-      method: "POST",
-      body: {
-        method: "password",
-        email: input.email,
-        password: input.password,
-        name: input.name,
-      },
-      skipAuth: true,
-    });
-  },
+export async function signUp(data: { email: string; password: string; name: string }): Promise<AuthResponse> {
+  return bkendFetch<AuthResponse>("/v1/auth/email/signup", {
+    method: "POST",
+    body: { method: "password", ...data },
+    skipAuth: true,
+  });
+}
 
-  signIn(input: SignInInput): Promise<AuthResponse> {
-    return apiClient<AuthResponse>("/v1/auth/email/signin", {
-      method: "POST",
-      body: {
-        email: input.email,
-        password: input.password,
-      },
-      skipAuth: true,
-    });
-  },
+export async function signIn(data: SignInRequest): Promise<AuthResponse> {
+  return bkendFetch<AuthResponse>("/v1/auth/email/signin", {
+    method: "POST",
+    body: { method: "password", ...data },
+    skipAuth: true,
+  });
+}
 
-  getMe(): Promise<UserDto> {
-    return apiClient<UserDto>("/v1/auth/me");
-  },
+export async function getMe(): Promise<UserProfile> {
+  return bkendFetch<UserProfile>("/v1/auth/me");
+}
 
-  refresh(refreshToken: string): Promise<AuthResponse> {
-    return apiClient<AuthResponse>("/v1/auth/refresh", {
-      method: "POST",
-      body: { refreshToken },
-      skipAuth: true,
-    });
-  },
-};
+export async function refreshToken(refreshToken: string): Promise<AuthResponse> {
+  return bkendFetch<AuthResponse>("/v1/auth/refresh", {
+    method: "POST",
+    body: { refreshToken },
+    skipAuth: true,
+  });
+}
+
+export async function googleCallback(data: GoogleCallbackRequest): Promise<OAuthResponse> {
+  return bkendFetch<OAuthResponse>("/v1/auth/google/callback", {
+    method: "POST",
+    body: data,
+    skipAuth: true,
+  });
+}

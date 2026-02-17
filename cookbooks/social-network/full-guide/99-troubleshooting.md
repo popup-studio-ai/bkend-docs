@@ -28,8 +28,7 @@
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refreshToken}"
   }'
@@ -187,9 +186,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "content": "게시물 내용을 입력하세요"
   }'
@@ -209,11 +207,11 @@ curl -X POST https://api-client.bkend.ai/v1/data/posts \
 **확인 사항**:
 
 1. **필터 조건** — 필터 값(createdBy, postId 등)이 올바른지 확인하세요.
-2. **환경(Environment)** — `X-Environment` 헤더가 데이터를 생성한 환경과 같은지 확인하세요.
+2. **API Key** — `X-API-Key` 헤더에 올바른 Publishable Key가 설정되어 있는지 확인하세요.
 3. **테이블명** — 요청 URL의 테이블명이 정확한지 확인하세요.
 
 {% hint style="info" %}
-💡 `dev` 환경에서 생성한 데이터는 `staging`이나 `prod`에서 조회되지 않습니다.
+💡 Publishable Key는 환경(dev/staging/prod)별로 다르게 발급됩니다. 올바른 환경의 키를 사용하고 있는지 확인하세요.
 {% endhint %}
 
 ### 게시물 수정/삭제 권한 없음
@@ -546,8 +544,7 @@ Error: Connection refused
 | 항목 | 확인 |
 |------|------|
 | `Authorization` 헤더에 유효한 토큰이 있는가? | `Bearer {accessToken}` |
-| `X-Project-Id` 헤더가 포함되어 있는가? | 콘솔에서 프로젝트 ID 확인 |
-| `X-Environment` 헤더가 올바른가? | `dev` / `staging` / `prod` |
+| `X-API-Key` 헤더가 포함되어 있는가? | 콘솔에서 Publishable Key 확인 |
 | `Content-Type`이 `application/json`인가? | POST/PATCH 요청 시 필수 |
 | URL 경로의 테이블명이 정확한가? | 복수형 확인 (예: `posts`, `profiles`) |
 
@@ -590,7 +587,7 @@ A: Presigned URL은 일정 시간 후 만료됩니다. 파일 메타데이터를
 
 ### Q: 환경(dev/staging/prod)별로 데이터가 다른가요?
 
-A: 네. 각 환경은 독립된 데이터 저장소를 사용합니다. `dev`에서 생성한 데이터는 `prod`에서 조회되지 않습니다. `X-Environment` 헤더를 확인하세요.
+A: 네. 각 환경은 독립된 데이터 저장소를 사용합니다. `dev`에서 생성한 데이터는 `prod`에서 조회되지 않습니다. `X-API-Key`에 올바른 환경의 Publishable Key를 사용하고 있는지 확인하세요.
 
 ***
 

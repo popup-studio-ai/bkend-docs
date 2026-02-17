@@ -18,8 +18,9 @@ flowchart LR
     B --> C[3. Create Project]
     C --> D[4. Connect AI Tool]
     D --> E[5. Create Table]
-    E --> F[6. Issue API Key]
+    E --> F[6. Create API Key]
     F --> G[7. First API Call]
+    G --> H[8~9. Add Auth]
 ```
 
 ***
@@ -128,44 +129,40 @@ The table has been created, but you need an **API Key** to insert data from your
 
 ***
 
-## Step 6: Issue an API Key
+## Step 6: Create an API Key
 
 You need an API Key to call the REST API from your app.
 
-1. Click **Access Tokens** in the sidebar.
-2. Click the **Create New Token** button.
-3. Fill in the following information.
-
-| Field | Value |
-|-------|-------|
-| **Token Name** | my-app-key |
-| **Token Type** | BEARER_TOKEN |
-| **Permission Scope** | Table Data (read, create, update, delete) |
-
-4. Click **Create** and the token will be displayed. Copy it and store it securely.
+1. Click **API Keys** in the sidebar.
+2. Under **Publishable Keys**, click the **Add Key** button.
+3. Enter a name (e.g., `my-app-key`) and click **Create**.
+4. The key will be displayed. Copy it and store it securely.
 
 {% hint style="warning" %}
-This token is a **Public Key**. It is used in clients (browsers, apps) and has limited permissions. For the difference between Public Key and Secret Key, see [Public Key vs Secret Key](../security/03-public-vs-secret.md).
+This is a **Publishable Key** (prefixed with `pk_`). It is used in clients (browsers, apps) and has limited permissions. For the difference between Publishable Key and Secret Key, see [Publishable Key vs Secret Key](../security/03-public-vs-secret.md).
 {% endhint %}
 
 {% hint style="danger" %}
-**Warning** — The token is only shown once when created. If lost, you must regenerate it.
+**Warning** — The key is only shown once when created. If lost, you must delete it and create a new one.
 {% endhint %}
 
 ***
 
 ## Step 7: Create Your First Data
 
-Use the issued API Key to create data from your app. Check the Project ID in the console under **Project Settings**.
+Use the issued Publishable Key to create data from your app.
+
+{% hint style="info" %}
+All bkend data APIs follow the `/v1/data/{tableName}` pattern. The `posts` table you created above is accessible at `/v1/data/posts`.
+{% endhint %}
 
 {% tabs %}
 {% tab title="cURL" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "Hello bkend!",
     "content": "This is my first post.",
@@ -179,9 +176,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': 'Bearer {accessToken}',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: 'Hello bkend!',
@@ -201,11 +197,7 @@ console.log(data.id); // ID of the created data
 ```json
 {
   "id": "abc123",
-  "title": "Hello bkend!",
-  "content": "This is my first post.",
-  "published": true,
-  "createdAt": "2026-02-12T00:00:00.000Z",
-  "updatedAt": "2026-02-12T00:00:00.000Z"
+  "createdAt": "2026-02-12T00:00:00.000Z"
 }
 ```
 
@@ -228,8 +220,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     method: 'password',
@@ -252,9 +243,8 @@ const post = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: 'Authenticated Post',

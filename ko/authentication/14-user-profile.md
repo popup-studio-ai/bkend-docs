@@ -16,9 +16,8 @@
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/users/{userId}/profile \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**
@@ -49,9 +48,8 @@ curl -X GET https://api-client.bkend.ai/v1/users/{userId}/profile \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/profile \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "nickname": "newgildong",
     "bio": "백엔드 개발자입니다.",
@@ -67,9 +65,8 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users/${userId}/pro
   method: 'PATCH',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     nickname: 'newgildong',
@@ -118,9 +115,8 @@ S3 Presigned URL을 발급받아 직접 업로드합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/users/{userId}/avatar/upload-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "avatar.jpg",
     "contentType": "image/jpeg"
@@ -151,9 +147,8 @@ S3에 파일을 업로드한 후, S3 key를 등록하세요.
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/avatar \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "s3Key": "avatars/user-uuid/avatar.jpg"
   }'
@@ -165,9 +160,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/avatar \
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/users/{userId}/avatar \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***

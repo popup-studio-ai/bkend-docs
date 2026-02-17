@@ -32,9 +32,7 @@ When frequently filtered fields lack indexes, the entire collection is scanned.
 ```bash
 # Check filtered fields
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published" \
-  -H "Authorization: Bearer {api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 If the response is slow, add an index to the `status` field.

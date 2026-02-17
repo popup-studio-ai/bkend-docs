@@ -18,9 +18,8 @@ Retrieve the currently signed-in User's information.
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/me \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **Response:**
@@ -51,8 +50,7 @@ Obtain a new token pair using the Refresh Token when the Access Token has expire
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'
@@ -64,8 +62,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/refresh', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     refreshToken: localStorage.getItem('refreshToken'),
@@ -107,9 +104,8 @@ Retrieve all active sessions for the current User.
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/sessions?page=1&limit=10" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 | Parameter | Location | Type | Required | Description |
@@ -150,9 +146,8 @@ Terminate a specific session. Use this to remotely terminate sessions on other d
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/auth/sessions/{sessionId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 {% hint style="warning" %}
@@ -169,9 +164,8 @@ Terminate the current session and invalidate the tokens.
 
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/signout \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***
@@ -182,8 +176,10 @@ curl -X POST https://api-client.bkend.ai/v1/auth/signout \
 |------------|:----:|-------------|
 | `auth/unauthorized` | 401 | Authentication required |
 | `auth/invalid-token` | 401 | Invalid token |
-| `auth/token-expired` | 401 | Refresh Token has expired |
+| `auth/invalid-refresh-token` | 401 | Refresh Token does not match or session not found |
+| `auth/session-expired` | 401 | Session has expired (7 days) |
 | `auth/session-not-found` | 404 | Session not found |
+| `auth/user-not-found` | 404 | User has been deleted |
 
 ***
 

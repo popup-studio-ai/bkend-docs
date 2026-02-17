@@ -18,9 +18,8 @@ Account deletion (Withdraw) allows a User to delete their own account. Upon dele
 {% tab title="cURL" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/auth/withdraw \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -28,9 +27,8 @@ curl -X DELETE https://api-client.bkend.ai/v1/auth/withdraw \
 const response = await fetch('https://api-client.bkend.ai/v1/auth/withdraw', {
   method: 'DELETE',
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 

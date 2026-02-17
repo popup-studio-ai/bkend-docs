@@ -19,7 +19,6 @@ Occurs when the request format is invalid.
 | `VALIDATION_ERROR` | Missing required parameter or incorrect type | Check the required fields and types in the request body |
 | `INVALID_COLUMN_TYPE` | Unsupported column type | Choose from String, Number, Boolean, Date, Array, Object, or Mixed |
 | `INVALID_FILTER` | Invalid filter format | Verify the filter operators |
-| `MISSING_PROJECT_ID` | Missing `X-Project-Id` header | Add the `X-Project-Id` header to your request |
 
 ### How to Check Errors
 
@@ -28,9 +27,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${apiKey}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     title: 'Title', // Make sure required fields are included
@@ -52,9 +49,9 @@ Occurs when authentication credentials are missing or invalid.
 
 | Error Code | Cause | Solution |
 |----------|------|---------|
-| `UNAUTHORIZED` | Missing auth token | Include a token in the `Authorization` header |
+| `UNAUTHORIZED` | Missing auth token | Include a key in the `X-API-Key` header |
 | `TOKEN_EXPIRED` | Access Token expired | Use a Refresh Token to obtain a new Access Token |
-| `INVALID_TOKEN` | Invalid token format | Verify the token value (`ak_` prefix or a valid JWT) |
+| `INVALID_TOKEN` | Invalid token format | Verify the token value (`pk_`/`sk_` prefix or a valid JWT) |
 | `TOKEN_REVOKED` | Revoked API key | Generate a new API key |
 
 ### Refreshing an Access Token
@@ -65,8 +62,7 @@ async function refreshAccessToken(refreshToken) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
     body: JSON.stringify({ refreshToken }),
   });
@@ -97,10 +93,10 @@ Occurs when you are authenticated but lack the required permissions.
 ```mermaid
 flowchart TD
     A[403 Error] --> B{Using an API key?}
-    B -->|Yes| C[Check key type<br/>Public vs Secret]
+    B -->|Yes| C[Check key type<br/>pk_ vs sk_]
     B -->|No| D{Using a JWT?}
     D -->|Yes| E[Check user group<br/>admin/user/guest]
-    C --> F[Secret Key = admin privileges<br/>Public Key = RLS applied]
+    C --> F[sk_ = admin privileges<br/>pk_ = RLS applied]
     E --> G[Check table permissions<br/>settings]
 ```
 
@@ -114,8 +110,8 @@ Occurs when the requested resource does not exist.
 |----------|------|---------|
 | `TABLE_NOT_FOUND` | Table does not exist | Check the table name for correct casing and spelling |
 | `RECORD_NOT_FOUND` | Record does not exist | Verify the record ID |
-| `PROJECT_NOT_FOUND` | Invalid project ID | Check the `X-Project-Id` value |
-| `ENVIRONMENT_NOT_FOUND` | Invalid environment | Check the `X-Environment` value |
+| `PROJECT_NOT_FOUND` | Invalid project in the API key | Verify you are using the correct API key |
+| `ENVIRONMENT_NOT_FOUND` | Invalid environment in the API key | Verify you are using the correct environment's API key |
 
 {% hint style="info" %}
 Table names are case-sensitive. `Posts` and `posts` are treated as different tables.
@@ -181,8 +177,8 @@ An internal server error has occurred.
 ## Error Debugging Tips
 
 1. **Check the response body** -- Look at the `error` and `message` fields
-2. **Check request headers** -- Verify `Content-Type`, `Authorization`, `X-Project-Id`, and `X-Environment` headers
-3. **Check the environment** -- Make sure you are sending requests to the correct environment (`dev` / `staging` / `prod`)
+2. **Check request headers** -- Verify `Content-Type` and `X-API-Key` headers
+3. **Check the environment** -- Make sure you are using the correct API key for the target environment (`dev` / `staging` / `prod`)
 4. **Test with curl** -- Determine whether the issue is in your client code or the API itself
 
 ***

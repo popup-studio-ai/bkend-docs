@@ -1,9 +1,15 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { mealPlansApi } from "@/lib/api/meal-plans";
+import {
+  getMealPlansByDateRange,
+  createMealPlan,
+  updateMealPlan,
+  deleteMealPlan,
+} from "@/lib/api/meal-plans";
 import { queryKeys } from "./keys";
 import type {
+  MealPlan,
   CreateMealPlanRequest,
   UpdateMealPlanRequest,
   DayPlan,
@@ -13,7 +19,7 @@ export function useWeeklyMealPlans(startDate: string, endDate: string) {
   return useQuery({
     queryKey: queryKeys.mealPlans.week(startDate, endDate),
     queryFn: async () => {
-      const response = await mealPlansApi.listByDateRange(startDate, endDate);
+      const response = await getMealPlansByDateRange(startDate, endDate);
       return groupByDate(response.items, startDate, endDate);
     },
     enabled: !!startDate && !!endDate,
@@ -21,7 +27,7 @@ export function useWeeklyMealPlans(startDate: string, endDate: string) {
 }
 
 function groupByDate(
-  plans: import("@/application/dto/meal-plan.dto").MealPlan[],
+  plans: MealPlan[],
   startDate: string,
   endDate: string
 ): DayPlan[] {
@@ -54,7 +60,7 @@ export function useCreateMealPlan() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateMealPlanRequest) => mealPlansApi.create(data),
+    mutationFn: (data: CreateMealPlanRequest) => createMealPlan(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mealPlans.all });
     },
@@ -71,7 +77,7 @@ export function useUpdateMealPlan() {
     }: {
       id: string;
       data: UpdateMealPlanRequest;
-    }) => mealPlansApi.update(id, data),
+    }) => updateMealPlan(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mealPlans.all });
     },
@@ -82,7 +88,7 @@ export function useDeleteMealPlan() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => mealPlansApi.delete(id),
+    mutationFn: (id: string) => deleteMealPlan(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mealPlans.all });
     },

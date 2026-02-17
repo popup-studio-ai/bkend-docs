@@ -11,7 +11,7 @@ export default function OrdersPage() {
   const { data, isLoading, isError, error, refetch } = useOrders({ limit: 50 });
 
   return (
-    <PageTransition>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
       <div className="space-y-6">
         <PageHeader
           title="Orders"
@@ -28,6 +28,6 @@ export default function OrdersPage() {
           <OrderList orders={data?.items ?? []} />
         </QueryBoundary>
       </div>
-    </PageTransition>
+    </div>
   );
 }

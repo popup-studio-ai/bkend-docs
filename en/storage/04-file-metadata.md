@@ -4,6 +4,20 @@
 Register and manage file metadata. You must register metadata after uploading a file.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Project creation](../getting-started/02-quickstart.md) completed
+- User authentication completed (JWT token required — all file APIs require authentication)
+{% endhint %}
+
+**APIs used in this document:**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/files` | POST | JWT | Create metadata |
+| `/v1/files/:fileId` | GET | JWT | Retrieve file |
+| `/v1/files/:fileId` | PATCH | JWT | Update metadata |
+
 ## Overview
 
 After uploading a file to S3, you need to register file metadata with the bkend API. Metadata includes information such as file name, size, MIME type, category, and tags.
@@ -19,9 +33,8 @@ After uploading a file to S3, you need to register file metadata with the bkend 
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "s3Key": "{key from presigned response}",
     "originalName": "profile.jpg",
@@ -42,9 +55,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/files', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     s3Key: presigned.key,
@@ -115,9 +127,8 @@ console.log(fileData.id); // File ID
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### Response (200 OK)
@@ -153,9 +164,8 @@ When a non-owner retrieves a file, only public fields are returned. Admins (`adm
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "originalName": "new-profile.jpg",
     "visibility": "public",

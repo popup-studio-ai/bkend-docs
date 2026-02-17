@@ -20,16 +20,16 @@ flowchart TD
     B --> C[Home]
     B --> D[Project List]
     B --> E[Team Management]
-    B --> F[Access Tokens]
-    B --> G[Organization Settings]
+    B --> F[Organization Settings]
     D --> H{Project Level}
     H --> I[Overview / Dashboard]
-    H --> J[Environment Management]
+    H --> J[Environments]
     H --> K[Authentication]
     H --> L[Database]
-    H --> M[Storage]
-    H --> N[Activity Log]
-    H --> O[Project Settings]
+    H --> M[File Storage]
+    H --> N[Activities]
+    H --> O[API Keys]
+    H --> P[Project Settings]
 ```
 
 ***
@@ -43,8 +43,7 @@ After selecting an organization, the following menus are available.
 | **Home** | Organization dashboard | This document |
 | **Projects** | Project list and creation | [Project Management](04-project-management.md) |
 | **Team** | Invite members and manage roles | [Team Management](06-team-management.md) |
-| **Access Tokens** | API access token management | [API Key Management](11-api-keys.md) |
-| **Settings** | Organization name, deletion | [Organization Management](03-org-management.md) |
+| **Organization Settings** | Organization name, billing, deletion | [Organization Management](03-org-management.md) |
 
 ***
 
@@ -54,13 +53,14 @@ After selecting a project, the following menus are available.
 
 | Menu | Description | Documentation |
 |------|-------------|---------------|
-| **Overview** | Project dashboard and statistics | [Dashboard](10-dashboard.md) |
+| **Project Overview** | Project dashboard and statistics | [Dashboard](10-dashboard.md) |
 | **Environments** | dev/staging/prod environment management | [Environment Management](05-environment.md) |
 | **Authentication** | Auth providers, user list | [Authentication Overview](../authentication/01-overview.md) |
 | **Database** | Table list, data browsing | [Table Management](07-table-management.md) |
-| **Storage** | File list, upload | [Storage Overview](../storage/01-overview.md) |
-| **Activity** | Audit log | - |
-| **Settings** | API Key, project settings | [Project Settings](12-settings.md) |
+| **File Storage** | File list, upload | [Storage Overview](../storage/01-overview.md) |
+| **Activities** | Activity log | - |
+| **API Keys** | Publishable / Secret key management | [API Key Management](11-api-keys.md) |
+| **Project Settings** | Project info, deletion | [Project Settings](12-settings.md) |
 
 ***
 

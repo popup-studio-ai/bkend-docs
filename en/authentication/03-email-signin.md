@@ -4,6 +4,22 @@
 Sign in with your email and password to receive JWT tokens.
 {% endhint %}
 
+{% hint style="info" %}
+**Before You Start** — You need the following to proceed:
+- [Project created](../getting-started/02-quickstart.md)
+- [Email sign-up](02-email-signup.md) completed (you need an account to sign in)
+- [Email auth provider enabled](17-provider-config.md) (enabled by default)
+{% endhint %}
+
+{% hint style="info" %}
+**APIs Used in This Document**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/auth/email/signin` | POST | Not required | Email sign-in |
+| `/v1/auth/refresh` | POST | Not required | Token refresh |
+{% endhint %}
+
 ## Overview
 
 Signing in with a registered email and password issues an Access Token and Refresh Token. Accounts with MFA enabled must also submit a TOTP code.
@@ -38,8 +54,7 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -53,8 +68,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signin',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     method: 'password',
@@ -84,8 +98,7 @@ Accounts with MFA enabled must include `mfaCode` in the request.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -150,8 +163,7 @@ When your Access Token expires, use the Refresh Token to obtain new tokens.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'

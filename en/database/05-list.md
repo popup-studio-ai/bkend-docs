@@ -4,6 +4,21 @@
 Retrieve data from a table as a list. Supports filtering, sorting, and pagination.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Create a project](../getting-started/02-quickstart.md) completed
+- [Create a table](../console/07-table-management.md) completed
+- Authentication setup — Public tables require no auth; tables with RLS require a JWT
+{% endhint %}
+
+{% hint style="info" %}
+**API used in this document**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/data/:tableName` | GET | Conditional | List data |
+{% endhint %}
+
 ## Overview
 
 Use the `GET /v1/data/:tableName` endpoint to retrieve a list of data from a table. Apply pagination, sorting, and filtering through query parameters.
@@ -18,9 +33,8 @@ Use the `GET /v1/data/:tableName` endpoint to retrieve a list of data from a tab
 {% tab title="cURL" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?page=1&limit=20&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -34,9 +48,8 @@ const params = new URLSearchParams({
 
 const response = await fetch(`https://api-client.bkend.ai/v1/data/posts?${params}`, {
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -57,6 +70,7 @@ const { items, pagination } = await response.json();
 | `searchType` | `string` | - | Field to search |
 | `andFilters` | `JSON` | - | AND condition filters |
 | `orFilters` | `JSON` | - | OR condition filters |
+| `select` | `string[]` | - | Fields to include in the response (comma-separated) |
 
 {% hint style="info" %}
 For more details on filtering and sorting, see [Filtering](08-filtering.md) and [Sorting & Pagination](09-sorting-pagination.md).
@@ -147,12 +161,29 @@ When only `self` permission is configured, only data created by the requester is
 
 ***
 
+## Field Selection
+
+Use the `select` parameter to return only specific fields, reducing response payload size.
+
+```bash
+curl -X GET "https://api-client.bkend.ai/v1/data/posts?select=id,title,createdAt" \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
+```
+
+{% hint style="info" %}
+System fields (`id`, `createdBy`, `createdAt`, `updatedAt`) are always included regardless of the `select` parameter.
+{% endhint %}
+
+***
+
 ## Error Responses
 
 | Error Code | HTTP | Description |
 |------------|:----:|-------------|
 | `data/table-not-found` | 404 | Table does not exist |
 | `data/permission-denied` | 403 | No list permission |
+| `data/scope-insufficient` | 403 | API key scope does not include the required permission |
 
 ***
 

@@ -164,7 +164,7 @@ flowchart LR
 
 ## API 엔드포인트 요약
 
-이 쿡북에서 사용하는 REST API 엔드포인트입니다. 모든 요청에는 `Authorization`, `X-Project-Id`, `X-Environment` 헤더가 필요합니다.
+이 쿡북에서 사용하는 REST API 엔드포인트입니다. 모든 요청에는 `X-API-Key`, `Authorization` 헤더가 필요합니다.
 
 ### 인증 API
 

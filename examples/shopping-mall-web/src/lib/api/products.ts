@@ -1,4 +1,4 @@
-import { apiClient } from "@/infrastructure/api/client";
+import { bkendFetch } from "@/infrastructure/api/client";
 import type { ProductDto, ProductFormInput } from "@/application/dto/product.dto";
 import type { PaginatedResponse, PaginationParams } from "@/application/dto/pagination.dto";
 
@@ -27,31 +27,31 @@ export const productsApi = {
     }
 
     const query = searchParams.toString();
-    return apiClient<PaginatedResponse<ProductDto>>(
+    return bkendFetch<PaginatedResponse<ProductDto>>(
       `/v1/data/products${query ? `?${query}` : ""}`
     );
   },
 
   getById(id: string): Promise<ProductDto> {
-    return apiClient<ProductDto>(`/v1/data/products/${id}`);
+    return bkendFetch<ProductDto>(`/v1/data/products/${id}`);
   },
 
   create(input: ProductFormInput): Promise<ProductDto> {
-    return apiClient<ProductDto>("/v1/data/products", {
+    return bkendFetch<ProductDto>("/v1/data/products", {
       method: "POST",
       body: input,
     });
   },
 
   update(id: string, input: Partial<ProductFormInput>): Promise<ProductDto> {
-    return apiClient<ProductDto>(`/v1/data/products/${id}`, {
+    return bkendFetch<ProductDto>(`/v1/data/products/${id}`, {
       method: "PATCH",
       body: input,
     });
   },
 
   delete(id: string): Promise<void> {
-    return apiClient<void>(`/v1/data/products/${id}`, {
+    return bkendFetch<void>(`/v1/data/products/${id}`, {
       method: "DELETE",
     });
   },

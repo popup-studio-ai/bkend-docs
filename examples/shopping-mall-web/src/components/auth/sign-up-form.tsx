@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -10,8 +11,10 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSignUp } from "@/hooks/queries/use-auth";
 import { signUpSchema, type SignUpInput } from "@/application/dto/auth.dto";
+import { GoogleLoginButton } from "@/components/auth/google-login-button";
 
 export function SignUpForm() {
+  const router = useRouter();
   const signUp = useSignUp();
 
   const {
@@ -23,19 +26,23 @@ export function SignUpForm() {
   });
 
   const onSubmit = (data: SignUpInput) => {
-    signUp.mutate(data);
+    signUp.mutate(data, {
+      onSuccess: () => {
+        router.push("/");
+      },
+    });
   };
 
   return (
-    <Card className="w-full max-w-md border-slate-200 dark:border-slate-700">
+    <Card className="w-full border-border">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-extrabold">Sign Up</CardTitle>
+        <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
         <CardDescription>Create a new account</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent className="space-y-4">
           {signUp.isError && (
-            <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/30 dark:text-red-400">
+            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
               {signUp.error?.message || "Sign up failed."}
             </div>
           )}
@@ -49,7 +56,7 @@ export function SignUpForm() {
               {...register("name")}
             />
             {errors.name && (
-              <p className="text-xs text-red-500">{errors.name.message}</p>
+              <p className="text-xs text-destructive">{errors.name.message}</p>
             )}
           </div>
 
@@ -62,7 +69,7 @@ export function SignUpForm() {
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-xs text-red-500">{errors.email.message}</p>
+              <p className="text-xs text-destructive">{errors.email.message}</p>
             )}
           </div>
 
@@ -75,7 +82,7 @@ export function SignUpForm() {
               {...register("password")}
             />
             {errors.password && (
-              <p className="text-xs text-red-500">{errors.password.message}</p>
+              <p className="text-xs text-destructive">{errors.password.message}</p>
             )}
           </div>
         </CardContent>
@@ -88,9 +95,10 @@ export function SignUpForm() {
             {signUp.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign Up
           </Button>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <GoogleLoginButton label="Sign up with Google" />
+          <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/signin" className="font-medium text-slate-900 hover:underline dark:text-slate-50">
+            <Link href="/sign-in" className="font-medium text-foreground hover:underline">
               Sign In
             </Link>
           </p>

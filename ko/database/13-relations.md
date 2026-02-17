@@ -159,9 +159,8 @@ const postRes = await fetch(
   'https://api-client.bkend.ai/v1/data/posts/post-001',
   {
     headers: {
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   }
 );
@@ -173,9 +172,8 @@ const commentRes = await fetch(
   `https://api-client.bkend.ai/v1/data/comments?andFilters=${encodeURIComponent(andFilters)}&sortBy=createdAt&sortDirection=asc`,
   {
     headers: {
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   }
 );
@@ -283,10 +281,9 @@ async function getPostListWithCommentCounts() {
 {% tab title="cURL" %}
 ```bash
 curl -X POST "https://api-client.bkend.ai/v1/data/posts" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}" \
   -d '{
     "title": "bkend 시작하기",
     "content": "안녕하세요...",
@@ -303,10 +300,9 @@ curl -X POST "https://api-client.bkend.ai/v1/data/posts" \
 const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
-    'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
+    'Authorization': `Bearer ${accessToken}`,
   },
   body: JSON.stringify({
     title: 'bkend 시작하기',
@@ -349,9 +345,8 @@ const response = await fetch(
   `https://api-client.bkend.ai/v1/data/posts?andFilters=${encodeURIComponent(andFilters)}`,
   {
     headers: {
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   }
 );

@@ -12,20 +12,20 @@ On the project settings page, you can check the Project ID, modify project infor
 
 ## Opening the Settings Page
 
-Click **Settings** in the project-level sidebar.
+Click **Project Settings** in the project-level sidebar.
 
 ***
 
 ## Checking the Project ID
 
-The **Project ID** is displayed at the top of the project settings page. Use this value in the `X-Project-Id` header when making REST API calls.
+The **Project ID** is displayed at the top of the project settings page. The Publishable Key (`pk_` prefix) includes the project ID and environment information, so you only need the `X-API-Key` header for REST API calls.
 
 ```bash
--H "X-Project-Id: {project_id}"
+-H "X-API-Key: {pk_publishable_key}"
 ```
 
 {% hint style="info" %}
-The Project ID is an auto-generated unique identifier. It cannot be changed.
+The Project ID is an auto-generated unique identifier. It cannot be changed. The Publishable Key is issued per environment and embeds the project ID.
 {% endhint %}
 
 ***
@@ -38,14 +38,6 @@ The Project ID is an auto-generated unique identifier. It cannot be changed.
 | **Project Slug** | ✅ | Change the URL identifier |
 | **Region** | ❌ | Cannot be changed after creation |
 | **Project ID** | ❌ | Auto-generated, cannot be changed |
-
-***
-
-## Authentication Provider Settings
-
-Enable or disable authentication providers for User authentication in the project settings.
-
-- [Authentication Provider Configuration](../authentication/17-provider-config.md) — Detailed setup guide
 
 ***
 

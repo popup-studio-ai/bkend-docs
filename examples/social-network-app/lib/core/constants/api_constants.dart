@@ -11,14 +11,9 @@ class ApiConstants {
     defaultValue: 'https://api-client.bkend.ai',
   );
 
-  static const String projectId = String.fromEnvironment(
-    'PROJECT_ID',
+  static const String publishableKey = String.fromEnvironment(
+    'PUBLISHABLE_KEY',
     defaultValue: '',
-  );
-
-  static const String environment = String.fromEnvironment(
-    'ENVIRONMENT',
-    defaultValue: 'dev',
   );
 
   // Auth

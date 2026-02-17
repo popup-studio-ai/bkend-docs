@@ -18,7 +18,8 @@
 | 표시 정보 | 설명 |
 |----------|------|
 | **환경 이름** | dev, staging, prod 등 |
-| **상태** | Active / Provisioning / Inactive |
+| **타입** | Development / Staging / Production / Custom |
+| **상태** | Creating / Ready / Active / Failed / Deleting |
 | **생성일** | 환경 생성 일시 |
 
 ***
@@ -59,12 +60,11 @@
 
 ## REST API에서 환경 지정하기
 
-REST API 호출 시 `X-Environment` 헤더로 대상 환경을 지정합니다.
+API Key는 환경별로 발급됩니다. `X-API-Key` 헤더에 해당 환경의 API Key를 사용하면 자동으로 해당 환경에 접근합니다.
 
 ```bash
 curl https://api-client.bkend.ai/v1/data/posts \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ***

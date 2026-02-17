@@ -157,3 +157,30 @@
 @utility ring-offset-background {
   --tw-ring-offset-color: hsl(var(--background));
 }
+
+@utility bg-gradient-brand {
+  background: linear-gradient(135deg, hsl(217.2 91.2% 59.8%) 0%, hsl(265 83% 57%) 100%);
+}
+
+@utility bg-gradient-brand-subtle {
+  background: linear-gradient(135deg, hsl(217.2 91.2% 59.8% / 0.08) 0%, hsl(265 83% 57% / 0.08) 100%);
+}
+
+@utility text-gradient-brand {
+  background: linear-gradient(135deg, hsl(217.2 91.2% 59.8%) 0%, hsl(265 83% 57%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility bg-success {
+  background-color: hsl(142 76% 36%);
+}
+
+@utility text-success {
+  color: hsl(142 76% 36%);
+}
+
+@utility border-success {
+  border-color: hsl(142 76% 36% / 0.3);
+}

@@ -108,11 +108,11 @@ Claude Code, Cursor, Antigravity 등 MCP를 지원하는 모든 AI 도구와 연
 
 ***
 
-**Q: Public Key와 Secret Key의 차이는 무엇인가요?**
+**Q: Publishable Key와 Secret Key의 차이는 무엇인가요?**
 
-Public Key는 클라이언트에서 제한된 권한(RLS 기반)으로, Secret Key는 서버에서 전체 권한(admin)으로 사용합니다.
+Publishable Key는 클라이언트에서 제한된 권한(RLS 기반)으로, Secret Key는 서버에서 전체 권한(admin)으로 사용합니다.
 
-→ [Public Key vs Secret Key](../security/03-public-vs-secret.md)
+→ [Publishable Key vs Secret Key](../security/03-public-vs-secret.md)
 
 ***
 
@@ -131,7 +131,7 @@ Public Key는 클라이언트에서 제한된 권한(RLS 기반)으로, Secret K
 | **Tenant** | bkend를 사용하여 서비스를 구축하는 사용자 |
 | **User** | Tenant가 구축한 서비스의 최종 사용자 |
 | **MCP** | Model Context Protocol. AI 도구와 서비스 간 표준 통신 프로토콜 |
-| **API Key** | API 인증에 사용되는 키 (`ak_` prefix) |
+| **API Key** | API 인증에 사용되는 키 (Publishable Key: `pk_`, Secret Key: `sk_`) |
 | **JWT** | JSON Web Token. 사용자 인증에 사용되는 토큰 형식 |
 | **RLS** | Row Level Security. 행 수준 접근 제어 |
 | **CRUD** | Create, Read, Update, Delete의 약자 |

@@ -1,4 +1,4 @@
-import { apiClient } from "@/infrastructure/api/client";
+import { bkendFetch } from "@/infrastructure/api/client";
 import type {
   ShoppingList,
   CreateShoppingListRequest,
@@ -6,44 +6,42 @@ import type {
 } from "@/application/dto/shopping-list.dto";
 import type { PaginatedResponse } from "@/application/dto/pagination.dto";
 
-export const shoppingListsApi = {
-  list(
-    page = 1,
-    limit = 20
-  ): Promise<PaginatedResponse<ShoppingList>> {
-    const params = new URLSearchParams({
-      page: String(page),
-      limit: String(limit),
-      sortBy: "createdAt",
-      sortDirection: "desc",
-    });
+export async function getShoppingLists(
+  page = 1,
+  limit = 20
+): Promise<PaginatedResponse<ShoppingList>> {
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+    sortBy: "createdAt",
+    sortDirection: "desc",
+  });
 
-    return apiClient<PaginatedResponse<ShoppingList>>(
-      `/v1/data/shopping_lists?${params.toString()}`
-    );
-  },
+  return bkendFetch<PaginatedResponse<ShoppingList>>(
+    `/v1/data/shopping_lists?${params.toString()}`
+  );
+}
 
-  get(id: string): Promise<ShoppingList> {
-    return apiClient<ShoppingList>(`/v1/data/shopping_lists/${id}`);
-  },
+export async function getShoppingList(id: string): Promise<ShoppingList> {
+  return bkendFetch<ShoppingList>(`/v1/data/shopping_lists/${id}`);
+}
 
-  create(data: CreateShoppingListRequest): Promise<ShoppingList> {
-    return apiClient<ShoppingList>("/v1/data/shopping_lists", {
-      method: "POST",
-      body: data,
-    });
-  },
+export async function createShoppingList(data: CreateShoppingListRequest): Promise<ShoppingList> {
+  return bkendFetch<ShoppingList>("/v1/data/shopping_lists", {
+    method: "POST",
+    body: data,
+  });
+}
 
-  update(id: string, data: UpdateShoppingListRequest): Promise<ShoppingList> {
-    return apiClient<ShoppingList>(`/v1/data/shopping_lists/${id}`, {
-      method: "PATCH",
-      body: data,
-    });
-  },
+export async function updateShoppingList(id: string, data: UpdateShoppingListRequest): Promise<ShoppingList> {
+  return bkendFetch<ShoppingList>(`/v1/data/shopping_lists/${id}`, {
+    method: "PATCH",
+    body: data,
+  });
+}
 
-  delete(id: string): Promise<void> {
-    return apiClient<void>(`/v1/data/shopping_lists/${id}`, {
-      method: "DELETE",
-    });
-  },
-};
+export async function deleteShoppingList(id: string): Promise<void> {
+  return bkendFetch<void>(`/v1/data/shopping_lists/${id}`, {
+    method: "DELETE",
+  });
+}

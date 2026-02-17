@@ -2,88 +2,152 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, Package, Star, User, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {
+  ShoppingBag,
+  Package,
+  Star,
+  LayoutDashboard,
+  Settings,
+  ChevronRight,
+  Plus,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useUiStore } from "@/stores/ui-store";
-import { PRODUCT_CATEGORIES } from "@/application/dto/product.dto";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useAuthStore } from "@/stores/auth-store";
 
-const navItems = [
+const mainNav = [
+  { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/products", label: "Products", icon: ShoppingBag },
   { href: "/orders", label: "Orders", icon: Package },
   { href: "/reviews", label: "My Reviews", icon: Star },
-  { href: "/profile", label: "Profile", icon: User },
 ];
 
-export function Sidebar() {
+const manageNav = [
+  { href: "/products?action=new", label: "Add Product", icon: Plus },
+];
+
+interface SidebarProps {
+  className?: string;
+}
+
+export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname();
-  const { isSidebarOpen, setSidebarOpen } = useUiStore();
+  const user = useAuthStore((s) => s.user);
+
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "U";
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    if (href === "/products") {
+      return pathname === "/products" || pathname.startsWith("/products/");
+    }
+    return pathname === href || pathname.startsWith(href + "/");
+  };
 
   return (
-    <>
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
+    <aside
+      className={cn(
+        "flex h-full w-64 flex-col border-r bg-card",
+        className
       )}
-
-      <aside
-        className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 transform border-r border-slate-200 bg-white transition-transform duration-300 dark:border-slate-700 dark:bg-slate-950 lg:static lg:translate-x-0",
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
-        <div className="flex h-16 items-center justify-between border-b border-slate-200 px-4 dark:border-slate-700 lg:hidden">
-          <span className="text-lg font-extrabold">MALL</span>
-          <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)}>
-            <X className="h-5 w-5" />
-          </Button>
+    >
+      {/* Logo */}
+      <div className="flex h-14 items-center gap-2.5 px-5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-brand">
+          <ShoppingBag className="h-4 w-4 text-white" />
         </div>
+        <span className="text-lg font-bold tracking-tight">
+          <span className="text-gradient-brand">bkend</span>{" "}
+          <span className="text-foreground">Mall</span>
+        </span>
+      </div>
 
-        <nav className="space-y-1 p-4">
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            Menu
-          </p>
-          {navItems.map((item) => {
-            const isActive = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setSidebarOpen(false)}
-                className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-50"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/50 dark:hover:text-slate-50"
-                )}
-              >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+      <Separator />
 
-        <div className="border-t border-slate-200 p-4 dark:border-slate-700">
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            Categories
+      {/* Main Navigation */}
+      <nav className="flex-1 space-y-6 p-3 pt-4">
+        <div>
+          <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Main
           </p>
-          <div className="space-y-1">
-            {PRODUCT_CATEGORIES.map((category) => (
-              <Link
-                key={category}
-                href={`/products?category=${encodeURIComponent(category)}`}
-                onClick={() => setSidebarOpen(false)}
-                className="block rounded-md px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/50 dark:hover:text-slate-50"
-              >
-                {category}
-              </Link>
-            ))}
+          <div className="space-y-0.5">
+            {mainNav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
+                    active
+                      ? "bg-accent text-accent-foreground shadow-sm"
+                      : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                  )}
+                >
+                  <item.icon className={cn("h-4 w-4", active && "text-accent-color")} />
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
-      </aside>
-    </>
+
+        <div>
+          <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Manage
+          </p>
+          <div className="space-y-0.5">
+            {manageNav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
+                    active
+                      ? "bg-accent text-accent-foreground shadow-sm"
+                      : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                  )}
+                >
+                  <item.icon className={cn("h-4 w-4", active && "text-accent-color")} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </nav>
+
+      {/* User profile section */}
+      <div className="border-t p-3">
+        <Link
+          href="/settings"
+          className={cn(
+            "flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-accent/50 overflow-hidden",
+            pathname.startsWith("/settings") && "bg-accent"
+          )}
+        >
+          <Avatar className="h-8 w-8 shrink-0">
+            <AvatarFallback className="text-xs bg-gradient-brand text-white">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0 overflow-hidden">
+            <p className="text-sm font-medium truncate">{user?.name || "User"}</p>
+            <p className="text-xs text-muted-foreground truncate">{user?.email || ""}</p>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+        </Link>
+      </div>
+    </aside>
   );
 }

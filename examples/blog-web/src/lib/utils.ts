@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { READING_SPEED_WPM } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -42,4 +43,13 @@ export function generateSlug(text: string): string {
     .replace(/[^\w\s-]/g, "")
     .replace(/[\s_]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+export function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "");
+}
+
+export function calculateReadingTime(content: string): number {
+  const words = stripHtml(content).split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / READING_SPEED_WPM));
 }

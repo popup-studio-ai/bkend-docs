@@ -32,9 +32,8 @@ flowchart TD
 ```bash
 # 필터링하는 필드 확인
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published" \
-  -H "Authorization: Bearer {api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {api_key}"
 ```
 
 응답이 느리다면 `status` 필드에 인덱스를 추가하세요.

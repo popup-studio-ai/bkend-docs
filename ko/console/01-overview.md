@@ -20,16 +20,16 @@ flowchart TD
     B --> C[홈]
     B --> D[프로젝트 목록]
     B --> E[팀 관리]
-    B --> F[Access Tokens]
-    B --> G[조직 설정]
+    B --> F[조직 설정]
     D --> H{프로젝트 레벨}
     H --> I[개요 / 대시보드]
-    H --> J[환경 관리]
+    H --> J[환경]
     H --> K[인증]
     H --> L[데이터베이스]
     H --> M[스토리지]
     H --> N[활동 로그]
-    H --> O[프로젝트 설정]
+    H --> O[API Keys]
+    H --> P[프로젝트 설정]
 ```
 
 ***
@@ -43,8 +43,7 @@ flowchart TD
 | **홈** | 조직 대시보드 | 이 문서 |
 | **프로젝트** | 프로젝트 목록 및 생성 | [프로젝트 관리](04-project-management.md) |
 | **팀** | 팀원 초대 및 역할 관리 | [팀원 관리](06-team-management.md) |
-| **Access Tokens** | API 접근 토큰 관리 | [API 키 관리](11-api-keys.md) |
-| **설정** | 조직 이름, 삭제 | [조직 관리](03-org-management.md) |
+| **조직 설정** | 조직 이름, 결제, 삭제 | [조직 관리](03-org-management.md) |
 
 ***
 
@@ -54,13 +53,14 @@ flowchart TD
 
 | 메뉴 | 설명 | 문서 |
 |------|------|------|
-| **개요** | 프로젝트 대시보드, 통계 | [대시보드](10-dashboard.md) |
+| **프로젝트 개요** | 프로젝트 대시보드, 통계 | [대시보드](10-dashboard.md) |
 | **환경** | dev/staging/prod 환경 관리 | [환경 관리](05-environment.md) |
 | **인증** | 인증 제공자, 사용자 목록 | [인증 개요](../authentication/01-overview.md) |
 | **데이터베이스** | 테이블 목록, 데이터 조회 | [테이블 관리](07-table-management.md) |
 | **스토리지** | 파일 목록, 업로드 | [스토리지 개요](../storage/01-overview.md) |
-| **활동** | 감사 로그 | - |
-| **설정** | API Key, 프로젝트 설정 | [프로젝트 설정](12-settings.md) |
+| **활동 로그** | 활동 로그 | - |
+| **API Keys** | Publishable / Secret 키 관리 | [API 키 관리](11-api-keys.md) |
+| **프로젝트 설정** | 프로젝트 정보, 삭제 | [프로젝트 설정](12-settings.md) |
 
 ***
 

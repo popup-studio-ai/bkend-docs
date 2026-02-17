@@ -32,7 +32,7 @@ import {
   createCookingLog,
   deleteCookingLog,
 } from "./data/cooking-logs.mock";
-import { getPresignedUrl, saveFileMetadata } from "./data/files.mock";
+import { getPresignedUrl, saveFileMetadata, getDownloadUrl } from "./data/files.mock";
 
 const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === "true";
 
@@ -263,6 +263,33 @@ export async function handleMockRequest<T>(
     }
   }
 
+  // --- User Profile ---
+  const userProfileMatch = pathname.match(/^\/v1\/users\/(.+?)\/profile$/);
+  if (userProfileMatch && method === "PATCH") {
+    const me = createMeResponse();
+    return { ...me, ...(body || {}) } as T;
+  }
+
+  const avatarUploadUrlMatch = pathname.match(/^\/v1\/users\/(.+?)\/avatar\/upload-url$/);
+  if (avatarUploadUrlMatch && method === "POST") {
+    return { url: "https://mock-s3.example.com/upload?signed=true", key: "avatars/mock-avatar.jpg" } as T;
+  }
+
+  const avatarUpdateMatch = pathname.match(/^\/v1\/users\/(.+?)\/avatar$/);
+  if (avatarUpdateMatch && method === "PATCH") {
+    const me = createMeResponse();
+    return { ...me, image: "https://mock-s3.example.com/avatars/mock-avatar.jpg" } as T;
+  }
+
+  if (pathname === "/v1/auth/password/change" && method === "POST") {
+    return undefined as T;
+  }
+
+  const userDeleteMatch = pathname.match(/^\/v1\/users\/(.+?)$/);
+  if (userDeleteMatch && method === "DELETE") {
+    return undefined as T;
+  }
+
   // --- Files ---
   if (pathname === "/v1/files/presigned-url" && method === "POST") {
     const filename = (body?.filename as string) || "image.jpg";
@@ -270,6 +297,10 @@ export async function handleMockRequest<T>(
   }
   if (pathname === "/v1/files" && method === "POST") {
     return saveFileMetadata(body || {}) as T;
+  }
+  const downloadUrlMatch = pathname.match(/^\/v1\/files\/(.+)\/download-url$/);
+  if (downloadUrlMatch && method === "POST") {
+    return getDownloadUrl(downloadUrlMatch[1]) as T;
   }
 
   // --- Fallback ---

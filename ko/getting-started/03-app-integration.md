@@ -18,12 +18,11 @@
 
 | 항목 | 확인 위치 | 설명 |
 |------|----------|------|
-| Project ID | 콘솔 → **프로젝트 설정** | 프로젝트 고유 식별자 |
-| API Key | 콘솔 → **액세스 토큰** → **새 토큰 생성** | REST API 접근 토큰 |
-| Environment | 콘솔 → **환경** 탭 | `dev` / `staging` / `prod` |
+| Publishable Key | 콘솔 → **API 키** | `pk_` 접두사의 클라이언트용 키 |
+| Access Token | 로그인 API 응답 | JWT (인증 필요 API용) |
 
 {% hint style="warning" %}
-⚠️ API Key가 없으면 [API 키 관리](../console/11-api-keys.md) 문서를 참고하여 먼저 발급하세요.
+⚠️ Publishable Key가 없으면 [API 키 관리](../console/11-api-keys.md) 문서를 참고하여 먼저 발급하세요.
 {% endhint %}
 
 ***
@@ -35,9 +34,12 @@
 | 헤더 | 값 | 필수 | 설명 |
 |------|-----|:----:|------|
 | `Content-Type` | `application/json` | ✅ | 요청 본문 형식 |
-| `X-Project-Id` | `{project_id}` | ✅ | 콘솔에서 확인한 Project ID |
-| `X-Environment` | `dev` | ✅ | 대상 환경 |
+| `X-API-Key` | `{pk_publishable_key}` | ✅ | Publishable Key (콘솔에서 발급). 프로젝트 ID + 환경 포함 |
 | `Authorization` | `Bearer {accessToken}` | 조건부 | 인증이 필요한 API에만 |
+
+{% hint style="info" %}
+💡 `pk_` 키에 프로젝트 ID와 환경 정보가 포함되어 있으므로, 별도의 컨텍스트 헤더가 불필요합니다.
+{% endhint %}
 
 ***
 
@@ -59,8 +61,7 @@ https://api-client.bkend.ai
 // bkend.js — 프로젝트에 이 파일을 추가하세요
 
 const API_BASE = 'https://api-client.bkend.ai';
-const PROJECT_ID = '{project_id}';  // 콘솔에서 확인
-const ENVIRONMENT = 'dev';
+const PUBLISHABLE_KEY = '{pk_publishable_key}'; // 콘솔에서 발급
 
 /**
  * bkend API 호출 헬퍼
@@ -75,8 +76,7 @@ export async function bkendFetch(path, options = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': PROJECT_ID,
-      'X-Environment': ENVIRONMENT,
+      'X-API-Key': PUBLISHABLE_KEY,
       ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       ...options.headers,
     },
@@ -117,8 +117,7 @@ async function refreshAccessToken() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Project-Id': PROJECT_ID,
-        'X-Environment': ENVIRONMENT,
+        'X-API-Key': PUBLISHABLE_KEY,
       },
       body: JSON.stringify({ refreshToken }),
     });
@@ -199,9 +198,8 @@ console.log(result.pagination);  // { page, limit, total, totalPages }
 # 데이터 생성 테스트
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "테스트 게시글",
     "content": "curl로 생성한 데이터입니다."
@@ -237,17 +235,16 @@ bkend API는 브라우저에서의 직접 호출을 지원합니다. 별도의 C
 
 ```mermaid
 flowchart TD
-    A[콘솔에서 Project ID 확인] --> B[API Key 발급]
-    B --> C[fetch 헬퍼 함수 추가]
-    C --> D{인증 필요?}
-    D -->|예| E[회원가입/로그인 → 토큰 저장]
-    D -->|아니오| F[bkendFetch로 API 호출]
-    E --> F
-    F --> G[응답 처리]
-    G --> H{401 에러?}
-    H -->|예| I[토큰 갱신 → 재시도]
-    H -->|아니오| J[데이터 사용]
-    I --> F
+    A[콘솔에서 Publishable Key 발급] --> B[fetch 헬퍼 함수 추가]
+    B --> C{인증 필요?}
+    C -->|예| D[회원가입/로그인 → 토큰 저장]
+    C -->|아니오| E["bkendFetch로 API 호출"]
+    D --> E
+    E --> F[응답 처리]
+    F --> G{401 에러?}
+    G -->|예| H[토큰 갱신 → 재시도]
+    G -->|아니오| I[데이터 사용]
+    H --> E
 ```
 
 ***

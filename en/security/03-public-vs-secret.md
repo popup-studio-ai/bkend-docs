@@ -1,19 +1,19 @@
-# Public Key vs Secret Key
+# Publishable Key vs Secret Key
 
 {% hint style="info" %}
-Understand the differences between Public Keys and Secret Keys and how to use each one correctly.
+Understand the differences between Publishable Key (`pk_`) and Secret Key (`sk_`) and how to use each one correctly.
 {% endhint %}
 
 ## Overview
 
-bkend provides two types of API keys. Each key has different usage environments and permissions, so make sure you use the right one for the right purpose.
+bkend provides two types of API keys. Each key has different usage environments and permissions, so make sure you use the right one for the right purpose. Both keys contain project ID and environment information, so no additional context headers are needed.
 
 ***
 
 ## Key Comparison
 
-| Item | Public Key | Secret Key |
-|------|-----------|------------|
+| Item | Publishable Key (`pk_`) | Secret Key (`sk_`) |
+|------|------------------------|-------------------|
 | **Environment** | Client (browser, mobile) | Server side only |
 | **Permissions** | Limited access based on RLS | Full access (admin) |
 | **Exposure Risk** | Low (protected by RLS) | High (full permissions) |
@@ -21,7 +21,7 @@ bkend provides two types of API keys. Each key has different usage environments 
 
 ***
 
-## Public Key
+## Publishable Key (`pk_`)
 
 A key designed for use in client-side applications.
 
@@ -35,23 +35,29 @@ A key designed for use in client-side applications.
 ### Usage Example
 
 ```javascript
-// Using a Public Key on the frontend
+// Using a Publishable Key on the frontend (guest permissions)
 const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   headers: {
-    'Authorization': `Bearer ${PUBLIC_KEY}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
+  },
+});
+
+// Publishable Key + JWT (user permissions)
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
+  headers: {
+    'X-API-Key': '{pk_publishable_key}',
+    'Authorization': 'Bearer {accessToken}',
   },
 });
 ```
 
 {% hint style="info" %}
-It is safe to include Public Keys in your source code. RLS policies control data access.
+It is safe to include Publishable Keys in your source code. RLS policies control data access.
 {% endhint %}
 
 ***
 
-## Secret Key
+## Secret Key (`sk_`)
 
 A key intended exclusively for server-side use.
 
@@ -68,9 +74,7 @@ A key intended exclusively for server-side use.
 // Using a Secret Key on the server side
 const response = await fetch('https://api-client.bkend.ai/v1/data/users', {
   headers: {
-    'Authorization': `Bearer ${process.env.BKEND_SECRET_KEY}`,
-    'X-Project-Id': process.env.BKEND_PROJECT_ID,
-    'X-Environment': 'dev',
+    'X-API-Key': process.env.BKEND_SECRET_KEY, // sk_xxx
   },
 });
 ```
@@ -83,11 +87,11 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/users', {
 
 ## Usage Scenarios
 
-### Frontend App (Public Key)
+### Frontend App (Publishable Key)
 
 ```mermaid
 flowchart LR
-    A[Browser] -->|Public Key + JWT| B[bkend API]
+    A[Browser] -->|"X-API-Key: pk_ + JWT"| B[bkend API]
     B -->|RLS: user permissions| C[Own Data Only]
 ```
 
@@ -95,19 +99,19 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[Backend Server] -->|Secret Key| B[bkend API]
+    A[Backend Server] -->|"X-API-Key: sk_"| B[bkend API]
     B -->|admin permissions| C[All Data]
 ```
 
 ### Recommended Patterns
 
-| Scenario | Key to Use | Reason |
-|----------|-----------|--------|
-| React/Vue frontend | Public Key + user JWT | RLS isolates data per user |
-| Next.js API Routes | Secret Key | Runs on server, needs full access |
-| Mobile app | Public Key + user JWT | Included in client-side code |
-| Batch jobs / cron | Secret Key | Runs on server, needs full access |
-| Webhook handlers | Secret Key | Runs on server, needs to create/modify data |
+| Scenario | Key to Use | Headers |
+|----------|-----------|---------|
+| React/Vue frontend | `pk_` + user JWT | `X-API-Key` + `Authorization` |
+| Next.js API Routes | `sk_` | `X-API-Key` only |
+| Mobile app | `pk_` + user JWT | `X-API-Key` + `Authorization` |
+| Batch jobs / cron | `sk_` | `X-API-Key` only |
+| Webhook handlers | `sk_` | `X-API-Key` only |
 
 ***
 
@@ -117,13 +121,13 @@ flowchart LR
 
 1. **Manage Secret Keys with environment variables**
 2. **Never commit Secret Keys to Git** (add `.env` files to `.gitignore`)
-3. **Use only Public Keys on the frontend**
+3. **Use only Publishable Keys on the frontend**
 4. **If a Secret Key is exposed, revoke it immediately and generate a new one**
 
 ***
 
 ## Next Steps
 
-- [RLS Overview](04-rls-overview.md) -- Data access control when using Public Keys
+- [RLS Overview](04-rls-overview.md) -- Data access control when using Publishable Keys
 - [API Key Management (Console)](../console/11-api-keys.md) -- Creating and managing keys
 - [Security Best Practices](07-best-practices.md) -- Overall security recommendations

@@ -6,26 +6,26 @@
 
 ## 개요
 
-프로젝트 설정 페이지에서 Project ID 확인, 프로젝트 정보 수정, 인증 설정, 프로젝트 삭제 등을 수행합니다.
+프로젝트 설정 페이지에서 Project ID 확인, 프로젝트 정보 수정, 프로젝트 삭제 등을 수행합니다.
 
 ***
 
 ## 설정 페이지 열기
 
-프로젝트 레벨 사이드바에서 **설정**을 클릭하세요.
+프로젝트 레벨 사이드바에서 **프로젝트 설정**을 클릭하세요.
 
 ***
 
 ## Project ID 확인하기
 
-프로젝트 설정 페이지 상단에 **Project ID**가 표시됩니다. REST API 호출 시 `X-Project-Id` 헤더에 이 값을 사용합니다.
+프로젝트 설정 페이지 상단에 **Project ID**가 표시됩니다. API Key에 프로젝트 정보가 포함되어 있으므로, 별도의 헤더 없이 `X-API-Key` 헤더만으로 프로젝트를 식별합니다.
 
 ```bash
--H "X-Project-Id: {project_id}"
+-H "X-API-Key: {pk_publishable_key}"
 ```
 
 {% hint style="info" %}
-💡 Project ID는 자동 생성된 고유 식별자입니다. 변경할 수 없습니다.
+💡 Project ID는 자동 생성된 고유 식별자입니다. 변경할 수 없습니다. Publishable Key는 환경별로 발급되며, 프로젝트 ID를 내장합니다.
 {% endhint %}
 
 ***
@@ -38,14 +38,6 @@
 | **프로젝트 Slug** | ✅ | URL 식별자 변경 |
 | **리전** | ❌ | 생성 후 변경 불가 |
 | **Project ID** | ❌ | 자동 생성, 변경 불가 |
-
-***
-
-## 인증 제공자 설정
-
-프로젝트 설정에서 User 인증에 사용할 제공자를 활성화/비활성화합니다.
-
-- [인증 제공자 설정](../authentication/17-provider-config.md) — 상세 설정 방법
 
 ***
 
@@ -63,6 +55,6 @@
 
 ## 다음 단계
 
-- [API 키 관리](11-api-keys.md) — 액세스 토큰 발급
+- [API 키 관리](11-api-keys.md) — API Key 발급
 - [환경 관리](05-environment.md) — 환경 생성 및 전환
 - [콘솔 개요](01-overview.md) — 콘솔 전체 구조

@@ -69,12 +69,11 @@ NEXT_PUBLIC_MOCK_MODE=false
 
 # bkend API
 NEXT_PUBLIC_API_URL=https://api-client.bkend.ai
-NEXT_PUBLIC_PROJECT_ID=your-project-id
-NEXT_PUBLIC_ENVIRONMENT=dev
+NEXT_PUBLIC_PUBLISHABLE_KEY=pk_your_publishable_key
 ```
 
 1. Create a project at the [bkend console](https://console.bkend.ai)
-2. Set your project ID in `NEXT_PUBLIC_PROJECT_ID`
+2. Set your publishable key in `NEXT_PUBLIC_PUBLISHABLE_KEY`
 3. Create the cookbook table structures (recipes, ingredients, meal_plans, shopping_lists, cooking_logs) in the console
 4. Run `pnpm dev`
 

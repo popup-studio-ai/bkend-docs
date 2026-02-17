@@ -37,8 +37,7 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/request \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "user@example.com"
   }'
@@ -59,8 +58,7 @@ Submit the token from the email along with a new password.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/confirm \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "user@example.com",
     "token": "{reset_token}",
@@ -87,9 +85,8 @@ Change your current password to a new one while signed in.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/password/change \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "currentPassword": "MyP@ssw0rd!",
     "newPassword": "NewP@ssw0rd!"
@@ -102,9 +99,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/password/chang
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     currentPassword: 'MyP@ssw0rd!',
@@ -127,11 +123,17 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/password/chang
 | Error Code | HTTP | Description |
 |------------|:----:|-------------|
 | `auth/invalid-email` | 400 | Invalid email format |
-| `auth/invalid-token` | 401 | Invalid reset token |
-| `auth/token-expired` | 401 | Reset token has expired |
-| `auth/invalid-password-format` | 400 | Password policy violation |
-| `auth/invalid-credentials` | 401 | Current password mismatch |
-| `auth/same-password` | 400 | New password is the same as current |
+| `auth/verification-token-not-found` | 404 | Reset token not found |
+| `auth/verification-token-expired` | 401 | Reset token has expired (24 hours) |
+| `auth/invalid-password-format` | 400 | Password policy violation (min 8 chars, at least 1 uppercase, lowercase, number, and special character) |
+| `auth/weak-password` | 400 | Password found in leaked password database |
+| `auth/invalid-password` | 401 | Current password does not match |
+| `auth/same-as-previous-password` | 400 | New password is the same as current |
+| `auth/account-not-found` | 404 | Account not found |
+
+{% hint style="info" %}
+After a successful password change, all sessions are invalidated and the user is forced to sign in again on all devices.
+{% endhint %}
 
 ***
 

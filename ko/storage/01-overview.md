@@ -6,7 +6,9 @@
 
 ## 스토리지란?
 
-bkend 스토리지는 파일 업로드, 다운로드, 메타데이터 관리를 위한 서비스입니다. S3 Presigned URL 기반으로 클라이언트에서 직접 파일을 업로드하며, 메타데이터 API로 파일 정보를 관리합니다.
+앱에서 프로필 사진, 게시글 이미지, 문서 파일을 안전하게 업로드하고 다운로드하려면 bkend의 파일 스토리지를 사용하세요. Presigned URL 방식으로 파일이 서버를 거치지 않고 직접 스토리지에 저장됩니다.
+
+bkend 스토리지는 파일 업로드, 다운로드, 메타데이터 관리를 위한 서비스입니다. Presigned URL은 일정 시간 동안만 유효한 서명된 URL로, 클라이언트가 서버를 거치지 않고 직접 스토리지에 파일을 업로드/다운로드할 수 있게 합니다. S3 Presigned URL 기반으로 클라이언트에서 직접 파일을 업로드하며, 메타데이터 API로 파일 정보를 관리합니다.
 
 ```mermaid
 sequenceDiagram
@@ -129,8 +131,7 @@ flowchart LR
 
 | 헤더 | 필수 | 설명 |
 |------|:----:|------|
-| `X-Project-Id` | ✅ | 프로젝트 ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | `{pk_publishable_key}` |
 | `Authorization` | ✅ | `Bearer {accessToken}` |
 | `Content-Type` | 조건부 | `application/json` — POST, PATCH 요청 시 |
 

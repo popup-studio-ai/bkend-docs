@@ -58,8 +58,7 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "chef@example.com",
@@ -125,8 +124,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "chef@example.com",
@@ -176,8 +174,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 // bkend.js — 프로젝트에 이 파일을 추가하세요
 
 const BASE_URL = 'https://api-client.bkend.ai';
-const PROJECT_ID = '{project_id}';
-const ENVIRONMENT = 'dev';
+const PUBLISHABLE_KEY = '{pk_publishable_key}';
 
 async function bkendFetch(endpoint, options = {}) {
   const accessToken = localStorage.getItem('accessToken');
@@ -186,8 +183,7 @@ async function bkendFetch(endpoint, options = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': PROJECT_ID,
-      'X-Environment': ENVIRONMENT,
+      'X-API-Key': PUBLISHABLE_KEY,
       ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       ...options.headers,
     },
@@ -244,8 +240,7 @@ async function refreshAccessToken() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Project-Id': PROJECT_ID,
-        'X-Environment': ENVIRONMENT,
+        'X-API-Key': PUBLISHABLE_KEY,
       },
       body: JSON.stringify({ refreshToken }),
     });
@@ -297,9 +292,8 @@ async function refreshAccessToken() {
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/me \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답:**

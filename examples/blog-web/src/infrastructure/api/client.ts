@@ -1,9 +1,7 @@
 import { tokenStorage } from "@/infrastructure/storage/token-storage";
-import { isMockMode, handleMockRequest } from "@/infrastructure/mock/mock-handler";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
-const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID ?? "";
-const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT ?? "dev";
+const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_PUBLISHABLE_KEY ?? "";
 
 interface FetchOptions extends Omit<RequestInit, "body"> {
   body?: unknown;
@@ -26,8 +24,7 @@ async function refreshAccessToken(): Promise<string | null> {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Project-Id": PROJECT_ID,
-        "X-Environment": ENVIRONMENT,
+        "X-API-Key": PUBLISHABLE_KEY,
       },
       body: JSON.stringify({ refreshToken }),
     });
@@ -46,18 +43,10 @@ export async function bkendFetch<T>(
   path: string,
   options: FetchOptions = {}
 ): Promise<T> {
-  if (isMockMode()) {
-    return handleMockRequest<T>(path, {
-      method: (options.method as string) || "GET",
-      body: options.body,
-    });
-  }
-
   const { body, skipAuth = false, headers: customHeaders, ...restOptions } = options;
 
   const headers: Record<string, string> = {
-    "X-Project-Id": PROJECT_ID,
-    "X-Environment": ENVIRONMENT,
+    "X-API-Key": PUBLISHABLE_KEY,
     ...(customHeaders as Record<string, string>),
   };
 
@@ -102,7 +91,7 @@ export async function bkendFetch<T>(
   if (!res.ok) {
     const errorBody = await res.json().catch(() => ({}));
     const message =
-      errorBody.message || errorBody.error || `Request failed (${res.status})`;
+      errorBody.error?.message || errorBody.message || `Request failed (${res.status})`;
     throw new Error(message);
   }
 
@@ -110,5 +99,12 @@ export async function bkendFetch<T>(
     return undefined as T;
   }
 
-  return res.json();
+  const json = await res.json();
+
+  // bkend API responds with { success, data } structure
+  if (json.success && json.data !== undefined) {
+    return json.data as T;
+  }
+
+  return json as T;
 }

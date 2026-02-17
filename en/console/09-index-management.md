@@ -12,8 +12,8 @@ Indexes speed up queries on specific columns. Creating indexes on columns that a
 
 ## Viewing the Index List
 
-1. Click **Database** → select a table → click the **Schema** tab.
-2. View currently created indexes in the index section.
+1. Click **Database** → select a table → click the **Indexes** tab.
+2. View currently created indexes.
 
 ***
 
@@ -21,7 +21,7 @@ Indexes speed up queries on specific columns. Creating indexes on columns that a
 
 {% tabs %}
 {% tab title="Console" %}
-1. Click the **Create Index** button in the index section of the Schema tab.
+1. Click the **Add Index** button in the Indexes tab.
 2. Enter the following information.
 
 | Field | Description |

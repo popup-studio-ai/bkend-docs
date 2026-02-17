@@ -25,11 +25,11 @@ This document covers the security best practices you should follow when running 
 
 | Environment | Key to Use |
 |-------------|-----------|
-| Frontend (browser, mobile) | **Public Key** + user JWT |
+| Frontend (browser, mobile) | **Publishable Key** + user JWT |
 | Server side (API Routes, batch) | **Secret Key** |
 
 {% hint style="danger" %}
-**Warning** -- Including a Secret Key in client-side code exposes it through browser DevTools or app decompilation. Always use a Public Key on the frontend.
+**Warning** -- Including a Secret Key in client-side code exposes it through browser DevTools or app decompilation. Always use a Publishable Key on the frontend.
 {% endhint %}
 
 ***
@@ -165,4 +165,4 @@ Verify the following before launching your project.
 
 - [Security API Reference](08-api-reference.md) -- Security-related API details
 - [Writing RLS Policies](05-rls-policies.md) -- How to configure policies
-- [Public Key vs Secret Key](03-public-vs-secret.md) -- Guide by key type
+- [Publishable Key vs Secret Key](03-public-vs-secret.md) -- Guide by key type

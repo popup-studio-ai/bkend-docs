@@ -25,10 +25,13 @@ All endpoints support two path formats.
 
 | Header | Required | Description |
 |--------|:--------:|-------------|
-| `X-Project-Id` | ✅ | Project ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | `{pk_publishable_key}` — Publishable Key |
 | `Authorization` | Conditional | `Bearer {accessToken}` — Required depending on permissions |
 | `Content-Type` | Conditional | `application/json` — Required for POST and PATCH requests |
+
+{% hint style="info" %}
+The Publishable Key contains project and environment information, so no additional headers are needed.
+{% endhint %}
 
 ### System Fields
 
@@ -94,6 +97,7 @@ GET /v1/data/:tableName
 | `searchType` | query | `string` | - | Target field for search |
 | `andFilters` | query | `JSON` | - | AND condition filters |
 | `orFilters` | query | `JSON` | - | OR condition filters |
+| `select` | query | `string[]` | - | Fields to include (comma-separated) |
 
 **Response:** `200 OK` — `{ items: [...], pagination: { total, page, limit, totalPages, hasNext, hasPrev } }`
 
@@ -152,6 +156,33 @@ GET /v1/data/:tableName/spec
 
 ***
 
+## OpenAPI Spec
+
+```http
+GET /v1/data/:tableName/openapi
+```
+
+| Parameter | Location | Type | Required | Description |
+|-----------|----------|------|:--------:|-------------|
+| `tableName` | path | `string` | ✅ | Table name |
+
+**Response:** `200 OK` — OpenAPI 3.0 specification document
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": { "title": "...", "version": "1.0.0" },
+  "paths": { "..." : { "..." } },
+  "components": { "..." }
+}
+```
+
+{% hint style="info" %}
+Returns an OpenAPI 3.0 specification for the CRUD operations of the specified table. Useful for auto-generating client SDKs or importing into API testing tools.
+{% endhint %}
+
+***
+
 ## Filter Operators
 
 | Operator | Description | Example |
@@ -192,6 +223,7 @@ GET /v1/data/:tableName/spec
 | `PATCH` | `/v1/data/:tableName/:id` | Update data |
 | `DELETE` | `/v1/data/:tableName/:id` | Delete data |
 | `GET` | `/v1/data/:tableName/spec` | Query schema |
+| `GET` | `/v1/data/:tableName/openapi` | OpenAPI 3.0 spec |
 
 {% hint style="info" %}
 All endpoints also support the `/v1/:tableName` shorthand path.
@@ -211,4 +243,6 @@ All endpoints also support the `/v1/:tableName` shorthand path.
 | `data/permission-denied` | 403 | Permission denied |
 | `data/system-table-access` | 403 | System table access denied |
 | `data/invalid-header` | 400 | Missing required header |
+| `data/scope-insufficient` | 403 | API key scope does not include the required permission |
+| `data/project-access-denied` | 403 | Access Token project ID does not match |
 | `data/rate-limit-exceeded` | 429 | API rate limit exceeded |

@@ -4,6 +4,18 @@
 💡 등록된 파일을 필터링, 정렬, 검색하여 목록으로 조회하세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- 사용자 인증 완료 (JWT 토큰 필요 — 모든 파일 API는 인증 필수)
+{% endhint %}
+
+**이 문서에서 사용하는 API:**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/files` | GET | JWT | 파일 목록 조회 |
+
 ## 개요
 
 `GET /v1/files` 엔드포인트로 파일 메타데이터 목록을 조회합니다. Visibility, MIME 타입, 소유자 등으로 필터링할 수 있습니다.
@@ -18,9 +30,8 @@
 {% tab title="cURL" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?page=1&limit=20&visibility=private&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -35,9 +46,8 @@ const params = new URLSearchParams({
 
 const response = await fetch(`https://api-client.bkend.ai/v1/files?${params}`, {
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -82,8 +92,8 @@ const { items, pagination } = await response.json();
     "page": 1,
     "limit": 20,
     "totalPages": 3,
-    "hasNext": true,
-    "hasPrev": false
+    "hasNextPage": true,
+    "hasPrevPage": false
   }
 }
 ```
@@ -96,26 +106,23 @@ const { items, pagination } = await response.json();
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?mimeType=image/jpeg" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 공개 파일만 조회
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?visibility=public" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ### 파일명으로 검색
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/files?search=profile" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***

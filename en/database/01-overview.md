@@ -6,7 +6,7 @@ Understand the bkend database system and learn how to manage data with the REST 
 
 ## What is the Database?
 
-bkend provides an isolated database for each project. You can create tables and perform data CRUD (Create, Read, Update, Delete) operations via the REST API without any server setup.
+If you want to store and query data with just API calls — without defining table structures in advance — use bkend's dynamic tables. bkend provides an isolated database for each project. You can create tables and perform data CRUD (Create, Read, Update, Delete) operations via the REST API without any server setup.
 
 ```mermaid
 flowchart LR
@@ -68,9 +68,12 @@ Both paths work identically. This documentation uses the standard path (`/v1/dat
 
 | Header | Required | Description |
 |--------|:--------:|-------------|
-| `X-Project-Id` | ✅ | Project ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | `{pk_publishable_key}` — Publishable Key |
 | `Authorization` | Conditional | `Bearer {accessToken}` — Required depending on permissions |
+
+{% hint style="info" %}
+The Publishable Key contains project and environment information, so no additional headers are needed.
+{% endhint %}
 
 ***
 
@@ -89,11 +92,11 @@ flowchart LR
 |:----:|------|------|----------------|
 | 1 | Console | Create tables, define columns | Console > **Database** |
 | 2 | Console | Set CRUD permissions per role | Console > **Database** > Table > **Permissions** |
-| 3 | Console | Issue an API Key (Bearer Token) | Console > **Access Tokens** > **Create New Token** |
+| 3 | Console | Issue an API Key (Bearer Token) | Console > **API Keys** > **Create New Token** |
 | 4 | REST API | Perform data CRUD from your app | `POST/GET/PATCH/DELETE /v1/data/:tableName` |
 
 {% hint style="info" %}
-You can find your **Project ID** in Console > **Project Settings**, and your **X-Environment** value in the Console > **Environment** tab.
+You can find your **Publishable Key** in Console > **API Keys**.
 {% endhint %}
 
 If you are integrating the REST API in your app for the first time, see [Integrate bkend in Your App](../getting-started/03-app-integration.md) first.

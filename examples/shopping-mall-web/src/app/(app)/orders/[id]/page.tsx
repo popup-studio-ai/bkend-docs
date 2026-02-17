@@ -40,7 +40,7 @@ export default function OrderDetailPage({
   };
 
   return (
-    <PageTransition>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
       <div className="space-y-6">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/orders">
@@ -100,6 +100,6 @@ export default function OrderDetailPage({
           )}
         </QueryBoundary>
       </div>
-    </PageTransition>
+    </div>
   );
 }

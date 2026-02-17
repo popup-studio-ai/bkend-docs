@@ -20,11 +20,30 @@ Click **Overview** in the project-level sidebar.
 
 | Item | Description |
 |------|-------------|
-| **Environments** | Environment status for the project (Active/Inactive) |
-| **Tables** | Number of tables in the current environment |
-| **Users** | Number of registered users in the current environment |
-| **Files** | Number of stored files in the current environment |
-| **Project ID** | Project identifier used in REST API calls |
+| **Environments** | Number and status of environments |
+| **Database** | Number of tables in the current environment |
+| **Storage** | Storage usage |
+| **Authentication** | Number of registered users |
+| **API Stats** | API call statistics for the current month |
+
+***
+
+## Quick Actions
+
+The dashboard provides shortcut buttons for common tasks.
+
+| Action | Description |
+|--------|-------------|
+| **Database** | Navigate to table management |
+| **Authentication** | Navigate to user and auth provider management |
+| **File Storage** | Navigate to file upload and management |
+| **Environments** | Navigate to environment management |
+
+***
+
+## Recent Activity
+
+The bottom of the dashboard displays the most recent actions performed in the project. Click **View all** to navigate to the full activity log.
 
 {% hint style="info" %}
 Dashboard data reflects the currently selected environment. Switching environments updates the displayed statistics accordingly.

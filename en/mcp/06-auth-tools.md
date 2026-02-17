@@ -51,39 +51,41 @@ Main endpoints the AI tool uses when generating code:
 | Endpoint | Method | Description |
 |----------|:------:|-------------|
 | `/v1/auth/email/signup` | POST | Email signup |
-| `/v1/auth/email/login` | POST | Email login |
-| `/v1/auth/email/verify` | POST | Email verification |
+| `/v1/auth/email/signin` | POST | Email login |
+| `/v1/auth/email/verify/send` | POST | Send email verification |
+| `/v1/auth/email/verify/confirm` | POST | Confirm email verification |
 | `/v1/auth/email/verify/resend` | POST | Resend verification email |
 
-### Social Auth
+### Social Auth (OAuth)
 
 | Endpoint | Method | Description |
 |----------|:------:|-------------|
-| `/v1/auth/social/{provider}/authorize` | GET | Start social login |
-| `/v1/auth/social/{provider}/callback` | GET | Social login callback |
+| `/v1/auth/{provider}/callback` | GET | OAuth callback (redirect) |
+| `/v1/auth/{provider}/callback` | POST | OAuth callback (API flow) |
 
 ### Token Management
 
 | Endpoint | Method | Description |
 |----------|:------:|-------------|
+| `/v1/auth/me` | GET | Get my profile |
 | `/v1/auth/refresh` | POST | Refresh token |
-| `/v1/auth/logout` | POST | Logout |
+| `/v1/auth/signout` | POST | Logout |
 
 ### Password Management
 
 | Endpoint | Method | Description |
 |----------|:------:|-------------|
-| `/v1/auth/password/forgot` | POST | Request password reset |
-| `/v1/auth/password/reset` | POST | Reset password |
+| `/v1/auth/password/reset/request` | POST | Request password reset |
+| `/v1/auth/password/reset/confirm` | POST | Confirm password reset |
 | `/v1/auth/password/change` | POST | Change password |
 
 ### User Management
 
 | Endpoint | Method | Description |
 |----------|:------:|-------------|
-| `/v1/users/me` | GET | Get my profile |
-| `/v1/users/me` | PATCH | Update my profile |
-| `/v1/users/me/avatar` | PUT | Change profile image |
+| `/v1/users/{userId}` | GET | Get user profile |
+| `/v1/users/{userId}` | PATCH | Update user profile |
+| `/v1/users/{userId}/avatar/upload-url` | POST | Get profile image upload URL |
 
 ***
 
@@ -95,13 +97,12 @@ When you ask the AI tool to "create an email login feature," it generates code l
 {% tab title="TypeScript" %}
 ```typescript
 const response = await fetch(
-  "https://api-client.bkend.ai/v1/auth/email/login",
+  "https://api-client.bkend.ai/v1/auth/email/signin",
   {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Project-Id": PROJECT_ID,
-      "X-Environment": "dev",
+      "X-API-Key": PUBLISHABLE_KEY,
     },
     body: JSON.stringify({
       email: "user@example.com",
@@ -116,10 +117,9 @@ const { accessToken, refreshToken } = await response.json();
 {% endtab %}
 {% tab title="cURL" %}
 ```bash
-curl -X POST https://api-client.bkend.ai/v1/auth/email/login \
+curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {PROJECT_ID}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "user@example.com",
     "password": "password123",
@@ -130,7 +130,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/login \
 {% endtabs %}
 
 {% hint style="info" %}
-All auth API calls require the `X-Project-Id` and `X-Environment` headers. After authentication, pass the issued JWT via the `Authorization: Bearer {accessToken}` header.
+All auth API calls require the `X-API-Key` header. After authentication, pass the issued JWT via the `Authorization: Bearer {accessToken}` header.
 {% endhint %}
 
 ***

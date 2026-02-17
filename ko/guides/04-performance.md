@@ -65,9 +65,8 @@ bkend는 테이블 생성 시 다음 인덱스를 자동 생성합니다.
 ```bash
 # ✅ 좋은 예 — 인덱스된 필드로 필터링
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published&sort=-createdAt&limit=20" \
-  -H "Authorization: Bearer {api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {api_key}"
 ```
 
 ### 페이지네이션 활용하기
@@ -89,9 +88,8 @@ const response = await fetch(
   `https://api-client.bkend.ai/v1/data/posts?limit=${limit}&offset=${offset}`,
   {
     headers: {
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${apiKey}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   }
 );
@@ -104,9 +102,8 @@ const response = await fetch(
 ```bash
 # 필요한 필드만 조회
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?fields=title,status,createdAt" \
-  -H "Authorization: Bearer {api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {api_key}"
 ```
 
 ***

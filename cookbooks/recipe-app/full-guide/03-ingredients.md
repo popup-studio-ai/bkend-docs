@@ -129,9 +129,8 @@ AI가 각 재료를 순차적으로 등록합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/ingredients \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "recipeId": "{recipeId}",
     "name": "김치",
@@ -206,9 +205,8 @@ console.log(`${ingredients.length}개 재료 추가 완료`);
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/ingredients?andFilters=%7B%22recipeId%22%3A%22{recipeId}%22%7D&sortBy=orderIndex&sortDirection=asc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답 예시:**
@@ -276,9 +274,8 @@ async function getIngredients(recipeId) {
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/ingredients/{ingredientId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "amount": "500",
     "unit": "g"
@@ -319,9 +316,8 @@ await bkendFetch(`/v1/data/ingredients/${ingredientId}`, {
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/ingredients/{ingredientId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript

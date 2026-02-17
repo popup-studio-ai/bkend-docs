@@ -26,12 +26,12 @@ export function QueryBoundary({
 
   if (isError) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-lg border border-red-200 bg-red-50 px-6 py-12 text-center dark:border-red-900 dark:bg-red-950/30">
-        <AlertCircle className="mb-3 h-10 w-10 text-red-500" />
-        <h3 className="text-lg font-semibold text-red-800 dark:text-red-200">
+      <div className="flex flex-col items-center justify-center rounded-xl border border-destructive/30 bg-destructive/5 px-6 py-12 text-center">
+        <AlertCircle className="mb-3 h-10 w-10 text-destructive" />
+        <h3 className="text-lg font-semibold">
           An error occurred
         </h3>
-        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+        <p className="mt-1 text-sm text-muted-foreground">
           {error?.message || "There was a problem loading the data."}
         </p>
         {onRetry && (
@@ -50,7 +50,7 @@ export function QueryBoundary({
 function DefaultLoadingFallback() {
   return (
     <div className="flex items-center justify-center py-12">
-      <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900 dark:border-slate-700 dark:border-t-slate-50" />
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-accent-color" />
     </div>
   );
 }

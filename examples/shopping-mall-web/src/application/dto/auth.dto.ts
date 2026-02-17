@@ -20,16 +20,45 @@ export const signInSchema = z.object({
 export type SignUpInput = z.infer<typeof signUpSchema>;
 export type SignInInput = z.infer<typeof signInSchema>;
 
+export interface SignUpRequest {
+  method: "password";
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface SignInRequest {
+  email: string;
+  password: string;
+}
+
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
-  user: UserDto;
+  tokenType: string;
+  expiresIn: number;
+  user: UserProfile;
 }
 
-export interface UserDto {
+export interface UserProfile {
   id: string;
   email: string;
   name: string;
+  image?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface GoogleCallbackRequest {
+  code: string;
+  redirectUri: string;
+  state: string;
+}
+
+export interface OAuthResponse {
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
+  is_new_user: boolean;
 }

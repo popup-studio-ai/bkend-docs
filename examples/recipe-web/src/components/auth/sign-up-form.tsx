@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +22,7 @@ const signUpSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Please enter a valid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -32,6 +33,7 @@ const signUpSchema = z
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export function SignUpForm() {
+  const router = useRouter();
   const signUp = useSignUp();
 
   const {
@@ -43,15 +45,22 @@ export function SignUpForm() {
   });
 
   const onSubmit = (data: SignUpFormData) => {
-    signUp.mutate({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
+    signUp.mutate(
+      {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: () => {
+          router.push("/recipes");
+        },
+      }
+    );
   };
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md border-orange-200 dark:border-stone-700">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Sign Up</CardTitle>
         <CardDescription>
@@ -66,6 +75,7 @@ export function SignUpForm() {
               id="name"
               type="text"
               placeholder="Enter your name"
+              autoComplete="name"
               {...register("name")}
             />
             {errors.name && (
@@ -79,6 +89,7 @@ export function SignUpForm() {
               id="email"
               type="email"
               placeholder="name@example.com"
+              autoComplete="email"
               {...register("email")}
             />
             {errors.email && (
@@ -91,7 +102,8 @@ export function SignUpForm() {
             <Input
               id="password"
               type="password"
-              placeholder="At least 6 characters"
+              placeholder="At least 8 characters"
+              autoComplete="new-password"
               {...register("password")}
             />
             {errors.password && (
@@ -105,6 +117,7 @@ export function SignUpForm() {
               id="confirmPassword"
               type="password"
               placeholder="Re-enter your password"
+              autoComplete="new-password"
               {...register("confirmPassword")}
             />
             {errors.confirmPassword && (
@@ -115,14 +128,14 @@ export function SignUpForm() {
           </div>
 
           {signUp.isError && (
-            <p className="text-sm text-red-500">
-              Sign up failed. Please try again.
-            </p>
+            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+              {(signUp.error as Error)?.message || "Sign up failed."}
+            </div>
           )}
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white"
             disabled={signUp.isPending}
           >
             {signUp.isPending && (
@@ -135,7 +148,7 @@ export function SignUpForm() {
         <div className="mt-4 text-center text-sm text-stone-500 dark:text-stone-400">
           Already have an account?{" "}
           <Link
-            href="/signin"
+            href="/sign-in"
             className="text-orange-600 hover:underline dark:text-orange-400"
           >
             Sign In

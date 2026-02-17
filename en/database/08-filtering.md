@@ -4,6 +4,14 @@
 Find exactly the data you need using AND/OR filters and search.
 {% endhint %}
 
+{% hint style="info" %}
+**API used in this document**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/data/:tableName` | GET | Conditional | Filtered query |
+{% endhint %}
+
 ## Overview
 
 When listing data, use the `andFilters`, `orFilters`, and `search` parameters to filter results. Pass filters as JSON strings via query parameters.
@@ -17,8 +25,7 @@ When listing data, use the `andFilters`, `orFilters`, and `search` parameters to
 ```bash
 # Data where status is "active" AND age is 18 or above
 curl -X GET "https://api-client.bkend.ai/v1/data/users?andFilters=%7B%22status%22%3A%22active%22%2C%22age%22%3A%7B%22%24gte%22%3A18%7D%7D" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ```javascript
@@ -31,8 +38,7 @@ const response = await fetch(
   `https://api-client.bkend.ai/v1/data/users?andFilters=${encodeURIComponent(andFilters)}`,
   {
     headers: {
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
   }
 );
@@ -119,8 +125,7 @@ Use the `search` parameter for partial-match search across all fields.
 ```bash
 # Search for "bkend" across all fields
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?search=bkend" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ### Search a Specific Field
@@ -130,8 +135,7 @@ Use `searchType` to target a specific field for the search.
 ```bash
 # Search for "bkend" only in the title field
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?search=bkend&searchType=title" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 | Parameter | Type | Description |
@@ -170,6 +174,27 @@ const andFilters = JSON.stringify({
 ```
 
 ***
+
+### Filter Encoding Patterns
+
+{% tabs %}
+{% tab title="Correct Usage" %}
+```javascript
+const filters = { status: 'active', age: { $gte: 18 } };
+const encoded = encodeURIComponent(JSON.stringify(filters));
+const url = `https://api-client.bkend.ai/v1/data/users?andFilters=${encoded}`;
+```
+{% endtab %}
+{% tab title="Incorrect Usage" %}
+```javascript
+// ❌ Passing directly without JSON.stringify
+const url = `/v1/data/users?andFilters={status:'active'}`;
+
+// ❌ Passing without encodeURIComponent
+const url = `/v1/data/users?andFilters={"status":"active"}`;
+```
+{% endtab %}
+{% endtabs %}
 
 {% hint style="warning" %}
 The values for `andFilters` and `orFilters` must be URL-encoded JSON strings. Without encoding, the parameters will not be parsed correctly.

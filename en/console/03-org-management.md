@@ -41,7 +41,7 @@ When you create an organization, you are automatically assigned the **Owner** ro
 
 ## Updating Organization Settings
 
-1. Click **Settings** in the sidebar.
+1. Click **Organization Settings** in the sidebar.
 2. Modify the organization name or other settings.
 3. Click **Save**.
 
@@ -53,7 +53,7 @@ When you create an organization, you are automatically assigned the **Owner** ro
 **Danger** — Deleting an organization permanently removes all projects, environments, and data within it. This action cannot be undone.
 {% endhint %}
 
-1. Click **Settings** in the sidebar.
+1. Click **Organization Settings** in the sidebar.
 2. In the **Delete Organization** section at the bottom of the page, click **Delete**.
 3. Enter the organization name in the confirmation prompt and click **Confirm Delete**.
 

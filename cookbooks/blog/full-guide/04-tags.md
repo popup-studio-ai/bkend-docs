@@ -133,9 +133,8 @@ bkend 콘솔에서 테이블을 생성합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/tags \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "name": "여행",
     "slug": "travel"
@@ -214,9 +213,8 @@ console.log(tags.map(t => `${t.name}: ${t.id}`));
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/tags?sortBy=name&sortDirection=asc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch
@@ -294,9 +292,8 @@ console.log(result.items);
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/articles/{articleId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "tags": ["tag-uuid-travel", "tag-uuid-food"]
   }'
@@ -363,9 +360,8 @@ await bkendFetch(`/v1/data/articles/${articleId}`, {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/articles?andFilters=%7B%22tags%22%3A%22tag-uuid-travel%22%7D&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch
@@ -428,9 +424,8 @@ articlesResult.items.forEach(article => {
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/tags/{tagId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "name": "해외여행",
     "slug": "overseas-travel"
@@ -451,9 +446,8 @@ await bkendFetch(`/v1/data/tags/${tagId}`, {
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/tags/{tagId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript

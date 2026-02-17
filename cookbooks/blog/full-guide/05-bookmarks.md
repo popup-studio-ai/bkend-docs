@@ -118,9 +118,8 @@ bkend 콘솔에서 테이블을 생성합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/bookmarks \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "articleId": "507f1f77bcf86cd799439011"
   }'
@@ -181,9 +180,8 @@ AI가 북마크 목록을 조회한 후, 각 게시글의 상세 정보를 함�
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/bookmarks?sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch
@@ -277,9 +275,8 @@ AI가 해당 게시글의 북마크를 찾아서 삭제합니다.
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/bookmarks/{bookmarkId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch

@@ -102,17 +102,17 @@ See [AI Tool Integration Overview](../ai-tools/01-overview.md)
 
 **Q: My API Key has been exposed. What should I do?**
 
-Immediately **revoke** the API Key in the console and generate a new one. Use Secret Keys only on the server side, and never include them in client code.
+Immediately **revoke** the API Key in the console and generate a new one. Use Secret Keys (`sk_`) only on the server side, and never include them in client code.
 
 See [API Key Management (Console)](../console/11-api-keys.md)
 
 ***
 
-**Q: What is the difference between a Public Key and a Secret Key?**
+**Q: What is the difference between a Publishable Key and a Secret Key?**
 
-A Public Key is used on the client side with limited permissions (RLS-based), while a Secret Key is used on the server side with full admin privileges.
+A Publishable Key (`pk_`) is used on the client side with limited permissions (RLS-based), while a Secret Key (`sk_`) is used on the server side with full admin privileges.
 
-See [Public Key vs Secret Key](../security/03-public-vs-secret.md)
+See [Publishable Key vs Secret Key](../security/03-public-vs-secret.md)
 
 ***
 
@@ -131,7 +131,8 @@ If you did not find the answer you were looking for in this FAQ, check the [Comm
 | **Tenant** | A user who builds services using bkend |
 | **User** | An end user of the service built by a Tenant |
 | **MCP** | Model Context Protocol. A standard communication protocol between AI tools and services |
-| **API Key** | A key used for API authentication (`ak_` prefix) |
+| **Publishable Key** | A client-side API key (`pk_` prefix) with RLS-based permissions |
+| **Secret Key** | A server-side API key (`sk_` prefix) with full admin permissions |
 | **JWT** | JSON Web Token. A token format used for user authentication |
 | **RLS** | Row Level Security. Row-level access control |
 | **CRUD** | Abbreviation for Create, Read, Update, Delete |

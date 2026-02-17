@@ -14,9 +14,7 @@ The bkend REST API works the same regardless of framework. Here we cover setup f
 
 | Item | Where to Find |
 |------|---------------|
-| Project ID | Console > **Project Settings** |
-| API Key | Console > **Access Tokens** |
-| Environment | `dev` (development environment) |
+| Publishable Key | Console > **API Keys** |
 
 ***
 
@@ -28,8 +26,7 @@ Create a `.env.local` file in your project root.
 
 ```bash
 NEXT_PUBLIC_BKEND_API_URL=https://api-client.bkend.ai
-NEXT_PUBLIC_BKEND_PROJECT_ID={project_id}
-NEXT_PUBLIC_BKEND_ENVIRONMENT=dev
+NEXT_PUBLIC_BKEND_PUBLISHABLE_KEY={pk_publishable_key}
 ```
 
 {% hint style="warning" %}
@@ -41,8 +38,7 @@ Environment variables prefixed with `NEXT_PUBLIC_` are exposed to the client. Ne
 ```typescript
 // lib/bkend.ts
 const API_BASE = process.env.NEXT_PUBLIC_BKEND_API_URL!;
-const PROJECT_ID = process.env.NEXT_PUBLIC_BKEND_PROJECT_ID!;
-const ENVIRONMENT = process.env.NEXT_PUBLIC_BKEND_ENVIRONMENT!;
+const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_BKEND_PUBLISHABLE_KEY!;
 
 export async function bkendFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const accessToken = typeof window !== 'undefined'
@@ -53,8 +49,7 @@ export async function bkendFetch<T>(path: string, options: RequestInit = {}): Pr
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': PROJECT_ID,
-      'X-Environment': ENVIRONMENT,
+      'X-API-Key': PUBLISHABLE_KEY,
       ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       ...options.headers,
     },
@@ -113,8 +108,7 @@ Create a config file in the `lib/config/` directory.
 // lib/config/bkend_config.dart
 class BkendConfig {
   static const String apiUrl = 'https://api-client.bkend.ai';
-  static const String projectId = '{project_id}';
-  static const String environment = 'dev';
+  static const String publishableKey = '{pk_publishable_key}';
 }
 ```
 
@@ -143,8 +137,7 @@ class BkendClient {
       baseUrl: BkendConfig.apiUrl,
       headers: {
         'Content-Type': 'application/json',
-        'X-Project-Id': BkendConfig.projectId,
-        'X-Environment': BkendConfig.environment,
+        'X-API-Key': BkendConfig.publishableKey,
       },
     ));
 

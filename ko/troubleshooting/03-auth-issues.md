@@ -77,6 +77,8 @@ flowchart TD
 ### 자동 토큰 갱신 구현
 
 ```javascript
+const PUBLISHABLE_KEY = '{pk_publishable_key}'; // 콘솔에서 발급
+
 async function fetchWithAuth(url, options = {}) {
   let accessToken = getStoredAccessToken();
 
@@ -84,9 +86,8 @@ async function fetchWithAuth(url, options = {}) {
     ...options,
     headers: {
       ...options.headers,
+      'X-API-Key': PUBLISHABLE_KEY,
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   });
 
@@ -99,8 +100,7 @@ async function fetchWithAuth(url, options = {}) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Project-Id': '{project_id}',
-          'X-Environment': 'dev',
+          'X-API-Key': PUBLISHABLE_KEY,
         },
         body: JSON.stringify({ refreshToken }),
       }
@@ -115,9 +115,8 @@ async function fetchWithAuth(url, options = {}) {
         ...options,
         headers: {
           ...options.headers,
+          'X-API-Key': PUBLISHABLE_KEY,
           'Authorization': `Bearer ${newToken}`,
-          'X-Project-Id': '{project_id}',
-          'X-Environment': 'dev',
         },
       });
     }

@@ -84,9 +84,8 @@ AI가 레시피를 저장합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/recipes \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "김치찌개",
     "description": "돼지고기와 잘 익은 김치로 만드는 얼큰한 찌개",
@@ -138,9 +137,8 @@ AI가 저장된 레시피 목록을 조회하여 보여줍니다.
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/recipes?limit=10" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답 예시:**

@@ -76,7 +76,7 @@ An API Key is used for authentication when calling the REST API. Keys are issued
 
 | Type | Usage | Permissions |
 |------|-------|-------------|
-| **Public Key** | Used in clients (browsers, apps) | Limited read/write |
+| **Publishable Key** | Used in clients (browsers, apps) | Limited read/write |
 | **Secret Key** | Used on the server | Full read/write |
 
 {% hint style="danger" %}
@@ -122,7 +122,7 @@ MCP is a standard protocol for communication between AI tools and services. bken
 
 | Item | Description |
 |------|-------------|
-| Authentication | OAuth 2.1 + PKCE (automatic) |
+| Authentication | OAuth 2.1 + PKCE (Proof Key for Code Exchange) (automatic) |
 | Transport | Streamable HTTP |
 | Endpoint | `https://api.bkend.ai/mcp` |
 

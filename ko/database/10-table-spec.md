@@ -18,18 +18,16 @@
 {% tab title="cURL" %}
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/posts/spec \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
 ```javascript
 const response = await fetch('https://api-client.bkend.ai/v1/data/posts/spec', {
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -176,6 +174,84 @@ const canDelete = spec.permissions[userRole]?.delete ?? false;
 {% hint style="warning" %}
 ⚠️ 테이블 스키마 조회는 `admin` 또는 해당 테이블에 `read` 권한이 있는 역할만 사용할 수 있습니다. `guest` 권한으로 조회하려면 테이블 권한 설정을 확인하세요.
 {% endhint %}
+
+## OpenAPI 스펙 조회
+
+### GET /v1/data/:tableName/openapi
+
+테이블의 CRUD 작업에 대한 OpenAPI 3.0 스펙 문서를 조회할 수 있습니다. 클라이언트 SDK 자동 생성이나 API 테스트 도구(예: Postman, Swagger UI) 연동에 활용하세요.
+
+{% tabs %}
+{% tab title="cURL" %}
+```bash
+curl -X GET https://api-client.bkend.ai/v1/data/posts/openapi \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
+```
+{% endtab %}
+{% tab title="JavaScript" %}
+```javascript
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts/openapi', {
+  headers: {
+    'X-API-Key': '{pk_publishable_key}',
+    'Authorization': `Bearer ${accessToken}`,
+  },
+});
+
+const openApiSpec = await response.json();
+console.log(openApiSpec.openapi);  // "3.0.0"
+console.log(openApiSpec.paths);    // Path 정의
+```
+{% endtab %}
+{% endtabs %}
+
+### 경로 파라미터
+
+| 파라미터 | 타입 | 필수 | 설명 |
+|---------|------|:----:|------|
+| `tableName` | `string` | ✅ | 테이블 이름 |
+
+### 응답 (200 OK)
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "posts API",
+    "version": "1.0.0",
+    "description": "CRUD API for posts table"
+  },
+  "paths": {
+    "/v1/data/posts": {
+      "get": { "..." },
+      "post": { "..." }
+    },
+    "/v1/data/posts/{id}": {
+      "get": { "..." },
+      "patch": { "..." },
+      "delete": { "..." }
+    }
+  },
+  "components": {
+    "schemas": { "..." }
+  }
+}
+```
+
+### 응답 필드
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| `openapi` | `string` | OpenAPI 버전 (항상 `"3.0.0"`) |
+| `info` | `object` | API 메타데이터 (title, version, description) |
+| `paths` | `object` | CRUD 작업의 Path 정의 |
+| `components` | `object` | 스키마 컴포넌트 정의 |
+
+{% hint style="info" %}
+💡 OpenAPI 스펙은 테이블의 현재 스키마를 기반으로 동적 생성됩니다. 필드, 타입, 제약 조건 변경이 즉시 반영됩니다.
+{% endhint %}
+
+***
 
 ## 다음 단계
 

@@ -83,9 +83,8 @@ AI가 데이터 생성 도구를 호출하여 게시글을 추가합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/articles \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "나의 첫 블로그",
     "content": "bkend로 만든 블로그입니다.",
@@ -156,9 +155,8 @@ AI가 데이터 조회 도구를 호출하여 게시글 목록을 반환합니�
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/articles \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch

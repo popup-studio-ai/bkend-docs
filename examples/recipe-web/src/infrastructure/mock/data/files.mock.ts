@@ -1,6 +1,6 @@
 import type {
   PresignedUrlResponse,
-  FileMetadata,
+  FileRecord,
 } from "@/application/dto/file.dto";
 
 let nextId = 1;
@@ -8,24 +8,31 @@ let nextId = 1;
 export function getPresignedUrl(
   filename: string,
 ): PresignedUrlResponse {
-  const fileKey = `mock/${Date.now()}-${filename}`;
+  const key = `mock/${Date.now()}-${filename}`;
   return {
     url: `https://picsum.photos/800/600?random=${nextId++}`,
-    fileKey,
+    key,
+    filename,
+    contentType: "image/jpeg",
   };
 }
 
 export function saveFileMetadata(
   data: Record<string, unknown>
-): FileMetadata {
-  const now = new Date().toISOString();
+): Omit<FileRecord, "url"> & { id: string } {
+  const id = `file-${String(nextId++).padStart(3, "0")}`;
   return {
-    id: `file-${String(nextId++).padStart(3, "0")}`,
-    fileKey: (data.fileKey as string) || "",
-    filename: (data.filename as string) || "",
-    contentType: (data.contentType as string) || "image/jpeg",
+    id,
+    originalName: (data.originalName as string) || "",
+    mimeType: (data.mimeType as string) || "image/jpeg",
     size: (data.size as number) || 0,
-    url: `https://picsum.photos/800/600?random=${nextId}`,
-    createdAt: now,
+    visibility: (data.visibility as string) || "public",
+    createdAt: new Date().toISOString(),
+  };
+}
+
+export function getDownloadUrl(fileId: string): { url: string } {
+  return {
+    url: `https://picsum.photos/800/600?random=${fileId}`,
   };
 }

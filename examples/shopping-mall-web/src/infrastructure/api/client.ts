@@ -1,139 +1,110 @@
 import { tokenStorage } from "@/infrastructure/storage/token-storage";
-import { isMockMode, handleMockRequest } from "@/infrastructure/mock/mock-handler";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
-const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID!;
-const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT || "dev";
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
+const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_PUBLISHABLE_KEY ?? "";
 
-interface RequestOptions extends Omit<RequestInit, "body"> {
+interface FetchOptions extends Omit<RequestInit, "body"> {
   body?: unknown;
   skipAuth?: boolean;
 }
 
-interface RefreshResponse {
-  accessToken: string;
-  refreshToken: string;
+class AuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthError";
+  }
 }
 
-let isRefreshing = false;
-let refreshPromise: Promise<boolean> | null = null;
-
-async function refreshAccessToken(): Promise<boolean> {
+async function refreshAccessToken(): Promise<string | null> {
   const refreshToken = tokenStorage.getRefreshToken();
-  if (!refreshToken) return false;
+  if (!refreshToken) return null;
 
   try {
-    const response = await fetch(`${BASE_URL}/v1/auth/refresh`, {
+    const res = await fetch(`${API_URL}/v1/auth/refresh`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Project-Id": PROJECT_ID,
-        "X-Environment": ENVIRONMENT,
+        "X-API-Key": PUBLISHABLE_KEY,
       },
       body: JSON.stringify({ refreshToken }),
     });
 
-    if (!response.ok) {
-      tokenStorage.clear();
-      return false;
-    }
+    if (!res.ok) return null;
 
-    const data: RefreshResponse = await response.json();
-    tokenStorage.setAccessToken(data.accessToken);
-    tokenStorage.setRefreshToken(data.refreshToken);
-    return true;
+    const data = await res.json();
+    tokenStorage.setTokens(data.accessToken, data.refreshToken);
+    return data.accessToken;
   } catch {
-    tokenStorage.clear();
-    return false;
+    return null;
   }
 }
 
-export async function apiClient<T>(
-  endpoint: string,
-  options: RequestOptions = {}
+export async function bkendFetch<T>(
+  path: string,
+  options: FetchOptions = {}
 ): Promise<T> {
-  if (isMockMode()) {
-    return handleMockRequest<T>(endpoint, {
-      method: options.method || "GET",
-      body: options.body,
-    });
-  }
-
   const { body, skipAuth = false, headers: customHeaders, ...restOptions } = options;
 
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    "X-Project-Id": PROJECT_ID,
-    "X-Environment": ENVIRONMENT,
-    ...((customHeaders as Record<string, string>) || {}),
+    "X-API-Key": PUBLISHABLE_KEY,
+    ...(customHeaders as Record<string, string>),
   };
+
+  if (body !== undefined && body !== null) {
+    headers["Content-Type"] = "application/json";
+  }
 
   if (!skipAuth) {
-    const accessToken = tokenStorage.getAccessToken();
-    if (accessToken) {
-      headers["Authorization"] = `Bearer ${accessToken}`;
+    const token = tokenStorage.getAccessToken();
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
   }
 
-  const config: RequestInit = {
+  let res = await fetch(`${API_URL}${path}`, {
     ...restOptions,
     headers,
-    ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
-  };
+    body: body !== undefined && body !== null ? JSON.stringify(body) : undefined,
+  });
 
-  let response = await fetch(`${BASE_URL}${endpoint}`, config);
-
-  if (response.status === 401 && !skipAuth) {
-    if (!isRefreshing) {
-      isRefreshing = true;
-      refreshPromise = refreshAccessToken();
-    }
-
-    const refreshed = await refreshPromise;
-    isRefreshing = false;
-    refreshPromise = null;
-
-    if (refreshed) {
-      const newToken = tokenStorage.getAccessToken();
-      if (newToken) {
-        headers["Authorization"] = `Bearer ${newToken}`;
-      }
-      response = await fetch(`${BASE_URL}${endpoint}`, {
-        ...config,
+  if (res.status === 401 && !skipAuth) {
+    const newToken = await refreshAccessToken();
+    if (newToken) {
+      headers["Authorization"] = `Bearer ${newToken}`;
+      res = await fetch(`${API_URL}${path}`, {
+        ...restOptions,
         headers,
+        body:
+          body !== undefined && body !== null
+            ? JSON.stringify(body)
+            : undefined,
       });
     } else {
-      tokenStorage.clear();
+      tokenStorage.clearTokens();
       if (typeof window !== "undefined") {
-        window.location.href = "/signin";
+        window.location.href = "/sign-in";
       }
-      throw new Error("Session expired. Please sign in again.");
+      throw new AuthError("Your session has expired. Please sign in again.");
     }
   }
 
-  if (!response.ok) {
-    const errorBody = await response.json().catch(() => ({}));
-    throw new ApiError(
-      response.status,
-      errorBody.message || `Request failed (${response.status})`,
-      errorBody
-    );
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    const message =
+      errorBody.error?.message || errorBody.message || `Request failed (${res.status})`;
+    throw new Error(message);
   }
 
-  if (response.status === 204) {
+  if (res.status === 204) {
     return undefined as T;
   }
 
-  return response.json();
-}
+  const json = await res.json();
 
-export class ApiError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-    public body?: unknown
-  ) {
-    super(message);
-    this.name = "ApiError";
+  // bkend API responds with { success, data } structure
+  if (json.success && json.data !== undefined) {
+    return json.data as T;
   }
+
+  return json as T;
 }

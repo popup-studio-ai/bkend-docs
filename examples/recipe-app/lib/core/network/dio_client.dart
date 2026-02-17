@@ -17,8 +17,7 @@ class DioClient {
         receiveTimeout: const Duration(seconds: 10),
         headers: {
           'Content-Type': 'application/json',
-          'X-Project-Id': ApiConstants.projectId,
-          'X-Environment': ApiConstants.environment,
+          'X-API-Key': ApiConstants.publishableKey,
         },
       ),
     );
@@ -67,8 +66,7 @@ class DioClient {
             baseUrl: ApiConstants.baseUrl,
             headers: {
               'Content-Type': 'application/json',
-              'X-Project-Id': ApiConstants.projectId,
-              'X-Environment': ApiConstants.environment,
+              'X-API-Key': ApiConstants.publishableKey,
             },
           ),
         ).post(

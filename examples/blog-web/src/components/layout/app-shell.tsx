@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
@@ -10,6 +10,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useMe } from "@/hooks/queries/use-auth";
 import { tokenStorage } from "@/infrastructure/storage/token-storage";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -22,8 +23,13 @@ export function AppShell({ children }: AppShellProps) {
   const setMobileSidebarOpen = useUIStore((s) => s.setMobileSidebarOpen);
   const setUser = useAuthStore((s) => s.setUser);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const [mounted, setMounted] = useState(false);
 
-  const { data: user, isError } = useMe();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { data: user, isError, isLoading } = useMe();
 
   useEffect(() => {
     if (user) {
@@ -32,19 +38,24 @@ export function AppShell({ children }: AppShellProps) {
   }, [user, setUser]);
 
   useEffect(() => {
-    if (!tokenStorage.hasTokens()) {
+    if (mounted && !tokenStorage.hasTokens()) {
       router.replace("/sign-in");
     }
-  }, [router]);
+  }, [mounted, router]);
 
   useEffect(() => {
-    if (isError && !tokenStorage.hasTokens()) {
+    if (mounted && isError && !tokenStorage.hasTokens()) {
       router.replace("/sign-in");
     }
-  }, [isError, router]);
+  }, [mounted, isError, router]);
 
-  if (!tokenStorage.hasTokens() && !isAuthenticated) {
-    return null;
+  // Show loading state until mounted to prevent hydration mismatch
+  if (!mounted || (isLoading && !isAuthenticated)) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
   }
 
   return (

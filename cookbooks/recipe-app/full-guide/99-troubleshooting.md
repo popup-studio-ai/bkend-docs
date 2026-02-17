@@ -35,8 +35,7 @@
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refreshToken}"
   }'
@@ -57,19 +56,18 @@ bkendFetch 헬퍼에 자동 갱신 로직을 추가하면 편리합니다. 상�
 ```json
 {
   "statusCode": 401,
-  "message": "X-Project-Id header is required"
+  "message": "X-API-Key header is required"
 }
 ```
 
-**원인:** 필수 헤더(`Authorization`, `X-Project-Id`, `X-Environment`)가 누락되었습니다.
+**원인:** 필수 헤더(`X-API-Key`, `Authorization`)가 누락되었습니다.
 
-**해결 방법:** 모든 API 요청에 3개 헤더를 포함하세요.
+**해결 방법:** 모든 API 요청에 필수 헤더를 포함하세요.
 
 | 헤더 | 값 | 설명 |
 |------|-----|------|
+| `X-API-Key` | `{pk_publishable_key}` | Publishable Key (`pk_` 접두사) |
 | `Authorization` | `Bearer {accessToken}` | 인증 토큰 |
-| `X-Project-Id` | `{project_id}` | 프로젝트 ID |
-| `X-Environment` | `dev` | 환경 (dev / staging / prod) |
 
 ***
 
@@ -91,9 +89,8 @@ bkendFetch 헬퍼에 자동 갱신 로직을 추가하면 편리합니다. 상�
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/recipes \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "김치찌개",
     "description": "돼지고기와 김치로 만드는 찌개",
@@ -153,9 +150,8 @@ curl -X POST https://api-client.bkend.ai/v1/data/recipes \
 ```bash
 # 필터 없이 전체 조회
 curl -X GET "https://api-client.bkend.ai/v1/data/recipes?page=1&limit=10" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***
@@ -313,9 +309,8 @@ async function setMealPlan(date, mealType, recipeId, servings) {
 ```bash
 # 레시피 재료 확인
 curl -X GET "https://api-client.bkend.ai/v1/data/ingredients?andFilters=%7B%22recipeId%22%3A%22{recipeId}%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 항목 합산 오류
@@ -485,7 +480,7 @@ flowchart TD
 ```
 
 1. **에러 메시지 확인** — 응답의 `message` 필드를 읽으세요.
-2. **요청 헤더 확인** — `Authorization`, `X-Project-Id`, `X-Environment` 3개가 모두 있는지 확인하세요.
+2. **요청 헤더 확인** — `X-API-Key`, `Authorization` 헤더가 모두 있는지 확인하세요.
 3. **요청 본문 확인** — 필수 필드가 빠지지 않았는지, 데이터 타입이 올바른지 확인하세요.
 4. **테이블 존재 확인** — 콘솔에서 테이블이 생성되어 있는지 확인하세요.
 5. **네트워크 확인** — API 서버에 접근 가능한 상태인지 확인하세요.

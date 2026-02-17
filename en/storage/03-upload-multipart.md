@@ -4,6 +4,21 @@
 Split large files into multiple parts and upload them in parallel.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Project creation](../getting-started/02-quickstart.md) completed
+- User authentication completed (JWT token required — all file APIs require authentication)
+{% endhint %}
+
+**APIs used in this document:**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/files/multipart/init` | POST | JWT | Initialize multipart upload |
+| `/v1/files/multipart/presigned-url` | POST | JWT | Issue part URL |
+| `/v1/files/multipart/complete` | POST | JWT | Complete multipart upload |
+| `/v1/files/multipart/abort` | POST | JWT | Abort multipart upload |
+
 ## Overview
 
 Multipart upload splits a large file into multiple chunks (parts) for uploading. Parts can be uploaded in parallel, and only failed parts need to be retried.
@@ -27,9 +42,8 @@ flowchart TD
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "video.mp4",
     "contentType": "video/mp4",
@@ -70,9 +84,8 @@ Obtain an upload URL for each part.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "key": "{key from init response}",
     "uploadId": "multipart-upload-id",
@@ -124,9 +137,8 @@ Once all parts are uploaded, send the completion request.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "key": "{key from init response}",
     "uploadId": "multipart-upload-id",
@@ -168,9 +180,8 @@ Send an abort request if you need to cancel the upload.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/multipart/abort \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "key": "{key from init response}",
     "uploadId": "multipart-upload-id"
@@ -199,9 +210,8 @@ async function multipartUpload(file, accessToken) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
     body: JSON.stringify({
       filename: file.name,
@@ -225,9 +235,8 @@ async function multipartUpload(file, accessToken) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-API-Key': '{pk_publishable_key}',
         'Authorization': `Bearer ${accessToken}`,
-        'X-Project-Id': '{project_id}',
-        'X-Environment': 'dev',
       },
       body: JSON.stringify({ key, uploadId, partNumber }),
     }).then(res => res.json());
@@ -250,9 +259,8 @@ async function multipartUpload(file, accessToken) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
     body: JSON.stringify({ key, uploadId, parts }),
   }).then(res => res.json());

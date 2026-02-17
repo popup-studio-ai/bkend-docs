@@ -18,18 +18,16 @@ Use the `GET /v1/data/:tableName/spec` endpoint to query a table's schema defini
 {% tab title="cURL" %}
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/posts/spec \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
 ```javascript
 const response = await fetch('https://api-client.bkend.ai/v1/data/posts/spec', {
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -177,8 +175,86 @@ const canDelete = spec.permissions[userRole]?.delete ?? false;
 The table schema query is available only to the `admin` role or roles that have `read` permission on the table. To query with `guest` permissions, verify the table permission settings.
 {% endhint %}
 
+## OpenAPI Spec Query
+
+### GET /v1/data/:tableName/openapi
+
+You can also get a full OpenAPI 3.0 specification document for a table's CRUD operations. This is useful for auto-generating client SDKs or importing into API testing tools (e.g., Postman, Swagger UI).
+
+{% tabs %}
+{% tab title="cURL" %}
+```bash
+curl -X GET https://api-client.bkend.ai/v1/data/posts/openapi \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
+```
+{% endtab %}
+{% tab title="JavaScript" %}
+```javascript
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts/openapi', {
+  headers: {
+    'X-API-Key': '{pk_publishable_key}',
+    'Authorization': `Bearer ${accessToken}`,
+  },
+});
+
+const openApiSpec = await response.json();
+console.log(openApiSpec.openapi);  // "3.0.0"
+console.log(openApiSpec.paths);    // Path definitions
+```
+{% endtab %}
+{% endtabs %}
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|:--------:|-------------|
+| `tableName` | `string` | Yes | Table name |
+
+### Response (200 OK)
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "posts API",
+    "version": "1.0.0",
+    "description": "CRUD API for posts table"
+  },
+  "paths": {
+    "/v1/data/posts": {
+      "get": { "..." },
+      "post": { "..." }
+    },
+    "/v1/data/posts/{id}": {
+      "get": { "..." },
+      "patch": { "..." },
+      "delete": { "..." }
+    }
+  },
+  "components": {
+    "schemas": { "..." }
+  }
+}
+```
+
+### Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `openapi` | `string` | OpenAPI version (always `"3.0.0"`) |
+| `info` | `object` | API metadata (title, version, description) |
+| `paths` | `object` | Path definitions for CRUD operations |
+| `components` | `object` | Schema component definitions |
+
+{% hint style="info" %}
+The OpenAPI spec is generated dynamically based on the table's current schema. Changes to fields, types, or constraints are immediately reflected.
+{% endhint %}
+
+***
+
 ## Next Steps
 
-- [Data Model](02-data-model.md) — Understand schema and permission structure
-- [Create Data](03-insert.md) — Create data that conforms to the schema
-- [Table Management](../console/07-table-management.md) — Edit schema in the console
+- [Data Model](02-data-model.md) -- Understand schema and permission structure
+- [Create Data](03-insert.md) -- Create data that conforms to the schema
+- [Table Management](../console/07-table-management.md) -- Edit schema in the console

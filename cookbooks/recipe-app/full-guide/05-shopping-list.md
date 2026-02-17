@@ -120,9 +120,8 @@ flowchart LR
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/shopping_lists \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "name": "이번 주 장보기",
     "date": "2025-01-25",
@@ -266,9 +265,8 @@ const list = await createShoppingListFromRecipes(
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/shopping_lists?sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript
@@ -303,9 +301,8 @@ myLists.items.forEach(list => {
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/shopping_lists/{listId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript
@@ -571,9 +568,8 @@ await getProgress(listId);
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/shopping_lists/{listId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript

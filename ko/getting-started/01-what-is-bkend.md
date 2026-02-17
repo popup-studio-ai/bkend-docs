@@ -37,11 +37,15 @@ flowchart LR
 
 ### 데이터베이스
 
-테이블 스키마를 설계하고 데이터를 CRUD합니다. 7가지 컬럼 타입, 제약 조건, 인덱스, 관계 설정을 지원합니다.
+콘솔이나 MCP 도구로 동적 테이블을 생성하고, REST API(`/v1/data/{테이블명}`)로 데이터를 CRUD(Create, Read, Update, Delete)합니다. 7가지 컬럼 타입, 제약 조건, 인덱스, 관계 설정을 지원합니다.
+
+{% hint style="info" %}
+💡 **동적 테이블**이란, 콘솔이나 MCP 도구로 스키마를 정의하면 REST API 엔드포인트(`/v1/data/{테이블명}`)가 자동 생성되는 테이블입니다. 서버 코드 없이 테이블을 만들고 바로 API로 데이터에 접근할 수 있습니다.
+{% endhint %}
 
 ### 인증
 
-이메일 회원가입, 소셜 로그인(Google, GitHub), 매직 링크, MFA를 제공합니다. JWT 기반 세션 관리와 토큰 자동 갱신을 처리합니다.
+이메일 회원가입, 소셜 로그인(Google, GitHub), 매직 링크, MFA(Multi-Factor Authentication)를 제공합니다. JWT(JSON Web Token) 기반 세션 관리와 토큰 자동 갱신을 처리합니다.
 
 ### 스토리지
 
@@ -66,6 +70,10 @@ bkend는 세 가지 방식으로 사용할 수 있습니다.
 | **MCP 도구** | AI 도구 사용자 | Claude Code, Cursor에서 자연어로 백엔드 구축 |
 | **REST API** | 앱 개발자 | HTTP 요청으로 데이터 조회/수정, 사용자 인증, 파일 관리 |
 | **콘솔** | 모든 사용자 | 웹 UI에서 시각적으로 관리 |
+
+{% hint style="info" %}
+💡 bkend에서 **Tenant**는 백엔드를 구축하는 개발자(콘솔/MCP 사용), **User**는 앱을 사용하는 최종 사용자(REST API 대상)를 의미합니다. 자세한 내용은 [Tenant와 User 이해](05-tenant-vs-user.md)를 참고하세요.
+{% endhint %}
 
 ```mermaid
 flowchart TD

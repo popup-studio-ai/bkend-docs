@@ -61,7 +61,7 @@ bkend 백엔드의 관리 기능을 호출하는 도구입니다. Organization, 
 → 각 도구의 상세 파라미터와 응답은 [MCP 도구 개요](../mcp/01-overview.md)를 참고하세요.
 
 {% hint style="warning" %}
-⚠️ MCP 도구는 **관리 기능**(테이블 스키마, 프로젝트, 환경 등)을 제어합니다. 앱 사용자 데이터를 다루는 Consumer API와는 다릅니다. Consumer API 연동은 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 참고하세요.
+⚠️ MCP 도구는 **관리 기능**(테이블 스키마, 프로젝트, 환경 등)을 제어합니다. 앱 사용자 데이터를 다루는 REST API와는 다릅니다. REST API 연동은 [앱에서 bkend 연동하기](../getting-started/03-app-integration.md)를 참고하세요.
 {% endhint %}
 
 ***

@@ -1,26 +1,32 @@
 export interface PresignedUrlRequest {
   filename: string;
   contentType: string;
+  fileSize: number;
+  visibility: "public" | "private";
+  category: string;
 }
 
 export interface PresignedUrlResponse {
   url: string;
-  fileKey: string;
-}
-
-export interface FileMetadataRequest {
-  fileKey: string;
+  key: string;
   filename: string;
   contentType: string;
-  size: number;
 }
 
-export interface FileMetadata {
+export interface CreateFileRequest {
+  s3Key: string;
+  originalName: string;
+  mimeType: string;
+  size: number;
+  visibility: "public" | "private";
+}
+
+export interface FileRecord {
   id: string;
-  fileKey: string;
-  filename: string;
-  contentType: string;
+  originalName: string;
+  mimeType: string;
   size: number;
+  visibility: string;
   url: string;
   createdAt: string;
 }

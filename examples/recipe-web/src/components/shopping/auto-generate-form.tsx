@@ -6,20 +6,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
-import { Loader2, ShoppingCart, ChefHat } from "lucide-react";
+import { Loader2, ShoppingCart, ChefHat, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/shared/page-header";
 import { RecipeListSkeleton } from "@/components/shared/loading-skeleton";
 import { QueryBoundary } from "@/components/shared/query-boundary";
 import { PageTransition } from "@/components/motion/page-transition";
 import { EmptyState } from "@/components/shared/empty-state";
 import { useRecipes } from "@/hooks/queries/use-recipes";
-import { useIngredients } from "@/hooks/queries/use-ingredients";
 import { useCreateShoppingList } from "@/hooks/queries/use-shopping-lists";
+import { getIngredientsByRecipe } from "@/lib/api/ingredients";
 import type { ShoppingItem } from "@/application/dto/shopping-list.dto";
 
 const formSchema = z.object({
@@ -66,34 +66,15 @@ export function AutoGenerateForm() {
 
     for (const recipeId of selectedRecipeIds) {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1/data/ingredients?${new URLSearchParams({
-            page: "1",
-            limit: "50",
-            sortBy: "orderIndex",
-            sortDirection: "asc",
-            andFilters: JSON.stringify({ recipeId }),
-          })}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("recipe_access_token")}`,
-              "X-Project-Id": process.env.NEXT_PUBLIC_PROJECT_ID!,
-              "X-Environment": process.env.NEXT_PUBLIC_ENVIRONMENT || "dev",
-            },
-          }
-        );
-        if (response.ok) {
-          const result = await response.json();
-          for (const ing of result.items) {
-            allIngredients.push({
-              name: ing.name,
-              amount: ing.amount,
-              unit: ing.unit,
-              checked: false,
-              recipeId,
-            });
-          }
+        const result = await getIngredientsByRecipe(recipeId);
+        for (const ing of result.items) {
+          allIngredients.push({
+            name: ing.name,
+            amount: ing.amount,
+            unit: ing.unit,
+            checked: false,
+            recipeId,
+          });
         }
       } catch {
         // Skip this recipe on error
@@ -169,10 +150,18 @@ export function AutoGenerateForm() {
                         className="flex items-center gap-3 rounded-lg border border-orange-100 p-3 transition-colors hover:bg-orange-50 dark:border-stone-700 dark:hover:bg-stone-800 cursor-pointer"
                         onClick={() => toggleRecipe(recipe.id)}
                       >
-                        <Checkbox
-                          checked={selectedRecipeIds.has(recipe.id)}
-                          onCheckedChange={() => toggleRecipe(recipe.id)}
-                        />
+                        <div
+                          className={cn(
+                            "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border shadow-sm transition-colors",
+                            selectedRecipeIds.has(recipe.id)
+                              ? "bg-orange-500 border-orange-500 text-white"
+                              : "border-orange-300 dark:border-stone-600"
+                          )}
+                        >
+                          {selectedRecipeIds.has(recipe.id) && (
+                            <Check className="h-3.5 w-3.5" />
+                          )}
+                        </div>
                         <div className="flex-1">
                           <p className="text-sm font-medium text-stone-700 dark:text-stone-300">
                             {recipe.title}

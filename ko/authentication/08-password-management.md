@@ -37,8 +37,7 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/request \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "user@example.com"
   }'
@@ -59,8 +58,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/request \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/confirm \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "user@example.com",
     "token": "{reset_token}",
@@ -87,9 +85,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/confirm \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/password/change \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "currentPassword": "MyP@ssw0rd!",
     "newPassword": "NewP@ssw0rd!"
@@ -102,9 +99,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/password/chang
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     currentPassword: 'MyP@ssw0rd!',
@@ -127,11 +123,17 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/password/chang
 | 에러 코드 | HTTP | 설명 |
 |----------|:----:|------|
 | `auth/invalid-email` | 400 | 이메일 형식이 올바르지 않음 |
-| `auth/invalid-token` | 401 | 재설정 토큰이 유효하지 않음 |
-| `auth/token-expired` | 401 | 재설정 토큰이 만료됨 |
-| `auth/invalid-password-format` | 400 | 비밀번호 정책 위반 |
-| `auth/invalid-credentials` | 401 | 현재 비밀번호 불일치 |
-| `auth/same-password` | 400 | 새 비밀번호가 현재와 동일 |
+| `auth/verification-token-not-found` | 404 | 재설정 토큰을 찾을 수 없음 |
+| `auth/verification-token-expired` | 401 | 재설정 토큰이 만료됨 (24시간) |
+| `auth/invalid-password-format` | 400 | 비밀번호 정책 위반 (최소 8자, 대문자·소문자·숫자·특수문자 각 1개 이상) |
+| `auth/weak-password` | 400 | 유출된 비밀번호 데이터베이스에서 발견됨 |
+| `auth/invalid-password` | 401 | 현재 비밀번호 불일치 |
+| `auth/same-as-previous-password` | 400 | 새 비밀번호가 현재와 동일 |
+| `auth/account-not-found` | 404 | 계정을 찾을 수 없음 |
+
+{% hint style="info" %}
+비밀번호 변경 성공 시 모든 세션이 무효화되며, 모든 기기에서 재로그인이 필요합니다.
+{% endhint %}
 
 ***
 

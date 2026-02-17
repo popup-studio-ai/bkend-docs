@@ -20,7 +20,7 @@ export default function ReviewsPage() {
   const reviews = data?.items ?? [];
 
   return (
-    <PageTransition>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
       <div className="space-y-6">
         <PageHeader
           title="My Reviews"
@@ -94,6 +94,6 @@ export default function ReviewsPage() {
           )}
         </QueryBoundary>
       </div>
-    </PageTransition>
+    </div>
   );
 }

@@ -25,7 +25,7 @@ export interface UserProfile {
   id: string;
   email: string;
   name: string;
-  avatarUrl?: string;
+  image?: string; // Backend uses 'image' field, not 'avatarUrl'
   createdAt: string;
   updatedAt: string;
 }

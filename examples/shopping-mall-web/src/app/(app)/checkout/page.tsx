@@ -15,7 +15,7 @@ export default function CheckoutPage() {
   const { data: cartItems, isLoading, isError, error, refetch } = useCartItems();
 
   return (
-    <PageTransition>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
       <div className="space-y-6">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/cart">
@@ -48,6 +48,6 @@ export default function CheckoutPage() {
           )}
         </QueryBoundary>
       </div>
-    </PageTransition>
+    </div>
   );
 }

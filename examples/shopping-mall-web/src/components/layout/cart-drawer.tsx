@@ -54,29 +54,29 @@ export function CartDrawer() {
             <CartSkeleton />
           ) : !cartItems || cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <ShoppingBag className="mb-3 h-12 w-12 text-slate-300 dark:text-slate-600" />
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <ShoppingBag className="mb-3 h-12 w-12 text-muted-foreground/30" />
+              <p className="text-sm text-muted-foreground">
                 Your cart is empty
               </p>
             </div>
           ) : (
             <div className="space-y-4">
               {cartItems.map((item) => (
-                <div key={item.id} className="flex gap-3 rounded-md border border-slate-200 p-3 dark:border-slate-700">
+                <div key={item.id} className="flex gap-3 rounded-xl border bg-card p-3">
                   {item.product?.imageUrl ? (
                     <img
                       src={item.product.imageUrl}
                       alt={item.product.name}
-                      className="h-20 w-20 rounded-md object-cover"
+                      className="h-20 w-20 rounded-lg object-cover"
                     />
                   ) : (
-                    <div className="flex h-20 w-20 items-center justify-center rounded-md bg-slate-100 dark:bg-slate-800">
-                      <ShoppingBag className="h-8 w-8 text-slate-400" />
+                    <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-muted">
+                      <ShoppingBag className="h-8 w-8 text-muted-foreground/30" />
                     </div>
                   )}
                   <div className="flex flex-1 flex-col justify-between">
                     <div>
-                      <p className="text-sm font-medium text-slate-900 dark:text-slate-50 line-clamp-1">
+                      <p className="text-sm font-medium line-clamp-1">
                         {item.product?.name ?? "Product info unavailable"}
                       </p>
                       {item.product && (
@@ -95,7 +95,7 @@ export function CartDrawer() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-slate-400 hover:text-red-500"
+                        className="h-8 w-8 text-muted-foreground hover:text-destructive"
                         onClick={() => removeItem.mutate(item.id)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -109,17 +109,17 @@ export function CartDrawer() {
         </div>
 
         {cartItems && cartItems.length > 0 && (
-          <div className="border-t border-slate-200 pt-4 dark:border-slate-700">
+          <div className="border-t pt-4">
             <div className="flex items-center justify-between pb-4">
-              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              <span className="text-sm font-medium text-muted-foreground">
                 Total
               </span>
-              <span className="text-xl font-bold text-amber-700 dark:text-amber-400">
+              <span className="text-xl font-bold text-accent-color">
                 {formatPrice(totalPrice)}
               </span>
             </div>
             <Separator className="mb-4" />
-            <Button variant="accent" className="w-full" size="lg" onClick={handleCheckout}>
+            <Button className="w-full bg-accent-color text-white hover:bg-accent-color/90" size="lg" onClick={handleCheckout}>
               Checkout
             </Button>
           </div>

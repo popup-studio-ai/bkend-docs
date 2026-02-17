@@ -18,8 +18,9 @@ Use the Database menu to create, browse, and delete tables. Table creation and m
 | Displayed Info | Description |
 |----------------|-------------|
 | **Table Name** | Table identifier |
-| **Columns** | Number of fields |
-| **Records** | Number of stored records |
+| **Status** | Active / Deleted |
+| **Rows** | Number of stored records |
+| **Updated** | Last modified date |
 
 ***
 

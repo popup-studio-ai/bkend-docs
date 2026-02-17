@@ -97,7 +97,7 @@
 
 * [Security](security/01-overview.md)
   * [Understanding API Keys](security/02-api-keys.md)
-  * [Public Key vs Secret Key](security/03-public-vs-secret.md)
+  * [Publishable Key vs Secret Key](security/03-public-vs-secret.md)
   * [Row Level Security Overview](security/04-rls-overview.md)
   * [Writing RLS Policies](security/05-rls-policies.md)
   * [Data Encryption](security/06-data-encryption.md)

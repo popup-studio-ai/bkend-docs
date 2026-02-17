@@ -105,9 +105,8 @@ const presignedResponse = await fetch(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-API-Key": PK_PUBLISHABLE_KEY,
       "Authorization": `Bearer ${accessToken}`,
-      "X-Project-Id": PROJECT_ID,
-      "X-Environment": "dev",
     },
     body: JSON.stringify({
       filename: "profile.jpg",
@@ -130,9 +129,8 @@ await fetch(
   {
     method: "POST",
     headers: {
+      "X-API-Key": PK_PUBLISHABLE_KEY,
       "Authorization": `Bearer ${accessToken}`,
-      "X-Project-Id": PROJECT_ID,
-      "X-Environment": "dev",
     },
   }
 );
@@ -143,9 +141,8 @@ await fetch(
 # 1. Presigned URL 발급
 curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {ACCESS_TOKEN}" \
-  -H "X-Project-Id: {PROJECT_ID}" \
-  -H "X-Environment: dev" \
   -d '{"filename": "profile.jpg", "contentType": "image/jpeg"}'
 
 # 2. 파일 업로드 (반환된 URL 사용)
@@ -155,9 +152,8 @@ curl -X PUT "{PRESIGNED_URL}" \
 
 # 3. 업로드 완료 처리
 curl -X POST https://api-client.bkend.ai/v1/files/{FILE_ID}/complete \
-  -H "Authorization: Bearer {ACCESS_TOKEN}" \
-  -H "X-Project-Id: {PROJECT_ID}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {ACCESS_TOKEN}"
 ```
 {% endtab %}
 {% endtabs %}

@@ -122,9 +122,8 @@ flowchart LR
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/meal_plans \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "date": "2025-01-20",
     "mealType": "dinner",
@@ -195,9 +194,8 @@ console.log('하루 식단 등록 완료');
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/meal_plans?andFilters=%7B%22date%22%3A%222025-01-20%22%7D&sortBy=mealType&sortDirection=asc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답 예시:**
@@ -269,9 +267,8 @@ todayMeals.items.forEach(meal => {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/meal_plans?andFilters=%7B%22date%22%3A%7B%22%24gte%22%3A%222025-01-20%22%2C%22%24lte%22%3A%222025-01-26%22%7D%7D&sortBy=date&sortDirection=asc&limit=50" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch로 주간 식단 조회:**
@@ -340,9 +337,8 @@ Object.entries(weekPlan).forEach(([date, meals]) => {
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/meal_plans/{mealPlanId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "recipeId": "{newRecipeId}",
     "notes": "된장찌개로 변경"
@@ -393,9 +389,8 @@ await bkendFetch(`/v1/data/meal_plans/${mealPlanId}`, {
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/meal_plans/{mealPlanId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript

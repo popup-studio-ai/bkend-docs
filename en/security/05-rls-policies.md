@@ -205,6 +205,196 @@ If the group permission is `true`, the self filter is not applied. To restrict a
 
 ***
 
+## Expression-Based Permissions
+
+Expression-based permissions provide finer-grained control than the boolean model. Each CRUD operation can have an expression rule that combines groups and conditions.
+
+### Expression Format
+
+```json
+{
+  "expressionPermissions": {
+    "create": "group:user",
+    "read": "group:user OR group:guest",
+    "update": "self",
+    "delete": "self",
+    "list": "group:user OR self"
+  }
+}
+```
+
+### Available Conditions
+
+| Condition | Description |
+|-----------|-------------|
+| `group:user` | Matches authenticated users |
+| `group:guest` | Matches unauthenticated users |
+| `self` | Matches the data owner (`createdBy` = requester ID) |
+
+### Operators
+
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `OR` | Allows if **any** condition is true | `group:user OR self` |
+| `AND` | Allows only if **all** conditions are true | `group:user AND self` |
+
+### Expression Examples
+
+**Bulletin Board** -- Everyone reads, only author edits:
+
+```json
+{
+  "expressionPermissions": {
+    "create": "group:user",
+    "read": "group:user OR group:guest",
+    "update": "self",
+    "delete": "self",
+    "list": "group:user OR group:guest"
+  }
+}
+```
+
+**Private Notes** -- Only the owner accesses their data:
+
+```json
+{
+  "expressionPermissions": {
+    "create": "group:user",
+    "read": "self",
+    "update": "self",
+    "delete": "self",
+    "list": "self"
+  }
+}
+```
+
+### Priority Rules
+
+1. If `expressionPermissions` is set, it takes priority over `permissions` (boolean mode)
+2. The `admin` group always has full access regardless of expressions
+3. If `list` is not defined in expressions, the `read` expression is used as fallback
+
+{% hint style="info" %}
+Expression-based permissions and boolean permissions are fully compatible. You can migrate gradually -- tables without expression permissions continue to use the boolean model.
+{% endhint %}
+
+***
+
+## Column-Level Permissions
+
+Column-level permissions control which fields each user group can read or write. This provides field-level granularity beyond table-level CRUD.
+
+### Configuration
+
+```json
+{
+  "columnPermissions": {
+    "secretField": {
+      "read": "group:admin",
+      "write": "group:admin"
+    },
+    "email": {
+      "read": "group:user OR group:admin",
+      "write": "self"
+    }
+  }
+}
+```
+
+### How It Works
+
+| Operation | Behavior |
+|-----------|----------|
+| **Read** | Fields the user cannot read are silently excluded from the response |
+| **Write** | If the user attempts to write a restricted field, a `403 PERMISSION_DENIED` error is returned |
+
+{% hint style="info" %}
+Fields without explicit column permissions inherit the table-level permissions. System fields (`id`, `createdBy`, `createdAt`, `updatedAt`) are always readable.
+{% endhint %}
+
+### Example: User Profiles
+
+Only admins can read email, and only the data owner can update their bio:
+
+```json
+{
+  "columnPermissions": {
+    "email": {
+      "read": "group:admin",
+      "write": "self"
+    },
+    "bio": {
+      "read": "group:user OR group:guest",
+      "write": "self"
+    },
+    "internalNotes": {
+      "read": "group:admin",
+      "write": "group:admin"
+    }
+  }
+}
+```
+
+***
+
+## Row Filters
+
+Row filters automatically restrict which rows a user can see based on conditions. Unlike `self` permissions (which filter by `createdBy`), row filters support arbitrary field conditions.
+
+### Configuration
+
+```json
+{
+  "rowFilters": [
+    {
+      "expression": "group:user",
+      "filter": { "status": "published" }
+    },
+    {
+      "expression": "group:admin",
+      "filter": {}
+    }
+  ]
+}
+```
+
+### How It Works
+
+- Each row filter has an `expression` (who it applies to) and a `filter` (what condition to apply)
+- Multiple matching filters are combined with `OR` logic
+- The `$userId` variable is replaced with the requester's user ID
+
+### Example: Content Visibility
+
+Regular users see only published content, while admins see everything:
+
+```json
+{
+  "rowFilters": [
+    {
+      "expression": "group:guest",
+      "filter": { "status": "published", "visibility": "public" }
+    },
+    {
+      "expression": "group:user",
+      "filter": { "status": "published" }
+    },
+    {
+      "expression": "self",
+      "filter": { "createdBy": "$userId" }
+    }
+  ]
+}
+```
+
+**Result:** A regular user sees all published data plus their own drafts. A guest sees only public published content. An admin sees everything (no filter applied).
+
+{% hint style="warning" %}
+Row filters only apply to **list** operations (`GET /v1/data/:tableName`). Single record reads (`GET /v1/data/:tableName/:id`) use the standard permission check.
+{% endhint %}
+
+***
+
 ## How to Configure Policies
 
 You can configure RLS policies through the **console** or **MCP tools**.
@@ -237,6 +427,7 @@ and also allow update and delete for self"
 | Error | HTTP | Description |
 |-------|:----:|-------------|
 | `PERMISSION_DENIED` | 403 | The group does not have permission for the requested operation |
+| `SCOPE_INSUFFICIENT` | 403 | The API key scope does not include the requested operation |
 | `SYSTEM_TABLE_ACCESS` | 403 | A non-admin attempted to access a system table |
 
 ***

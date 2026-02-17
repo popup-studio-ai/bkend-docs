@@ -71,8 +71,7 @@ Access Token이 만료되었을 때 Refresh Token으로 새 토큰 쌍을 발급
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'
@@ -84,8 +83,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/refresh', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     refreshToken: localStorage.getItem('refreshToken'),
@@ -115,6 +113,10 @@ saveTokens({ accessToken, refreshToken });
 
 {% hint style="danger" %}
 🚨 **Refresh Token 회전 정책** — 토큰 갱신 시 새 Refresh Token이 발급되며, 이전 Refresh Token은 즉시 무효화됩니다. 반드시 새 토큰 쌍을 저장하세요.
+{% endhint %}
+
+{% hint style="warning" %}
+⚠️ **Replay Attack 감지** — 이미 무효화된 Refresh Token이 사용되면(예: 탈취 후 재사용), bkend가 리플레이 공격을 감지하여 해당 사용자의 **모든 세션을 즉시 무효화**합니다. 모든 기기에서 재로그인이 필요합니다.
 {% endhint %}
 
 ***
@@ -147,8 +149,7 @@ sequenceDiagram
 
 ```javascript
 const BKEND_BASE_URL = 'https://api-client.bkend.ai';
-const PROJECT_ID = '{project_id}';
-const ENVIRONMENT = 'dev';
+const PUBLISHABLE_KEY = '{pk_publishable_key}'; // 콘솔에서 발급
 
 // 토큰 갱신 중복 방지
 let refreshPromise = null;
@@ -167,8 +168,7 @@ async function refreshAccessToken() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Project-Id': PROJECT_ID,
-        'X-Environment': ENVIRONMENT,
+        'X-API-Key': PUBLISHABLE_KEY,
       },
       body: JSON.stringify({ refreshToken }),
     });
@@ -195,8 +195,7 @@ async function bkendFetch(path, options = {}) {
 
   const headers = {
     'Content-Type': 'application/json',
-    'X-Project-Id': PROJECT_ID,
-    'X-Environment': ENVIRONMENT,
+    'X-API-Key': PUBLISHABLE_KEY,
     ...options.headers,
   };
 
@@ -277,9 +276,8 @@ sequenceDiagram
 
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/signout \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 로그아웃 구현
@@ -313,6 +311,8 @@ async function signOut() {
 |----------|:----:|------|
 | `auth/unauthorized` | 401 | 인증이 필요함 |
 | `auth/invalid-token` | 401 | 토큰이 유효하지 않음 |
+| `auth/invalid-refresh-token` | 401 | Refresh Token 불일치 또는 세션 없음 |
+| `auth/session-expired` | 401 | 세션 만료 (7일) |
 | `auth/token-expired` | 401 | Refresh Token이 만료됨 |
 
 ***

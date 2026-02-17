@@ -19,8 +19,7 @@ Specify the field to sort by. Any field in the table can be used as a sort key.
 ```bash
 # Sort by createdAt in descending order (newest first)
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDirection=desc" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ### sortDirection
@@ -72,8 +71,7 @@ If `sortBy` is not specified, the default sort order (usually by `_id`) is appli
 ```bash
 # Page 1, 10 items per page
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?page=1&limit=10" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ### Pagination Response
@@ -122,9 +120,8 @@ const response = await fetch(
   `https://api-client.bkend.ai/v1/data/posts?${params}`,
   {
     headers: {
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   }
 );
@@ -144,9 +141,8 @@ while (hasNext) {
     `https://api-client.bkend.ai/v1/data/posts?page=${page}&limit=100`,
     {
       headers: {
+        'X-API-Key': '{pk_publishable_key}',
         'Authorization': `Bearer ${accessToken}`,
-        'X-Project-Id': '{project_id}',
-        'X-Environment': 'dev',
       },
     }
   );

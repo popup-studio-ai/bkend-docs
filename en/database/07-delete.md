@@ -4,6 +4,21 @@
 Remove data from a table.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Create a project](../getting-started/02-quickstart.md) completed
+- [Create a table](../console/07-table-management.md) completed
+- Authentication setup — Public tables require no auth; tables with RLS require a JWT
+{% endhint %}
+
+{% hint style="info" %}
+**API used in this document**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/data/:tableName/:id` | DELETE | Conditional | Delete data |
+{% endhint %}
+
 ## Overview
 
 Use the `DELETE /v1/data/:tableName/:id` endpoint to delete a specific record.
@@ -18,9 +33,8 @@ Use the `DELETE /v1/data/:tableName/:id` endpoint to delete a specific record.
 {% tab title="cURL" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/posts/507f1f77bcf86cd799439011 \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -30,9 +44,8 @@ const postId = '507f1f77bcf86cd799439011';
 const response = await fetch(`https://api-client.bkend.ai/v1/data/posts/${postId}`, {
   method: 'DELETE',
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -101,6 +114,7 @@ Deleting data requires the `delete` permission on the corresponding table.
 | `data/table-not-found` | 404 | Table does not exist |
 | `data/not-found` | 404 | Data not found |
 | `data/permission-denied` | 403 | No delete permission |
+| `data/scope-insufficient` | 403 | API key scope does not include `tableName:delete` |
 
 ***
 

@@ -101,9 +101,8 @@ AI가 상품을 등록하고 결과를 알려줍니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/products \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "name": "프리미엄 면 티셔츠",
     "description": "부드러운 100% 면 소재의 기본 티셔츠입니다.",
@@ -174,9 +173,8 @@ AI가 이미지를 업로드하고, 상품 사진을 자동으로 연결합니�
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "premium-tshirt.jpg",
     "contentType": "image/jpeg"
@@ -248,27 +246,24 @@ AI가 조건에 맞는 상품 목록을 조회하여 보여줍니다.
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/products" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 카테고리 필터
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/products?andFilters=%7B%22category%22%3A%22%EC%9D%98%EB%A5%98%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 정렬 (가격 낮은순)
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/products?sortBy=price&sortDirection=asc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**
@@ -339,9 +334,8 @@ AI가 해당 상품의 가격, 재고, 카테고리 등 전체 정보를 보여�
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/products/{product_id} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**
@@ -392,9 +386,8 @@ AI가 해당 상품의 가격과 설명을 수정합니다.
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/products/{product_id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "price": 25000,
     "description": "시즌 할인! 부드러운 100% 면 소재 티셔츠."
@@ -437,9 +430,8 @@ AI가 해당 상품을 삭제합니다.
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/products/{product_id} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**
@@ -488,9 +480,8 @@ AI가 판매 중인 상품 중 재고가 부족한 상품을 찾아 보여줍니
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/products/{product_id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "stock": 80
   }'
@@ -500,9 +491,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/products/{product_id} \
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/products?andFilters=%7B%22isActive%22%3Atrue%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**

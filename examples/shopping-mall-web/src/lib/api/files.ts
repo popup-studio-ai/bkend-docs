@@ -1,4 +1,4 @@
-import { apiClient } from "@/infrastructure/api/client";
+import { bkendFetch } from "@/infrastructure/api/client";
 import type { PresignedUrlResponse } from "@/application/dto/file.dto";
 
 export const filesApi = {
@@ -6,7 +6,7 @@ export const filesApi = {
     filename: string,
     contentType: string
   ): Promise<PresignedUrlResponse> {
-    return apiClient<PresignedUrlResponse>("/v1/files/presigned-url", {
+    return bkendFetch<PresignedUrlResponse>("/v1/files/presigned-url", {
       method: "POST",
       body: { filename, contentType },
     });

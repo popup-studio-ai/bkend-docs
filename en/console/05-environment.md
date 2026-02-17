@@ -18,7 +18,8 @@ Environments isolate data within a project. You can create separate development 
 | Displayed Info | Description |
 |----------------|-------------|
 | **Environment Name** | dev, staging, prod, etc. |
-| **Status** | Active / Provisioning / Inactive |
+| **Type** | Development / Staging / Production / Custom |
+| **Status** | Creating / Ready / Active / Failed / Deleting |
 | **Created At** | Date and time the environment was created |
 
 ***
@@ -59,12 +60,11 @@ Data is completely isolated between environments. Tables and data created in the
 
 ## Specifying an Environment in REST API
 
-Use the `X-Environment` header to specify the target environment when making REST API calls.
+Each environment has its own Publishable Key (`pk_` prefix). Use the `X-API-Key` header with the appropriate key to target a specific environment.
 
 ```bash
 curl https://api-client.bkend.ai/v1/data/posts \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 ***

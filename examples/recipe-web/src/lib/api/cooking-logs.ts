@@ -1,45 +1,43 @@
-import { apiClient } from "@/infrastructure/api/client";
+import { bkendFetch } from "@/infrastructure/api/client";
 import type {
   CookingLogDto,
   CreateCookingLogInput,
 } from "@/application/dto/cooking-log.dto";
 import type { PaginatedResponse } from "@/application/dto/pagination.dto";
 
-export const cookingLogsApi = {
-  listByRecipe(
-    recipeId: string,
-    page = 1,
-    limit = 20
-  ): Promise<PaginatedResponse<CookingLogDto>> {
-    const params = new URLSearchParams({
-      page: String(page),
-      limit: String(limit),
-      sortBy: "cookedAt",
-      sortDirection: "desc",
-      andFilters: JSON.stringify({ recipeId }),
-    });
+export async function getCookingLogsByRecipe(
+  recipeId: string,
+  page = 1,
+  limit = 20
+): Promise<PaginatedResponse<CookingLogDto>> {
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+    sortBy: "cookedAt",
+    sortDirection: "desc",
+    andFilters: JSON.stringify({ recipeId }),
+  });
 
-    return apiClient<PaginatedResponse<CookingLogDto>>(
-      `/v1/data/cooking_logs?${params.toString()}`
-    );
-  },
+  return bkendFetch<PaginatedResponse<CookingLogDto>>(
+    `/v1/data/cooking_logs?${params.toString()}`
+  );
+}
 
-  create(data: CreateCookingLogInput): Promise<CookingLogDto> {
-    return apiClient<CookingLogDto>("/v1/data/cooking_logs", {
-      method: "POST",
-      body: {
-        ...data,
-        cookedAt: data.cookedAt ?? new Date().toISOString(),
-      },
-    });
-  },
+export async function createCookingLog(data: CreateCookingLogInput): Promise<CookingLogDto> {
+  return bkendFetch<CookingLogDto>("/v1/data/cooking_logs", {
+    method: "POST",
+    body: {
+      ...data,
+      cookedAt: data.cookedAt ?? new Date().toISOString(),
+    },
+  });
+}
 
-  delete(id: string): Promise<void> {
-    return apiClient<void>(`/v1/data/cooking_logs/${id}`, {
-      method: "DELETE",
-    });
-  },
-};
+export async function deleteCookingLog(id: string): Promise<void> {
+  return bkendFetch<void>(`/v1/data/cooking_logs/${id}`, {
+    method: "DELETE",
+  });
+}
 
 /**
  * Calculates the average rating from an array of cooking logs.

@@ -76,7 +76,7 @@ API Key는 REST API를 호출할 때 인증에 사용합니다. 환경별로 독
 
 | 타입 | 용도 | 권한 |
 |------|------|------|
-| **Public Key** | 클라이언트(브라우저, 앱)에서 사용 | 제한된 읽기/쓰기 |
+| **Publishable Key** | 클라이언트(브라우저, 앱)에서 사용 | 제한된 읽기/쓰기 |
 | **Secret Key** | 서버에서 사용 | 전체 읽기/쓰기 |
 
 {% hint style="danger" %}
@@ -122,7 +122,7 @@ MCP는 AI 도구와 서비스 간 통신을 위한 표준 프로토콜입니다.
 
 | 항목 | 설명 |
 |------|------|
-| 인증 | OAuth 2.1 + PKCE (자동) |
+| 인증 | OAuth 2.1 + PKCE(Proof Key for Code Exchange) (자동) |
 | 전송 | Streamable HTTP |
 | 엔드포인트 | `https://api.bkend.ai/mcp` |
 

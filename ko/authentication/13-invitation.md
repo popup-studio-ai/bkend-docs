@@ -37,9 +37,8 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/invitations \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "resourceType": "organization",
     "resourceId": "{org_id}",
@@ -93,9 +92,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/invitations \
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/invitations?resourceType=organization&status=pending&page=1&limit=10" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 | 파라미터 | 위치 | 타입 | 필수 | 설명 |
@@ -114,9 +112,8 @@ curl -X GET "https://api-client.bkend.ai/v1/auth/invitations?resourceType=organi
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/auth/invitations/{invitationId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***
@@ -130,8 +127,7 @@ curl -X GET https://api-client.bkend.ai/v1/auth/invitations/{invitationId} \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/invitations/accept \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "token": "{invitation_token}",
     "email": "newuser@example.com"
@@ -152,8 +148,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/invitations/accept \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/invitations/reject \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "token": "{invitation_token}",
     "email": "newuser@example.com"
@@ -170,9 +165,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/invitations/reject \
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/auth/invitations/{invitationId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***

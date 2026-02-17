@@ -71,8 +71,7 @@ Obtain a new token pair using the Refresh Token when the Access Token has expire
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'
@@ -84,8 +83,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/refresh', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     refreshToken: localStorage.getItem('refreshToken'),
@@ -115,6 +113,10 @@ saveTokens({ accessToken, refreshToken });
 
 {% hint style="danger" %}
 **Refresh Token Rotation Policy** -- A new Refresh Token is issued on refresh, and the previous Refresh Token is immediately invalidated. Always save the new token pair.
+{% endhint %}
+
+{% hint style="warning" %}
+**Replay Attack Detection** -- If an already-invalidated Refresh Token is used (e.g., stolen and reused), bkend detects the replay attack and immediately invalidates **all sessions** for that user. All devices will be forced to sign in again.
 {% endhint %}
 
 ***
@@ -147,8 +149,7 @@ See [Integrating bkend in Your App](../getting-started/03-app-integration.md) fo
 
 ```javascript
 const BKEND_BASE_URL = 'https://api-client.bkend.ai';
-const PROJECT_ID = '{project_id}';
-const ENVIRONMENT = 'dev';
+const API_KEY = '{pk_publishable_key}';
 
 // Prevent duplicate token refreshes
 let refreshPromise = null;
@@ -167,8 +168,7 @@ async function refreshAccessToken() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Project-Id': PROJECT_ID,
-        'X-Environment': ENVIRONMENT,
+        'X-API-Key': API_KEY,
       },
       body: JSON.stringify({ refreshToken }),
     });
@@ -195,8 +195,7 @@ async function bkendFetch(path, options = {}) {
 
   const headers = {
     'Content-Type': 'application/json',
-    'X-Project-Id': PROJECT_ID,
-    'X-Environment': ENVIRONMENT,
+    'X-API-Key': API_KEY,
     ...options.headers,
   };
 
@@ -277,9 +276,8 @@ When signing out, terminate the server-side session and delete local tokens.
 
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/signout \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### Sign-out Implementation
@@ -313,6 +311,8 @@ Always call the server API before deleting local tokens on sign-out. If you only
 |------------|:----:|-------------|
 | `auth/unauthorized` | 401 | Authentication required |
 | `auth/invalid-token` | 401 | Invalid token |
+| `auth/invalid-refresh-token` | 401 | Refresh Token does not match or session not found |
+| `auth/session-expired` | 401 | Session has expired (7 days) |
 | `auth/token-expired` | 401 | Refresh Token has expired |
 
 ***

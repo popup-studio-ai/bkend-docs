@@ -53,10 +53,10 @@ Click a project in the list to switch to the **project-level sidebar**. From the
 
 ## Updating Project Settings
 
-Click **Settings** in the project-level sidebar to modify project information.
+Click **Project Settings** in the project-level sidebar to modify project information.
 
 {% hint style="info" %}
-You can find the Project ID on the project settings page. Use this value in the `X-Project-Id` header when making REST API calls.
+You can find the Project ID on the project settings page. The Publishable Key (`pk_` prefix) includes the project ID and environment information, so you only need the `X-API-Key` header for REST API calls.
 {% endhint %}
 
 ***
@@ -67,7 +67,7 @@ You can find the Project ID on the project settings page. Use this value in the 
 **Danger** — Deleting a project permanently removes all environments, tables, Users, and files. This action cannot be undone.
 {% endhint %}
 
-1. Click **Settings** in the project-level sidebar.
+1. Click **Project Settings** in the project-level sidebar.
 2. In the **Delete Project** section at the bottom of the page, click **Delete**.
 3. Enter the project name and click **Confirm Delete**.
 

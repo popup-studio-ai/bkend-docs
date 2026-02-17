@@ -71,7 +71,7 @@ sequenceDiagram
 
     U->>A: "Google로 로그인" 클릭
     A->>B: GET /v1/auth/google/authorize
-    Note over A,B: Headers: X-Project-Id, X-Environment
+    Note over A,B: Headers: X-API-Key
     B-->>A: { authorizationUrl }
     A->>G: 리다이렉트
     G->>U: 계정 선택 + 동의
@@ -105,8 +105,7 @@ sequenceDiagram
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/auth/google/authorize?redirect=https://myapp.com/auth/callback" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 **응답:**
@@ -127,8 +126,7 @@ const handleGoogleLogin = async () => {
     `https://api-client.bkend.ai/v1/auth/google/authorize?redirect=${encodeURIComponent(callbackUrl)}`,
     {
       headers: {
-        'X-Project-Id': '{project_id}',
-        'X-Environment': 'dev',
+        'X-API-Key': '{pk_publishable_key}',
       },
     }
   );
@@ -209,8 +207,7 @@ Google 계정이 없는 사용자를 위해 이메일 회원가입을 제공하�
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -235,8 +232,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -291,8 +287,7 @@ Access Token이 만료되면 Refresh Token으로 새 토큰을 발급받으세�
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refreshToken}"
   }'
@@ -319,8 +314,7 @@ const fetchWithAuth = async (url, options = {}) => {
     headers: {
       ...options.headers,
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
   });
 
@@ -334,8 +328,7 @@ const fetchWithAuth = async (url, options = {}) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Project-Id': '{project_id}',
-          'X-Environment': 'dev',
+          'X-API-Key': '{pk_publishable_key}',
         },
         body: JSON.stringify({ refreshToken }),
       }
@@ -352,8 +345,7 @@ const fetchWithAuth = async (url, options = {}) => {
         headers: {
           ...options.headers,
           'Authorization': `Bearer ${data.accessToken}`,
-          'X-Project-Id': '{project_id}',
-          'X-Environment': 'dev',
+          'X-API-Key': '{pk_publishable_key}',
         },
       });
     } else {
@@ -405,8 +397,7 @@ const checkProfile = async (userId) => {
     {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'X-Project-Id': '{project_id}',
-        'X-Environment': 'dev',
+        'X-API-Key': '{pk_publishable_key}',
       },
     }
   );

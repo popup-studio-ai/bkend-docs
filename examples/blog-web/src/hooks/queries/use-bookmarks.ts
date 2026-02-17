@@ -7,11 +7,16 @@ import {
   getBookmarkByArticleId,
   toggleBookmark,
 } from "@/lib/api/bookmarks";
+import { useMe } from "./use-auth";
+import type { Bookmark } from "@/application/dto/bookmark.dto";
 
 export function useBookmarks(page = 1, limit = 20) {
+  const { data: currentUser } = useMe();
+
   return useQuery({
-    queryKey: queryKeys.bookmarks.list({ page, limit }),
-    queryFn: () => getBookmarks(page, limit),
+    queryKey: queryKeys.bookmarks.list({ page, limit, userId: currentUser?.id }),
+    queryFn: () => getBookmarks(page, limit, currentUser?.id),
+    enabled: !!currentUser?.id,
   });
 }
 
@@ -28,7 +33,36 @@ export function useToggleBookmark() {
 
   return useMutation({
     mutationFn: (articleId: string) => toggleBookmark(articleId),
-    onSuccess: (_, articleId) => {
+    onMutate: async (articleId) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.bookmarks.byArticle(articleId),
+      });
+
+      // Snapshot previous value
+      const previous = queryClient.getQueryData<Bookmark | null>(
+        queryKeys.bookmarks.byArticle(articleId)
+      );
+
+      // Optimistically toggle
+      queryClient.setQueryData(
+        queryKeys.bookmarks.byArticle(articleId),
+        previous ? null : { id: "optimistic", articleId, createdAt: new Date().toISOString() }
+      );
+
+      return { previous };
+    },
+    onError: (_err, articleId, context) => {
+      // Rollback on error
+      if (context) {
+        queryClient.setQueryData(
+          queryKeys.bookmarks.byArticle(articleId),
+          context.previous
+        );
+      }
+    },
+    onSettled: (_data, _err, articleId) => {
+      // Always refetch after settle
       queryClient.invalidateQueries({
         queryKey: queryKeys.bookmarks.byArticle(articleId),
       });

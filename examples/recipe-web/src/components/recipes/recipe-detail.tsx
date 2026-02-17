@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -124,12 +124,10 @@ export function RecipeDetail({ recipeId }: RecipeDetailProps) {
             {/* Image (Parallax-like) */}
             <div className="relative h-64 overflow-hidden rounded-xl bg-orange-100 sm:h-80 lg:h-96 dark:bg-stone-700">
               {recipe.imageUrl ? (
-                <Image
+                <img
                   src={recipe.imageUrl}
                   alt={recipe.title}
-                  fill
-                  className="object-cover"
-                  priority
+                  className="h-full w-full object-cover"
                 />
               ) : (
                 <div className="flex h-full items-center justify-center">

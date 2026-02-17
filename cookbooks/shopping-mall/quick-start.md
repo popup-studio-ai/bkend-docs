@@ -83,9 +83,8 @@ AI가 상품을 등록하고 결과를 보여줍니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/products \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "name": "프리미엄 면 티셔츠",
     "description": "100% 순면 소재의 편안한 티셔츠",
@@ -139,18 +138,16 @@ AI가 products 테이블에서 데이터를 조회하여 결과를 보여줍니�
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/products" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **카테고리별 필터링:**
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/products?andFilters=%7B%22category%22%3A%22%EC%9D%98%EB%A5%98%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답 예시:**

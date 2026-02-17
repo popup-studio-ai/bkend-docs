@@ -2,7 +2,8 @@ import type { RecipeFilters } from "@/application/dto/recipe.dto";
 
 export const queryKeys = {
   auth: {
-    me: ["auth", "me"] as const,
+    all: ["auth"] as const,
+    me: () => [...queryKeys.auth.all, "me"] as const,
   },
   recipes: {
     all: ["recipes"] as const,
@@ -34,5 +35,8 @@ export const queryKeys = {
     all: ["cooking-logs"] as const,
     byRecipe: (recipeId: string) =>
       [...queryKeys.cookingLogs.all, "recipe", recipeId] as const,
+  },
+  files: {
+    all: ["files"] as const,
   },
 };

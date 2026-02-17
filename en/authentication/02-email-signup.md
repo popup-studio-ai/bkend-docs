@@ -4,6 +4,20 @@
 Create a new User account with an email and password.
 {% endhint %}
 
+{% hint style="info" %}
+**Before You Start** — You need the following to proceed:
+- [Project created](../getting-started/02-quickstart.md)
+- [Email auth provider enabled](17-provider-config.md) (enabled by default)
+{% endhint %}
+
+{% hint style="info" %}
+**APIs Used in This Document**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/auth/email/signup` | POST | Not required | Email sign-up |
+{% endhint %}
+
 ## Overview
 
 Email sign-up is the most basic authentication method. A User enters an email and password to create an account and immediately receives JWT tokens.
@@ -37,8 +51,7 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signup \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "user@example.com",
@@ -53,8 +66,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     method: 'password',

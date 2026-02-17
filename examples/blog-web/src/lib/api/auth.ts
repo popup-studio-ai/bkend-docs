@@ -17,7 +17,7 @@ export async function signUp(data: Omit<SignUpRequest, "method">): Promise<AuthR
 export async function signIn(data: SignInRequest): Promise<AuthResponse> {
   return bkendFetch<AuthResponse>("/v1/auth/email/signin", {
     method: "POST",
-    body: data,
+    body: { method: "password", ...data },
     skipAuth: true,
   });
 }

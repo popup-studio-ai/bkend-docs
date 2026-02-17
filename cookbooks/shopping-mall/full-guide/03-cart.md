@@ -89,9 +89,8 @@ AI가 해당 상품을 장바구니에 추가합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/carts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "productId": "product_abc123",
     "quantity": 2
@@ -146,9 +145,8 @@ AI가 장바구니에 담긴 상품과 수량을 보여줍니다.
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/carts" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**
@@ -220,9 +218,8 @@ AI가 장바구니 수량을 변경합니다.
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/carts/{cart_item_id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "quantity": 3
   }'
@@ -263,9 +260,8 @@ AI가 장바구니에서 해당 상품을 제거합니다.
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/carts/{cart_item_id} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**

@@ -1,29 +1,29 @@
 const ACCESS_TOKEN_KEY = "shopping_mall_access_token";
 const REFRESH_TOKEN_KEY = "shopping_mall_refresh_token";
 
+function isBrowser(): boolean {
+  return typeof window !== "undefined";
+}
+
 export const tokenStorage = {
   getAccessToken(): string | null {
-    if (typeof window === "undefined") return null;
+    if (!isBrowser()) return null;
     return localStorage.getItem(ACCESS_TOKEN_KEY);
   },
 
-  setAccessToken(token: string): void {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(ACCESS_TOKEN_KEY, token);
-  },
-
   getRefreshToken(): string | null {
-    if (typeof window === "undefined") return null;
+    if (!isBrowser()) return null;
     return localStorage.getItem(REFRESH_TOKEN_KEY);
   },
 
-  setRefreshToken(token: string): void {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(REFRESH_TOKEN_KEY, token);
+  setTokens(accessToken: string, refreshToken: string): void {
+    if (!isBrowser()) return;
+    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
   },
 
-  clear(): void {
-    if (typeof window === "undefined") return;
+  clearTokens(): void {
+    if (!isBrowser()) return;
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
   },

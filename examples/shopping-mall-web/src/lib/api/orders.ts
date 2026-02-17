@@ -1,4 +1,4 @@
-import { apiClient } from "@/infrastructure/api/client";
+import { bkendFetch } from "@/infrastructure/api/client";
 import type { OrderDto, OrderStatus, CheckoutFormInput, OrderItemDto } from "@/application/dto/order.dto";
 import type { PaginatedResponse, PaginationParams } from "@/application/dto/pagination.dto";
 import type { CartDto } from "@/application/dto/cart.dto";
@@ -17,13 +17,13 @@ export const ordersApi = {
     if (params.sortDirection) searchParams.set("sortDirection", params.sortDirection);
 
     const query = searchParams.toString();
-    return apiClient<PaginatedResponse<OrderDto>>(
+    return bkendFetch<PaginatedResponse<OrderDto>>(
       `/v1/data/orders${query ? `?${query}` : ""}`,
     );
   },
 
   getById(id: string): Promise<OrderDto> {
-    return apiClient<OrderDto>(`/v1/data/orders/${id}`);
+    return bkendFetch<OrderDto>(`/v1/data/orders/${id}`);
   },
 
   async create(input: CreateOrderInput): Promise<OrderDto> {
@@ -44,7 +44,7 @@ export const ordersApi = {
       0
     );
 
-    return apiClient<OrderDto>("/v1/data/orders", {
+    return bkendFetch<OrderDto>("/v1/data/orders", {
       method: "POST",
       body: {
         items: JSON.stringify(orderItems),
@@ -58,7 +58,7 @@ export const ordersApi = {
   },
 
   updateStatus(id: string, status: OrderStatus): Promise<OrderDto> {
-    return apiClient<OrderDto>(`/v1/data/orders/${id}`, {
+    return bkendFetch<OrderDto>(`/v1/data/orders/${id}`, {
       method: "PATCH",
       body: { status },
     });

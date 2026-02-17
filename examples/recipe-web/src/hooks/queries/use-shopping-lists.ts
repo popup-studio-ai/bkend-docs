@@ -1,7 +1,13 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { shoppingListsApi } from "@/lib/api/shopping-lists";
+import {
+  getShoppingLists,
+  getShoppingList,
+  createShoppingList,
+  updateShoppingList,
+  deleteShoppingList,
+} from "@/lib/api/shopping-lists";
 import { queryKeys } from "./keys";
 import type {
   CreateShoppingListRequest,
@@ -11,14 +17,14 @@ import type {
 export function useShoppingLists(page = 1, limit = 20) {
   return useQuery({
     queryKey: queryKeys.shoppingLists.list(page),
-    queryFn: () => shoppingListsApi.list(page, limit),
+    queryFn: () => getShoppingLists(page, limit),
   });
 }
 
 export function useShoppingList(id: string) {
   return useQuery({
     queryKey: queryKeys.shoppingLists.detail(id),
-    queryFn: () => shoppingListsApi.get(id),
+    queryFn: () => getShoppingList(id),
     enabled: !!id,
   });
 }
@@ -28,7 +34,7 @@ export function useCreateShoppingList() {
 
   return useMutation({
     mutationFn: (data: CreateShoppingListRequest) =>
-      shoppingListsApi.create(data),
+      createShoppingList(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.shoppingLists.lists(),
@@ -47,7 +53,7 @@ export function useUpdateShoppingList() {
     }: {
       id: string;
       data: UpdateShoppingListRequest;
-    }) => shoppingListsApi.update(id, data),
+    }) => updateShoppingList(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.shoppingLists.detail(id),
@@ -63,7 +69,7 @@ export function useDeleteShoppingList() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => shoppingListsApi.delete(id),
+    mutationFn: (id: string) => deleteShoppingList(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.shoppingLists.lists(),

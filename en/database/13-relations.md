@@ -160,8 +160,7 @@ const postRes = await fetch(
   {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
   }
 );
@@ -174,8 +173,7 @@ const commentRes = await fetch(
   {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
   }
 );
@@ -283,10 +281,9 @@ The embedding pattern uses `object` or `array` types in the schema.
 {% tab title="cURL" %}
 ```bash
 curl -X POST "https://api-client.bkend.ai/v1/data/posts" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}" \
   -d '{
     "title": "Getting Started with bkend",
     "content": "Hello...",
@@ -303,10 +300,9 @@ curl -X POST "https://api-client.bkend.ai/v1/data/posts" \
 const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
-    'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
+    'Authorization': `Bearer ${accessToken}`,
   },
   body: JSON.stringify({
     title: 'Getting Started with bkend',
@@ -350,8 +346,7 @@ const response = await fetch(
   {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
   }
 );

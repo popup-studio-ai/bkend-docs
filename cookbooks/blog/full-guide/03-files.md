@@ -72,9 +72,8 @@ MCP 도구는 테이블/데이터 관리에 사용합니다. 파일 업로드 �
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "cover-jeju.jpg",
     "contentType": "image/jpeg",
@@ -174,9 +173,8 @@ S3 업로드 완료 후, bkend API에 파일 메타데이터를 등록합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "s3Key": "{presigned 응답의 key}",
     "originalName": "cover-jeju.jpg",
@@ -252,9 +250,8 @@ console.log(fileMetadata.id); // 파일 ID
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/articles/{articleId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "coverImage": "https://cdn.example.com/cover-jeju.jpg"
   }'
@@ -339,9 +336,8 @@ fileInput.addEventListener('change', async (e) => {
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch
@@ -390,9 +386,8 @@ console.log(file.size);         // 2048000
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/files/{fileId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch

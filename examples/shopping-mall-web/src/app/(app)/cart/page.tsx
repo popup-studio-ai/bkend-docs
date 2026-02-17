@@ -17,7 +17,7 @@ export default function CartPage() {
   const clearCart = useClearCart();
 
   return (
-    <PageTransition>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
       <div className="space-y-6">
         <PageHeader
           title="Cart"
@@ -67,6 +67,6 @@ export default function CartPage() {
           )}
         </QueryBoundary>
       </div>
-    </PageTransition>
+    </div>
   );
 }

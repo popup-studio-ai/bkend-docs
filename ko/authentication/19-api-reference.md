@@ -16,8 +16,7 @@ https://api-client.bkend.ai
 
 | 헤더 | 필수 | 설명 |
 |------|:----:|------|
-| `X-Project-Id` | ✅ | 프로젝트 ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | Publishable Key (`pk_` 접두사) |
 | `Authorization` | 조건부 | `Bearer {accessToken}` — 인증 필요 엔드포인트 |
 | `Content-Type` | 조건부 | `application/json` — 요청 본문 포함 시 |
 
@@ -149,6 +148,7 @@ POST /v1/auth/password/reset/confirm
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
+| `email` | `string` | ✅ | 이메일 주소 |
 | `token` | `string` | ✅ | 재설정 토큰 |
 | `newPassword` | `string` | ✅ | 새 비밀번호 |
 
@@ -205,8 +205,6 @@ GET /v1/auth/signup/email/confirm
 POST /v1/auth/email/verify/send
 ```
 
-**인증 필요**
-
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
 | `email` | `string` | ✅ | 인증할 이메일 |
@@ -219,8 +217,6 @@ POST /v1/auth/email/verify/send
 POST /v1/auth/email/verify/confirm
 ```
 
-**인증 필요**
-
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
 | `token` | `string` | ✅ | 인증 토큰 |
@@ -232,8 +228,6 @@ POST /v1/auth/email/verify/confirm
 ```http
 POST /v1/auth/email/verify/resend
 ```
-
-**인증 필요**
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
@@ -409,8 +403,6 @@ DELETE /v1/auth/accounts/:provider
 POST /v1/auth/accounts/check
 ```
 
-**인증 필요**
-
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
 | `provider` | `string` | ✅ | `google` 또는 `github` |
@@ -459,6 +451,8 @@ GET /v1/auth/invitations
 ```http
 GET /v1/auth/invitations/:id
 ```
+
+**인증 필요**
 
 **응답:** `200 OK` — `{ id, email, role, status, invitedBy, expiresAt }`
 
@@ -1014,6 +1008,15 @@ PATCH /v1/users/:userId/public-settings
 | `auth/last-auth-method` | 400 | 마지막 인증 수단 해제 불가 |
 | `auth/invitation-not-found` | 404 | 초대를 찾을 수 없음 |
 | `auth/invitation-expired` | 410 | 초대 만료 |
+| `auth/invalid-refresh-token` | 401 | Refresh Token 불일치 또는 세션 없음 |
+| `auth/session-expired` | 401 | 세션 만료 (7일) |
+| `auth/invalid-password-format` | 400 | 비밀번호 형식 오류 (대문자, 소문자, 숫자, 특수문자 필수) |
+| `auth/same-as-previous-password` | 400 | 새 비밀번호가 현재와 동일 |
+| `auth/verification-token-not-found` | 404 | 재설정/인증 토큰을 찾을 수 없음 |
+| `auth/verification-token-expired` | 401 | 재설정/인증 토큰 만료 (24시간) |
+| `auth/too-many-requests` | 429 | 너무 많은 요청 |
+| `auth/too-many-login-attempts` | 429 | 로그인 시도 횟수 초과 |
+| `auth/too-many-code-requests` | 429 | 인증 코드 요청 횟수 초과 |
 | `auth/unsupported-provider` | 400 | 지원하지 않는 제공자 |
 | `auth/oauth-not-configured` | 400 | OAuth 미설정 |
 | `auth/template-not-found` | 404 | 템플릿 없음 |
@@ -1057,16 +1060,16 @@ PATCH /v1/users/:userId/public-settings
 | `POST` | `/v1/auth/accounts` | ✅ | 계정 연동 |
 | `GET` | `/v1/auth/accounts` | ✅ | 연동 목록 |
 | `DELETE` | `/v1/auth/accounts/:provider` | ✅ | 연동 해제 |
-| `POST` | `/v1/auth/accounts/check` | ✅ | 연동 확인 |
+| `POST` | `/v1/auth/accounts/check` | - | 연동 확인 |
 | `POST` | `/v1/auth/invitations` | ✅ | 초대 생성 |
 | `GET` | `/v1/auth/invitations` | ✅ | 초대 목록 |
-| `GET` | `/v1/auth/invitations/:id` | - | 초대 상세 |
+| `GET` | `/v1/auth/invitations/:id` | ✅ | 초대 상세 |
 | `POST` | `/v1/auth/invitations/accept` | - | 초대 수락 |
 | `POST` | `/v1/auth/invitations/reject` | - | 초대 거절 |
 | `DELETE` | `/v1/auth/invitations/:id` | ✅ | 초대 취소 |
-| `POST` | `/v1/auth/email/verify/send` | ✅ | 인증 메일 발송 |
-| `POST` | `/v1/auth/email/verify/confirm` | ✅ | 인증 확인 |
-| `POST` | `/v1/auth/email/verify/resend` | ✅ | 인증 메일 재발송 |
+| `POST` | `/v1/auth/email/verify/send` | - | 인증 메일 발송 |
+| `POST` | `/v1/auth/email/verify/confirm` | - | 인증 확인 |
+| `POST` | `/v1/auth/email/verify/resend` | - | 인증 메일 재발송 |
 | `POST` | `/v1/auth/signup/email/resend` | - | 가입 인증 재발송 |
 | `GET` | `/v1/auth/signup/email/confirm` | - | 가입 인증 확인 |
 | `GET` | `/v1/auth/providers` | ✅ | 전체 설정 조회 |

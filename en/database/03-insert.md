@@ -4,6 +4,21 @@
 Add new data to a table.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Create a project](../getting-started/02-quickstart.md) completed
+- [Create a table](../console/07-table-management.md) completed
+- Authentication setup — Public tables require no auth; tables with RLS require a JWT
+{% endhint %}
+
+{% hint style="info" %}
+**API used in this document**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/data/:tableName` | POST | Conditional | Create data |
+{% endhint %}
+
 ## Overview
 
 Use the `POST /v1/data/:tableName` endpoint to create new data in a table. Include the fields directly in the request body.
@@ -19,9 +34,8 @@ Use the `POST /v1/data/:tableName` endpoint to create new data in a table. Inclu
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "My First Post",
     "content": "Hello, this is bkend.",
@@ -36,9 +50,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: 'My First Post',
@@ -166,6 +179,8 @@ Creating data requires the `create` permission on the corresponding table.
 | `data/validation-error` | 400 | Schema validation failed |
 | `data/duplicate-value` | 409 | Unique constraint violation |
 | `data/permission-denied` | 403 | No create permission |
+| `data/scope-insufficient` | 403 | API key scope does not include `tableName:create` |
+| `data/system-table-access` | 403 | Non-admin attempted to access a system table |
 | `data/invalid-header` | 400 | Missing required header |
 
 ***

@@ -149,9 +149,8 @@ AI가 장바구니를 확인하고, 총 금액을 계산한 뒤, 주문을 생�
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/carts" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 2-2. 주문 생성
@@ -159,9 +158,8 @@ curl -X GET "https://api-client.bkend.ai/v1/data/carts" \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/orders \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "items": "[{\"productId\":\"product_abc123\",\"name\":\"프리미엄 면 티셔츠\",\"price\":29000,\"quantity\":2},{\"productId\":\"product_def456\",\"name\":\"슬림핏 청바지\",\"price\":49000,\"quantity\":1}]",
     "totalPrice": 107000,
@@ -260,18 +258,16 @@ AI가 주문 목록을 최신순으로 보여줍니다.
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/orders?sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 상태별 필터
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/orders?andFilters=%7B%22status%22%3A%22pending%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**
@@ -336,9 +332,8 @@ AI가 주문에 포함된 상품, 금액, 배송지, 현재 상태 등을 보여
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/orders/{order_id} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**
@@ -400,9 +395,8 @@ AI가 주문 상태를 변경합니다.
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/orders/{order_id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "status": "confirmed"
   }'
@@ -413,9 +407,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/orders/{order_id} \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/orders/{order_id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "status": "shipped"
   }'
@@ -426,9 +419,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/orders/{order_id} \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/orders/{order_id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "status": "delivered"
   }'

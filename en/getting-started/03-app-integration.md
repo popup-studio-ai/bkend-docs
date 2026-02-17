@@ -18,12 +18,11 @@ This document covers:
 
 | Item | Where to Find | Description |
 |------|---------------|-------------|
-| Project ID | Console > **Project Settings** | Unique project identifier |
-| API Key | Console > **Access Tokens** > **Create New Token** | REST API access token |
-| Environment | Console > **Environments** tab | `dev` / `staging` / `prod` |
+| Publishable Key | Console > **API Keys** | Client key with `pk_` prefix |
+| Access Token | Login API response | JWT (for authenticated APIs) |
 
 {% hint style="warning" %}
-If you do not have an API Key, refer to [API Key Management](../console/11-api-keys.md) to issue one first.
+If you do not have a Publishable Key, refer to [API Key Management](../console/11-api-keys.md) to issue one first.
 {% endhint %}
 
 ***
@@ -35,9 +34,12 @@ All REST API requests require the following headers.
 | Header | Value | Required | Description |
 |--------|-------|:--------:|-------------|
 | `Content-Type` | `application/json` | Yes | Request body format |
-| `X-Project-Id` | `{project_id}` | Yes | Project ID from the console |
-| `X-Environment` | `dev` | Yes | Target environment |
+| `X-API-Key` | `{pk_publishable_key}` | Yes | Publishable Key (issued in the console). Includes project ID and environment |
 | `Authorization` | `Bearer {accessToken}` | Conditional | Only for APIs that require authentication |
+
+{% hint style="info" %}
+The `pk_` key includes project ID and environment information, so no additional context headers are needed.
+{% endhint %}
 
 ***
 
@@ -59,8 +61,7 @@ Use this helper function to call the bkend API throughout your app. It automatic
 // bkend.js — Add this file to your project
 
 const API_BASE = 'https://api-client.bkend.ai';
-const PROJECT_ID = '{project_id}';  // Check in the console
-const ENVIRONMENT = 'dev';
+const PUBLISHABLE_KEY = '{pk_publishable_key}'; // Issued in the console
 
 /**
  * bkend API call helper
@@ -75,8 +76,7 @@ export async function bkendFetch(path, options = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': PROJECT_ID,
-      'X-Environment': ENVIRONMENT,
+      'X-API-Key': PUBLISHABLE_KEY,
       ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       ...options.headers,
     },
@@ -117,8 +117,7 @@ async function refreshAccessToken() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Project-Id': PROJECT_ID,
-        'X-Environment': ENVIRONMENT,
+        'X-API-Key': PUBLISHABLE_KEY,
       },
       body: JSON.stringify({ refreshToken }),
     });
@@ -199,9 +198,8 @@ Before integrating with your app, verify that the API works correctly using curl
 # Test data creation
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "Test Post",
     "content": "Data created via curl."
@@ -237,17 +235,16 @@ The `bkendFetch` helper automatically refreshes the token and retries on 401 err
 
 ```mermaid
 flowchart TD
-    A[Check Project ID in console] --> B[Issue API Key]
-    B --> C[Add fetch helper function]
-    C --> D{Auth required?}
-    D -->|Yes| E[Sign up / Log in > Store tokens]
-    D -->|No| F[Call API with bkendFetch]
-    E --> F
-    F --> G[Handle response]
-    G --> H{401 error?}
-    H -->|Yes| I[Refresh token > Retry]
-    H -->|No| J[Use data]
-    I --> F
+    A[Issue Publishable Key in console] --> B[Add fetch helper function]
+    B --> C{Auth required?}
+    C -->|Yes| D[Sign up / Log in > Store tokens]
+    C -->|No| E[Call API with bkendFetch]
+    D --> E
+    E --> F[Handle response]
+    F --> G{401 error?}
+    G -->|Yes| H[Refresh token > Retry]
+    G -->|No| I[Use data]
+    H --> E
 ```
 
 ***

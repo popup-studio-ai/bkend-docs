@@ -26,8 +26,7 @@
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/signup/email/resend \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "user@example.com",
     "callbackUrl": "https://myapp.com/verify"
@@ -78,8 +77,7 @@ https://myapp.com/verify?verified=true&email=user@example.com
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/verify/send \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "newemail@example.com",
     "callbackUrl": "https://myapp.com/verify"
@@ -91,8 +89,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/verify/send \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/verify/confirm \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "newemail@example.com",
     "token": "{verification_token}"
@@ -113,8 +110,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/verify/confirm \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/verify/resend \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "newemail@example.com"
   }'

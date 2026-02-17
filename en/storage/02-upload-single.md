@@ -4,6 +4,18 @@
 Obtain a Presigned URL and upload files directly to S3.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Project creation](../getting-started/02-quickstart.md) completed
+- User authentication completed (JWT token required — all file APIs require authentication)
+{% endhint %}
+
+**APIs used in this document:**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/files/presigned-url` | POST | JWT | Issue Presigned URL |
+
 ## Overview
 
 A single file upload consists of 2 steps:
@@ -36,9 +48,8 @@ sequenceDiagram
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "profile.jpg",
     "contentType": "image/jpeg",
@@ -54,9 +65,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/files/presigned-url
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     filename: 'profile.jpg',
@@ -137,8 +147,7 @@ const presigned = await fetch('https://api-client.bkend.ai/v1/files/presigned-ur
   headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     filename: file.name,
@@ -162,8 +171,7 @@ const metadata = await fetch('https://api-client.bkend.ai/v1/files', {
   headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     s3Key: presigned.key,

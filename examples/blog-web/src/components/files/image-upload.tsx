@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Upload, X, Loader2, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUploadFile } from "@/hooks/queries/use-files";
+import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 
 interface ImageUploadProps {
@@ -14,19 +15,46 @@ interface ImageUploadProps {
 
 export function ImageUpload({ value, onChange }: ImageUploadProps) {
   const { mutateAsync: upload, isPending, progress } = useUploadFile();
+  const { addToast } = useToast();
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFile = useCallback(
     async (file: File) => {
-      if (!file.type.startsWith("image/")) return;
+      if (!file.type.startsWith("image/")) {
+        addToast({
+          variant: "destructive",
+          title: "Invalid file type",
+          description: "Please upload an image file (PNG, JPG, WebP)",
+        });
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        addToast({
+          variant: "destructive",
+          title: "File too large",
+          description: "Please upload an image smaller than 5MB",
+        });
+        return;
+      }
+
       try {
         const record = await upload(file);
         onChange(record.url);
-      } catch {
-        // handled by mutation error
+        addToast({
+          variant: "success",
+          title: "Image uploaded",
+          description: "Your image has been uploaded successfully",
+        });
+      } catch (error) {
+        addToast({
+          variant: "destructive",
+          title: "Upload failed",
+          description: error instanceof Error ? error.message : "Failed to upload image",
+        });
       }
     },
-    [upload, onChange]
+    [upload, onChange, addToast]
   );
 
   const handleDrop = useCallback(
@@ -60,12 +88,10 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
     return (
       <div className="relative overflow-hidden rounded-lg border">
         <div className="relative aspect-video w-full">
-          <Image
+          <img
             src={value}
             alt="Cover image"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 768px"
+            className="h-full w-full object-cover"
           />
         </div>
         <Button

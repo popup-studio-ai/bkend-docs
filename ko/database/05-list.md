@@ -4,6 +4,21 @@
 💡 테이블의 데이터를 목록으로 조회하세요. 필터링, 정렬, 페이지네이션을 지원합니다.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- [테이블 생성](../console/07-table-management.md) 완료
+- 인증 설정 — 공개 테이블은 인증 없이, RLS 적용 테이블은 JWT 필요
+{% endhint %}
+
+{% hint style="info" %}
+💡 **이 문서에서 사용하는 API**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/data/:tableName` | GET | 조건부 | 목록 조회 |
+{% endhint %}
+
 ## 개요
 
 `GET /v1/data/:tableName` 엔드포인트로 테이블의 데이터 목록을 조회합니다. 쿼리 파라미터로 페이지네이션, 정렬, 필터링을 적용할 수 있습니다.
@@ -18,9 +33,8 @@
 {% tab title="cURL" %}
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?page=1&limit=20&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -34,9 +48,8 @@ const params = new URLSearchParams({
 
 const response = await fetch(`https://api-client.bkend.ai/v1/data/posts?${params}`, {
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -57,6 +70,7 @@ const { items, pagination } = await response.json();
 | `searchType` | `string` | - | 검색 대상 필드 |
 | `andFilters` | `JSON` | - | AND 조건 필터 |
 | `orFilters` | `JSON` | - | OR 조건 필터 |
+| `select` | `string[]` | - | 응답에 포함할 필드 (쉼표 구분) |
 
 {% hint style="info" %}
 💡 필터링과 정렬에 대한 자세한 내용은 [필터링](08-filtering.md)과 [정렬 & 페이지네이션](09-sorting-pagination.md)을 참고하세요.
@@ -147,12 +161,29 @@ console.log(result.pagination);  // 페이지네이션 정보
 
 ***
 
+## 필드 선택
+
+`select` 파라미터를 사용하면 특정 필드만 반환하여 응답 크기를 줄일 수 있습니다.
+
+```bash
+curl -X GET "https://api-client.bkend.ai/v1/data/posts?select=id,title,createdAt" \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
+```
+
+{% hint style="info" %}
+💡 시스템 필드(`id`, `createdBy`, `createdAt`, `updatedAt`)는 `select` 파라미터와 관계없이 항상 포함됩니다.
+{% endhint %}
+
+***
+
 ## 에러 응답
 
 | 에러 코드 | HTTP | 설명 |
 |----------|:----:|------|
 | `data/table-not-found` | 404 | 테이블이 존재하지 않음 |
 | `data/permission-denied` | 403 | list 권한 없음 |
+| `data/scope-insufficient` | 403 | API 키 scope에 필요한 권한이 포함되지 않음 |
 
 ***
 

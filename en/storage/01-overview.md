@@ -6,7 +6,9 @@ Upload files and manage metadata with bkend storage.
 
 ## What Is Storage?
 
-bkend storage is a service for uploading, downloading, and managing file metadata. It uses S3 Presigned URLs so clients upload files directly, while the metadata API handles file information.
+Use bkend file storage to safely upload and download profile photos, post images, and document files in your app. With the Presigned URL approach, files are stored directly in storage without passing through the server.
+
+bkend storage is a service for uploading, downloading, and managing file metadata. A Presigned URL is a signed URL that is valid for a limited time, allowing clients to upload and download files directly to storage without going through the server. It uses S3 Presigned URLs so clients upload files directly, while the metadata API handles file information.
 
 ```mermaid
 sequenceDiagram
@@ -129,8 +131,7 @@ flowchart LR
 
 | Header | Required | Description |
 |--------|:--------:|-------------|
-| `X-Project-Id` | ✅ | Project ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | `{pk_publishable_key}` — Publishable Key |
 | `Authorization` | ✅ | `Bearer {accessToken}` |
 | `Content-Type` | Conditional | `application/json` — for POST and PATCH requests |
 

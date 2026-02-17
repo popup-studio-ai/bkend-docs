@@ -45,10 +45,22 @@ async function uploadToPresignedUrl(
 }
 
 async function registerFile(data: CreateFileRequest): Promise<FileRecord> {
-  return bkendFetch<FileRecord>("/v1/files", {
+  const response = await bkendFetch<Omit<FileRecord, "url"> & { id: string }>("/v1/files", {
     method: "POST",
     body: data,
   });
+
+  const downloadUrlResponse = await bkendFetch<{ url: string }>(
+    `/v1/files/${response.id}/download-url`,
+    {
+      method: "POST",
+    }
+  );
+
+  return {
+    ...response,
+    url: downloadUrlResponse.url,
+  } as FileRecord;
 }
 
 export async function uploadFile(

@@ -14,9 +14,7 @@ bkend REST API는 프레임워크에 관계없이 동일하게 동작합니다. 
 
 | 항목 | 확인 위치 |
 |------|----------|
-| Project ID | 콘솔 → **프로젝트 설정** |
-| API Key | 콘솔 → **액세스 토큰** |
-| Environment | `dev` (개발 환경) |
+| API Key | 콘솔 → **API Keys** |
 
 ***
 
@@ -28,12 +26,11 @@ bkend REST API는 프레임워크에 관계없이 동일하게 동작합니다. 
 
 ```bash
 NEXT_PUBLIC_BKEND_API_URL=https://api-client.bkend.ai
-NEXT_PUBLIC_BKEND_PROJECT_ID={project_id}
-NEXT_PUBLIC_BKEND_ENVIRONMENT=dev
+NEXT_PUBLIC_BKEND_API_KEY={pk_publishable_key}
 ```
 
 {% hint style="warning" %}
-⚠️ `NEXT_PUBLIC_` 접두사가 붙은 환경 변수는 클라이언트에 노출됩니다. Secret Key는 절대 `NEXT_PUBLIC_`에 넣지 마세요.
+⚠️ `NEXT_PUBLIC_` 접두사가 붙은 환경 변수는 클라이언트에 노출됩니다. Secret Key(`sk_`)는 절대 `NEXT_PUBLIC_`에 넣지 마세요. Publishable Key(`pk_`)만 사용하세요.
 {% endhint %}
 
 ### 2. fetch 헬퍼 생성
@@ -41,8 +38,7 @@ NEXT_PUBLIC_BKEND_ENVIRONMENT=dev
 ```typescript
 // lib/bkend.ts
 const API_BASE = process.env.NEXT_PUBLIC_BKEND_API_URL!;
-const PROJECT_ID = process.env.NEXT_PUBLIC_BKEND_PROJECT_ID!;
-const ENVIRONMENT = process.env.NEXT_PUBLIC_BKEND_ENVIRONMENT!;
+const API_KEY = process.env.NEXT_PUBLIC_BKEND_API_KEY!;
 
 export async function bkendFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const accessToken = typeof window !== 'undefined'
@@ -53,8 +49,7 @@ export async function bkendFetch<T>(path: string, options: RequestInit = {}): Pr
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': PROJECT_ID,
-      'X-Environment': ENVIRONMENT,
+      'X-API-Key': API_KEY,
       ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       ...options.headers,
     },
@@ -113,8 +108,7 @@ export default async function PostsPage() {
 // lib/config/bkend_config.dart
 class BkendConfig {
   static const String apiUrl = 'https://api-client.bkend.ai';
-  static const String projectId = '{project_id}';
-  static const String environment = 'dev';
+  static const String apiKey = '{pk_publishable_key}';
 }
 ```
 
@@ -143,8 +137,7 @@ class BkendClient {
       baseUrl: BkendConfig.apiUrl,
       headers: {
         'Content-Type': 'application/json',
-        'X-Project-Id': BkendConfig.projectId,
-        'X-Environment': BkendConfig.environment,
+        'X-API-Key': BkendConfig.apiKey,
       },
     ));
 

@@ -4,6 +4,18 @@
 💡 Presigned URL을 발급받아 파일을 다운로드하세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- 사용자 인증 완료 (JWT 토큰 필요 — 모든 파일 API는 인증 필수)
+{% endhint %}
+
+**이 문서에서 사용하는 API:**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/files/:fileId/download-url` | POST | JWT | 다운로드 URL 발급 |
+
 ## 개요
 
 파일 다운로드도 업로드와 마찬가지로 Presigned URL 방식을 사용합니다. bkend API에서 시간 제한이 있는 다운로드 URL을 발급받아 S3에서 직접 파일을 다운로드합니다.
@@ -30,9 +42,8 @@ sequenceDiagram
 {% tab title="cURL" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/{fileId}/download-url \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -40,9 +51,8 @@ curl -X POST https://api-client.bkend.ai/v1/files/{fileId}/download-url \
 const response = await fetch(`https://api-client.bkend.ai/v1/files/${fileId}/download-url`, {
   method: 'POST',
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -93,9 +103,8 @@ async function downloadFile(fileId, accessToken) {
   const res = await fetch(`https://api-client.bkend.ai/v1/files/${fileId}/download-url`, {
     method: 'POST',
     headers: {
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   });
 
@@ -116,9 +125,8 @@ async function downloadToBlob(fileId, accessToken) {
   const res = await fetch(`https://api-client.bkend.ai/v1/files/${fileId}/download-url`, {
     method: 'POST',
     headers: {
+      'X-API-Key': '{pk_publishable_key}',
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
     },
   });
 

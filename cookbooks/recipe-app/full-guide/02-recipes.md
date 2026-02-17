@@ -111,9 +111,8 @@
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/recipes \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "김치찌개",
     "description": "돼지고기와 잘 익은 김치로 만드는 얼큰한 찌개입니다.",
@@ -219,9 +218,8 @@ AI가 이미지 업로드와 레시피 연결을 순차적으로 처리합니다
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "filename": "kimchi-jjigae.jpg",
     "contentType": "image/jpeg",
@@ -244,9 +242,8 @@ curl -X PUT "{발급받은_presigned_url}" \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "s3Key": "{발급받은_key}",
     "originalName": "kimchi-jjigae.jpg",
@@ -261,9 +258,8 @@ curl -X POST https://api-client.bkend.ai/v1/files \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/recipes/{recipeId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "imageUrl": "{파일_다운로드_URL}"
   }'
@@ -349,9 +345,8 @@ async function uploadRecipeImage(recipeId, file) {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/recipes?page=1&limit=20&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답 예시:**
@@ -383,9 +378,8 @@ curl -X GET "https://api-client.bkend.ai/v1/data/recipes?page=1&limit=20&sortBy=
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/recipes?andFilters=%7B%22difficulty%22%3A%22easy%22%7D&sortBy=cookingTime&sortDirection=asc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **조리시간 범위 필터링 (bkendFetch):**
@@ -446,9 +440,8 @@ const koreanRecipes = await bkendFetch(
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/recipes/{recipeId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript
@@ -482,9 +475,8 @@ console.log(recipe.difficulty);    // "easy"
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/recipes/{recipeId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "servings": 4,
     "cookingTime": 40,
@@ -526,9 +518,8 @@ const updated = await bkendFetch(`/v1/data/recipes/${recipeId}`, {
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/recipes/{recipeId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript
@@ -564,9 +555,8 @@ await bkendFetch(`/v1/data/recipes/${recipeId}`, {
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/recipes?andFilters=%7B%22createdBy%22%3A%22{userId}%22%7D&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript

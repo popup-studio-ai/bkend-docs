@@ -93,9 +93,8 @@
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/profiles \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "userId": "my-user-id",
     "nickname": "홍길동",
@@ -140,9 +139,8 @@ curl -X POST https://api-client.bkend.ai/v1/data/profiles \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "content": "안녕하세요! bkend로 만든 소셜 네트워크에 첫 글을 올립니다.",
     "likesCount": 0,
@@ -186,9 +184,8 @@ curl -X POST https://api-client.bkend.ai/v1/data/posts \
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?sortBy=createdAt&sortDirection=desc&limit=10" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **응답 (200 OK):**

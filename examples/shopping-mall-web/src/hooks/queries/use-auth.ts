@@ -1,74 +1,89 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { authApi } from "@/lib/api/auth";
-import { useAuthStore } from "@/stores/auth-store";
-import { tokenStorage } from "@/infrastructure/storage/token-storage";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "./keys";
-import type { SignInInput, SignUpInput } from "@/application/dto/auth.dto";
+import { signUp, signIn, getMe, googleCallback } from "@/lib/api/auth";
+import { tokenStorage } from "@/infrastructure/storage/token-storage";
+import { useAuthStore } from "@/stores/auth-store";
+import type { SignInRequest, GoogleCallbackRequest } from "@/application/dto/auth.dto";
 
 export function useMe() {
-  const { setUser, setLoading } = useAuthStore();
+  const hasToken = typeof window !== "undefined" && tokenStorage.hasTokens();
+  const setUser = useAuthStore((s) => s.setUser);
 
   return useQuery({
-    queryKey: queryKeys.auth.me,
-    queryFn: async () => {
-      try {
-        const user = await authApi.getMe();
-        setUser(user);
-        setLoading(false);
-        return user;
-      } catch {
-        setUser(null);
-        setLoading(false);
-        return null;
-      }
-    },
-    enabled: tokenStorage.hasTokens(),
+    queryKey: queryKeys.auth.me(),
+    queryFn: getMe,
+    enabled: hasToken,
     retry: false,
     staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useSignUp() {
-  const { login } = useAuthStore();
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (input: SignUpInput) => authApi.signUp(input),
-    onSuccess: (data) => {
-      login(data.user, data.accessToken, data.refreshToken);
-      queryClient.setQueryData(queryKeys.auth.me, data.user);
-      router.push("/products");
+    onSuccess: (user) => {
+      setUser(user);
     },
   });
 }
 
 export function useSignIn() {
-  const { login } = useAuthStore();
-  const router = useRouter();
   const queryClient = useQueryClient();
+  const setUser = useAuthStore((s) => s.setUser);
 
   return useMutation({
-    mutationFn: (input: SignInInput) => authApi.signIn(input),
-    onSuccess: (data) => {
-      login(data.user, data.accessToken, data.refreshToken);
-      queryClient.setQueryData(queryKeys.auth.me, data.user);
-      router.push("/products");
+    mutationFn: (data: SignInRequest) => signIn(data),
+    onSuccess: async (authResponse) => {
+      tokenStorage.setTokens(authResponse.accessToken, authResponse.refreshToken);
+
+      // Ensure localStorage write completes
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      const user = await getMe();
+
+      setUser(user);
+      queryClient.setQueryData(queryKeys.auth.me(), user);
     },
   });
 }
 
-export function useLogout() {
-  const { logout } = useAuthStore();
-  const router = useRouter();
+export function useSignUp() {
   const queryClient = useQueryClient();
+  const setUser = useAuthStore((s) => s.setUser);
+
+  return useMutation({
+    mutationFn: (data: { email: string; password: string; name: string }) =>
+      signUp(data),
+    onSuccess: async (authResponse) => {
+      tokenStorage.setTokens(authResponse.accessToken, authResponse.refreshToken);
+      await new Promise(resolve => setTimeout(resolve, 10));
+      const user = await getMe();
+      setUser(user);
+      queryClient.setQueryData(queryKeys.auth.me(), user);
+    },
+  });
+}
+
+export function useGoogleCallback() {
+  const queryClient = useQueryClient();
+  const setUser = useAuthStore((s) => s.setUser);
+
+  return useMutation({
+    mutationFn: (data: GoogleCallbackRequest) => googleCallback(data),
+    onSuccess: async (oauthResponse) => {
+      tokenStorage.setTokens(oauthResponse.accessToken, oauthResponse.refreshToken);
+      await new Promise(resolve => setTimeout(resolve, 10));
+      const user = await getMe();
+      setUser(user);
+      queryClient.setQueryData(queryKeys.auth.me(), user);
+    },
+  });
+}
+
+export function useSignOut() {
+  const queryClient = useQueryClient();
+  const clearUser = useAuthStore((s) => s.clearUser);
 
   return () => {
-    logout();
+    tokenStorage.clearTokens();
+    clearUser();
     queryClient.clear();
-    router.push("/signin");
+    window.location.href = "/sign-in";
   };
 }

@@ -47,9 +47,7 @@ Separate test environment variables into a `.env.test` file.
 
 ```bash
 # .env.test
-BKEND_API_KEY={test-api-key}
-BKEND_PROJECT_ID={project-id}
-BKEND_ENVIRONMENT=dev
+BKEND_PUBLISHABLE_KEY={pk_test_publishable_key}
 BKEND_BASE_URL=https://api-client.bkend.ai
 ```
 
@@ -62,9 +60,7 @@ Write helper functions to simplify API calls.
 require('dotenv').config({ path: '.env.test' });
 
 const config = {
-  apiKey: process.env.BKEND_API_KEY,
-  projectId: process.env.BKEND_PROJECT_ID,
-  environment: process.env.BKEND_ENVIRONMENT,
+  publishableKey: process.env.BKEND_PUBLISHABLE_KEY,
   baseURL: process.env.BKEND_BASE_URL
 };
 
@@ -73,9 +69,7 @@ async function apiRequest(endpoint, options = {}) {
     ...options,
     headers: {
       ...options.headers,
-      'Authorization': `Bearer ${config.apiKey}`,
-      'X-Project-Id': config.projectId,
-      'X-Environment': config.environment
+      'X-API-Key': config.publishableKey,
     }
   });
 
@@ -89,13 +83,13 @@ async function apiRequest(endpoint, options = {}) {
 }
 
 async function login(email, password) {
-  const data = await apiRequest('/v1/auth/login', {
+  const data = await apiRequest('/v1/auth/email/signin', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password, method: 'password' })
   });
 
-  return data.access_token;
+  return data.accessToken;
 }
 
 module.exports = { apiRequest, login, config };
@@ -155,7 +149,7 @@ async function setup() {
 
   // Create test users
   for (const user of testUsers) {
-    const data = await apiRequest('/v1/auth/register', {
+    const data = await apiRequest('/v1/auth/email/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
@@ -196,19 +190,20 @@ const { apiRequest, login } = require('./helpers');
 
 describe('Authentication', () => {
   test('Signup succeeds', async () => {
-    const response = await apiRequest('/v1/auth/register', {
+    const response = await apiRequest('/v1/auth/email/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'newuser@test.com',
-        password: 'password123',
-        displayName: 'New User'
+        password: 'Password123$',
+        method: 'password',
+        name: 'New User'
       })
     });
 
     expect(response.user).toBeDefined();
     expect(response.user.email).toBe('newuser@test.com');
-    expect(response.access_token).toBeDefined();
+    expect(response.accessToken).toBeDefined();
   });
 
   test('Login succeeds', async () => {
@@ -223,12 +218,13 @@ describe('Authentication', () => {
   });
 
   test('Token refresh succeeds', async () => {
-    const loginData = await apiRequest('/v1/auth/login', {
+    const loginData = await apiRequest('/v1/auth/email/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'user1@test.com',
-        password: 'password123'
+        password: 'password123',
+        method: 'password'
       })
     });
 
@@ -236,12 +232,12 @@ describe('Authentication', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        refresh_token: loginData.refresh_token
+        refreshToken: loginData.refreshToken
       })
     });
 
-    expect(refreshData.access_token).toBeDefined();
-    expect(refreshData.access_token).not.toBe(loginData.access_token);
+    expect(refreshData.accessToken).toBeDefined();
+    expect(refreshData.accessToken).not.toBe(loginData.accessToken);
   });
 });
 ```
@@ -282,12 +278,12 @@ describe('CRUD Operations', () => {
   });
 
   test('Read post (SELECT)', async () => {
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${postId}`, {
+    const post = await apiRequest(`/v1/data/posts/${postId}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    expect(posts.length).toBe(1);
-    expect(posts[0].title).toBe('Test Post');
+    expect(post.id).toBe(postId);
+    expect(post.title).toBe('Test Post');
   });
 
   test('Update post (UPDATE)', async () => {
@@ -311,11 +307,12 @@ describe('CRUD Operations', () => {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${postId}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-
-    expect(posts.length).toBe(0);
+    // Deleted post returns 404
+    await expect(
+      apiRequest(`/v1/data/posts/${postId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+    ).rejects.toThrow();
 
     // Mark as deleted
     const index = createdPostIds.indexOf(postId);
@@ -339,44 +336,54 @@ describe('Query Filters', () => {
     token = await login('user1@test.com', 'password123');
   });
 
-  test('eq (equals) filter', async () => {
-    const posts = await apiRequest('/v1/data/posts?title=eq.Test Post', {
+  test('andFilters (equals) filter', async () => {
+    const url = '/v1/data/posts?' + new URLSearchParams({
+      andFilters: JSON.stringify({ title: 'Test Post' })
+    });
+    const result = await apiRequest(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    posts.forEach(post => {
+    result.items.forEach(post => {
       expect(post.title).toBe('Test Post');
     });
   });
 
-  test('like (pattern) filter', async () => {
-    const posts = await apiRequest('/v1/data/posts?title=like.*Test*', {
+  test('search filter', async () => {
+    const url = '/v1/data/posts?' + new URLSearchParams({
+      search: 'Test'
+    });
+    const result = await apiRequest(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    posts.forEach(post => {
+    result.items.forEach(post => {
       expect(post.title).toContain('Test');
     });
   });
 
-  test('order (sorting)', async () => {
-    const posts = await apiRequest('/v1/data/posts?order=created_at.desc', {
+  test('sortBy + sortDirection (sorting)', async () => {
+    const url = '/v1/data/posts?' + new URLSearchParams({
+      sortBy: 'createdAt',
+      sortDirection: 'desc'
+    });
+    const result = await apiRequest(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    for (let i = 1; i < posts.length; i++) {
-      const prev = new Date(posts[i - 1].created_at);
-      const curr = new Date(posts[i].created_at);
+    for (let i = 1; i < result.items.length; i++) {
+      const prev = new Date(result.items[i - 1].createdAt);
+      const curr = new Date(result.items[i].createdAt);
       expect(prev >= curr).toBe(true);
     }
   });
 
   test('limit (count restriction)', async () => {
-    const posts = await apiRequest('/v1/data/posts?limit=5', {
+    const result = await apiRequest('/v1/data/posts?limit=5', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    expect(posts.length).toBeLessThanOrEqual(5);
+    expect(result.items.length).toBeLessThanOrEqual(5);
   });
 });
 ```
@@ -457,11 +464,11 @@ describe('Permissions (RLS)', () => {
       headers: { 'Authorization': `Bearer ${user1Token}` }
     });
 
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${user1PostId}`, {
-      headers: { 'Authorization': `Bearer ${user1Token}` }
-    });
-
-    expect(posts.length).toBe(0);
+    await expect(
+      apiRequest(`/v1/data/posts/${user1PostId}`, {
+        headers: { 'Authorization': `Bearer ${user1Token}` }
+      })
+    ).rejects.toThrow();
   });
 });
 ```
@@ -500,11 +507,11 @@ describe('Role-Based Permissions', () => {
       headers: { 'Authorization': `Bearer ${adminToken}` }
     });
 
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${userPostId}`, {
-      headers: { 'Authorization': `Bearer ${adminToken}` }
-    });
-
-    expect(posts.length).toBe(0);
+    await expect(
+      apiRequest(`/v1/data/posts/${userPostId}`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      })
+    ).rejects.toThrow();
   });
 });
 ```
@@ -522,20 +529,21 @@ Test real user scenarios.
 const { apiRequest } = require('./helpers');
 
 describe('User Flow Integration', () => {
-  test('Signup → Login → Create post → Read → Delete', async () => {
+  test('Signup → Create post → Read → Delete', async () => {
     // 1. Signup
-    const registerData = await apiRequest('/v1/auth/register', {
+    const registerData = await apiRequest('/v1/auth/email/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'flow@test.com',
-        password: 'password123',
-        displayName: 'Flow User'
+        password: 'Password123$',
+        method: 'password',
+        name: 'Flow User'
       })
     });
 
     expect(registerData.user).toBeDefined();
-    const token = registerData.access_token;
+    const token = registerData.accessToken;
 
     // 2. Create post
     const post = await apiRequest('/v1/data/posts', {
@@ -553,12 +561,12 @@ describe('User Flow Integration', () => {
     expect(post.id).toBeDefined();
 
     // 3. Read post
-    const posts = await apiRequest(`/v1/data/posts?id=eq.${post.id}`, {
+    const fetched = await apiRequest(`/v1/data/posts/${post.id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    expect(posts.length).toBe(1);
-    expect(posts[0].title).toBe('Integration Test Post');
+    expect(fetched.id).toBe(post.id);
+    expect(fetched.title).toBe('Integration Test Post');
 
     // 4. Delete post
     await apiRequest(`/v1/data/posts/${post.id}`, {
@@ -566,12 +574,12 @@ describe('User Flow Integration', () => {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    // 5. Verify deletion
-    const deletedPosts = await apiRequest(`/v1/data/posts?id=eq.${post.id}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-
-    expect(deletedPosts.length).toBe(0);
+    // 5. Verify deletion (404 error)
+    await expect(
+      apiRequest(`/v1/data/posts/${post.id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+    ).rejects.toThrow();
   });
 });
 ```
@@ -609,8 +617,12 @@ describe('Performance', () => {
   test('Response time with index < 100ms', async () => {
     const start = performance.now();
 
-    // Assuming user_id has an index
-    await apiRequest('/v1/data/posts?user_id=eq.{user-id}&limit=100', {
+    // Assuming userId has an index
+    const url = '/v1/data/posts?' + new URLSearchParams({
+      andFilters: JSON.stringify({ userId: '{user-id}' }),
+      limit: '100'
+    });
+    await apiRequest(url, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -682,9 +694,7 @@ jobs:
 
     - name: Run tests
       env:
-        BKEND_API_KEY: ${{ secrets.BKEND_API_KEY_TEST }}
-        BKEND_PROJECT_ID: ${{ secrets.BKEND_PROJECT_ID }}
-        BKEND_ENVIRONMENT: dev
+        BKEND_PUBLISHABLE_KEY: ${{ secrets.BKEND_PUBLISHABLE_KEY_TEST }}
       run: npm test
 
     - name: Cleanup test data

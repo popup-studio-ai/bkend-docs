@@ -25,8 +25,7 @@
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "refreshToken": "{refresh_token}"
   }'
@@ -37,8 +36,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "method": "password",
     "email": "blogger@example.com",
@@ -77,7 +75,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 {
   "statusCode": 400,
   "error": "MISSING_HEADER",
-  "message": "X-Project-Id 헤더가 필요합니다"
+  "message": "X-API-Key 헤더가 필요합니다"
 }
 ```
 
@@ -87,9 +85,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 
 | 헤더 | 필수 | 설명 |
 |------|:----:|------|
+| `X-API-Key` | ✅ | Publishable Key (`pk_` 접두사) |
 | `Authorization` | ✅ | `Bearer {accessToken}` |
-| `X-Project-Id` | ✅ | 프로젝트 ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
 | `Content-Type` | POST/PATCH | `application/json` |
 
 ***
@@ -111,7 +108,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 **해결:**
 
 1. 콘솔에서 **테이블 관리** 메뉴를 확인하세요.
-2. `X-Environment` 헤더 값이 올바른지 확인하세요. 테이블은 환경별로 독립적입니다.
+2. `X-API-Key` 헤더 값이 올바른지 확인하세요. 테이블은 환경별로 독립적입니다.
 3. 테이블이 없다면 [02-articles.md](02-articles.md)의 1단계를 참고하여 생성하세요.
 
 {% hint style="warning" %}
@@ -168,9 +165,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/articles \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "게시글 제목",
     "content": "본문 내용"
@@ -194,11 +190,10 @@ curl -X POST https://api-client.bkend.ai/v1/data/articles \
 ```bash
 # 1. 필터 없이 전체 조회 시도
 curl -X GET "https://api-client.bkend.ai/v1/data/articles?page=1&limit=10" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 
-# 2. X-Environment 값 확인 (dev에서 작성한 데이터는 dev에서만 조회 가능)
+# 2. X-API-Key 값 확인 (올바른 Publishable Key인지 확인)
 ```
 
 ***
@@ -349,9 +344,8 @@ await fetch(presigned.url, {
 ```bash
 # 기존 태그 확인
 curl -X GET "https://api-client.bkend.ai/v1/data/tags?andFilters=%7B%22name%22%3A%22%EC%97%AC%ED%96%89%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ```javascript

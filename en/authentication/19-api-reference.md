@@ -16,8 +16,7 @@ https://api-client.bkend.ai
 
 | Header | Required | Description |
 |--------|:--------:|-------------|
-| `X-Project-Id` | Yes | Project ID |
-| `X-Environment` | Yes | `dev` / `staging` / `prod` |
+| `X-API-Key` | Yes | `{pk_publishable_key}` -- Publishable Key issued from the console |
 | `Authorization` | Conditional | `Bearer {accessToken}` -- for authenticated endpoints |
 | `Content-Type` | Conditional | `application/json` -- when request body is included |
 
@@ -149,6 +148,7 @@ POST /v1/auth/password/reset/confirm
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
+| `email` | `string` | Yes | Email address |
 | `token` | `string` | Yes | Reset token |
 | `newPassword` | `string` | Yes | New password |
 
@@ -205,8 +205,6 @@ GET /v1/auth/signup/email/confirm
 POST /v1/auth/email/verify/send
 ```
 
-**Authentication required**
-
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
 | `email` | `string` | Yes | Email to verify |
@@ -219,8 +217,6 @@ POST /v1/auth/email/verify/send
 POST /v1/auth/email/verify/confirm
 ```
 
-**Authentication required**
-
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
 | `token` | `string` | Yes | Verification token |
@@ -232,8 +228,6 @@ POST /v1/auth/email/verify/confirm
 ```http
 POST /v1/auth/email/verify/resend
 ```
-
-**Authentication required**
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
@@ -409,8 +403,6 @@ DELETE /v1/auth/accounts/:provider
 POST /v1/auth/accounts/check
 ```
 
-**Authentication required**
-
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
 | `provider` | `string` | Yes | `google` or `github` |
@@ -459,6 +451,8 @@ GET /v1/auth/invitations
 ```http
 GET /v1/auth/invitations/:id
 ```
+
+**Authentication required**
 
 **Response:** `200 OK` -- `{ id, email, role, status, invitedBy, expiresAt }`
 
@@ -1014,6 +1008,15 @@ Auth provider configuration (`/v1/auth/providers/*`) and email template (`/v1/au
 | `auth/last-auth-method` | 400 | Cannot unlink last auth method |
 | `auth/invitation-not-found` | 404 | Invitation not found |
 | `auth/invitation-expired` | 410 | Invitation expired |
+| `auth/invalid-refresh-token` | 401 | Refresh token invalid or session not found |
+| `auth/session-expired` | 401 | Session expired (7 days) |
+| `auth/invalid-password-format` | 400 | Password policy violation |
+| `auth/same-as-previous-password` | 400 | New password same as current |
+| `auth/verification-token-not-found` | 404 | Reset/verification token not found |
+| `auth/verification-token-expired` | 401 | Reset/verification token expired |
+| `auth/too-many-requests` | 429 | Too many requests |
+| `auth/too-many-login-attempts` | 429 | Too many login attempts |
+| `auth/too-many-code-requests` | 429 | Too many verification code requests |
 | `auth/unsupported-provider` | 400 | Unsupported provider |
 | `auth/oauth-not-configured` | 400 | OAuth not configured |
 | `auth/template-not-found` | 404 | Template not found |
@@ -1057,16 +1060,16 @@ Auth provider configuration (`/v1/auth/providers/*`) and email template (`/v1/au
 | `POST` | `/v1/auth/accounts` | Yes | Link account |
 | `GET` | `/v1/auth/accounts` | Yes | List linked accounts |
 | `DELETE` | `/v1/auth/accounts/:provider` | Yes | Unlink account |
-| `POST` | `/v1/auth/accounts/check` | Yes | Check account link |
+| `POST` | `/v1/auth/accounts/check` | - | Check account link |
 | `POST` | `/v1/auth/invitations` | Yes | Create invitation |
 | `GET` | `/v1/auth/invitations` | Yes | List invitations |
-| `GET` | `/v1/auth/invitations/:id` | - | Invitation details |
+| `GET` | `/v1/auth/invitations/:id` | Yes | Invitation details |
 | `POST` | `/v1/auth/invitations/accept` | - | Accept invitation |
 | `POST` | `/v1/auth/invitations/reject` | - | Decline invitation |
 | `DELETE` | `/v1/auth/invitations/:id` | Yes | Revoke invitation |
-| `POST` | `/v1/auth/email/verify/send` | Yes | Send verification email |
-| `POST` | `/v1/auth/email/verify/confirm` | Yes | Confirm verification |
-| `POST` | `/v1/auth/email/verify/resend` | Yes | Resend verification email |
+| `POST` | `/v1/auth/email/verify/send` | - | Send verification email |
+| `POST` | `/v1/auth/email/verify/confirm` | - | Confirm verification |
+| `POST` | `/v1/auth/email/verify/resend` | - | Resend verification email |
 | `POST` | `/v1/auth/signup/email/resend` | - | Resend sign-up verification |
 | `GET` | `/v1/auth/signup/email/confirm` | - | Confirm sign-up verification |
 | `GET` | `/v1/auth/providers` | Yes | Get all settings |

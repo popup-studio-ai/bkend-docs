@@ -103,9 +103,8 @@ bkend 콘솔에서 테이블을 생성합니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/articles \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "제주도 3박4일 여행기",
     "content": "# 제주도 여행\n\n첫째 날, 공항에 도착하자마자...",
@@ -182,9 +181,8 @@ ID를 사용하여 특정 게시글을 조회합니다.
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/articles/{id} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch
@@ -240,18 +238,16 @@ console.log(article.category); // "travel"
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/articles?page=1&limit=10&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### curl — 카테고리별 필터링
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/articles?page=1&limit=10&sortBy=createdAt&sortDirection=desc&andFilters=%7B%22category%22%3A%22travel%22%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch
@@ -350,9 +346,8 @@ const publishedPosts = await bkendFetch(
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/articles/{id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "제주도 3박4일 여행기 (수정)"
   }'
@@ -363,9 +358,8 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/articles/{id} \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/articles/{id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "isPublished": true
   }'
@@ -432,9 +426,8 @@ await bkendFetch(`/v1/data/articles/${articleId}`, {
 
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/articles/{id} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### bkendFetch

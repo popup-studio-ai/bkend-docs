@@ -40,49 +40,33 @@ cd examples/blog-web
 pnpm install
 ```
 
-### Running (Mock Mode)
+### Configuration
 
-Runs immediately with mock data, no API server required.
-
-```bash
-pnpm dev
-```
-
-> `.env.local.example` is set to `NEXT_PUBLIC_MOCK_MODE=true` by default.
-> Copy it to `.env.local` before your first run.
+Copy `.env.local.example` to `.env.local` and configure your bkend project:
 
 ```bash
 cp .env.local.example .env.local
+```
+
+Edit `.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL=https://api-client.bkend.ai
+NEXT_PUBLIC_PUBLISHABLE_KEY=pk_your_publishable_key
+```
+
+### Running
+
+1. Create a project in the [bkend Console](https://console.bkend.ai)
+2. Set your publishable key in `.env.local`
+3. Create the table structures (articles, tags, bookmarks) from the cookbook
+4. Start the dev server:
+
+```bash
 pnpm dev
 ```
 
-Open `http://localhost:3000` in your browser.
-
-**Demo Account:**
-
-```
-Email: demo@bkend.ai
-Password: abc123
-```
-
-### Running (bkend API Integration)
-
-To connect with an actual bkend project, edit `.env.local`:
-
-```env
-# Disable mock mode
-NEXT_PUBLIC_MOCK_MODE=false
-
-# bkend API
-NEXT_PUBLIC_API_URL=https://api-client.bkend.ai
-NEXT_PUBLIC_PROJECT_ID=your-project-id
-NEXT_PUBLIC_ENVIRONMENT=dev
-```
-
-1. Create a project in the [bkend Console](https://console.bkend.ai)
-2. Set your project ID in `NEXT_PUBLIC_PROJECT_ID`
-3. Create the table structures (articles, tags, bookmarks) from the cookbook in the console
-4. Run `pnpm dev`
+Open `http://localhost:3003` in your browser.
 
 ### Build
 
@@ -98,10 +82,9 @@ src/
 ├── app/                    # Next.js pages
 │   ├── (auth)/             #   Sign in, Sign up
 │   └── (app)/              #   Articles, Tags, Bookmarks
-├── infrastructure/         # HTTP client, Token, Mock
+├── infrastructure/         # HTTP client, Token storage
 │   ├── api/client.ts       #   bkendFetch wrapper
-│   ├── storage/            #   Token storage
-│   └── mock/               #   Mock handler + data
+│   └── storage/            #   Token storage
 ├── application/dto/        # TypeScript type definitions
 ├── lib/api/                # Domain-specific API functions
 ├── hooks/queries/          # React Query hooks

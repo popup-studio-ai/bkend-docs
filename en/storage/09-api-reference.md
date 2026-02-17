@@ -16,8 +16,7 @@ https://api-client.bkend.ai
 
 | Header | Required | Description |
 |--------|:--------:|-------------|
-| `X-Project-Id` | ✅ | Project ID |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | `{pk_publishable_key}` — Publishable Key |
 | `Authorization` | ✅ | `Bearer {accessToken}` |
 | `Content-Type` | Conditional | `application/json` — for POST and PATCH requests |
 

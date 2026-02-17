@@ -151,7 +151,7 @@ When generating REST API code from data retrieved via MCP tools:
 | Item | Correct Usage |
 |------|---------------|
 | API endpoint | `https://api-client.bkend.ai` |
-| Required headers | `Authorization`, `X-Project-Id`, `X-Environment` |
+| Required headers | `X-API-Key`, `Authorization` (for authenticated requests) |
 | ID field | `id` |
 | List response | `{ items, pagination }` |
 

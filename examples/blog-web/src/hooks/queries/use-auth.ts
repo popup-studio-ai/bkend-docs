@@ -9,6 +9,7 @@ import type { SignInRequest } from "@/application/dto/auth.dto";
 
 export function useMe() {
   const hasToken = typeof window !== "undefined" && tokenStorage.hasTokens();
+  const setUser = useAuthStore((s) => s.setUser);
 
   return useQuery({
     queryKey: queryKeys.auth.me(),
@@ -16,6 +17,9 @@ export function useMe() {
     enabled: hasToken,
     retry: false,
     staleTime: 5 * 60 * 1000,
+    onSuccess: (user) => {
+      setUser(user);
+    },
   });
 }
 
@@ -27,7 +31,12 @@ export function useSignIn() {
     mutationFn: (data: SignInRequest) => signIn(data),
     onSuccess: async (authResponse) => {
       tokenStorage.setTokens(authResponse.accessToken, authResponse.refreshToken);
+
+      // Ensure localStorage write completes
+      await new Promise(resolve => setTimeout(resolve, 10));
+
       const user = await getMe();
+
       setUser(user);
       queryClient.setQueryData(queryKeys.auth.me(), user);
     },
@@ -43,6 +52,8 @@ export function useSignUp() {
       signUp(data),
     onSuccess: async (authResponse) => {
       tokenStorage.setTokens(authResponse.accessToken, authResponse.refreshToken);
+      // Ensure localStorage write completes
+      await new Promise(resolve => setTimeout(resolve, 10));
       const user = await getMe();
       setUser(user);
       queryClient.setQueryData(queryKeys.auth.me(), user);

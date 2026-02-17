@@ -4,6 +4,18 @@
 Delete registered files.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Project creation](../getting-started/02-quickstart.md) completed
+- User authentication completed (JWT token required — all file APIs require authentication)
+{% endhint %}
+
+**APIs used in this document:**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/files/:fileId` | DELETE | JWT | Delete file |
+
 ## Overview
 
 Use the `DELETE /v1/files/:fileId` endpoint to delete file metadata.
@@ -18,9 +30,8 @@ Use the `DELETE /v1/files/:fileId` endpoint to delete file metadata.
 {% tab title="cURL" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/files/{fileId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -28,9 +39,8 @@ curl -X DELETE https://api-client.bkend.ai/v1/files/{fileId} \
 const response = await fetch(`https://api-client.bkend.ai/v1/files/${fileId}`, {
   method: 'DELETE',
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 

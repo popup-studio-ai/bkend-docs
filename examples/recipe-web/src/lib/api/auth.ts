@@ -1,4 +1,4 @@
-import { apiClient } from "@/infrastructure/api/client";
+import { bkendFetch } from "@/infrastructure/api/client";
 import type {
   SignUpRequest,
   SignInRequest,
@@ -6,24 +6,22 @@ import type {
   UserProfile,
 } from "@/application/dto/auth.dto";
 
-export const authApi = {
-  signUp(data: SignUpRequest): Promise<AuthResponse> {
-    return apiClient<AuthResponse>("/v1/auth/email/signup", {
-      method: "POST",
-      body: data,
-      skipAuth: true,
-    });
-  },
+export async function signUp(data: Omit<SignUpRequest, "method">): Promise<AuthResponse> {
+  return bkendFetch<AuthResponse>("/v1/auth/email/signup", {
+    method: "POST",
+    body: { method: "password", ...data },
+    skipAuth: true,
+  });
+}
 
-  signIn(data: SignInRequest): Promise<AuthResponse> {
-    return apiClient<AuthResponse>("/v1/auth/email/signin", {
-      method: "POST",
-      body: data,
-      skipAuth: true,
-    });
-  },
+export async function signIn(data: SignInRequest): Promise<AuthResponse> {
+  return bkendFetch<AuthResponse>("/v1/auth/email/signin", {
+    method: "POST",
+    body: { method: "password", ...data },
+    skipAuth: true,
+  });
+}
 
-  me(): Promise<UserProfile> {
-    return apiClient<UserProfile>("/v1/auth/me");
-  },
-};
+export async function getMe(): Promise<UserProfile> {
+  return bkendFetch<UserProfile>("/v1/auth/me");
+}

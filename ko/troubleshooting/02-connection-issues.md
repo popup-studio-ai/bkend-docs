@@ -16,9 +16,7 @@ flowchart TD
     D -->|누락/잘못됨| E[인증 헤더 수정]
     D -->|올바름| F{CORS 확인}
     F -->|CORS 에러| G[서버 사이드에서 호출]
-    F -->|정상| H{환경 확인}
-    H -->|잘못된 환경| I[X-Environment 수정]
-    H -->|정상| J[지원팀 문의]
+    F -->|정상| H[지원팀 문의]
 ```
 
 ***
@@ -48,19 +46,21 @@ flowchart TD
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/posts \
-  -H "Authorization: Bearer {api_key_or_jwt}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 | 헤더 | 필수 | 주의 |
 |------|:----:|------|
-| `Authorization` | 조건부 | `Bearer ` 접두사 필수 (공백 주의) |
-| `X-Project-Id` | ✅ | 프로젝트 ID (콘솔에서 확인) |
-| `X-Environment` | ✅ | `dev` / `staging` / `prod` |
+| `X-API-Key` | ✅ | Publishable Key (`pk_` 접두사). 프로젝트 ID + 환경 포함 |
+| `Authorization` | 조건부 | `Bearer ` 접두사 필수 (공백 주의). 인증 필요 API만 |
 
 {% hint style="warning" %}
 ⚠️ `Authorization: Bearer {token}`에서 `Bearer`와 토큰 사이에 **공백**이 있어야 합니다. `Bearer{token}`은 잘못된 형식입니다.
+{% endhint %}
+
+{% hint style="info" %}
+💡 `pk_` 키에 프로젝트 ID와 환경 정보가 포함되어 있으므로, `X-Project-Id`와 `X-Environment` 헤더는 불필요합니다.
 {% endhint %}
 
 ***
@@ -89,9 +89,7 @@ from origin 'http://localhost:3000' has been blocked by CORS policy
 export default async function handler(req, res) {
   const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
     headers: {
-      'Authorization': `Bearer ${process.env.BKEND_API_KEY}`,
-      'X-Project-Id': process.env.BKEND_PROJECT_ID,
-      'X-Environment': 'dev',
+      'X-API-Key': process.env.BKEND_SECRET_KEY, // sk_xxx (서버 사이드)
     },
   });
   const data = await response.json();
@@ -141,9 +139,7 @@ export default async function handler(req, res) {
 ```bash
 # 데이터 조회 테스트
 curl -v -X GET "https://api-client.bkend.ai/v1/data/posts?limit=1" \
-  -H "Authorization: Bearer ak_{your_api_key}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 `-v` 옵션으로 요청/응답 헤더를 확인할 수 있습니다.

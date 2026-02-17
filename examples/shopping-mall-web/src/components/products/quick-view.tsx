@@ -50,7 +50,7 @@ export function QuickView() {
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-6 sm:grid-cols-2">
-              <div className="overflow-hidden rounded-md">
+              <div className="overflow-hidden rounded-xl">
                 {product.imageUrl ? (
                   <img
                     src={product.imageUrl}
@@ -58,8 +58,8 @@ export function QuickView() {
                     className="aspect-square w-full object-cover"
                   />
                 ) : (
-                  <div className="flex aspect-square w-full items-center justify-center bg-slate-100 dark:bg-slate-800">
-                    <ShoppingCart className="h-12 w-12 text-slate-300" />
+                  <div className="flex aspect-square w-full items-center justify-center bg-muted">
+                    <ShoppingCart className="h-12 w-12 text-muted-foreground/30" />
                   </div>
                 )}
               </div>
@@ -67,19 +67,18 @@ export function QuickView() {
               <div className="flex flex-col justify-between">
                 <div className="space-y-3">
                   <Badge variant="secondary">{product.category}</Badge>
-                  <h2 className="text-xl font-extrabold text-slate-900 dark:text-slate-50">
+                  <h2 className="text-xl font-extrabold">
                     {product.name}
                   </h2>
                   <PriceDisplay price={product.price} size="lg" />
-                  <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-3">
+                  <p className="text-sm text-muted-foreground line-clamp-3">
                     {product.description}
                   </p>
                 </div>
 
                 <div className="mt-4 space-y-2">
                   <Button
-                    variant="accent"
-                    className="w-full"
+                    className="w-full bg-accent-color text-white hover:bg-accent-color/90"
                     onClick={handleAddToCart}
                     disabled={!product.isActive || product.stock === 0}
                   >

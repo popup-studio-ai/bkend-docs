@@ -4,6 +4,18 @@
 Obtain a Presigned URL to download files.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Project creation](../getting-started/02-quickstart.md) completed
+- User authentication completed (JWT token required — all file APIs require authentication)
+{% endhint %}
+
+**APIs used in this document:**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/files/:fileId/download-url` | POST | JWT | Issue download URL |
+
 ## Overview
 
 File downloads also use the Presigned URL approach, just like uploads. You obtain a time-limited download URL from the bkend API and download the file directly from S3.
@@ -30,9 +42,8 @@ sequenceDiagram
 {% tab title="cURL" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files/{fileId}/download-url \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -41,8 +52,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/files/${fileId}/dow
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
 });
 
@@ -94,8 +104,7 @@ async function downloadFile(fileId, accessToken) {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
   });
 
@@ -117,8 +126,7 @@ async function downloadToBlob(fileId, accessToken) {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
   });
 

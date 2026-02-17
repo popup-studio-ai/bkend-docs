@@ -93,9 +93,8 @@ AI가 해당 상품의 최근 배달 완료 주문을 찾아 리뷰를 작성합
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/reviews \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "productId": "product_abc123",
     "orderId": "order_xyz789",
@@ -169,27 +168,24 @@ AI가 해당 상품의 리뷰를 최신순으로 보여줍니다.
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/reviews?andFilters=%7B%22productId%22%3A%22{product_id}%22%7D&sortBy=createdAt&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 별점별 필터 (5점 리뷰만)
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/reviews?andFilters=%7B%22productId%22%3A%22{product_id}%22%2C%22rating%22%3A5%7D" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 높은 별점순 정렬
 
 ```bash
 curl -X GET "https://api-client.bkend.ai/v1/data/reviews?andFilters=%7B%22productId%22%3A%22{product_id}%22%7D&sortBy=rating&sortDirection=desc" \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**
@@ -332,9 +328,8 @@ AI가 리뷰의 별점과 내용을 수정합니다.
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/reviews/{review_id} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "rating": 4,
     "content": "전체적으로 만족합니다. 다만 사이즈가 약간 크네요."
@@ -377,9 +372,8 @@ AI가 해당 리뷰를 삭제합니다.
 {% tab title="콘솔 + REST API" %}
 ```bash
 curl -X DELETE https://api-client.bkend.ai/v1/data/reviews/{review_id} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 **bkendFetch 예시:**

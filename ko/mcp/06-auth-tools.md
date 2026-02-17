@@ -51,39 +51,41 @@ AI 도구가 코드를 생성할 때 사용하는 주요 엔드포인트:
 | 엔드포인트 | 메서드 | 설명 |
 |-----------|:------:|------|
 | `/v1/auth/email/signup` | POST | 이메일 회원가입 |
-| `/v1/auth/email/login` | POST | 이메일 로그인 |
-| `/v1/auth/email/verify` | POST | 이메일 인증 확인 |
+| `/v1/auth/email/signin` | POST | 이메일 로그인 |
+| `/v1/auth/email/verify/send` | POST | 이메일 인증 발송 |
+| `/v1/auth/email/verify/confirm` | POST | 이메일 인증 확인 |
 | `/v1/auth/email/verify/resend` | POST | 인증 이메일 재발송 |
 
-### 소셜 인증
+### 소셜 인증 (OAuth)
 
 | 엔드포인트 | 메서드 | 설명 |
 |-----------|:------:|------|
-| `/v1/auth/social/{provider}/authorize` | GET | 소셜 로그인 시작 |
-| `/v1/auth/social/{provider}/callback` | GET | 소셜 로그인 콜백 |
+| `/v1/auth/{provider}/callback` | GET | OAuth 콜백 처리 (리다이렉트) |
+| `/v1/auth/{provider}/callback` | POST | OAuth 콜백 처리 (API 플로우) |
 
 ### 토큰 관리
 
 | 엔드포인트 | 메서드 | 설명 |
 |-----------|:------:|------|
+| `/v1/auth/me` | GET | 내 정보 조회 |
 | `/v1/auth/refresh` | POST | 토큰 갱신 |
-| `/v1/auth/logout` | POST | 로그아웃 |
+| `/v1/auth/signout` | POST | 로그아웃 |
 
 ### 비밀번호 관리
 
 | 엔드포인트 | 메서드 | 설명 |
 |-----------|:------:|------|
-| `/v1/auth/password/forgot` | POST | 비밀번호 재설정 요청 |
-| `/v1/auth/password/reset` | POST | 비밀번호 재설정 |
+| `/v1/auth/password/reset/request` | POST | 비밀번호 재설정 요청 |
+| `/v1/auth/password/reset/confirm` | POST | 비밀번호 재설정 확인 |
 | `/v1/auth/password/change` | POST | 비밀번호 변경 |
 
 ### 사용자 관리
 
 | 엔드포인트 | 메서드 | 설명 |
 |-----------|:------:|------|
-| `/v1/users/me` | GET | 내 정보 조회 |
-| `/v1/users/me` | PATCH | 내 정보 수정 |
-| `/v1/users/me/avatar` | PUT | 프로필 이미지 변경 |
+| `/v1/users/{userId}` | GET | 사용자 정보 조회 |
+| `/v1/users/{userId}` | PATCH | 사용자 정보 수정 |
+| `/v1/users/{userId}/avatar/upload-url` | POST | 프로필 이미지 업로드 URL 생성 |
 
 ***
 
@@ -95,13 +97,12 @@ AI 도구가 "이메일 로그인 기능을 만들어줘"라고 요청하면 다
 {% tab title="TypeScript" %}
 ```typescript
 const response = await fetch(
-  "https://api-client.bkend.ai/v1/auth/email/login",
+  "https://api-client.bkend.ai/v1/auth/email/signin",
   {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Project-Id": PROJECT_ID,
-      "X-Environment": "dev",
+      "X-API-Key": PK_PUBLISHABLE_KEY,
     },
     body: JSON.stringify({
       email: "user@example.com",
@@ -116,10 +117,9 @@ const { accessToken, refreshToken } = await response.json();
 {% endtab %}
 {% tab title="cURL" %}
 ```bash
-curl -X POST https://api-client.bkend.ai/v1/auth/email/login \
+curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {PROJECT_ID}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "email": "user@example.com",
     "password": "password123",
@@ -130,7 +130,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/login \
 {% endtabs %}
 
 {% hint style="info" %}
-💡 모든 인증 API 호출에는 `X-Project-Id`와 `X-Environment` 헤더가 필요합니다. 인증 후 발급받은 JWT를 `Authorization: Bearer {accessToken}` 헤더로 전달하세요.
+💡 모든 인증 API 호출에는 `X-API-Key` 헤더가 필요합니다. 인증 후 발급받은 JWT를 `Authorization: Bearer {accessToken}` 헤더로 전달하세요.
 {% endhint %}
 
 ***

@@ -44,7 +44,7 @@ AI 도구가 MCP 서버에 연결되면 **자동으로** `get_context`를 호출
 |------|------|
 | Organization | 현재 인증된 Organization의 ID와 이름 |
 | 프로젝트 목록 | 접근 가능한 프로젝트와 각 환경 정보 |
-| API 엔드포인트 | Consumer API 엔드포인트 |
+| API 엔드포인트 | REST API 엔드포인트 |
 | 주의사항 | 제한 사항이나 경고 메시지 |
 
 ### ID 조회 흐름
@@ -151,7 +151,7 @@ MCP 도구에서 데이터를 조회한 후 REST API 코드를 생성할 때:
 | 항목 | 올바른 사용 |
 |------|------------|
 | API 엔드포인트 | `https://api-client.bkend.ai` |
-| 필수 헤더 | `Authorization`, `X-Project-Id`, `X-Environment` |
+| 필수 헤더 | `X-API-Key`, `Authorization` |
 | ID 필드 | `id` |
 | 목록 응답 | `{ items, pagination }` |
 

@@ -174,7 +174,7 @@ flowchart LR
 | GET | `/v1/files/{fileId}` | 파일 메타데이터 조회 |
 
 {% hint style="info" %}
-💡 모든 API 요청에는 `X-Project-Id`와 `X-Environment` 헤더가 필요합니다. 인증이 필요한 API에는 `Authorization: Bearer {accessToken}` 헤더도 추가하세요.
+💡 모든 API 요청에는 `X-API-Key` 헤더가 필요합니다. 인증이 필요한 API에는 `Authorization: Bearer {accessToken}` 헤더도 추가하세요.
 {% endhint %}
 
 ***

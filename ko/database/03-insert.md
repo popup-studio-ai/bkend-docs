@@ -4,6 +4,21 @@
 💡 테이블에 새 데이터를 추가하세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- [테이블 생성](../console/07-table-management.md) 완료
+- 인증 설정 — 공개 테이블은 인증 없이, RLS 적용 테이블은 JWT 필요
+{% endhint %}
+
+{% hint style="info" %}
+💡 **이 문서에서 사용하는 API**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/data/:tableName` | POST | 조건부 | 데이터 생성 |
+{% endhint %}
+
 ## 개요
 
 `POST /v1/data/:tableName` 엔드포인트로 테이블에 새 데이터를 생성합니다. 요청 본문에 필드를 직접 포함하면 됩니다.
@@ -19,9 +34,8 @@
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "첫 번째 게시글",
     "content": "안녕하세요, bkend입니다.",
@@ -36,9 +50,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: '첫 번째 게시글',
@@ -166,6 +179,8 @@ POST /v1/posts
 | `data/validation-error` | 400 | 스키마 검증 실패 |
 | `data/duplicate-value` | 409 | Unique 제약 위반 |
 | `data/permission-denied` | 403 | create 권한 없음 |
+| `data/scope-insufficient` | 403 | API 키 scope에 필요한 권한이 포함되지 않음 |
+| `data/system-table-access` | 403 | 시스템 테이블 접근 불가 |
 | `data/invalid-header` | 400 | 필수 헤더 누락 |
 
 ***

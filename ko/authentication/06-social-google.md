@@ -63,8 +63,7 @@ Google 인증 완료 후 콜백 URL로 리다이렉트됩니다.
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/auth/google/callback \
   -H "Content-Type: application/json" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -d '{
     "code": "{authorization_code}",
     "redirectUri": "https://myapp.com/auth/callback",
@@ -83,8 +82,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/google/callbac
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     code,

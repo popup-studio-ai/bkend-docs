@@ -37,11 +37,15 @@ Traditional backend development requires writing server code, configuring databa
 
 ### Database
 
-Design table schemas and perform CRUD operations on data. Supports 7 column types, constraints, indexes, and relationship configuration.
+Create dynamic tables via the console or MCP tools, and access data through the REST API (`/v1/data/{tableName}`) to perform CRUD (Create, Read, Update, Delete) operations. Supports 7 column types, constraints, indexes, and relationship configuration.
+
+{% hint style="info" %}
+A **dynamic table** is a table where defining a schema via the console or MCP tools automatically generates a REST API endpoint (`/v1/data/{tableName}`). You can create tables and access data via API without writing any server code.
+{% endhint %}
 
 ### Authentication
 
-Provides email signup, social login (Google, GitHub), magic link, and MFA. Handles JWT-based session management and automatic token refresh.
+Provides email signup, social login (Google, GitHub), magic link, and MFA (Multi-Factor Authentication). Handles JWT (JSON Web Token)-based session management and automatic token refresh.
 
 ### Storage
 
@@ -66,6 +70,10 @@ You can interact with bkend in three ways.
 | **MCP Tools** | AI tool users | Build your backend with natural language in Claude Code and Cursor |
 | **REST API** | App developers | Query/modify data, authenticate users, and manage files via HTTP requests |
 | **Console** | Everyone | Manage visually through the web UI |
+
+{% hint style="info" %}
+In bkend, a **Tenant** is the developer who builds the backend (uses the console/MCP), while a **User** is the end user of the app (interacts via REST API). See [Understanding Tenants and Users](05-tenant-vs-user.md) for details.
+{% endhint %}
 
 ```mermaid
 flowchart TD

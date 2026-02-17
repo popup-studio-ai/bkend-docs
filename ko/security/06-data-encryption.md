@@ -79,7 +79,7 @@ API 키는 **SHA-256** 단방향 해시로 저장됩니다.
 
 ```mermaid
 flowchart LR
-    A[키 생성] -->|randomBytes 32| B["ak_{64자 hex}"]
+    A[키 생성] -->|randomBytes 32| B["pk_ 또는 sk_ prefix"]
     B -->|SHA-256| C[해시값만 저장]
     B -->|1회 반환| D[사용자에게 표시]
 ```

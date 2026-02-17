@@ -4,6 +4,21 @@
 Retrieve a specific record by its ID.
 {% endhint %}
 
+{% hint style="info" %}
+**Before you start** — You need the following to proceed:
+- [Create a project](../getting-started/02-quickstart.md) completed
+- [Create a table](../console/07-table-management.md) completed
+- Authentication setup — Public tables require no auth; tables with RLS require a JWT
+{% endhint %}
+
+{% hint style="info" %}
+**API used in this document**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/data/:tableName/:id` | GET | Conditional | Get a single record |
+{% endhint %}
+
 ## Overview
 
 Use the `GET /v1/data/:tableName/:id` endpoint to retrieve a specific record by ID.
@@ -18,9 +33,8 @@ Use the `GET /v1/data/:tableName/:id` endpoint to retrieve a specific record by 
 {% tab title="cURL" %}
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/data/posts/507f1f77bcf86cd799439011 \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 {% endtab %}
 {% tab title="JavaScript" %}
@@ -29,9 +43,8 @@ const postId = '507f1f77bcf86cd799439011';
 
 const response = await fetch(`https://api-client.bkend.ai/v1/data/posts/${postId}`, {
   headers: {
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
 });
 
@@ -106,6 +119,7 @@ If only `self` permission is configured, attempting to read data created by anot
 | `data/table-not-found` | 404 | Table does not exist |
 | `data/not-found` | 404 | Data not found |
 | `data/permission-denied` | 403 | No read permission |
+| `data/scope-insufficient` | 403 | API key scope does not include `tableName:read` |
 
 ***
 

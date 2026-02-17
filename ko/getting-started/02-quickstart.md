@@ -18,8 +18,9 @@ flowchart LR
     B --> C[3. 프로젝트 생성]
     C --> D[4. AI 도구 연결]
     D --> E[5. 테이블 생성]
-    E --> F[6. API Key 발급]
+    E --> F[6. API Key 생성]
     F --> G[7. 첫 API 호출]
+    G --> H[8~9. 인증 연동]
 ```
 
 ***
@@ -128,44 +129,40 @@ AI 도구에서 다음과 같이 요청하세요.
 
 ***
 
-## 6단계: API Key 발급하기
+## 6단계: API Key 생성하기
 
 앱에서 REST API를 호출하려면 API Key가 필요합니다.
 
-1. 사이드바에서 **액세스 토큰**을 클릭하세요.
-2. **새 토큰 생성** 버튼을 클릭하세요.
-3. 다음 정보를 입력하세요.
-
-| 필드 | 값 |
-|------|-----|
-| **토큰 이름** | my-app-key |
-| **토큰 타입** | BEARER_TOKEN |
-| **권한 범위** | Table Data (read, create, update, delete) |
-
-4. **생성**을 클릭하면 토큰이 표시됩니다. 이 값을 안전하게 복사해두세요.
+1. 사이드바에서 **API Keys**를 클릭하세요.
+2. **Publishable Keys** 섹션에서 **Add Key** 버튼을 클릭하세요.
+3. 이름을 입력하고 (예: `my-app-key`) **Create**를 클릭하세요.
+4. 키가 표시됩니다. 이 값을 안전하게 복사해두세요.
 
 {% hint style="warning" %}
-⚠️ 이 토큰은 **Public Key**입니다. 클라이언트(브라우저, 앱)에서 사용하며, 제한된 권한만 가집니다. 서버 전용의 **Secret Key**와의 차이는 [Public Key vs Secret Key](../security/03-public-vs-secret.md)를 참고하세요.
+⚠️ 이 키는 **Publishable Key** (`pk_` 접두사)입니다. 클라이언트(브라우저, 앱)에서 사용하며, 제한된 권한만 가집니다. 서버 전용의 **Secret Key**와의 차이는 [Publishable Key vs Secret Key](../security/03-public-vs-secret.md)를 참고하세요.
 {% endhint %}
 
 {% hint style="danger" %}
-🚨 **위험** — 토큰은 생성 시 한 번만 표시됩니다. 분실 시 재생성해야 합니다.
+🚨 **위험** — 키는 생성 시 한 번만 표시됩니다. 분실 시 삭제 후 새로 생성해야 합니다.
 {% endhint %}
 
 ***
 
 ## 7단계: 첫 데이터 생성하기
 
-발급받은 API Key로 앱에서 데이터를 생성합니다. 콘솔 **프로젝트 설정**에서 Project ID를 확인하세요.
+발급받은 API Key로 앱에서 데이터를 생성합니다.
+
+{% hint style="info" %}
+💡 bkend의 모든 데이터 API는 `/v1/data/{테이블명}` 형식입니다. 위에서 만든 `posts` 테이블은 `/v1/data/posts`로 접근합니다.
+{% endhint %}
 
 {% tabs %}
 {% tab title="cURL" %}
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/data/posts \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "Hello bkend!",
     "content": "첫 번째 게시글입니다.",
@@ -179,9 +176,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': 'Bearer {accessToken}',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: 'Hello bkend!',
@@ -201,11 +197,7 @@ console.log(data.id); // 생성된 데이터 ID
 ```json
 {
   "id": "abc123",
-  "title": "Hello bkend!",
-  "content": "첫 번째 게시글입니다.",
-  "published": true,
-  "createdAt": "2026-02-12T00:00:00.000Z",
-  "updatedAt": "2026-02-12T00:00:00.000Z"
+  "createdAt": "2026-02-12T00:00:00.000Z"
 }
 ```
 
@@ -228,8 +220,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
+    'X-API-Key': '{pk_publishable_key}',
   },
   body: JSON.stringify({
     method: 'password',
@@ -252,9 +243,8 @@ const post = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: '인증된 게시글',

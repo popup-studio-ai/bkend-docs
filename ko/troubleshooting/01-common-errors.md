@@ -19,7 +19,7 @@
 | `VALIDATION_ERROR` | 필수 파라미터 누락 또는 잘못된 타입 | 요청 body의 필수 필드와 타입을 확인하세요 |
 | `INVALID_COLUMN_TYPE` | 지원하지 않는 컬럼 타입 | String, Number, Boolean, Date, Array, Object, Mixed 중 선택하세요 |
 | `INVALID_FILTER` | 잘못된 필터 형식 | 필터 연산자를 확인하세요 |
-| `MISSING_PROJECT_ID` | `X-Project-Id` 헤더 누락 | 요청에 `X-Project-Id` 헤더를 추가하세요 |
+| `MISSING_API_KEY` | `X-API-Key` 헤더 누락 | 요청에 `X-API-Key` 헤더를 추가하고 올바른 API 키를 확인하세요 |
 
 ### 에러 확인 방법
 
@@ -28,9 +28,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${apiKey}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: '제목', // 필수 필드 포함 확인
@@ -54,7 +53,7 @@ if (!response.ok) {
 |----------|------|---------|
 | `UNAUTHORIZED` | 인증 토큰 누락 | `Authorization` 헤더에 토큰을 포함하세요 |
 | `TOKEN_EXPIRED` | Access Token 만료 | Refresh Token으로 새 Access Token을 발급받으세요 |
-| `INVALID_TOKEN` | 잘못된 토큰 형식 | 토큰 값을 확인하세요 (`ak_` prefix 또는 유효한 JWT) |
+| `INVALID_TOKEN` | 잘못된 토큰 형식 | 토큰 값을 확인하세요 (`pk_` / `sk_` prefix 또는 유효한 JWT) |
 | `TOKEN_REVOKED` | 폐기된 API 키 | 새 API 키를 생성하세요 |
 
 ### Access Token 갱신
@@ -65,8 +64,7 @@ async function refreshAccessToken(refreshToken) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Project-Id': '{project_id}',
-      'X-Environment': 'dev',
+      'X-API-Key': '{pk_publishable_key}',
     },
     body: JSON.stringify({ refreshToken }),
   });
@@ -100,7 +98,7 @@ flowchart TD
     B -->|예| C[키 유형 확인<br/>Public vs Secret]
     B -->|아니오| D{JWT 토큰 사용?}
     D -->|예| E[사용자 그룹 확인<br/>admin/user/guest]
-    C --> F[Secret Key는 admin 권한<br/>Public Key는 RLS 적용]
+    C --> F[Secret Key는 admin 권한<br/>Publishable Key는 RLS 적용]
     E --> G[테이블 permissions<br/>설정 확인]
 ```
 
@@ -114,8 +112,8 @@ flowchart TD
 |----------|------|---------|
 | `TABLE_NOT_FOUND` | 테이블이 존재하지 않음 | 테이블 이름의 대소문자와 철자를 확인하세요 |
 | `RECORD_NOT_FOUND` | 레코드가 존재하지 않음 | 레코드 ID를 확인하세요 |
-| `PROJECT_NOT_FOUND` | 프로젝트 ID가 잘못됨 | `X-Project-Id` 값을 확인하세요 |
-| `ENVIRONMENT_NOT_FOUND` | 환경이 잘못됨 | `X-Environment` 값을 확인하세요 |
+| `PROJECT_NOT_FOUND` | API Key의 프로젝트가 잘못됨 | 올바른 API Key(`pk_` / `sk_`)를 사용하고 있는지 확인하세요 |
+| `ENVIRONMENT_NOT_FOUND` | API Key의 환경이 잘못됨 | 해당 환경에서 발급한 API Key를 사용하세요 |
 
 {% hint style="info" %}
 💡 테이블 이름은 대소문자를 구분합니다. `Posts`와 `posts`는 다른 테이블입니다.
@@ -181,8 +179,8 @@ async function fetchWithRetry(url, options, maxRetries = 3) {
 ## 에러 디버깅 팁
 
 1. **응답 body 확인** — `error`와 `message` 필드를 확인하세요
-2. **요청 헤더 확인** — `Content-Type`, `Authorization`, `X-Project-Id`, `X-Environment` 헤더를 확인하세요
-3. **환경 확인** — 올바른 환경(`dev` / `staging` / `prod`)에 요청하고 있는지 확인하세요
+2. **요청 헤더 확인** — `Content-Type`, `X-API-Key`, `Authorization` 헤더를 확인하세요
+3. **환경 확인** — 올바른 환경의 API Key를 사용하고 있는지 확인하세요
 4. **curl로 직접 테스트** — 클라이언트 코드 문제인지 API 문제인지 구분하세요
 
 ***

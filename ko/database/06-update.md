@@ -4,6 +4,21 @@
 💡 기존 데이터의 필드를 부분 수정하세요.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- [테이블 생성](../console/07-table-management.md) 완료
+- 인증 설정 — 공개 테이블은 인증 없이, RLS 적용 테이블은 JWT 필요
+{% endhint %}
+
+{% hint style="info" %}
+💡 **이 문서에서 사용하는 API**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/data/:tableName/:id` | PATCH | 조건부 | 데이터 수정 |
+{% endhint %}
+
 ## 개요
 
 `PATCH /v1/data/:tableName/:id` 엔드포인트로 기존 데이터를 수정합니다. 변경할 필드만 요청에 포함하면 됩니다 (Partial Update).
@@ -19,9 +34,8 @@
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/data/posts/507f1f77bcf86cd799439011 \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "title": "수정된 제목",
     "published": true
@@ -36,9 +50,8 @@ const response = await fetch(`https://api-client.bkend.ai/v1/data/posts/${postId
   method: 'PATCH',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     title: '수정된 제목',
@@ -132,6 +145,7 @@ const updated = await bkendFetch('/v1/data/posts/{id}', {
 | `data/not-found` | 404 | 데이터를 찾을 수 없음 |
 | `data/validation-error` | 400 | 스키마 검증 실패 |
 | `data/permission-denied` | 403 | update 권한 없음 |
+| `data/scope-insufficient` | 403 | API 키 scope에 필요한 권한이 포함되지 않음 |
 
 ***
 

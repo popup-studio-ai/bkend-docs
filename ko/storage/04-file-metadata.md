@@ -4,6 +4,20 @@
 💡 파일의 메타데이터를 등록하고 관리하세요. 업로드 후 반드시 메타데이터를 등록해야 합니다.
 {% endhint %}
 
+{% hint style="info" %}
+💡 **시작하기 전에** — 이 작업을 진행하려면 다음이 필요합니다:
+- [프로젝트 생성](../getting-started/02-quickstart.md) 완료
+- 사용자 인증 완료 (JWT 토큰 필요 — 모든 파일 API는 인증 필수)
+{% endhint %}
+
+**이 문서에서 사용하는 API:**
+
+| 엔드포인트 | 메서드 | 인증 | 설명 |
+|-----------|:------:|:----:|------|
+| `/v1/files` | POST | JWT | 메타데이터 생성 |
+| `/v1/files/:fileId` | GET | JWT | 파일 조회 |
+| `/v1/files/:fileId` | PATCH | JWT | 메타데이터 수정 |
+
 ## 개요
 
 S3에 파일을 업로드한 후, bkend API에 파일 메타데이터를 등록해야 합니다. 메타데이터에는 파일명, 크기, MIME 타입, 카테고리, 태그 등의 정보가 포함됩니다.
@@ -19,9 +33,8 @@ S3에 파일을 업로드한 후, bkend API에 파일 메타데이터를 등록�
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "s3Key": "{presigned 응답의 key}",
     "originalName": "profile.jpg",
@@ -42,9 +55,8 @@ const response = await fetch('https://api-client.bkend.ai/v1/files', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'X-API-Key': '{pk_publishable_key}',
     'Authorization': `Bearer ${accessToken}`,
-    'X-Project-Id': '{project_id}',
-    'X-Environment': 'dev',
   },
   body: JSON.stringify({
     s3Key: presigned.key,
@@ -115,9 +127,8 @@ console.log(fileData.id); // 파일 ID
 
 ```bash
 curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
-  -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev"
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 응답 (200 OK)
@@ -153,9 +164,8 @@ curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
 ```bash
 curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
-  -H "X-Project-Id: {project_id}" \
-  -H "X-Environment: dev" \
   -d '{
     "originalName": "new-profile.jpg",
     "visibility": "public",

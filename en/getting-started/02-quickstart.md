@@ -13,7 +13,7 @@ This guide walks you through the entire process from signing up to making your f
 ## Full Process
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[1. Sign Up] --> B[2. Create Org]
     B --> C[3. Create Project]
     C --> D[4. Connect AI Tool]

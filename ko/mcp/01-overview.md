@@ -20,7 +20,6 @@ MCP 서버에 연결하면 항상 사용할 수 있는 도구입니다.
 |------|------|------|
 | `get_context` | 세션 컨텍스트 조회 (Organization, 프로젝트, 환경) | [컨텍스트](02-context.md) |
 | `search_docs` | bkend 문서 검색 | [컨텍스트](02-context.md) |
-| `get_operation_schema` | 특정 도구의 입출력 스키마 조회 | [API 레퍼런스](09-api-reference.md) |
 
 ### API 도구 (API Tools)
 
@@ -67,11 +66,10 @@ MCP 리소스는 `bkend://` URI 스키마를 통해 현재 상태를 읽기 전�
 ## 도구 전체 목록
 
 ```mermaid
-graph LR
+graph TD
     subgraph Fixed["고정 도구"]
         A[get_context]
         B[search_docs]
-        C[get_operation_schema]
     end
 
     subgraph Project["프로젝트 관리"]

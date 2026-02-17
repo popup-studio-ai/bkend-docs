@@ -90,7 +90,7 @@ API Key는 REST API를 호출할 때 인증에 사용합니다. 환경별로 독
 bkend에서의 작업은 **설계 시점**과 **운영 시점**으로 나뉩니다. 각 시점에서 사용하는 도구가 다릅니다.
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph 설계["설계 시점 — Tenant"]
         A[콘솔 UI] --> D[테이블 생성]
         B[MCP 도구] --> D

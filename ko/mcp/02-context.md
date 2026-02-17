@@ -52,7 +52,7 @@ AI 도구가 MCP 서버에 연결되면 **자동으로** `get_context`를 호출
 대부분의 MCP 도구는 `projectId`와 `environmentId`를 필요로 합니다. `get_context`의 응답에서 이 값을 확인할 수 있습니다.
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[get_context 호출] --> B[Organization ID 확인]
     B --> C[프로젝트 목록에서 projectId 확인]
     C --> D[환경 목록에서 environmentId 확인]
@@ -109,28 +109,6 @@ bkend 문서를 검색하는 도구입니다. Auth, Storage 등 MCP 도구가 �
 {% hint style="info" %}
 💡 AI 도구에 "로그인 기능을 만들어줘"라고 요청하면 `search_docs`가 자동으로 호출되어 관련 문서를 찾습니다.
 {% endhint %}
-
-***
-
-## get_operation_schema
-
-특정 도구의 입출력 스키마를 조회하는 도구입니다.
-
-### 파라미터
-
-| 파라미터 | 타입 | 필수 | 설명 |
-|----------|------|:----:|------|
-| `operation` | string | ✅ | 도구 이름 (예: `backend_data_create`) |
-| `schemaType` | string | ✅ | `input` 또는 `output` |
-
-### 사용 예시
-
-```json
-{
-  "operation": "backend_data_create",
-  "schemaType": "input"
-}
-```
 
 ***
 

@@ -103,10 +103,10 @@ bkend MCP authenticates using [OAuth 2.1](https://datatracker.ietf.org/doc/html/
 
 ```mermaid
 sequenceDiagram
-    participant AI as AI Tool
-    participant MCP as bkend MCP
+    participant AI as AI
+    participant MCP as MCP
     participant Browser as Browser
-    participant Console as bkend Console
+    participant Console as Console
 
     AI->>MCP: Connection request
     MCP->>Browser: Open OAuth auth page

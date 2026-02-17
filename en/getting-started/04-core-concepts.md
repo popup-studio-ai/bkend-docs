@@ -90,7 +90,7 @@ An API Key is used for authentication when calling the REST API. Keys are issued
 Work in bkend falls into **design time** and **runtime**. Different tools are used at each stage.
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph Design["Design Time — Tenant"]
         A[Console UI] --> D[Create Tables]
         B[MCP Tools] --> D

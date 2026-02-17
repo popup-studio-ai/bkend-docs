@@ -15,7 +15,7 @@ bkend 인증은 JWT 기반의 Access Token / Refresh Token 쌍을 사용합니�
 ## 토큰 구조
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[로그인 / 회원가입] --> B["Access Token (1시간)"]
     A --> C["Refresh Token (장기)"]
     B --> D[API 요청 인증]

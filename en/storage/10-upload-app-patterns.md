@@ -12,7 +12,7 @@ This guide explains how to implement file upload functionality using the bkend s
 sequenceDiagram
     participant U as User
     participant A as App
-    participant B as bkend API
+    participant B as API
     participant S as S3
 
     U->>A: 1. Select file

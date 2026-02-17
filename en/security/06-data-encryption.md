@@ -9,7 +9,7 @@ Understand bkend's multi-layered encryption approach to protecting your data.
 bkend applies encryption both in transit and at rest to protect your data. Additionally, application-level encryption is applied to sensitive data.
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Client] -->|TLS 1.2+| B[bkend API]
     B -->|AES-256-GCM| C[Stored Data]
     B -->|Argon2id| D[Passwords]
@@ -42,9 +42,9 @@ If you send a request over HTTP (`http://`), it is automatically redirected to H
 | Layer | Method | Target |
 |-------|--------|--------|
 | **Infrastructure Encryption** | MongoDB Atlas Encryption at Rest | All stored data |
-| **Application Encryption** | AES-256-GCM | Database connection credentials |
+| **Application Encryption** | AES-256-GCM | Sensitive internal configuration data |
 
-MongoDB Atlas automatically encrypts stored data. In addition, sensitive connection credentials are double-encrypted at the application level using AES-256-GCM.
+MongoDB Atlas automatically encrypts stored data. In addition, sensitive internal configuration data is double-encrypted at the application level using AES-256-GCM.
 
 ### File Storage
 
@@ -63,27 +63,19 @@ User passwords are hashed using the **Argon2id** algorithm. The original passwor
 
 | Item | Value |
 |------|-------|
-| **Algorithm** | Argon2id (OWASP 2025 top recommendation) |
-| **Memory** | 64 MiB |
-| **Iterations** | 3 |
-| **Parallelism** | 4 threads |
-| **Hash Length** | 32 bytes |
+| **Algorithm** | Argon2id (OWASP top recommendation) |
+| **Strength** | Exceeds OWASP minimum recommendations |
 
 {% hint style="info" %}
-Argon2id is the top-recommended password hashing algorithm by OWASP. It uses memory-hard hashing that is resistant to GPU brute-force attacks.
+Argon2id is the top-recommended password hashing algorithm by the OWASP Password Storage Cheat Sheet. It uses memory-hard hashing that is resistant to GPU brute-force attacks, and is configured with parameters that exceed OWASP minimum recommendations.
 {% endhint %}
 
 ### API Key Hashing
 
 API keys are stored as **SHA-256** one-way hashes.
 
-```mermaid
-flowchart LR
-    A[Key Generation] -->|randomBytes 32| B["pk_ / sk_{64-char hex}"]
-    B -->|SHA-256| C[Only Hash Stored]
-    B -->|Shown Once| D[Displayed to User]
-```
-
+- Keys are generated using a **cryptographically secure random number generator (CSPRNG)**
+- Keys are prefixed with `pk_` or `sk_` to distinguish key types
 - The original key is displayed **only once** at creation
 - Only the SHA-256 hash is stored on the server
 - When a request is made, the transmitted key is hashed and compared against the stored hash
@@ -104,7 +96,7 @@ flowchart LR
 |--------|------------------|:-------:|
 | Network communication | TLS 1.2+ | -- |
 | Database | MongoDB Atlas Encryption at Rest | -- |
-| Database connection credentials | AES-256-GCM (application level) | -- |
+| Sensitive internal configuration data | AES-256-GCM (application level) | -- |
 | File storage | AWS S3 SSE | -- |
 | Passwords | Argon2id | Yes |
 | API keys | SHA-256 | Yes |

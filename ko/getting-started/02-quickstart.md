@@ -13,7 +13,7 @@
 ## 전체 과정
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[1. 회원가입] --> B[2. 조직 생성]
     B --> C[3. 프로젝트 생성]
     C --> D[4. AI 도구 연결]

@@ -15,7 +15,7 @@ This document covers token storage locations, automatic refresh logic, token cle
 ## Token Structure
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Sign-in / Sign-up] --> B["Access Token (1 hour)"]
     A --> C["Refresh Token (long-lived)"]
     B --> D[API request authentication]

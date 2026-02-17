@@ -103,10 +103,10 @@ bkend MCP는 [OAuth 2.1](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
 
 ```mermaid
 sequenceDiagram
-    participant AI as AI 도구
-    participant MCP as bkend MCP
+    participant AI as AI
+    participant MCP as MCP
     participant Browser as 브라우저
-    participant Console as bkend 콘솔
+    participant Console as 콘솔
 
     AI->>MCP: 연결 요청
     MCP->>Browser: OAuth 인증 페이지 열기

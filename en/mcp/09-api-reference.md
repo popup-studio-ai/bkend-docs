@@ -23,15 +23,6 @@ Searches bkend documentation.
 |-----------|------|:--------:|-------------|
 | `query` | string | Yes | Search keyword |
 
-### get_operation_schema
-
-Retrieves the input/output schema of a specific tool.
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `operation` | string | Yes | Tool name |
-| `schemaType` | string | Yes | `input` or `output` |
-
 ***
 
 ## Project Management Tools

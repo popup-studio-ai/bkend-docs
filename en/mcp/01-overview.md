@@ -20,7 +20,6 @@ These tools are always available when you connect to the MCP server.
 |------|-------------|---------|
 | `get_context` | Retrieve session context (Organization, project, environment) | [Context](02-context.md) |
 | `search_docs` | Search bkend documentation | [Context](02-context.md) |
-| `get_operation_schema` | Retrieve the input/output schema of a specific tool | [API Reference](09-api-reference.md) |
 
 ### API Tools
 
@@ -67,11 +66,10 @@ MCP Resources let you query the current state in read-only mode through the `bke
 ## Complete Tool List
 
 ```mermaid
-graph LR
+graph TD
     subgraph Fixed["Fixed Tools"]
         A[get_context]
         B[search_docs]
-        C[get_operation_schema]
     end
 
     subgraph Project["Project Management"]

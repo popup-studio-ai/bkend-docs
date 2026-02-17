@@ -12,7 +12,7 @@ bkend 스토리지 API를 활용하여 앱에 파일 업로드 기능을 구현�
 sequenceDiagram
     participant U as 사용자
     participant A as 앱
-    participant B as bkend API
+    participant B as API
     participant S as S3
 
     U->>A: 1. 파일 선택

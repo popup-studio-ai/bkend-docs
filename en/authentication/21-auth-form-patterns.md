@@ -212,8 +212,8 @@ Social login follows a redirect-based OAuth flow.
 sequenceDiagram
     participant User as User
     participant App as App
-    participant API as bkend API
-    participant Provider as OAuth Provider
+    participant API as API
+    participant Provider as OAuth
 
     User->>App: Click social login button
     App->>Provider: Redirect to OAuth auth URL

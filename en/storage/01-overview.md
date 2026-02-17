@@ -36,7 +36,7 @@ Files are uploaded directly to S3 without passing through the bkend server. This
 bkend does not send files directly to the API server (Direct Upload). Instead, it uses a **3-step Presigned URL pattern**. Here is why this approach was chosen.
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph "Direct Upload (Inefficient)"
         A1[Client] -->|Send entire file| B1[API Server]
         B1 -->|Forward again| C1[S3]

@@ -36,7 +36,7 @@ sequenceDiagram
 bkend는 파일을 API 서버로 직접 전송(Direct Upload)하지 않고, **3단계 Presigned URL 패턴**을 사용합니다. 이 방식을 채택한 이유는 다음과 같습니다.
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph "❌ 직접 업로드 (비효율)"
         A1[클라이언트] -->|파일 전체 전송| B1[API 서버]
         B1 -->|다시 전송| C1[S3]

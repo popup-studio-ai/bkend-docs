@@ -25,8 +25,8 @@
 sequenceDiagram
     participant User as User
     participant App as 앱
-    participant API as bkend API
-    participant Provider as OAuth 제공자
+    participant API as API
+    participant Provider as OAuth
 
     User->>App: 소셜 로그인 버튼 클릭
     App->>Provider: OAuth 인증 URL로 리다이렉트

@@ -52,7 +52,7 @@ Called without parameters.
 Most MCP tools require `projectId` and `environmentId`. You can find these values in the `get_context` response.
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Call get_context] --> B[Identify Organization ID]
     B --> C[Find projectId from the project list]
     C --> D[Find environmentId from the environment list]
@@ -109,28 +109,6 @@ Key built-in documents that `search_docs` can search:
 {% hint style="info" %}
 When you ask your AI tool to "build a login feature," `search_docs` is automatically called to find the relevant documentation.
 {% endhint %}
-
-***
-
-## get_operation_schema
-
-A tool for retrieving the input/output schema of a specific tool.
-
-### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `operation` | string | Yes | Tool name (e.g., `backend_data_create`) |
-| `schemaType` | string | Yes | `input` or `output` |
-
-### Usage Example
-
-```json
-{
-  "operation": "backend_data_create",
-  "schemaType": "input"
-}
-```
 
 ***
 

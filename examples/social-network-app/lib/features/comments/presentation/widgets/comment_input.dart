@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/utils/demo_guard.dart';
 import '../../providers/comment_provider.dart';
 
 class CommentInput extends StatefulWidget {
@@ -27,6 +28,7 @@ class _CommentInputState extends State<CommentInput> {
   }
 
   Future<void> _sendComment() async {
+    if (DemoGuard.check(context)) return;
     final content = _controller.text.trim();
     if (content.isEmpty) return;
 

@@ -1,7 +1,7 @@
 # Password Reset & Change
 
 {% hint style="info" %}
-Reset a forgotten password or change your existing one.
+💡 Reset a forgotten password or change your existing one.
 {% endhint %}
 
 ## Overview
@@ -48,7 +48,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/password/reset/request \
 | `email` | `string` | Yes | Registered email address |
 
 {% hint style="info" %}
-For security, even if an unregistered email is entered, the same success response is returned. This prevents email existence from being exposed.
+💡 For security, even if an unregistered email is entered, the same success response is returned. This prevents email existence from being exposed.
 {% endhint %}
 
 ### Step 2: Confirm Password Reset
@@ -132,7 +132,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/password/chang
 | `auth/account-not-found` | 404 | Account not found |
 
 {% hint style="info" %}
-After a successful password change, all sessions are invalidated and the user is forced to sign in again on all devices.
+💡 After a successful password change, all sessions are invalidated and the user is forced to sign in again on all devices.
 {% endhint %}
 
 ***

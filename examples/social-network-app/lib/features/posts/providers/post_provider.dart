@@ -12,6 +12,10 @@ class PostProvider extends ChangeNotifier {
 
   List<Post> _posts = [];
   Pagination _pagination = Pagination.empty;
+  // Separate list for user profile posts (not shared with explore)
+  List<Post> _userPosts = [];
+  Pagination _userPagination = Pagination.empty;
+  bool _isUserPostsLoading = false;
   Post? _currentPost;
   bool _isLoading = false;
   bool _isLoadingMore = false;
@@ -20,6 +24,9 @@ class PostProvider extends ChangeNotifier {
 
   List<Post> get posts => _posts;
   Pagination get pagination => _pagination;
+  List<Post> get userPosts => _userPosts;
+  Pagination get userPagination => _userPagination;
+  bool get isUserPostsLoading => _isUserPostsLoading;
   Post? get currentPost => _currentPost;
   bool get isLoading => _isLoading;
   bool get isLoadingMore => _isLoadingMore;
@@ -66,7 +73,22 @@ class PostProvider extends ChangeNotifier {
   }
 
   Future<void> loadUserPosts(String userId) async {
-    await loadPosts(filters: {'createdBy': userId});
+    _isUserPostsLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final result = await _repository.getPosts(
+        filters: {'createdBy': userId},
+      );
+      _userPosts = result.items;
+      _userPagination = result.pagination;
+    } on DioException catch (e) {
+      _error = _parseError(e);
+    } finally {
+      _isUserPostsLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> loadPost(String postId) async {

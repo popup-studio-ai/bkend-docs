@@ -51,18 +51,20 @@ curl -X POST https://api-client.bkend.ai/v1/auth/mfa/enable \
 ```json
 {
   "secret": "JBSWY3DPEHPK3PXP",
-  "qrCode": "data:image/png;base64,...",
-  "issuer": "Bkend",
-  "otpauth": "otpauth://totp/Bkend:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Bkend"
+  "qrCodeUrl": "otpauth://totp/bkend:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=bkend",
+  "backupCodes": [
+    "a1b2c3d4",
+    "e5f6g7h8",
+    "..."
+  ]
 }
 ```
 
 | 필드 | 설명 |
 |------|------|
-| `secret` | Base32 인코딩 시크릿 (수동 입력용) |
-| `qrCode` | QR 코드 이미지 (Base64) |
-| `issuer` | 서비스 이름 |
-| `otpauth` | OTPAuth URI (앱에서 직접 열기 용) |
+| `secret` | TOTP 시크릿 키 (수동 입력용) |
+| `qrCodeUrl` | Authenticator 앱용 QR 코드 URL |
+| `backupCodes` | 백업 복구 코드 (안전하게 보관하세요) |
 
 ### 2단계: MFA 활성화 확인
 

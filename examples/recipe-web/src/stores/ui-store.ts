@@ -1,13 +1,17 @@
 import { create } from "zustand";
 
-interface UiState {
+interface UIState {
   sidebarOpen: boolean;
+  mobileSidebarOpen: boolean;
   toggleSidebar: () => void;
   setSidebarOpen: (open: boolean) => void;
+  setMobileSidebarOpen: (open: boolean) => void;
 }
 
-export const useUiStore = create<UiState>((set) => ({
-  sidebarOpen: false,
+export const useUIStore = create<UIState>((set) => ({
+  sidebarOpen: true,
+  mobileSidebarOpen: false,
   toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
   setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
+  setMobileSidebarOpen: (mobileSidebarOpen) => set({ mobileSidebarOpen }),
 }));

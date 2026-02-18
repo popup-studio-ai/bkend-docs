@@ -65,7 +65,7 @@ export function Pagination({
         page === "..." ? (
           <span
             key={`ellipsis-${i}`}
-            className="flex h-8 w-8 items-center justify-center text-sm text-stone-400 dark:text-stone-500"
+            className="flex h-8 w-8 items-center justify-center text-sm text-muted-foreground"
           >
             ...
           </span>

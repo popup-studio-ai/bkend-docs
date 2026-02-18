@@ -178,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SliverToBoxAdapter(
                   child: ProfileHeader(
                     profile: profile,
-                    postCount: postProvider.pagination.total,
+                    postCount: postProvider.userPagination.total,
                     followerCount: _followerCount,
                     followingCount: _followingCount,
                     isMyProfile: _isMyProfile,
@@ -198,11 +198,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                   ),
                 ),
-                if (postProvider.isLoading)
+                if (postProvider.isUserPostsLoading)
                   const SliverToBoxAdapter(
                     child: PostCardShimmer(),
                   )
-                else if (postProvider.posts.isEmpty)
+                else if (postProvider.userPosts.isEmpty)
                   const SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.only(top: 48),
@@ -216,7 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        final post = postProvider.posts[index];
+                        final post = postProvider.userPosts[index];
                         return PostCard(
                           post: post,
                           onTap: () => context.push('/post/${post.id}'),
@@ -228,7 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                             .slideY(begin: 0.1);
                       },
-                      childCount: postProvider.posts.length,
+                      childCount: postProvider.userPosts.length,
                     ),
                   ),
               ],

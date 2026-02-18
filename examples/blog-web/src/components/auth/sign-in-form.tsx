@@ -36,12 +36,16 @@ export function SignInForm() {
     formState: { errors },
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "demo@bkend.ai",
+      password: "Bkend123$",
+    },
   });
 
   const onSubmit = async (data: SignInFormData) => {
     try {
       await signIn.mutateAsync(data);
-      router.push("/articles");
+      router.push("/");
     } catch {
       // error handled by mutation
     }

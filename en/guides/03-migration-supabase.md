@@ -1,7 +1,7 @@
 # Migrating from Supabase
 
 {% hint style="warning" %}
-This document is under preparation. A migration guide from Supabase to bkend will be available soon.
+⚠️ This document is under preparation. A migration guide from Supabase to bkend will be available soon.
 {% endhint %}
 
 ## Overview

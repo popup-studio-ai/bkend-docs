@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import {
   Dialog,
@@ -12,18 +13,29 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PriceDisplay } from "@/components/shared/price-display";
 import { useUiStore } from "@/stores/ui-store";
+import { useAuthStore } from "@/stores/auth-store";
 import { useProduct } from "@/hooks/queries/use-products";
 import { useAddToCart } from "@/hooks/queries/use-carts";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 import Link from "next/link";
 
 export function QuickView() {
+  const router = useRouter();
   const { isQuickViewOpen, quickViewProductId, closeQuickView } = useUiStore();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { data: product, isLoading } = useProduct(quickViewProductId ?? "");
   const addToCart = useAddToCart();
+  const { isDemoAccount } = useDemoGuard();
 
   const handleAddToCart = () => {
     if (!product) return;
+    if (!isAuthenticated) {
+      closeQuickView();
+      router.push("/sign-in");
+      return;
+    }
     addToCart.mutate({ productId: product.id });
     closeQuickView();
   };
@@ -53,7 +65,7 @@ export function QuickView() {
               <div className="overflow-hidden rounded-xl">
                 {product.imageUrl ? (
                   <img
-                    src={product.imageUrl}
+                    src={getOptimizedImageUrl(product.imageUrl, IMAGE_PRESETS.gallery)}
                     alt={product.name}
                     className="aspect-square w-full object-cover"
                   />
@@ -80,7 +92,7 @@ export function QuickView() {
                   <Button
                     className="w-full bg-accent-color text-white hover:bg-accent-color/90"
                     onClick={handleAddToCart}
-                    disabled={!product.isActive || product.stock === 0}
+                    disabled={!product.isActive || product.stock === 0 || isDemoAccount}
                   >
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Add to Cart

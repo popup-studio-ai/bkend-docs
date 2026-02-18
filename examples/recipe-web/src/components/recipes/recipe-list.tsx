@@ -21,6 +21,8 @@ import { RecipeSearch } from "./recipe-search";
 import { Pagination } from "@/components/shared/pagination";
 import { PageTransition } from "@/components/motion/page-transition";
 import { useRecipes } from "@/hooks/queries/use-recipes";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { useAuthStore } from "@/stores/auth-store";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import type { Difficulty, RecipeFilters } from "@/application/dto/recipe.dto";
 import { RECIPE_CATEGORIES, DIFFICULTY_LABELS } from "@/application/dto/recipe.dto";
@@ -35,6 +37,8 @@ export function RecipeList() {
   const [category, setCategory] = useState<string>("all");
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const { isDemoAccount } = useDemoGuard();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   // Restore view preference
   useEffect(() => {
@@ -83,13 +87,15 @@ export function RecipeList() {
   return (
     <PageTransition>
       <div className="space-y-6">
-        <PageHeader title="Recipes" description="Manage your own recipes">
-          <Link href="/recipes/new">
-            <Button className="bg-orange-600 hover:bg-orange-700 text-white">
-              <Plus className="mr-2 h-4 w-4" />
-              New Recipe
-            </Button>
-          </Link>
+        <PageHeader title="Recipes" description={isAuthenticated ? "Manage your own recipes" : "Browse recipes"}>
+          {isAuthenticated && (
+            <Link href="/recipes/new">
+              <Button className="bg-orange-600 hover:bg-orange-700 text-white" disabled={isDemoAccount}>
+                <Plus className="mr-2 h-4 w-4" />
+                New Recipe
+              </Button>
+            </Link>
+          )}
         </PageHeader>
 
         {/* Search + Filters + View Toggle */}
@@ -143,7 +149,7 @@ export function RecipeList() {
               </SelectContent>
             </Select>
 
-            <div className="flex rounded-xl border border-orange-200 p-0.5 dark:border-stone-700">
+            <div className="flex rounded-xl border border-border p-0.5">
               <Button
                 variant={viewMode === "grid" ? "secondary" : "ghost"}
                 size="icon"
@@ -175,7 +181,7 @@ export function RecipeList() {
           {filteredItems.length > 0 ? (
             <>
               {search && (
-                <p className="text-sm text-stone-500 dark:text-stone-400">
+                <p className="text-sm text-muted-foreground">
                   {filteredItems.length} result{filteredItems.length !== 1 ? "s" : ""} found
                 </p>
               )}
@@ -221,14 +227,16 @@ export function RecipeList() {
             <EmptyState
               icon={ChefHat}
               title="No recipes yet"
-              description="Add your first recipe to get started!"
+              description={isAuthenticated ? "Add your first recipe to get started!" : "No recipes available yet."}
             >
-              <Link href="/recipes/new">
-                <Button className="bg-orange-600 hover:bg-orange-700 text-white">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Recipe
-                </Button>
-              </Link>
+              {isAuthenticated && (
+                <Link href="/recipes/new">
+                  <Button className="bg-orange-600 hover:bg-orange-700 text-white" disabled={isDemoAccount}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Recipe
+                  </Button>
+                </Link>
+              )}
             </EmptyState>
           )}
         </QueryBoundary>

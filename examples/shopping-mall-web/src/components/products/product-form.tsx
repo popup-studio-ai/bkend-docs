@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { ImageUpload } from "@/components/files/image-upload";
 import { useCreateProduct, useUpdateProduct } from "@/hooks/queries/use-products";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import {
   productFormSchema,
   type ProductFormInput,
@@ -31,6 +32,7 @@ interface ProductFormProps {
 export function ProductForm({ product, onSuccess }: ProductFormProps) {
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
+  const { isDemoAccount } = useDemoGuard();
   const isEditing = !!product;
 
   const {
@@ -156,7 +158,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={isPending}>
+      <Button type="submit" className="w-full" disabled={isPending || isDemoAccount}>
         {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {isEditing ? "Update Product" : "Create Product"}
       </Button>

@@ -1,7 +1,7 @@
 # Team Management
 
 {% hint style="info" %}
-This guide explains how to invite team members to your Organization and manage their roles.
+💡 This guide explains how to invite team members to your Organization and manage their roles.
 {% endhint %}
 
 ## Overview
@@ -18,13 +18,14 @@ Team management is handled at the Organization level. Invited team members can a
 
 | Field | Description |
 |-------|-------------|
+| **Name** | Display name for the invited member |
 | **Email** | Email address of the team member to invite |
-| **Role** | Choose from Owner, Admin, Member, or Billing |
+| **Role** | Choose from Member role (Admin and Billing roles will be available in a future update) |
 
 4. Click **Send Invitation**.
 
 {% hint style="info" %}
-When the invited member clicks the link in the invitation email, they automatically join the Organization.
+💡 When the invited member clicks the link in the invitation email, they automatically join the Organization.
 {% endhint %}
 
 ***
@@ -41,14 +42,25 @@ When the invited member clicks the link in the invitation email, they automatica
 
 ***
 
+## Pending Invitations
+
+Below the member list, a **Pending Invitations** section displays all invitations that have not yet been accepted.
+
+| Action | Description |
+|--------|-------------|
+| **Resend** | Re-send the invitation email |
+| **Cancel** | Revoke the pending invitation |
+
+***
+
 ## Changing a Member's Role
 
 1. Find the member in the team list.
-2. Select a new role from the role dropdown.
-3. The change takes effect immediately.
+2. Click the role dropdown and select a new role.
+3. Confirm the role change in the dialog.
 
-{% hint style="danger" %}
-**Danger** — Transferring the Owner role to another member may change your own Owner permissions.
+{% hint style="warning" %}
+⚠️ Role changes take effect immediately. Make sure to assign the appropriate permissions for the member.
 {% endhint %}
 
 ***
@@ -57,7 +69,7 @@ When the invited member clicks the link in the invitation email, they automatica
 
 1. Find the member in the team list.
 2. Click the **Remove** button.
-3. After confirmation, access is revoked immediately.
+3. Confirm the removal in the dialog. Access is revoked immediately.
 
 ***
 

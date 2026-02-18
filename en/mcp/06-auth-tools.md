@@ -1,7 +1,7 @@
 # Auth Tools
 
 {% hint style="info" %}
-This page explains how to implement authentication (Auth) features from your AI tool. Auth uses REST API calls, not MCP tools.
+💡 This page explains how to implement authentication (Auth) features from your AI tool. Auth uses REST API calls, not MCP tools.
 {% endhint %}
 
 ## Overview
@@ -28,17 +28,6 @@ Ask your AI tool in natural language and it will generate the auth code.
 
 "Create a token refresh flow"
 ```
-
-***
-
-## Built-in Documents
-
-Auth-related built-in documents that `search_docs` can find:
-
-| Document ID | Content |
-|-------------|---------|
-| `3_howto_implement_auth` | Auth implementation guide (signup, login, token management) |
-| `6_code_examples_auth` | Auth code examples (email, social, magic link) |
 
 ***
 
@@ -130,7 +119,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 {% endtabs %}
 
 {% hint style="info" %}
-All auth API calls require the `X-API-Key` header. After authentication, pass the issued JWT via the `Authorization: Bearer {accessToken}` header.
+💡 All auth API calls require the `X-API-Key` header. After authentication, pass the issued JWT via the `Authorization: Bearer {accessToken}` header.
 {% endhint %}
 
 ***

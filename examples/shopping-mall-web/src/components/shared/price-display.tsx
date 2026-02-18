@@ -30,7 +30,7 @@ export function PriceDisplay({
   return (
     <div className={cn("flex items-baseline gap-2", className)}>
       {originalPrice && originalPrice > price && (
-        <span className="text-sm text-slate-400 line-through dark:text-slate-500">
+        <span className="text-sm text-muted-foreground line-through">
           {formatPrice(originalPrice)}
         </span>
       )}

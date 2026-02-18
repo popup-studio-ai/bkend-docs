@@ -1,7 +1,7 @@
 # Framework Quick Start
 
 {% hint style="info" %}
-Integrate bkend with your preferred framework. This guide assumes you have completed the [Quick Start](02-quickstart.md).
+💡 Integrate bkend with your preferred framework. This guide assumes you have completed the [Quick Start](02-quickstart.md).
 {% endhint %}
 
 ## Overview
@@ -30,7 +30,7 @@ NEXT_PUBLIC_BKEND_PUBLISHABLE_KEY={pk_publishable_key}
 ```
 
 {% hint style="warning" %}
-Environment variables prefixed with `NEXT_PUBLIC_` are exposed to the client. Never put a Secret Key in a `NEXT_PUBLIC_` variable.
+⚠️ Environment variables prefixed with `NEXT_PUBLIC_` are exposed to the client. Never put a Secret Key (`sk_`) in a `NEXT_PUBLIC_` variable. Use only Publishable Key (`pk_`).
 {% endhint %}
 
 ### 2. Create a Fetch Helper
@@ -214,7 +214,7 @@ class _PostsScreenState extends State<PostsScreen> {
 ```
 
 {% hint style="success" %}
-Your framework setup is complete. For more detailed integration patterns, see [Integrating bkend in Your App](03-app-integration.md).
+✅ Your framework setup is complete. For more detailed integration patterns, see [Integrating bkend in Your App](03-app-integration.md).
 {% endhint %}
 
 ***

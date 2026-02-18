@@ -21,6 +21,19 @@ class ApiConstants {
   static const String signIn = '/v1/auth/email/signin';
   static const String refresh = '/v1/auth/refresh';
   static const String me = '/v1/auth/me';
+  static const String googleCallback = '/v1/auth/google/callback';
+
+  // Google Sign-In: iOS Client ID (네이티브 앱용)
+  static const String googleClientId = String.fromEnvironment(
+    'GOOGLE_CLIENT_ID',
+    defaultValue: '',
+  );
+
+  // Google Sign-In: Web/Server Client ID (bkend에 등록한 웹 클라이언트)
+  static const String googleServerClientId = String.fromEnvironment(
+    'GOOGLE_SERVER_CLIENT_ID',
+    defaultValue: '',
+  );
 
   // Data
   static String dataTable(String tableName) => '/v1/data/$tableName';

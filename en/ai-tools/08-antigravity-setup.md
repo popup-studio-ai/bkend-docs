@@ -1,7 +1,7 @@
 # Antigravity Setup
 
 {% hint style="info" %}
-Learn how to set up and use bkend MCP in Antigravity.
+💡 Learn how to set up and use bkend MCP in Antigravity.
 {% endhint %}
 
 ## Prerequisites
@@ -72,7 +72,7 @@ Make natural language requests in Antigravity's AI Chat:
 4. Delete the MCP configuration and add it again
 
 {% hint style="warning" %}
-Antigravity uses `mcp-remote` to convert Streamable HTTP to stdio. If the `mcp-remote` process terminates unexpectedly, the connection may drop. Try restarting Antigravity first when issues occur.
+⚠️ Antigravity uses `mcp-remote` to convert Streamable HTTP to stdio. If the `mcp-remote` process terminates unexpectedly, the connection may drop. Try restarting Antigravity first when issues occur.
 {% endhint %}
 
 ***

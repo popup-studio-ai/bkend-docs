@@ -53,7 +53,7 @@ API 키는 생성 시 **SHA-256 해시**로 변환되어 저장됩니다. 원본
 
 ```mermaid
 flowchart LR
-    A[키 생성] -->|randomBytes 32| B["pk_xxx / sk_xxx"]
+    A[키 생성] -->|CSPRNG 32 bytes| B["pk_xxx / sk_xxx"]
     B -->|SHA-256| C[해시값 저장]
     B -->|1회 반환| D[사용자에게 표시]
 ```

@@ -35,6 +35,7 @@ class DioClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: _onRequest,
+        onResponse: _onResponse,
         onError: _onError,
       ),
     );
@@ -51,6 +52,21 @@ class DioClient {
       options.headers['Authorization'] = 'Bearer $token';
     }
     handler.next(options);
+  }
+
+  /// 실제 API의 { success, data } 래퍼를 자동 언래핑.
+  /// Mock 모드에서는 래퍼가 없으므로 그대로 통과.
+  void _onResponse(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) {
+    final d = response.data;
+    if (d is Map<String, dynamic> &&
+        d.containsKey('success') &&
+        d.containsKey('data')) {
+      response.data = d['data'];
+    }
+    handler.next(response);
   }
 
   Future<void> _onError(
@@ -98,8 +114,12 @@ class DioClient {
         data: {'refreshToken': refreshToken},
       );
 
-      final newAccessToken = response.data['accessToken'] as String;
-      final newRefreshToken = response.data['refreshToken'] as String;
+      final raw = response.data as Map<String, dynamic>;
+      final body = (raw.containsKey('success') && raw['data'] is Map)
+          ? raw['data'] as Map<String, dynamic>
+          : raw;
+      final newAccessToken = body['accessToken'] as String;
+      final newRefreshToken = body['refreshToken'] as String;
 
       await _tokenStorage.saveTokens(
         accessToken: newAccessToken,

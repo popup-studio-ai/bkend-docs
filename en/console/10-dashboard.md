@@ -1,53 +1,32 @@
 # Dashboard
 
 {% hint style="info" %}
-View key statistics and status at a glance from the project dashboard.
+💡 The dashboard is the landing page after you log in to the console. It directs you to your last-used organization and project.
 {% endhint %}
 
 ## Overview
 
-When you select a project, the dashboard is displayed as the first screen. You can check the status of key resources and activity within the project.
+When you access the console, the dashboard automatically redirects you based on your current context.
 
 ***
 
-## Viewing the Dashboard
+## Redirect Behavior
 
-Click **Overview** in the project-level sidebar.
-
-***
-
-## Displayed Information
-
-| Item | Description |
-|------|-------------|
-| **Environments** | Number and status of environments |
-| **Database** | Number of tables in the current environment |
-| **Storage** | Storage usage |
-| **Authentication** | Number of registered users |
-| **API Stats** | API call statistics for the current month |
-
-***
-
-## Quick Actions
-
-The dashboard provides shortcut buttons for common tasks.
-
-| Action | Description |
-|--------|-------------|
-| **Database** | Navigate to table management |
-| **Authentication** | Navigate to user and auth provider management |
-| **File Storage** | Navigate to file upload and management |
-| **Environments** | Navigate to environment management |
-
-***
-
-## Recent Activity
-
-The bottom of the dashboard displays the most recent actions performed in the project. Click **View all** to navigate to the full activity log.
+| Context | Redirect Target |
+|---------|----------------|
+| Organization and project already selected | Project overview page |
+| Organization selected, no project | Organization home page |
+| No organization | Console home with **Create Organization** prompt |
 
 {% hint style="info" %}
-Dashboard data reflects the currently selected environment. Switching environments updates the displayed statistics accordingly.
+💡 If you have previously selected an organization and project, the console remembers your selection and redirects you directly.
 {% endhint %}
+
+***
+
+## Project Overview
+
+After selecting a project, click **Overview** in the project-level sidebar to view the project landing page.
 
 ***
 

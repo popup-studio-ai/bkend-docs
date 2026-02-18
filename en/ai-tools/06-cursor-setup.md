@@ -1,7 +1,7 @@
 # Cursor Setup
 
 {% hint style="info" %}
-Learn how to set up bkend MCP in Cursor.
+💡 Learn how to set up bkend MCP in Cursor.
 {% endhint %}
 
 ## Prerequisites
@@ -31,7 +31,7 @@ Open the Cursor MCP configuration file.
 {% endtabs %}
 
 {% hint style="info" %}
-Use the project configuration to connect different MCP servers per project.
+💡 Use the project configuration to connect different MCP servers per project.
 {% endhint %}
 
 ### Step 2: Add the bkend MCP Server

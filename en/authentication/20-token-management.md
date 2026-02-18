@@ -1,7 +1,7 @@
 # Token Storage & Refresh
 
 {% hint style="info" %}
-Learn how to securely store Access Tokens and Refresh Tokens, and automatically refresh them on expiration.
+💡 Learn how to securely store Access Tokens and Refresh Tokens, and automatically refresh them on expiration.
 {% endhint %}
 
 ## Overview
@@ -52,7 +52,7 @@ function getRefreshToken() {
 ```
 
 {% hint style="warning" %}
-`localStorage` can be vulnerable to XSS (Cross-Site Scripting) attacks. In production environments, always follow these practices:
+⚠️ `localStorage` can be vulnerable to XSS (Cross-Site Scripting) attacks. In production environments, always follow these practices:
 - Never insert user input directly into HTML.
 - Never include untrusted third-party scripts.
 - Set Content Security Policy (CSP) headers.
@@ -112,11 +112,11 @@ saveTokens({ accessToken, refreshToken });
 ```
 
 {% hint style="danger" %}
-**Refresh Token Rotation Policy** -- A new Refresh Token is issued on refresh, and the previous Refresh Token is immediately invalidated. Always save the new token pair.
+🚨 **Refresh Token Rotation Policy** -- A new Refresh Token is issued on refresh, and the previous Refresh Token is immediately invalidated. Always save the new token pair.
 {% endhint %}
 
 {% hint style="warning" %}
-**Replay Attack Detection** -- If an already-invalidated Refresh Token is used (e.g., stolen and reused), bkend detects the replay attack and immediately invalidates **all sessions** for that user. All devices will be forced to sign in again.
+⚠️ **Replay Attack Detection** -- If an already-invalidated Refresh Token is used (e.g., stolen and reused), bkend detects the replay attack and immediately invalidates **all sessions** for that user. All devices will be forced to sign in again.
 {% endhint %}
 
 ***
@@ -144,12 +144,12 @@ sequenceDiagram
 The function below automatically adds authentication headers to all API requests and retries after refreshing tokens on expiration. Use this function instead of `fetch` throughout your app.
 
 {% hint style="info" %}
-See [Integrating bkend in Your App](../getting-started/03-app-integration.md) for `bkendFetch` project setup and initialization.
+💡 See [Integrating bkend in Your App](../getting-started/03-app-integration.md) for `bkendFetch` project setup and initialization.
 {% endhint %}
 
 ```javascript
 const BKEND_BASE_URL = 'https://api-client.bkend.ai';
-const API_KEY = '{pk_publishable_key}';
+const PUBLISHABLE_KEY = '{pk_publishable_key}';
 
 // Prevent duplicate token refreshes
 let refreshPromise = null;
@@ -168,7 +168,7 @@ async function refreshAccessToken() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': API_KEY,
+        'X-API-Key': PUBLISHABLE_KEY,
       },
       body: JSON.stringify({ refreshToken }),
     });
@@ -195,7 +195,7 @@ async function bkendFetch(path, options = {}) {
 
   const headers = {
     'Content-Type': 'application/json',
-    'X-API-Key': API_KEY,
+    'X-API-Key': PUBLISHABLE_KEY,
     ...options.headers,
   };
 
@@ -300,7 +300,7 @@ async function signOut() {
 ```
 
 {% hint style="warning" %}
-Always call the server API before deleting local tokens on sign-out. If you only delete local tokens without the server call, the Refresh Token remains valid on the server.
+⚠️ Always call the server API before deleting local tokens on sign-out. If you only delete local tokens without the server call, the Refresh Token remains valid on the server.
 {% endhint %}
 
 ***

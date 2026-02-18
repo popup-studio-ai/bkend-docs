@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { StorefrontHeader } from "./storefront-header";
 import { CartDrawer } from "./cart-drawer";
@@ -66,7 +66,7 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <StorefrontHeader />
+      <Suspense><StorefrontHeader /></Suspense>
       <main>{children}</main>
       <CartDrawer />
       <QuickView />

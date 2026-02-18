@@ -26,11 +26,11 @@ export function CartSummary({ items }: CartSummaryProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex justify-between text-sm">
-          <span className="text-slate-500 dark:text-slate-400">Subtotal</span>
+          <span className="text-muted-foreground">Subtotal</span>
           <span className="font-medium">{formatPrice(subtotal)}</span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-slate-500 dark:text-slate-400">Shipping</span>
+          <span className="text-muted-foreground">Shipping</span>
           <span className="font-medium">
             {shippingFee === 0 ? (
               <span className="text-green-600 dark:text-green-400">Free</span>
@@ -40,7 +40,7 @@ export function CartSummary({ items }: CartSummaryProps) {
           </span>
         </div>
         {shippingFee > 0 && (
-          <p className="text-xs text-slate-400 dark:text-slate-500">
+          <p className="text-xs text-muted-foreground">
             Add {formatPrice(50 - subtotal)} more for free shipping
           </p>
         )}

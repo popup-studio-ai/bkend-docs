@@ -1,7 +1,7 @@
 # Sorting & Pagination
 
 {% hint style="info" %}
-Control the sort order and page of your data list.
+💡 Control the sort order and page of your data list.
 {% endhint %}
 
 ## Overview
@@ -52,7 +52,7 @@ const params3 = new URLSearchParams({
 ```
 
 {% hint style="info" %}
-If `sortBy` is not specified, the default sort order (usually by `_id`) is applied.
+💡 If `sortBy` is not specified, the default sort order (by `id`) is applied.
 {% endhint %}
 
 ***

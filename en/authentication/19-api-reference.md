@@ -1,7 +1,7 @@
 # Auth & User REST API Reference
 
 {% hint style="info" %}
-View all authentication and user-related REST API endpoints at a glance.
+💡 View all authentication and user-related REST API endpoints at a glance.
 {% endhint %}
 
 ## Common Information
@@ -45,13 +45,12 @@ POST /v1/auth/email/signup
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `email` | `string` | Yes | Email address |
-| `password` | `string` | Yes | Password |
 | `method` | `string` | Yes | `"password"` |
-| `name` | `string` | - | User name |
-| `nickname` | `string` | - | Nickname |
+| `email` | `string` | Yes | Email address |
+| `password` | `string` | Yes | Password (min 8 chars, uppercase + lowercase + number + special char) |
+| `name` | `string` | Yes | User name |
 
-**Response:** `201 Created` -- `{ accessToken, refreshToken, user }`
+**Response:** `201 Created` -- `{ accessToken, refreshToken, tokenType, expiresIn }`
 
 -> [Email Sign-up](02-email-signup.md)
 
@@ -63,12 +62,12 @@ POST /v1/auth/email/signin
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
+| `method` | `string` | Yes | `"password"` |
 | `email` | `string` | Yes | Email address |
 | `password` | `string` | Yes | Password |
-| `method` | `string` | Yes | `"password"` |
-| `mfaCode` | `string` | - | MFA authentication code (when MFA is enabled) |
+| `mfaCode` | `string` | - | 6-digit TOTP code (when MFA is enabled) |
 
-**Response:** `200 OK` -- `{ accessToken, refreshToken, user }`
+**Response:** `200 OK` -- `{ accessToken, refreshToken, tokenType, expiresIn }`
 
 -> [Email Sign-in](03-email-signin.md)
 
@@ -80,12 +79,11 @@ POST /v1/auth/email/signup
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `email` | `string` | Yes | Email address |
 | `method` | `string` | Yes | `"magiclink"` |
+| `email` | `string` | Yes | Email address |
 | `callbackUrl` | `string` | Yes | Redirect URL after authentication |
-| `name` | `string` | - | User name |
 
-**Response:** `200 OK` -- `{ message }`
+**Response:** `201 Created` -- `{ message, email }`
 
 ### Magic Link Sign-in
 
@@ -95,11 +93,11 @@ POST /v1/auth/email/signin
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `email` | `string` | Yes | Email address |
 | `method` | `string` | Yes | `"magiclink"` |
+| `email` | `string` | Yes | Email address |
 | `callbackUrl` | `string` | Yes | Redirect URL after authentication |
 
-**Response:** `200 OK` -- `{ message }`
+**Response:** `200 OK` -- `{ message, email }`
 
 -> [Magic Link Authentication](04-magic-link.md)
 
@@ -120,7 +118,7 @@ POST /v1/auth/:provider/callback
 | `redirectUri` | `string` | Yes | Redirect URI used during OAuth authentication |
 | `state` | `string` | Yes | CSRF prevention state value |
 
-**Response:** `302 Redirect` -- `callbackUrl?accessToken=...&refreshToken=...`
+**Response:** `200 OK` -- `{ accessToken, refreshToken, tokenType, expiresIn }`
 
 -> [Social Login Overview](05-social-overview.md) | [Google](06-social-google.md) | [GitHub](07-social-github.md)
 
@@ -184,8 +182,9 @@ POST /v1/auth/signup/email/resend
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
 | `email` | `string` | Yes | Registered email |
+| `callbackUrl` | `string` | - | Redirect URL after verification |
 
-**Response:** `200 OK` -- `{ message }`
+**Response:** `200 OK` -- `{ message, email }`
 
 ### Confirm Sign-up Email Verification
 
@@ -196,8 +195,10 @@ GET /v1/auth/signup/email/confirm
 | Query Parameter | Type | Required | Description |
 |-----------------|------|:--------:|-------------|
 | `token` | `string` | Yes | Verification token |
+| `email` | `string` | Yes | Email address |
+| `callbackUrl` | `string` | - | Redirect URL |
 
-**Response:** `302 Redirect` -- Redirects to the configured URL
+**Response:** `302 Redirect` or `200 OK` -- Redirects if `callbackUrl` is provided, otherwise returns JSON
 
 ### Send Verification Email
 
@@ -208,8 +209,9 @@ POST /v1/auth/email/verify/send
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
 | `email` | `string` | Yes | Email to verify |
+| `callbackUrl` | `string` | - | Redirect URL after verification |
 
-**Response:** `200 OK` -- `{ message }`
+**Response:** `200 OK` -- `{ message, email }`
 
 ### Confirm Verification
 
@@ -219,9 +221,10 @@ POST /v1/auth/email/verify/confirm
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
+| `email` | `string` | Yes | Email address |
 | `token` | `string` | Yes | Verification token |
 
-**Response:** `200 OK` -- `{ verified }`
+**Response:** `200 OK` -- `{ message, verified }`
 
 ### Resend Verification Email
 
@@ -232,8 +235,9 @@ POST /v1/auth/email/verify/resend
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
 | `email` | `string` | Yes | Email to verify |
+| `callbackUrl` | `string` | - | Redirect URL after verification |
 
-**Response:** `200 OK` -- `{ message }`
+**Response:** `200 OK` -- `{ message, email }`
 
 -> [Email Verification](09-email-verification.md)
 
@@ -325,7 +329,7 @@ POST /v1/auth/mfa/enable
 |-----------|------|:--------:|-------------|
 | `password` | `string` | Yes | Current password |
 
-**Response:** `200 OK` -- `{ secret, qrCodeUrl }`
+**Response:** `200 OK` -- `{ secret, qrCodeUrl, backupCodes }`
 
 ### Confirm MFA Activation
 
@@ -351,10 +355,10 @@ POST /v1/auth/mfa/disable
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `password` | `string` | Yes | Current password |
-| `code` | `string` | Yes | TOTP authentication code |
+| `password` | `string` | Yes | Current password (min 8 chars) |
+| `code` | `string` | - | 6-digit TOTP code |
 
-**Response:** `200 OK` -- `{ message }`
+**Response:** `200 OK` -- `{}`
 
 -> [Multi-Factor Authentication (MFA)](11-mfa.md)
 
@@ -372,10 +376,11 @@ POST /v1/auth/accounts
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `provider` | `string` | Yes | `google` or `github` |
-| `accessToken` | `string` | Yes | OAuth Access Token |
+| `provider` | `string` | Yes | `"google"` or `"github"` |
+| `code` | `string` | - | OAuth authorization code |
+| `state` | `string` | - | OAuth state token |
 
-**Response:** `200 OK` -- `{ provider, linkedAt }`
+**Response:** `201 Created` -- `{}`
 
 ### List Linked Accounts
 
@@ -405,9 +410,11 @@ POST /v1/auth/accounts/check
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `provider` | `string` | Yes | `google` or `github` |
+| `type` | `string` | Yes | `"credentials"` or `"oauth"` |
+| `provider` | `string` | Yes | Provider name |
+| `providerAccountId` | `string` | Yes | Provider-specific unique ID |
 
-**Response:** `200 OK` -- `{ linked, provider }`
+**Response:** `200 OK` -- `{ exists, type?, provider? }`
 
 -> [Account Linking](12-account-linking.md)
 
@@ -425,10 +432,15 @@ POST /v1/auth/invitations
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
+| `resourceType` | `string` | Yes | `"organization"` or `"project"` |
+| `resourceId` | `string` | Yes | Organization or project ID |
+| `resourceName` | `string` | Yes | Resource name |
 | `email` | `string` | Yes | Invitee email |
-| `role` | `string` | - | Role to assign (`admin`, `user`, `guest`) |
+| `name` | `string` | Yes | Invitee name |
+| `resourceRole` | `string` | Yes | Role to assign |
+| `inviterName` | `string` | - | Inviter name |
 
-**Response:** `201 Created` -- `{ id, email, role, status, expiresAt }`
+**Response:** `201 Created` -- `{ id, resourceType, resourceId, resourceName, status, expiresAt, ... }`
 
 ### List Invitations
 
@@ -440,21 +452,23 @@ GET /v1/auth/invitations
 
 | Query Parameter | Type | Required | Description |
 |-----------------|------|:--------:|-------------|
+| `resourceType` | `string` | - | `"user"`, `"organization"`, `"project"` |
+| `resourceId` | `string` | - | Resource ID filter |
+| `status` | `string` | - | `pending`, `accepted`, `rejected`, `expired`, `revoked` |
 | `page` | `number` | - | Page number |
 | `limit` | `number` | - | Items per page |
-| `status` | `string` | - | `pending`, `accepted`, `rejected`, `expired`, `revoked` |
 
 **Response:** `200 OK` -- `{ items: [...], pagination }`
 
 ### Get Invitation Details
 
 ```http
-GET /v1/auth/invitations/:id
+GET /v1/auth/invitations/:invitationId
 ```
 
 **Authentication required**
 
-**Response:** `200 OK` -- `{ id, email, role, status, invitedBy, expiresAt }`
+**Response:** `200 OK` -- `{ id, resourceType, resourceId, resourceName, status, expiresAt, ... }`
 
 ### Accept Invitation
 
@@ -464,9 +478,10 @@ POST /v1/auth/invitations/accept
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `token` | `string` | Yes | Invitation token |
+| `token` | `string` | Yes | Invitation token (SHA256 hash) |
+| `email` | `string` | - | Email address (for verification) |
 
-**Response:** `200 OK` -- `{ accessToken, refreshToken, user }`
+**Response:** `200 OK` -- `{ id, resourceType, resourceId, status, ... }`
 
 ### Decline Invitation
 
@@ -477,13 +492,14 @@ POST /v1/auth/invitations/reject
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
 | `token` | `string` | Yes | Invitation token |
+| `email` | `string` | Yes | Email address of the invitee |
 
-**Response:** `200 OK` -- `{ message }`
+**Response:** `200 OK` -- `{}`
 
 ### Revoke Invitation
 
 ```http
-DELETE /v1/auth/invitations/:id
+DELETE /v1/auth/invitations/:invitationId
 ```
 
 **Authentication required**
@@ -880,10 +896,10 @@ PATCH /v1/users/:userId/public-settings
 | `POST` | `/v1/auth/accounts/check` | - | Check account link |
 | `POST` | `/v1/auth/invitations` | Yes | Create invitation |
 | `GET` | `/v1/auth/invitations` | Yes | List invitations |
-| `GET` | `/v1/auth/invitations/:id` | Yes | Invitation details |
+| `GET` | `/v1/auth/invitations/:invitationId` | Yes | Invitation details |
 | `POST` | `/v1/auth/invitations/accept` | - | Accept invitation |
 | `POST` | `/v1/auth/invitations/reject` | - | Decline invitation |
-| `DELETE` | `/v1/auth/invitations/:id` | Yes | Revoke invitation |
+| `DELETE` | `/v1/auth/invitations/:invitationId` | Yes | Revoke invitation |
 | `POST` | `/v1/auth/email/verify/send` | - | Send verification email |
 | `POST` | `/v1/auth/email/verify/confirm` | - | Confirm verification |
 | `POST` | `/v1/auth/email/verify/resend` | - | Resend verification email |

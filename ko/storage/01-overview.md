@@ -78,6 +78,14 @@ flowchart TD
 | `protected` | 인증된 사용자만 접근 가능 |
 | `shared` | 지정된 사용자만 접근 가능 |
 
+### 이미지 최적화 CDN
+
+`public` 이미지는 `img.bkend.ai` CDN을 통해 URL만으로 리사이즈, 포맷 변환, 품질 조절이 가능합니다. 별도 API 호출 없이 URL 패턴만 구성하면 최적화된 이미지가 제공됩니다.
+
+```
+https://img.bkend.ai/fit-in/300x200/filters:quality(80)/{filePath}
+```
+
 ***
 
 ## 파일 카테고리
@@ -150,6 +158,7 @@ flowchart LR
 | [파일 접근 권한](08-permissions.md) | Visibility와 소유자 제어 |
 | [API 레퍼런스](09-api-reference.md) | 전체 엔드포인트 목록 |
 | [파일 업로드 앱 패턴](10-upload-app-patterns.md) | 앱에서 파일 업로드 구현 |
+| [이미지 최적화](11-image-optimization.md) | URL 기반 이미지 리사이즈/포맷 변환 |
 
 {% hint style="info" %}
 💡 **실전으로 배우기**: 이미지 업로드를 실전 프로젝트에서 활용하는 방법은 [쿡북](../../cookbooks/README.md)을 참고하세요.

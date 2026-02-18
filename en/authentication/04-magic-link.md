@@ -1,7 +1,7 @@
 # Magic Link Authentication
 
 {% hint style="info" %}
-Sign up and sign in using just an email link, without a password.
+💡 Sign up and sign in using just an email link, without a password.
 {% endhint %}
 
 ## Overview
@@ -83,7 +83,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/auth/email/signup',
 ```
 
 {% hint style="info" %}
-If you request a magic link sign-up with an already registered email, a login link is sent instead. No separate sign-up/sign-in branching is needed.
+💡 If you request a magic link sign-up with an already registered email, a login link is sent instead. No separate sign-up/sign-in branching is needed.
 {% endhint %}
 
 ***

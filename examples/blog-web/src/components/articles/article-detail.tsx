@@ -38,18 +38,23 @@ import {
 } from "@/lib/utils";
 import type { Article } from "@/application/dto/article.dto";
 import { useMe } from "@/hooks/queries/use-auth";
+import { MarkdownContent } from "@/components/shared/markdown-content";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 interface ArticleDetailProps {
   article: Article;
+  readOnly?: boolean;
 }
 
-export function ArticleDetail({ article }: ArticleDetailProps) {
+export function ArticleDetail({ article, readOnly = false }: ArticleDetailProps) {
   const router = useRouter();
   const { addToast } = useToast();
   const deleteArticle = useDeleteArticle();
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const { data: currentUser } = useMe();
+  const { isDemoAccount } = useDemoGuard();
 
   const isAuthor = currentUser?.id === article.createdBy;
   const readingTime = calculateReadingTime(article.content);
@@ -117,20 +122,28 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
             )}
             {copied ? "Copied" : "Share"}
           </Button>
-          <BookmarkToggle articleId={article.id} />
-          {isAuthor && (
+          {!readOnly && !isAuthor && <BookmarkToggle articleId={article.id} />}
+          {!readOnly && isAuthor && (
             <>
-              <Button variant="outline" size="sm" asChild>
-                <Link href={`/articles/${article.id}/edit`}>
+              {isDemoAccount ? (
+                <Button variant="outline" size="sm" disabled>
                   <Edit className="mr-2 h-4 w-4" />
                   Edit
-                </Link>
-              </Button>
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" asChild>
+                  <Link href={`/articles/${article.id}/edit`}>
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit
+                  </Link>
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"
                 className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
                 onClick={() => setDeleteOpen(true)}
+                disabled={isDemoAccount}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
@@ -186,7 +199,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
       {article.coverImage && (
         <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-xl">
           <img
-            src={article.coverImage}
+            src={getOptimizedImageUrl(article.coverImage, IMAGE_PRESETS.detail)}
             alt={article.title}
             className="h-full w-full object-cover"
           />
@@ -196,12 +209,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
       <Separator className="my-8" />
 
       {/* Content */}
-      <div className="prose prose-zinc max-w-none dark:prose-invert">
-        <div
-          className="whitespace-pre-wrap text-base leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
-      </div>
+      <MarkdownContent content={article.content} />
 
       {/* Related articles */}
       {relatedArticles && relatedArticles.length > 0 && (
@@ -217,7 +225,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
                       {related.coverImage && (
                         <div className="relative mb-3 aspect-video w-full overflow-hidden rounded-md">
                           <img
-                            src={related.coverImage}
+                            src={getOptimizedImageUrl(related.coverImage, IMAGE_PRESETS.small)}
                             alt={related.title}
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                           />

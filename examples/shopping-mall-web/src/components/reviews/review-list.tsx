@@ -61,12 +61,12 @@ export function ReviewList({ productId }: ReviewListProps) {
                           <div>
                             <StarRating value={review.rating} readonly size="sm" />
                           </div>
-                          <span className="text-xs text-slate-400 dark:text-slate-500">
+                          <span className="text-xs text-muted-foreground">
                             {formatDate(review.createdAt)}
                           </span>
                         </div>
                         <Separator className="my-2" />
-                        <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+                        <p className="text-sm text-foreground whitespace-pre-wrap">
                           {review.content}
                         </p>
                       </div>

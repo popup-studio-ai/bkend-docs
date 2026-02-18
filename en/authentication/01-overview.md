@@ -1,7 +1,7 @@
 # Authentication Overview
 
 {% hint style="info" %}
-bkend provides various authentication methods including email, social login, and magic link.
+💡 bkend provides various authentication methods including email, social login, and magic link.
 {% endhint %}
 
 ## Overview
@@ -86,7 +86,7 @@ Authorization: Bearer {accessToken}
 ```
 
 {% hint style="warning" %}
-When your Access Token expires, use the Refresh Token to obtain a new Access Token. If the Refresh Token also expires, you must sign in again.
+⚠️ When your Access Token expires, use the Refresh Token to obtain a new Access Token. If the Refresh Token also expires, you must sign in again.
 {% endhint %}
 
 ***
@@ -101,7 +101,7 @@ All authentication API requests require the following headers.
 | `Authorization` | `Bearer {accessToken}` | Conditional | For endpoints that require authentication |
 
 {% hint style="info" %}
-You can issue a Publishable Key from the console. See [API Keys](../console/11-api-keys.md) for details.
+💡 You can issue a Publishable Key from the console. See [API Keys](../console/11-api-keys.md) for details.
 {% endhint %}
 
 ***

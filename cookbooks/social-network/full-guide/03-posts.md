@@ -186,10 +186,10 @@ const { url } = await bkendFetch(
   '/v1/files/presigned-url',
   {
     method: 'POST',
-    body: JSON.stringify({
+    body: {
       filename: 'post-image.jpg',
       contentType: 'image/jpeg',
-    }),
+    },
   }
 );
 
@@ -203,10 +203,10 @@ await fetch(url, {
 // 3. 게시물 생성 (이미지 URL 포함)
 const post = await bkendFetch('/v1/data/posts', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     content: '작업 중인 화면입니다',
     imageUrl: '{업로드된 파일의 URL}',
-  }),
+  },
 });
 ```
 
@@ -241,7 +241,7 @@ const createPost = async ({ content, imageUrl }) => {
 
   return bkendFetch('/v1/data/posts', {
     method: 'POST',
-    body: JSON.stringify(body),
+    body,
   });
 };
 ```
@@ -383,7 +383,7 @@ curl -X DELETE https://api-client.bkend.ai/v1/data/posts/{postId} \
 const updatePost = async (postId, updates) => {
   return bkendFetch(`/v1/data/posts/${postId}`, {
     method: 'PATCH',
-    body: JSON.stringify(updates),
+    body: updates,
   });
 };
 
@@ -493,7 +493,7 @@ curl -X GET "https://api-client.bkend.ai/v1/data/comments?andFilters=%7B%22postI
 const createComment = async (postId, content) => {
   return bkendFetch('/v1/data/comments', {
     method: 'POST',
-    body: JSON.stringify({ postId, content }),
+    body: { postId, content },
   });
 };
 
@@ -600,7 +600,7 @@ const toggleLike = async (postId, userId) => {
     // 2b. 좋아요 없음 → 생성
     await bkendFetch('/v1/data/likes', {
       method: 'POST',
-      body: JSON.stringify({ postId }),
+      body: { postId },
     });
     return { liked: true };
   }

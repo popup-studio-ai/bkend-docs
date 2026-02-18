@@ -177,21 +177,21 @@ async function addIngredientSafe(recipeId, ingredient) {
     }))
   );
 
-  if (existing.pagination.totalItems > 0) {
+  if (existing.items.length > 0) {
     // 이미 존재하면 수량 업데이트
     await bkendFetch(`/v1/data/ingredients/${existing.items[0].id}`, {
       method: 'PATCH',
-      body: JSON.stringify({
+      body: {
         amount: ingredient.amount,
         unit: ingredient.unit,
-      }),
+      },
     });
     console.log(`${ingredient.name} 수량 업데이트 완료`);
   } else {
     // 없으면 새로 추가
     await bkendFetch('/v1/data/ingredients', {
       method: 'POST',
-      body: JSON.stringify({ recipeId, ...ingredient }),
+      body: { recipeId, ...ingredient },
     });
     console.log(`${ingredient.name} 추가 완료`);
   }
@@ -275,18 +275,18 @@ async function setMealPlan(date, mealType, recipeId, servings) {
     encodeURIComponent(JSON.stringify({ date, mealType }))
   );
 
-  if (existing.pagination.totalItems > 0) {
+  if (existing.items.length > 0) {
     // 이미 존재하면 업데이트
     await bkendFetch(`/v1/data/meal_plans/${existing.items[0].id}`, {
       method: 'PATCH',
-      body: JSON.stringify({ recipeId, servings }),
+      body: { recipeId, servings },
     });
     console.log(`${date} ${mealType} 식단 업데이트 완료`);
   } else {
     // 없으면 새로 등록
     await bkendFetch('/v1/data/meal_plans', {
       method: 'POST',
-      body: JSON.stringify({ date, mealType, recipeId, servings }),
+      body: { date, mealType, recipeId, servings },
     });
     console.log(`${date} ${mealType} 식단 등록 완료`);
   }
@@ -428,11 +428,11 @@ AI가 잘못된 테이블이나 필드를 참조하는 경우입니다.
 
 | HTTP 상태 | 에러 | 설명 | 해결 방법 |
 |:---------:|------|------|----------|
-| 400 | `VALIDATION_ERROR` | 필수 필드 누락 또는 형식 오류 | 요청 본문의 필수 필드와 데이터 형식 확인 |
-| 401 | `UNAUTHORIZED` | 인증 토큰 누락 또는 만료 | 토큰 갱신 후 재시도 |
-| 403 | `FORBIDDEN` | 권한 없음 (다른 사용자 데이터 접근 시도) | 본인 데이터만 수정/삭제 가능 |
-| 404 | `NOT_FOUND` | 요청한 리소스가 존재하지 않음 | ID 확인, 삭제 여부 확인 |
-| 413 | `PAYLOAD_TOO_LARGE` | 파일 크기 초과 | 10MB 이하로 압축 |
+| 400 | `data/validation-error` | 필수 필드 누락 또는 형식 오류 | 요청 본문의 필수 필드와 데이터 형식 확인 |
+| 401 | `common/authentication-required` | 인증 토큰 누락 또는 만료 | 토큰 갱신 후 재시도 |
+| 403 | `common/forbidden` | 권한 없음 (다른 사용자 데이터 접근 시도) | 본인 데이터만 수정/삭제 가능 |
+| 404 | `data/not-found` | 요청한 리소스가 존재하지 않음 | ID 확인, 삭제 여부 확인 |
+| 413 | `file/too-large` | 파일 크기 초과 | 10MB 이하로 압축 |
 
 ***
 

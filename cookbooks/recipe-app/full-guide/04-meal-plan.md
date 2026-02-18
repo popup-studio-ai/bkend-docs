@@ -160,11 +160,11 @@ const dailyMeals = [
 for (const meal of dailyMeals) {
   await bkendFetch('/v1/data/meal_plans', {
     method: 'POST',
-    body: JSON.stringify({
+    body: {
       date: '2025-01-20',
       ...meal,
       servings: 2,
-    }),
+    },
   });
 }
 
@@ -220,7 +220,7 @@ curl -X GET "https://api-client.bkend.ai/v1/data/meal_plans?andFilters=%7B%22dat
       "notes": "김치찌개와 밥"
     }
   ],
-  "pagination": { "currentPage": 1, "totalItems": 2 }
+  "pagination": { "total": 2, "page": 1, "limit": 20, "totalPages": 1, "hasNext": false, "hasPrev": false }
 }
 ```
 
@@ -349,10 +349,10 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/meal_plans/{mealPlanId} \
 // 저녁 메뉴를 된장찌개로 변경
 await bkendFetch(`/v1/data/meal_plans/${mealPlanId}`, {
   method: 'PATCH',
-  body: JSON.stringify({
+  body: {
     recipeId: newRecipeId,
     notes: '된장찌개로 변경',
-  }),
+  },
 });
 ```
 
@@ -362,7 +362,7 @@ await bkendFetch(`/v1/data/meal_plans/${mealPlanId}`, {
 // 2인분 → 4인분으로 변경
 await bkendFetch(`/v1/data/meal_plans/${mealPlanId}`, {
   method: 'PATCH',
-  body: JSON.stringify({ servings: 4 }),
+  body: { servings: 4 },
 });
 ```
 
@@ -468,10 +468,10 @@ async function renderWeeklyPlan(startDate) {
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `VALIDATION_ERROR` | 필수 필드 누락 | date, mealType, recipeId 확인 |
-| 400 | `VALIDATION_ERROR` | 잘못된 mealType 값 | breakfast, lunch, dinner, snack 중 선택 |
-| 404 | `NOT_FOUND` | 존재하지 않는 식단 | 식단 ID 확인 |
-| 403 | `FORBIDDEN` | 권한 없음 | 본인의 식단만 수정/삭제 가능 |
+| 400 | `data/validation-error` | 필수 필드 누락 | date, mealType, recipeId 확인 |
+| 400 | `data/validation-error` | 잘못된 mealType 값 | breakfast, lunch, dinner, snack 중 선택 |
+| 404 | `data/not-found` | 존재하지 않는 식단 | 식단 ID 확인 |
+| 403 | `common/forbidden` | 권한 없음 | 본인의 식단만 수정/삭제 가능 |
 
 ***
 

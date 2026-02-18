@@ -10,7 +10,9 @@ import { useRouter } from "next/navigation";
 import { useAddToCart } from "@/hooks/queries/use-carts";
 import { useUiStore } from "@/stores/ui-store";
 import { useAuthStore } from "@/stores/auth-store";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { formatRelativeTime, truncate } from "@/lib/utils";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 import type { ProductDto } from "@/application/dto/product.dto";
 
 const listItemVariants = {
@@ -36,6 +38,7 @@ export function ProductGridCard({ product, index }: ProductGridCardProps) {
   const addToCart = useAddToCart();
   const { openQuickView } = useUiStore();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { isDemoAccount } = useDemoGuard();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -44,6 +47,7 @@ export function ProductGridCard({ product, index }: ProductGridCardProps) {
       router.push("/sign-in");
       return;
     }
+    if (isDemoAccount) return;
     addToCart.mutate({ productId: product.id });
   };
 
@@ -66,7 +70,7 @@ export function ProductGridCard({ product, index }: ProductGridCardProps) {
           <div className="relative aspect-square w-full overflow-hidden bg-muted">
             {product.imageUrl ? (
               <img
-                src={product.imageUrl}
+                src={getOptimizedImageUrl(product.imageUrl, IMAGE_PRESETS.thumbnail)}
                 alt={product.name}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -105,7 +109,7 @@ export function ProductGridCard({ product, index }: ProductGridCardProps) {
                 size="icon"
                 className="h-9 w-9 rounded-full bg-accent-color text-white hover:bg-accent-color/90"
                 onClick={handleAddToCart}
-                disabled={!product.isActive || product.stock === 0}
+                disabled={!product.isActive || product.stock === 0 || isDemoAccount}
               >
                 <ShoppingCart className="h-4 w-4" />
               </Button>

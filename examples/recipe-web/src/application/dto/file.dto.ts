@@ -23,6 +23,7 @@ export interface CreateFileRequest {
 
 export interface FileRecord {
   id: string;
+  key: string;
   originalName: string;
   mimeType: string;
   size: number;

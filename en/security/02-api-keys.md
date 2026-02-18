@@ -1,7 +1,7 @@
 # Understanding API Keys
 
 {% hint style="info" %}
-Learn about bkend API key structure, generation, and security characteristics.
+💡 Learn about bkend API key structure, generation, and security characteristics.
 {% endhint %}
 
 ## Overview
@@ -53,13 +53,13 @@ When an API key is generated, it is converted to a **SHA-256 hash** before being
 
 ```mermaid
 flowchart LR
-    A[Key Generation] -->|randomBytes 32| B["pk_xxx / sk_xxx"]
+    A[Key Generation] -->|CSPRNG 32 bytes| B["pk_xxx / sk_xxx"]
     B -->|SHA-256| C[Hash Stored]
     B -->|Shown Once| D[Displayed to User]
 ```
 
 {% hint style="danger" %}
-**Warning** -- API keys are displayed **only once** at creation. Save them in a secure location immediately.
+🚨 **Warning** -- API keys are displayed **only once** at creation. Save them in a secure location immediately.
 {% endhint %}
 
 ***
@@ -86,7 +86,7 @@ Scopes let you restrict which tables and operations an API key can access. When 
 | `*:*` | Allow all operations on all tables | `*:*` |
 
 {% hint style="warning" %}
-Scope checks apply **before** RLS permission checks. Even the `admin` group cannot bypass scope restrictions. If the scope does not include the requested operation, a `403 SCOPE_INSUFFICIENT` error is returned.
+⚠️ Scope checks apply **before** RLS permission checks. Even the `admin` group cannot bypass scope restrictions. If the scope does not include the requested operation, a `403 SCOPE_INSUFFICIENT` error is returned.
 {% endhint %}
 
 ***
@@ -140,7 +140,7 @@ curl -X GET https://api-client.bkend.ai/v1/data/posts \
 ```
 
 {% hint style="success" %}
-If you get a 200 response, your API key is working correctly.
+✅ If you get a 200 response, your API key is working correctly.
 {% endhint %}
 
 ### API Key Usage Example (JavaScript)

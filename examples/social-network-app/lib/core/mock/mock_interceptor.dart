@@ -71,6 +71,9 @@ class MockInterceptor extends Interceptor {
     if (path == '/v1/auth/me' && method == 'GET') {
       return _handleMe();
     }
+    if (path == '/v1/auth/google/callback' && method == 'POST') {
+      return _handleGoogleCallback(options);
+    }
 
     // --- Presigned URL ---
     if (path == '/v1/files/presigned-url' && method == 'POST') {
@@ -130,6 +133,17 @@ class MockInterceptor extends Interceptor {
 
   _MockResponse _handleMe() {
     return _MockResponse(200, mockCurrentUser);
+  }
+
+  _MockResponse _handleGoogleCallback(RequestOptions options) {
+    return _MockResponse(200, {
+      ...mockAuthTokens,
+      'user': {
+        'id': 'user-1',
+        'email': 'demo@bkend.ai',
+        'name': 'Demo User',
+      },
+    });
   }
 
   // -------------------------------------------------------------------------

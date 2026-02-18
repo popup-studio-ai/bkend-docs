@@ -1,7 +1,7 @@
 # Publishable Key vs Secret Key
 
 {% hint style="info" %}
-Understand the differences between Publishable Key (`pk_`) and Secret Key (`sk_`) and how to use each one correctly.
+💡 Understand the differences between Publishable Key (`pk_`) and Secret Key (`sk_`) and how to use each one correctly.
 {% endhint %}
 
 ## Overview
@@ -52,7 +52,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
 ```
 
 {% hint style="info" %}
-It is safe to include Publishable Keys in your source code. RLS policies control data access.
+💡 It is safe to include Publishable Keys in your source code. RLS policies control data access.
 {% endhint %}
 
 ***
@@ -80,7 +80,7 @@ const response = await fetch('https://api-client.bkend.ai/v1/data/users', {
 ```
 
 {% hint style="danger" %}
-**Warning** -- Never include a Secret Key in client-side code. It can be exposed through browser DevTools or app decompilation.
+🚨 **Warning** -- Never include a Secret Key in client-side code. It can be exposed through browser DevTools or app decompilation.
 {% endhint %}
 
 ***

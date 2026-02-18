@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 
 const passwordSchema = z
   .object({
@@ -32,6 +33,7 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 export function PasswordForm() {
   const { addToast } = useToast();
   const changePassword = useChangePassword();
+  const { isDemoAccount } = useDemoGuard();
 
   const {
     register,
@@ -55,7 +57,7 @@ export function PasswordForm() {
     if (/\d/.test(password)) strength++;
     if (/[@$!%*?&]/.test(password)) strength++;
 
-    if (strength <= 2) return { label: "Weak", color: "text-red-500" };
+    if (strength <= 2) return { label: "Weak", color: "text-destructive" };
     if (strength <= 4) return { label: "Medium", color: "text-amber-500" };
     return { label: "Strong", color: "text-green-500" };
   };
@@ -95,7 +97,7 @@ export function PasswordForm() {
           placeholder="Enter current password"
         />
         {errors.currentPassword && (
-          <p className="text-sm text-red-500">
+          <p className="text-sm text-destructive">
             {errors.currentPassword.message}
           </p>
         )}
@@ -115,11 +117,11 @@ export function PasswordForm() {
           </p>
         )}
         {errors.newPassword && (
-          <p className="text-sm text-red-500">
+          <p className="text-sm text-destructive">
             {errors.newPassword.message}
           </p>
         )}
-        <p className="text-xs text-stone-400 dark:text-stone-500">
+        <p className="text-xs text-muted-foreground">
           Must include uppercase, lowercase, number, and special character
         </p>
       </div>
@@ -133,7 +135,7 @@ export function PasswordForm() {
           placeholder="Confirm new password"
         />
         {errors.confirmPassword && (
-          <p className="text-sm text-red-500">
+          <p className="text-sm text-destructive">
             {errors.confirmPassword.message}
           </p>
         )}
@@ -142,7 +144,7 @@ export function PasswordForm() {
       <div className="flex justify-end">
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isDemoAccount}
           className="bg-orange-600 hover:bg-orange-700 text-white"
         >
           {isSubmitting ? (

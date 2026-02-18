@@ -77,3 +77,30 @@ export async function deleteArticle(id: string): Promise<void> {
     method: "DELETE",
   });
 }
+
+// --- Public (no auth required) ---
+
+export async function getPublishedArticles(
+  params: { page?: number; limit?: number } = {}
+): Promise<PaginatedResponse<Article>> {
+  const { page = 1, limit = 10 } = params;
+
+  const searchParams = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+    sortBy: "createdAt",
+    sortDirection: "desc",
+    andFilters: JSON.stringify({ isPublished: true }),
+  });
+
+  return bkendFetch<PaginatedResponse<Article>>(
+    `/v1/data/articles?${searchParams.toString()}`,
+    { skipAuth: true }
+  );
+}
+
+export async function getPublishedArticle(id: string): Promise<Article> {
+  return bkendFetch<Article>(`/v1/data/articles/${id}`, {
+    skipAuth: true,
+  });
+}

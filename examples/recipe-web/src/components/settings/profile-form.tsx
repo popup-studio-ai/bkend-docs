@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name is too long"),
@@ -26,6 +28,7 @@ export function ProfileForm() {
   const updateAvatar = useUpdateAvatar();
   const [imageUrl, setImageUrl] = useState(user?.image);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const { isDemoAccount } = useDemoGuard();
 
   const {
     register,
@@ -129,8 +132,8 @@ export function ProfileForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="space-y-2">
         <Label>Email</Label>
-        <Input value={user.email} disabled className="bg-stone-50 dark:bg-stone-800" />
-        <p className="text-sm text-stone-400 dark:text-stone-500">
+        <Input value={user.email} disabled className="bg-muted" />
+        <p className="text-sm text-muted-foreground">
           Email cannot be changed
         </p>
       </div>
@@ -143,7 +146,7 @@ export function ProfileForm() {
           placeholder="Your name"
         />
         {errors.name && (
-          <p className="text-sm text-red-500">{errors.name.message}</p>
+          <p className="text-sm text-destructive">{errors.name.message}</p>
         )}
       </div>
 
@@ -153,7 +156,7 @@ export function ProfileForm() {
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center overflow-hidden">
             {imageUrl ? (
               <img
-                src={imageUrl}
+                src={getOptimizedImageUrl(imageUrl, IMAGE_PRESETS.avatar)}
                 alt="Avatar"
                 className="h-full w-full object-cover rounded-2xl"
               />
@@ -175,7 +178,7 @@ export function ProfileForm() {
                 type="button"
                 variant="outline"
                 size="sm"
-                disabled={isUploadingAvatar}
+                disabled={isUploadingAvatar || isDemoAccount}
                 onClick={() => document.getElementById("avatar-upload")?.click()}
               >
                 {isUploadingAvatar ? (
@@ -198,7 +201,7 @@ export function ProfileForm() {
       <div className="flex justify-end">
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isDemoAccount}
           className="bg-orange-600 hover:bg-orange-700 text-white"
         >
           {isSubmitting ? (

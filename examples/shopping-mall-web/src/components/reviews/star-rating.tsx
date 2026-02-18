@@ -40,7 +40,7 @@ export function StarRating({
               sizes[size],
               star <= value
                 ? "fill-amber-400 text-amber-400"
-                : "fill-transparent text-slate-300 dark:text-slate-600"
+                : "fill-transparent text-muted-foreground/40"
             )}
           />
         </button>

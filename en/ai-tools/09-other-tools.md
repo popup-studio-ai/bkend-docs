@@ -1,7 +1,7 @@
 # Other AI Tools
 
 {% hint style="info" %}
-Learn how to connect bkend from other MCP-compatible AI tools.
+💡 Learn how to connect bkend from other MCP-compatible AI tools.
 {% endhint %}
 
 ## Overview
@@ -76,7 +76,7 @@ If your tool only supports stdio-based MCP, use `mcp-remote`.
 ```
 
 {% hint style="info" %}
-`mcp-remote` requires Node.js 18 or later.
+💡 `mcp-remote` requires Node.js 18 or later.
 {% endhint %}
 
 ***
@@ -112,7 +112,7 @@ Check the tool's official documentation for MCP configuration instructions. The 
 - [MCP Tools Overview](../mcp/01-overview.md) — Detailed MCP tool parameters
 
 {% hint style="success" %}
-Once you've finished setting up your AI tool, start managing your backend with MCP tools. -> [MCP Tools Overview](../mcp/01-overview.md)
+✅ Once you've finished setting up your AI tool, start managing your backend with MCP tools. -> [MCP Tools Overview](../mcp/01-overview.md)
 {% endhint %}
 
 ## Reference Standards

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { useMe } from "@/hooks/queries/use-auth";
 import { useDeleteAccount } from "@/hooks/queries/use-users";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,6 +20,7 @@ export function DangerZone() {
   const { data: user } = useMe();
   const { addToast } = useToast();
   const deleteAccount = useDeleteAccount();
+  const { isDemoAccount } = useDemoGuard();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -44,18 +46,19 @@ export function DangerZone() {
 
   return (
     <div className="space-y-4">
-      <div className="border border-red-200 rounded-xl p-6 space-y-4 dark:border-red-900/50">
+      <div className="border border-destructive/30 rounded-xl p-6 space-y-4">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5" />
+          <AlertTriangle className="h-5 w-5 text-destructive mt-0.5" />
           <div className="space-y-2">
-            <h3 className="font-semibold text-red-600 dark:text-red-400">Delete Account</h3>
-            <p className="text-sm text-stone-500 dark:text-stone-400">
+            <h3 className="font-semibold text-destructive">Delete Account</h3>
+            <p className="text-sm text-muted-foreground">
               Once you delete your account, there is no going back. All your
               recipes, meal plans, shopping lists, and cooking logs will be permanently removed.
             </p>
             <Button
               variant="destructive"
               onClick={() => setIsDialogOpen(true)}
+              disabled={isDemoAccount}
             >
               Delete My Account
             </Button>

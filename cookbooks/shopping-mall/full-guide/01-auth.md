@@ -221,11 +221,11 @@ if (state !== sessionStorage.getItem('oauth_state')) {
 
 const result = await bkendFetch('/v1/auth/google/callback', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     code,
     redirectUri: window.location.origin + '/auth/callback',
     state,
-  }),
+  },
 });
 
 // 토큰 저장
@@ -344,11 +344,11 @@ async function refreshAccessToken() {
 // 회원가입 또는 로그인 성공 후
 const result = await bkendFetch('/v1/auth/email/signin', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     method: 'password',
     email: 'user@example.com',
     password: 'abc123',
-  }),
+  },
 });
 
 // 토큰 저장
@@ -425,7 +425,7 @@ curl -X GET https://api-client.bkend.ai/v1/auth/me \
 ```javascript
 const result = await bkendFetch('/v1/auth/email/signin', {
   method: 'POST',
-  body: JSON.stringify({ method: 'password', email, password }),
+  body: { method: 'password', email, password },
 });
 
 if (result.code) {

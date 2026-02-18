@@ -7,10 +7,13 @@ import { z } from "zod";
 import { User, Upload, Loader2 } from "lucide-react";
 import { useMe } from "@/hooks/queries/use-auth";
 import { useUpdateProfile, useGetAvatarUploadUrl } from "@/hooks/queries/use-users";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 import Image from "next/image";
 
 const profileSchema = z.object({
@@ -24,6 +27,7 @@ export function ProfileForm() {
   const { addToast } = useToast();
   const updateProfile = useUpdateProfile();
   const getUploadUrl = useGetAvatarUploadUrl();
+  const { isDemoAccount } = useDemoGuard();
   const [imageUrl, setImageUrl] = useState(user?.image);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
 
@@ -112,6 +116,8 @@ export function ProfileForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {isDemoAccount && <DemoBanner />}
+
       <div className="space-y-2">
         <Label>Email</Label>
         <Input value={user.email} disabled />
@@ -138,7 +144,7 @@ export function ProfileForm() {
           <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center overflow-hidden">
             {imageUrl ? (
               <Image
-                src={imageUrl}
+                src={getOptimizedImageUrl(imageUrl, IMAGE_PRESETS.avatar) ?? ""}
                 alt="Avatar"
                 width={80}
                 height={80}
@@ -154,7 +160,7 @@ export function ProfileForm() {
               type="file"
               accept="image/*"
               onChange={handleAvatarUpload}
-              disabled={isUploadingAvatar}
+              disabled={isUploadingAvatar || isDemoAccount}
               className="hidden"
               id="avatar-upload"
             />
@@ -163,7 +169,7 @@ export function ProfileForm() {
                 type="button"
                 variant="outline"
                 size="sm"
-                disabled={isUploadingAvatar}
+                disabled={isUploadingAvatar || isDemoAccount}
                 onClick={() => document.getElementById("avatar-upload")?.click()}
               >
                 {isUploadingAvatar ? (
@@ -184,7 +190,7 @@ export function ProfileForm() {
       </div>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting || isDemoAccount}>
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

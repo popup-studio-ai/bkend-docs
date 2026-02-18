@@ -1,5 +1,4 @@
 import { tokenStorage } from "@/infrastructure/storage/token-storage";
-import { isMockMode, handleMockRequest } from "@/infrastructure/mock/mock-handler";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_PUBLISHABLE_KEY ?? "";
@@ -44,10 +43,6 @@ export async function bkendFetch<T>(
   path: string,
   options: FetchOptions = {}
 ): Promise<T> {
-  if (isMockMode()) {
-    return handleMockRequest<T>(path, { method: options.method, body: options.body });
-  }
-
   const { body, skipAuth = false, headers: customHeaders, ...restOptions } = options;
 
   const headers: Record<string, string> = {

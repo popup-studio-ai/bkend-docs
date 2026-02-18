@@ -18,14 +18,11 @@ import { useProducts } from "@/hooks/queries/use-products";
 import { PRODUCT_CATEGORIES } from "@/lib/constants";
 
 const CATEGORY_ICONS: Record<string, string> = {
-  Electronics: "💻",
-  Clothing: "👕",
-  Food: "🍔",
-  Furniture: "🪑",
-  Books: "📚",
-  Sports: "⚽",
-  Beauty: "💄",
-  Other: "📦",
+  electronics: "💻",
+  home: "🏠",
+  fashion: "👕",
+  food: "🍔",
+  lifestyle: "🧘",
 };
 
 const FEATURES = [
@@ -92,11 +89,10 @@ export default function StorefrontPage() {
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 font-semibold"
+                className="border border-white/30 bg-white/10 text-white hover:bg-white/20 font-semibold backdrop-blur-sm"
                 asChild
               >
-                <Link href="/products?category=Electronics">
+                <Link href="/products?category=electronics">
                   Trending
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -224,7 +220,7 @@ export default function StorefrontPage() {
             Create an account to save your favorites, track orders, and get exclusive deals.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <Button size="lg" className="bg-gradient-brand text-white border-0 hover:opacity-90" asChild>
+            <Button size="lg" className="bg-gradient-brand text-white border-0 shadow-sm hover:opacity-90" asChild>
               <Link href="/sign-up">Get Started</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>

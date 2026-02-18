@@ -13,6 +13,7 @@ import {
 } from "@/lib/utils";
 import type { Article } from "@/application/dto/article.dto";
 import { listItemVariants } from "@/components/motion/page-transition";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 interface ArticleGridCardProps {
   article: Article;
@@ -35,7 +36,7 @@ export function ArticleGridCard({ article, index }: ArticleGridCardProps) {
           <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
             {article.coverImage ? (
               <img
-                src={article.coverImage}
+                src={getOptimizedImageUrl(article.coverImage, IMAGE_PRESETS.thumbnail)}
                 alt={article.title}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />

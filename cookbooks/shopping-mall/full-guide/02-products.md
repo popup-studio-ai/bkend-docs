@@ -118,14 +118,14 @@ curl -X POST https://api-client.bkend.ai/v1/data/products \
 ```javascript
 const product = await bkendFetch('/v1/data/products', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     name: '프리미엄 면 티셔츠',
     description: '부드러운 100% 면 소재의 기본 티셔츠입니다.',
     price: 29000,
     category: '의류',
     stock: 100,
     isActive: true,
-  }),
+  },
 });
 
 console.log('등록된 상품:', product);
@@ -185,7 +185,10 @@ curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
 
 ```json
 {
-  "url": "https://storage.bkend.ai/..."
+  "url": "https://storage.bkend.ai/...",
+  "key": "{file_key}",
+  "filename": "premium-tshirt.jpg",
+  "contentType": "image/jpeg"
 }
 ```
 
@@ -203,10 +206,10 @@ curl -X PUT "{url}" \
 // 1. Presigned URL 발급
 const presigned = await bkendFetch('/v1/files/presigned-url', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     filename: 'premium-tshirt.jpg',
     contentType: 'image/jpeg',
-  }),
+  },
 });
 
 // 2. 파일 업로드
@@ -219,8 +222,8 @@ await fetch(presigned.url, {
 {% endtab %}
 {% endtabs %}
 
-{% hint style="info" %}
-💡 Presigned URL은 발급 후 1시간 동안 유효합니다. 만료되면 다시 발급받으세요.
+{% hint style="warning" %}
+⚠️ Presigned URL은 발급 후 **15분** 동안 유효합니다. 만료되면 다시 발급받으세요.
 {% endhint %}
 
 ***
@@ -399,10 +402,10 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/products/{product_id} \
 ```javascript
 const updated = await bkendFetch(`/v1/data/products/${productId}`, {
   method: 'PATCH',
-  body: JSON.stringify({
+  body: {
     price: 25000,
     description: '시즌 할인! 부드러운 100% 면 소재 티셔츠.',
-  }),
+  },
 });
 
 console.log('수정 완료:', updated);
@@ -519,10 +522,10 @@ console.log('재고 부족 상품:', lowStock);
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `INVALID_INPUT` | 필수 필드 누락 | name, description, price, category, stock 확인 |
-| 401 | `UNAUTHORIZED` | 인증 실패 | Access Token 확인 |
-| 404 | `NOT_FOUND` | 상품 없음 | 상품 ID 확인 |
-| 413 | `FILE_TOO_LARGE` | 파일 크기 초과 | 이미지 크기 줄이기 |
+| 400 | `data/validation-error` | 필수 필드 누락 | name, description, price, category, stock 확인 |
+| 401 | `common/authentication-required` | 인증 실패 | Access Token 확인 |
+| 404 | `data/not-found` | 상품 없음 | 상품 ID 확인 |
+| 413 | `file/too-large` | 파일 크기 초과 | 이미지 크기 줄이기 |
 
 ***
 

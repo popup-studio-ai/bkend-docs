@@ -1,7 +1,7 @@
 # AI Tool Integration Overview
 
 {% hint style="info" %}
-Use the bkend MCP server to manage your backend with natural language from AI tools like Claude Code and Cursor.
+💡 Use the bkend MCP server to manage your backend with natural language from AI tools like Claude Code and Cursor.
 {% endhint %}
 
 ## Overview
@@ -61,7 +61,7 @@ These tools invoke management functions on the bkend backend. You can manage Org
 > For detailed parameters and responses of each tool, see the [MCP Tools Overview](../mcp/01-overview.md).
 
 {% hint style="warning" %}
-MCP tools control **management functions** (table schemas, projects, environments, etc.). They are different from the REST API used for app user data. For REST API integration, see [Integrating bkend in Your App](../getting-started/03-app-integration.md).
+⚠️ MCP tools control **management functions** (table schemas, projects, environments, etc.). They are different from the REST API used for app user data. For REST API integration, see [Integrating bkend in Your App](../getting-started/03-app-integration.md).
 {% endhint %}
 
 ***
@@ -132,6 +132,7 @@ These are the permissions granted during MCP integration.
 | Environment | ✅ | ✅ | - | ✅ |
 | Table Schema | ✅ | ✅ | ✅ | ✅ |
 | Table Data | ✅ | ✅ | ✅ | ✅ |
+| Access Token | ✅ | - | - | - |
 
 ***
 

@@ -132,8 +132,8 @@ curl -X POST https://api-client.bkend.ai/v1/users/{userId}/avatar/upload-url \
 
 ```json
 {
-  "uploadUrl": "https://s3.amazonaws.com/...",
-  "key": "avatars/user-uuid/avatar.jpg",
+  "url": "https://storage.example.com/...?signature=...",
+  "key": "{file_key}",
   "expiresAt": "2025-01-21T01:00:00.000Z"
 }
 ```
@@ -150,7 +150,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/users/{userId}/avatar \
   -H "X-API-Key: {pk_publishable_key}" \
   -H "Authorization: Bearer {accessToken}" \
   -d '{
-    "s3Key": "avatars/user-uuid/avatar.jpg"
+    "s3Key": "{key}"
   }'
 ```
 

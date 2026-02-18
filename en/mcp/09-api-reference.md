@@ -1,150 +1,174 @@
 # MCP API Reference
 
 {% hint style="info" %}
-This page provides the input/output schemas for all tools offered by the bkend MCP server.
+💡 This page provides the input/output schemas for all tools offered by the bkend MCP server.
 {% endhint %}
 
 ## Fixed Tools
 
 ### get_context
 
-Retrieves the session context. Automatically called by the AI tool upon connection.
+Retrieves session context. Call this first in every new session.
 
 | Item | Value |
 |------|-------|
 | Parameters | None |
-| Response | Organization, project list, API endpoint, warnings |
+| Response | Markdown text with Organization ID, REST API Base URL, resource hierarchy |
 
 ### search_docs
 
-Searches bkend documentation.
+Searches bkend documentation via GitBook.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `query` | string | Yes | Search keyword |
+| `query` | string | Yes | Search query (e.g., "signup authentication") |
 
 ***
 
-## Project Management Tools
+## Organization Tools
 
 ### backend_org_list
 
+| Item | Value |
+|------|-------|
 | Parameters | None |
-|------------|------|
+| Response | List of accessible Organizations |
 
-### backend_project_list
+### backend_org_get
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
 | `organizationId` | string | Yes | Organization ID |
+
+***
+
+## Access Token Tools
+
+### backend_access_token_list
+
+| Item | Value |
+|------|-------|
+| Parameters | None (filtered by Organization automatically) |
+| Response | List of access tokens |
+
+### backend_access_token_get
+
+| Parameter | Type | Required | Description |
+|-----------|------|:--------:|-------------|
+| `accessTokenId` | string | Yes | Access Token ID |
+
+***
+
+## Project Tools
+
+### backend_project_list
+
+| Item | Value |
+|------|-------|
+| Parameters | None (filtered by Organization automatically) |
+| Response | List of projects with settings and environment count |
 
 ### backend_project_get
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
 | `projectId` | string | Yes | Project ID |
 
 ### backend_project_create
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
+| `body` | object | Yes | Project creation data |
+
+#### body Fields
+
+| Field | Type | Required | Description |
+|-------|------|:--------:|-------------|
 | `organizationId` | string | Yes | Organization ID |
+| `slug` | string | Yes | URL-friendly unique slug |
 | `name` | string | Yes | Project name |
+| `primaryCloud` | string | Yes | `aws`, `gcp`, or `azu` |
+| `primaryRegion` | string | Yes | Deployment region |
 | `description` | string | | Project description |
 
 ### backend_project_update
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
 | `projectId` | string | Yes | Project ID |
-| `name` | string | | New name |
-| `description` | string | | New description |
-
-### backend_project_delete
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
+| `body` | object | | Fields to update (`name`, `slug`, `description`, `settings`) |
 
 ***
 
-## Environment Management Tools
+## Environment Tools
 
 ### backend_env_list
 
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
+| Item | Value |
+|------|-------|
+| Parameters | None (filtered by Organization automatically) |
+| Response | List of environments with deployment status |
 
 ### backend_env_get
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
 | `environmentId` | string | Yes | Environment ID |
 
 ### backend_env_create
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
+| `body` | object | Yes | Environment creation data |
+
+#### body Fields
+
+| Field | Type | Required | Description |
+|-------|------|:--------:|-------------|
 | `projectId` | string | Yes | Project ID |
-| `name` | string | Yes | Environment name |
+| `environment` | string | Yes | Environment name (e.g., `dev`, `staging`, `prod`) |
+| `environmentType` | string | Yes | `dev`, `staging`, `prod`, or `custom` |
 
 ***
 
-## Table Management Tools
+## Table Tools
 
 ### backend_table_list
 
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
+| Item | Value |
+|------|-------|
+| Parameters | None (filtered by Organization automatically) |
+| Response | List of tables with schema definition and document count |
 
 ### backend_table_get
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
 
 ### backend_table_create
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `name` | string | Yes | Table name |
-| `fields` | array | Yes | Field array |
+| `body` | object | Yes | Table creation data |
 
-#### fields Array
+#### body Fields
 
 | Field | Type | Required | Description |
 |-------|------|:--------:|-------------|
-| `name` | string | Yes | Field name |
-| `type` | string | Yes | `string`, `number`, `boolean`, `date`, `object`, `array`, `reference` |
-| `required` | boolean | | Whether required (default: false) |
-| `unique` | boolean | | Whether unique (default: false) |
-| `defaultValue` | any | | Default value |
+| `projectId` | string | Yes | Project ID |
+| `environment` | string | Yes | Environment name |
+| `tableName` | string | Yes | Table name (max 64 chars, alphanumeric + underscore/hyphen) |
+| `schema` | object | Yes | Table schema (BSON schema format) |
+| `displayName` | string | | Display name |
+| `description` | string | | Table description |
 
-### backend_table_delete
+### backend_table_update
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
+| `body` | object | | Fields to update (`displayName`, `description`, `permissions`) |
 
 ***
 
@@ -152,118 +176,70 @@ Searches bkend documentation.
 
 ### backend_field_manage
 
+Manage table fields by table ID. Creates a new schema version.
+
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
-| `action` | string | Yes | `add`, `update`, `delete` |
-| `field` | object | Yes | Field information |
+| `body` | object | | Field management operations |
+
+#### body Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `fieldsToAddOrUpdate` | object | Fields to add or update (BSON schema format) |
+| `fieldsToRemove` | string[] | Field names to remove |
+| `requiredFieldsToAdd` | string[] | Field names to add to required list |
+| `requiredFieldsToRemove` | string[] | Field names to remove from required list |
 
 ### backend_index_manage
 
+Manage table indexes by table ID. Creates a new index version.
+
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
-| `action` | string | Yes | `add`, `delete` |
-| `index` | object | Yes | Index information |
+| `body` | object | | Index management operations |
+
+#### body Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `indexesToAddOrUpdate` | array | Indexes to add or update |
+| `indexesToRemove` | string[] | Index names to remove |
+
+Each index object in `indexesToAddOrUpdate`:
+
+| Field | Type | Required | Description |
+|-------|------|:--------:|-------------|
+| `name` | string | Yes | Index name |
+| `fields` | object | Yes | Index fields (`1` ascending, `-1` descending) |
+| `unique` | boolean | | Unique index (default: false) |
+| `sparse` | boolean | | Sparse index (default: false) |
 
 ***
 
 ## Schema / Index Version Tools
 
-### backend_schema_version_list / backend_index_version_list
+### backend_schema_version_list
+
+List schema versions by table ID.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
+| `page` | number | | Page number |
+| `limit` | number | | Items per page |
 
-### backend_schema_version_get / backend_index_version_get
+### backend_index_version_list
+
+List index versions by table ID.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
-| `versionId` | string | Yes | Version ID |
-
-### backend_schema_version_apply
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `versionId` | string | Yes | Version ID to apply |
-
-***
-
-## Data CRUD Tools
-
-### backend_data_list
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `page` | number | | Page number (default: 1) |
-| `limit` | number | | Items per page (default: 20, max: 100) |
-| `sortBy` | string | | Sort field |
-| `sortDirection` | string | | `asc` or `desc` |
-| `andFilters` | object | | AND condition filters |
-| `orFilters` | array | | OR condition filters |
-
-### backend_data_get
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `recordId` | string | Yes | Record ID |
-
-### backend_data_create
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `data` | object | Yes | Data to create |
-
-### backend_data_update
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `recordId` | string | Yes | Record ID |
-| `data` | object | Yes | Data to update |
-
-### backend_data_delete
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `recordId` | string | Yes | Record ID |
+| `page` | number | | Page number |
+| `limit` | number | | Items per page |
 
 ***
 
@@ -308,7 +284,7 @@ Searches bkend documentation.
 ***
 
 {% hint style="warning" %}
-Dynamic tools can only be used after setting the project context. Always call `get_context` first.
+⚠️ All API tools require authentication via OAuth 2.1. Always call `get_context` first to establish the session.
 {% endhint %}
 
 ## Next Steps

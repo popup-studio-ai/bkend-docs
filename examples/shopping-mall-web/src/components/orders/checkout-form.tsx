@@ -10,9 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { DemoBanner } from "@/components/shared/demo-banner";
 import { formatPrice } from "@/lib/format";
 import { useCreateOrder } from "@/hooks/queries/use-orders";
 import { useClearCart } from "@/hooks/queries/use-carts";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import {
   checkoutFormSchema,
   type CheckoutFormInput,
@@ -27,6 +29,7 @@ export function CheckoutForm({ cartItems }: CheckoutFormProps) {
   const router = useRouter();
   const createOrder = useCreateOrder();
   const clearCart = useClearCart();
+  const { isDemoAccount } = useDemoGuard();
 
   const totalPrice = cartItems.reduce((sum, item) => {
     return sum + (item.product?.price ?? 0) * item.quantity;
@@ -57,7 +60,9 @@ export function CheckoutForm({ cartItems }: CheckoutFormProps) {
 
   return (
     <div className="grid gap-6 lg:grid-cols-3">
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-2 space-y-4">
+        {isDemoAccount && <DemoBanner />}
+
         <Card>
           <CardHeader>
             <CardTitle>Shipping Information</CardTitle>
@@ -119,7 +124,7 @@ export function CheckoutForm({ cartItems }: CheckoutFormProps) {
           <CardContent className="space-y-3">
             {cartItems.map((item) => (
               <div key={item.id} className="flex justify-between text-sm">
-                <span className="text-slate-600 dark:text-slate-300 line-clamp-1 max-w-[60%]">
+                <span className="text-muted-foreground line-clamp-1 max-w-[60%]">
                   {item.product?.name ?? "Product"}
                   <span className="text-slate-400"> x{item.quantity}</span>
                 </span>
@@ -150,7 +155,7 @@ export function CheckoutForm({ cartItems }: CheckoutFormProps) {
               variant="accent"
               className="w-full"
               size="lg"
-              disabled={createOrder.isPending || clearCart.isPending}
+              disabled={createOrder.isPending || clearCart.isPending || isDemoAccount}
             >
               {(createOrder.isPending || clearCart.isPending) && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

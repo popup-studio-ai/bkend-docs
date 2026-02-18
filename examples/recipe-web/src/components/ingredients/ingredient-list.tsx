@@ -66,19 +66,19 @@ export function IngredientList({
                 />
                 <span
                   className={cn(
-                    "flex-1 text-sm text-stone-700 dark:text-stone-300",
-                    isChecked && "line-through text-stone-400 dark:text-stone-500"
+                    "flex-1 text-sm text-foreground",
+                    isChecked && "line-through text-muted-foreground"
                   )}
                 >
                   {ingredient.name}
                   {ingredient.isOptional && (
-                    <span className="ml-1 text-xs text-stone-400">(optional)</span>
+                    <span className="ml-1 text-xs text-muted-foreground">(optional)</span>
                   )}
                 </span>
                 <span
                   className={cn(
-                    "text-sm font-medium text-stone-600 dark:text-stone-400",
-                    isChecked && "line-through text-stone-400 dark:text-stone-500"
+                    "text-sm font-medium text-muted-foreground",
+                    isChecked && "line-through text-muted-foreground"
                   )}
                 >
                   {adjustedAmount} {ingredient.unit}

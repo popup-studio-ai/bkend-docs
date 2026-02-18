@@ -1,7 +1,7 @@
 # Social Login Overview
 
 {% hint style="info" %}
-Sign in easily through external OAuth providers such as Google and GitHub.
+💡 Sign in easily through external OAuth providers such as Google and GitHub.
 {% endhint %}
 
 ## Overview
@@ -83,7 +83,7 @@ window.location.href = `${GITHUB_AUTH_URL}?${params}`;
 | `state` | Random value for CSRF protection -- must be verified in the callback |
 
 {% hint style="info" %}
-`client_id` is safe to use on the client (frontend). The `Client Secret` is registered on the bkend server and should never be exposed to the client.
+💡 `client_id` is safe to use on the client (frontend). The `Client Secret` is registered on the bkend server and should never be exposed to the client.
 {% endhint %}
 
 ***
@@ -144,7 +144,7 @@ const data = await response.json();
 | `state` | `string` | - | CSRF prevention state value |
 
 {% hint style="info" %}
-You must provide at least one of `code` or `idToken`.
+💡 You must provide at least one of `code` or `idToken`.
 {% endhint %}
 
 #### Success Response

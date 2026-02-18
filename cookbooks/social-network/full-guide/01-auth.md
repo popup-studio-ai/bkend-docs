@@ -262,7 +262,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/email/signin \
 
 | 토큰 | 유효 시간 | 용도 |
 |------|:---------:|------|
-| Access Token | 24시간 | API 요청 인증 |
+| Access Token | 1시간 | API 요청 인증 |
 | Refresh Token | 30일 | Access Token 갱신 |
 
 ### 토큰 갱신
@@ -299,7 +299,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/refresh \
 {
   "accessToken": "eyJhbGciOiJIUzI1NiIs...",
   "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
-  "expiresIn": 86400
+  "expiresIn": 3600
 }
 ```
 

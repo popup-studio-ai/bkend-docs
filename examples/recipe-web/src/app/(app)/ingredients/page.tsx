@@ -46,14 +46,14 @@ export default function IngredientsPage() {
                   <Link href={`/ingredients/${recipe.id}`}>
                     <Card className="transition-shadow hover:shadow-md">
                       <CardContent className="flex items-center gap-4 p-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 dark:bg-stone-700">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-muted">
                           <UtensilsCrossed className="h-6 w-6 text-orange-500 dark:text-orange-400" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-stone-900 dark:text-stone-100">
+                          <h3 className="font-semibold text-foreground">
                             {recipe.title}
                           </h3>
-                          <p className="text-xs text-stone-500 dark:text-stone-400">
+                          <p className="text-xs text-muted-foreground">
                             {recipe.category} | {formatTime(recipe.cookingTime)}{" "}
                             | {recipe.servings} servings
                           </p>
@@ -76,7 +76,7 @@ export default function IngredientsPage() {
                   >
                     Previous
                   </button>
-                  <span className="text-sm text-stone-500">
+                  <span className="text-sm text-muted-foreground">
                     {data.pagination.page} / {data.pagination.totalPages}
                   </span>
                   <button

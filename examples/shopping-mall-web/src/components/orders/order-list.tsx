@@ -47,10 +47,10 @@ export function OrderList({ orders }: OrderListProps) {
                 <CardContent className="p-4 sm:p-6">
                   <div className="mb-4 flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                      <p className="text-xs text-muted-foreground">
                         {formatDate(order.createdAt)}
                       </p>
-                      <p className="mt-0.5 text-sm font-medium text-slate-900 dark:text-slate-50">
+                      <p className="mt-0.5 text-sm font-medium text-foreground">
                         {itemSummary}
                       </p>
                     </div>
@@ -62,8 +62,8 @@ export function OrderList({ orders }: OrderListProps) {
 
                   <OrderProgress currentStatus={order.status} />
 
-                  <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 dark:border-slate-800">
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                  <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
+                    <span className="text-xs text-muted-foreground">
                       {items.length} {items.length === 1 ? "item" : "items"}
                     </span>
                     <span className="font-bold text-amber-700 dark:text-amber-400">

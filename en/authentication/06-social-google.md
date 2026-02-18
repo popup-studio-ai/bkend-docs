@@ -1,7 +1,7 @@
 # Google OAuth
 
 {% hint style="info" %}
-Implement social login with a Google account.
+💡 Implement social login with a Google account.
 {% endhint %}
 
 ## Overview
@@ -22,7 +22,7 @@ Google OAuth uses the OAuth 2.0 + OpenID Connect protocol. Users can handle both
 6. Copy the `Client ID` and `Client Secret`.
 
 {% hint style="warning" %}
-Never expose the `Client Secret` in client-side code (frontend). It must only be used on the server side.
+⚠️ Never expose the `Client Secret` in client-side code (frontend). It must only be used on the server side.
 {% endhint %}
 
 ### Register with bkend
@@ -51,7 +51,7 @@ window.location.href = `${GOOGLE_AUTH_URL}?${params}`;
 ```
 
 {% hint style="info" %}
-`client_id` is the OAuth client ID obtained from Google Cloud Console. `state` is a random value for CSRF protection -- always verify it in the callback.
+💡 `client_id` is the OAuth client ID obtained from Google Cloud Console. `state` is a random value for CSRF protection -- always verify it in the callback.
 {% endhint %}
 
 ### Step 2: Obtain Tokens in the Callback

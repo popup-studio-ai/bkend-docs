@@ -43,10 +43,10 @@ export function OrderDetail({ order }: OrderDetailProps) {
               <div key={index}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-slate-900 dark:text-slate-50">
+                    <p className="font-medium text-foreground">
                       {item.name}
                     </p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                    <p className="text-sm text-muted-foreground">
                       {formatPrice(item.price)} x {item.quantity}
                     </p>
                   </div>
@@ -75,20 +75,20 @@ export function OrderDetail({ order }: OrderDetailProps) {
         <CardContent>
           <dl className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <dt className="text-slate-500 dark:text-slate-400">Recipient</dt>
-              <dd className="font-medium text-slate-900 dark:text-slate-50">
+              <dt className="text-muted-foreground">Recipient</dt>
+              <dd className="font-medium text-foreground">
                 {order.recipientName}
               </dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-slate-500 dark:text-slate-400">Phone</dt>
-              <dd className="font-medium text-slate-900 dark:text-slate-50">
+              <dt className="text-muted-foreground">Phone</dt>
+              <dd className="font-medium text-foreground">
                 {formatPhoneNumber(order.recipientPhone)}
               </dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-slate-500 dark:text-slate-400">Address</dt>
-              <dd className="font-medium text-right text-slate-900 dark:text-slate-50 max-w-[60%]">
+              <dt className="text-muted-foreground">Address</dt>
+              <dd className="font-medium text-right text-foreground max-w-[60%]">
                 {order.shippingAddress}
               </dd>
             </div>
@@ -103,14 +103,14 @@ export function OrderDetail({ order }: OrderDetailProps) {
         <CardContent>
           <dl className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <dt className="text-slate-500 dark:text-slate-400">Order ID</dt>
-              <dd className="font-mono text-xs font-medium text-slate-900 dark:text-slate-50">
+              <dt className="text-muted-foreground">Order ID</dt>
+              <dd className="font-mono text-xs font-medium text-foreground">
                 {order.id}
               </dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-slate-500 dark:text-slate-400">Order Date</dt>
-              <dd className="font-medium text-slate-900 dark:text-slate-50">
+              <dt className="text-muted-foreground">Order Date</dt>
+              <dd className="font-medium text-foreground">
                 {formatDateTime(order.createdAt)}
               </dd>
             </div>

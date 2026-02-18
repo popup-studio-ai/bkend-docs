@@ -1,7 +1,7 @@
 # Claude Code Setup
 
 {% hint style="info" %}
-Learn how to set up bkend MCP in Claude Code and Claude Desktop.
+💡 Learn how to set up bkend MCP in Claude Code and Claude Desktop.
 {% endhint %}
 
 ## Prerequisites
@@ -118,7 +118,7 @@ claude mcp add bkend --transport http https://api.bkend.ai/mcp
 This means the Refresh Token has expired (30 days). Restart Claude Code and re-authentication will proceed automatically.
 
 {% hint style="warning" %}
-On corporate networks or VPN environments, outbound HTTPS connections to `https://api.bkend.ai/mcp` may be blocked. If the connection fails, check with your network administrator whether the domain is allowed.
+⚠️ On corporate networks or VPN environments, outbound HTTPS connections to `https://api.bkend.ai/mcp` may be blocked. If the connection fails, check with your network administrator whether the domain is allowed.
 {% endhint %}
 
 ***

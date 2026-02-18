@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/utils/demo_guard.dart';
 import '../providers/post_provider.dart';
 
 class PostCreateScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class PostCreateScreen extends StatefulWidget {
 class _PostCreateScreenState extends State<PostCreateScreen> {
   final _contentController = TextEditingController();
   File? _selectedImage;
+  String? _randomImageUrl;
   bool _isUploading = false;
 
   @override
@@ -27,8 +30,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
   }
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final source = await showModalBottomSheet<ImageSource>(
+    final choice = await showModalBottomSheet<String>(
       context: context,
       builder: (context) => SafeArea(
         child: Column(
@@ -37,38 +39,68 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
             ListTile(
               leading: const Icon(Icons.photo_library_outlined),
               title: const Text('Choose from gallery'),
-              onTap: () => Navigator.pop(context, ImageSource.gallery),
+              onTap: () => Navigator.pop(context, 'gallery'),
             ),
             ListTile(
               leading: const Icon(Icons.camera_alt_outlined),
               title: const Text('Take a photo'),
-              onTap: () => Navigator.pop(context, ImageSource.camera),
+              onTap: () => Navigator.pop(context, 'camera'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.shuffle_rounded),
+              title: const Text('Random photo (demo)'),
+              subtitle: const Text('Use a sample image'),
+              onTap: () => Navigator.pop(context, 'random'),
             ),
           ],
         ),
       ),
     );
 
-    if (source == null) return;
+    if (choice == null) return;
 
-    final picked = await picker.pickImage(
-      source: source,
-      maxWidth: 1920,
-      maxHeight: 1080,
-      imageQuality: 85,
-    );
+    if (choice == 'random') {
+      final seed = Random().nextInt(9999);
+      setState(() {
+        _selectedImage = null;
+        _randomImageUrl = 'https://picsum.photos/seed/$seed/800/600';
+      });
+      return;
+    }
 
-    if (picked != null) {
-      setState(() => _selectedImage = File(picked.path));
+    final picker = ImagePicker();
+    try {
+      final picked = await picker.pickImage(
+        source:
+            choice == 'camera' ? ImageSource.camera : ImageSource.gallery,
+        maxWidth: 1920,
+        maxHeight: 1080,
+        imageQuality: 85,
+      );
+      if (picked != null) {
+        setState(() {
+          _selectedImage = File(picked.path);
+          _randomImageUrl = null;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Camera is not available on this device.'),
+          ),
+        );
+      }
     }
   }
 
   Future<void> _handlePost() async {
+    if (DemoGuard.check(context)) return;
     final content = _contentController.text.trim();
     if (content.isEmpty) return;
 
     final postProvider = context.read<PostProvider>();
-    String? imageUrl;
+    String? imageUrl = _randomImageUrl;
 
     if (_selectedImage != null) {
       setState(() => _isUploading = true);
@@ -162,25 +194,35 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
                     style: theme.textTheme.bodyLarge,
                     onChanged: (_) => setState(() {}),
                   ),
-                  if (_selectedImage != null) ...[
+                  if (_selectedImage != null || _randomImageUrl != null) ...[
                     const SizedBox(height: 16),
                     Stack(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.file(
-                            _selectedImage!,
-                            width: double.infinity,
-                            height: 240,
-                            fit: BoxFit.cover,
-                          ),
+                          child: _selectedImage != null
+                              ? Image.file(
+                                  _selectedImage!,
+                                  width: double.infinity,
+                                  height: 240,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  _randomImageUrl!,
+                                  width: double.infinity,
+                                  height: 240,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                         Positioned(
                           top: 8,
                           right: 8,
                           child: GestureDetector(
                             onTap: () {
-                              setState(() => _selectedImage = null);
+                              setState(() {
+                                _selectedImage = null;
+                                _randomImageUrl = null;
+                              });
                             },
                             child: Container(
                               padding: const EdgeInsets.all(4),

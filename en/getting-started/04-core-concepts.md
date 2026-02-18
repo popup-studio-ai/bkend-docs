@@ -1,7 +1,7 @@
 # Core Concepts
 
 {% hint style="info" %}
-This page explains the resource hierarchy and key terminology of bkend.
+💡 This page explains the resource hierarchy and key terminology of bkend.
 {% endhint %}
 
 ## Overview
@@ -65,7 +65,7 @@ An Environment is the unit of data isolation. Create environments like `dev`, `s
 | Team members | Yes | Shared at the Organization level |
 
 {% hint style="warning" %}
-Data in the `dev` and `prod` environments is completely isolated. Switching environments displays different data.
+⚠️ Data in the `dev` and `prod` environments is completely isolated. Switching environments displays different data.
 {% endhint %}
 
 ***
@@ -80,7 +80,7 @@ An API Key is used for authentication when calling the REST API. Keys are issued
 | **Secret Key** | Used on the server | Full read/write |
 
 {% hint style="danger" %}
-**Warning** — Never include a Secret Key in client-side code.
+🚨 **Warning** — Never include a Secret Key in client-side code.
 {% endhint %}
 
 ***
@@ -111,7 +111,7 @@ flowchart TD
 | **Runtime** | REST API | Data CRUD, user authentication, file management | App (User) |
 
 {% hint style="info" %}
-Use the console and MCP tools to **design the structure**, and the REST API to **run the app**. Once you have created a table, the next step is to insert data via the REST API.
+💡 Use the console and MCP tools to **design the structure**, and the REST API to **run the app**. Once you have created a table, the next step is to insert data via the REST API.
 {% endhint %}
 
 ***

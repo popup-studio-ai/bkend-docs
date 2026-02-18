@@ -1,7 +1,7 @@
 # Performance Issues
 
 {% hint style="info" %}
-This page explains how to diagnose and resolve performance issues with the bkend API.
+💡 This page explains how to diagnose and resolve performance issues with the bkend API.
 {% endhint %}
 
 ## Overview
@@ -69,10 +69,14 @@ Querying without `limit` returns the entire dataset.
 
 ```javascript
 // Bad example — fetches all data
-const response = await fetch('/v1/data/posts');
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
+  headers: { 'X-API-Key': '{pk_publishable_key}' },
+});
 
 // Good example — with pagination
-const response = await fetch('/v1/data/posts?limit=20&offset=0');
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts?limit=20&offset=0', {
+  headers: { 'X-API-Key': '{pk_publishable_key}' },
+});
 ```
 
 ### Recommended limit Values
@@ -96,22 +100,34 @@ const response = await fetch('/v1/data/posts?limit=20&offset=0');
 | Fetching the same data repeatedly | Apply client-side caching |
 | Including unnecessary fields | Use the `fields` parameter to select only the fields you need |
 
-### Batch Processing
+### Minimizing API Calls
 
 ```javascript
-// Bad example — individual inserts (10 calls)
+// Bad example — individual inserts in a loop (10 calls)
 for (const item of items) {
-  await fetch('/v1/data/posts', {
+  await fetch('https://api-client.bkend.ai/v1/data/posts', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key': '{pk_publishable_key}',
+    },
     body: JSON.stringify(item),
   });
 }
 
-// Good example — batch insert (1 call)
-await fetch('/v1/data/posts', {
-  method: 'POST',
-  body: JSON.stringify(items), // Pass as an array
-});
+// Good example — use Promise.all for concurrent inserts
+await Promise.all(
+  items.map(item =>
+    fetch('https://api-client.bkend.ai/v1/data/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': '{pk_publishable_key}',
+      },
+      body: JSON.stringify(item),
+    })
+  )
+);
 ```
 
 ***
@@ -148,7 +164,7 @@ await fetch('/v1/data/posts', {
 ***
 
 {% hint style="warning" %}
-The maximum `limit` value for list queries is 100. When processing large datasets, use pagination and reduce unnecessary fields to minimize response size. See [Sorting and Pagination](../database/09-sorting-pagination.md)
+⚠️ The maximum `limit` value for list queries is 100. When processing large datasets, use pagination and reduce unnecessary fields to minimize response size. See [Sorting and Pagination](../database/09-sorting-pagination.md)
 {% endhint %}
 
 ## Next Steps

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { useMe } from "@/hooks/queries/use-auth";
 import { useDeleteAccount } from "@/hooks/queries/use-users";
+import { DEMO_EMAIL } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,6 +22,7 @@ export function DangerZone() {
   const deleteAccount = useDeleteAccount();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const isDemoAccount = user?.email === DEMO_EMAIL;
 
   const handleDeleteAccount = async () => {
     if (!user) return;
@@ -56,6 +58,7 @@ export function DangerZone() {
             <Button
               variant="destructive"
               onClick={() => setIsDialogOpen(true)}
+              disabled={isDemoAccount}
             >
               Delete My Account
             </Button>

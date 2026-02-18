@@ -5,5 +5,6 @@ export interface PresignedUrlRequest {
 
 export interface PresignedUrlResponse {
   url: string;
+  key: string;
   fileId: string;
 }

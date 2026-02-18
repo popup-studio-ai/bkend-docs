@@ -1,7 +1,7 @@
 # OAuth 2.1 Authentication Setup
 
 {% hint style="info" %}
-Learn about the OAuth 2.1 authentication flow and token management for the bkend MCP server.
+💡 Learn about the OAuth 2.1 authentication flow and token management for the bkend MCP server.
 {% endhint %}
 
 ## Overview
@@ -46,7 +46,7 @@ Your browser opens automatically and displays the bkend console login page.
 After logging in, select the Organization to use with MCP.
 
 {% hint style="info" %}
-You only need an Organization to start using MCP tools. Even if you have no projects yet, you can create them directly with MCP tools.
+💡 You only need an Organization to start using MCP tools. Even if you have no projects yet, you can create them directly with MCP tools.
 {% endhint %}
 
 ### Step 4: Approve Permissions
@@ -128,7 +128,7 @@ curl -X POST https://api.bkend.ai/mcp/oauth/register \
 ```
 
 {% hint style="info" %}
-MCP-compatible tools like Claude Code and Cursor handle Dynamic Client Registration automatically. Use this API only when building a custom implementation.
+💡 MCP-compatible tools like Claude Code and Cursor handle Dynamic Client Registration automatically. Use this API only when building a custom implementation.
 {% endhint %}
 
 ***

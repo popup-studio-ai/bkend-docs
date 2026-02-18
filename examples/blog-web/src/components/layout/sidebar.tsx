@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   FileText,
+  FileEdit,
   Bookmark,
   Tag,
   PenSquare,
@@ -15,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuthStore } from "@/stores/auth-store";
+import { DEMO_EMAIL } from "@/lib/constants";
 
 const mainNav = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -24,6 +26,7 @@ const mainNav = [
 
 const manageNav = [
   { href: "/articles/new", label: "New Article", icon: PenSquare },
+  { href: "/my-articles", label: "My Posts", icon: FileEdit },
   { href: "/tags", label: "Tags", icon: Tag },
 ];
 
@@ -34,6 +37,8 @@ interface SidebarProps {
 export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname();
   const user = useAuthStore((s) => s.user);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isDemoAccount = user?.email === DEMO_EMAIL;
 
   const initials = user?.name
     ? user.name
@@ -101,31 +106,33 @@ export function Sidebar({ className }: SidebarProps) {
           </div>
         </div>
 
-        <div>
-          <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Manage
-          </p>
-          <div className="space-y-0.5">
-            {manageNav.map((item) => {
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
-                    active
-                      ? "bg-accent text-accent-foreground shadow-sm"
-                      : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
-                  )}
-                >
-                  <item.icon className={cn("h-4 w-4", active && "text-accent-color")} />
-                  {item.label}
-                </Link>
-              );
-            })}
+        {isAuthenticated && (
+          <div>
+            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Manage
+            </p>
+            <div className="space-y-0.5">
+              {manageNav.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
+                      active
+                        ? "bg-accent text-accent-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                    )}
+                  >
+                    <item.icon className={cn("h-4 w-4", active && "text-accent-color")} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </nav>
 
       {/* User profile section */}

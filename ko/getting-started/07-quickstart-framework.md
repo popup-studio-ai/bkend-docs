@@ -26,7 +26,7 @@ bkend REST API는 프레임워크에 관계없이 동일하게 동작합니다. 
 
 ```bash
 NEXT_PUBLIC_BKEND_API_URL=https://api-client.bkend.ai
-NEXT_PUBLIC_BKEND_API_KEY={pk_publishable_key}
+NEXT_PUBLIC_BKEND_PUBLISHABLE_KEY={pk_publishable_key}
 ```
 
 {% hint style="warning" %}
@@ -38,7 +38,7 @@ NEXT_PUBLIC_BKEND_API_KEY={pk_publishable_key}
 ```typescript
 // lib/bkend.ts
 const API_BASE = process.env.NEXT_PUBLIC_BKEND_API_URL!;
-const API_KEY = process.env.NEXT_PUBLIC_BKEND_API_KEY!;
+const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_BKEND_PUBLISHABLE_KEY!;
 
 export async function bkendFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const accessToken = typeof window !== 'undefined'
@@ -49,7 +49,7 @@ export async function bkendFetch<T>(path: string, options: RequestInit = {}): Pr
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'X-API-Key': API_KEY,
+      'X-API-Key': PUBLISHABLE_KEY,
       ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       ...options.headers,
     },
@@ -108,7 +108,7 @@ export default async function PostsPage() {
 // lib/config/bkend_config.dart
 class BkendConfig {
   static const String apiUrl = 'https://api-client.bkend.ai';
-  static const String apiKey = '{pk_publishable_key}';
+  static const String publishableKey = '{pk_publishable_key}';
 }
 ```
 
@@ -137,7 +137,7 @@ class BkendClient {
       baseUrl: BkendConfig.apiUrl,
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': BkendConfig.apiKey,
+        'X-API-Key': BkendConfig.publishableKey,
       },
     ));
 

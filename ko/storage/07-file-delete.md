@@ -60,9 +60,7 @@ if (response.ok) {
 ### 응답 (200 OK)
 
 ```json
-{
-  "success": true
-}
+{}
 ```
 
 {% hint style="danger" %}
@@ -73,12 +71,11 @@ if (response.ok) {
 
 ## 권한
 
-파일 삭제는 소유자 또는 관리자만 수행할 수 있습니다.
+파일 삭제는 소유자만 수행할 수 있습니다.
 
 | 사용자 | 삭제 가능 |
 |--------|:--------:|
 | 파일 소유자 | ✅ |
-| `admin` | ✅ |
 | 비소유자 | ❌ |
 
 ***
@@ -106,7 +103,7 @@ async function deleteFile(fileId) {
     method: 'DELETE',
   });
 
-  return result; // { success: true }
+  return result; // {}
 }
 
 // 삭제 확인 후 실행

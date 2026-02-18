@@ -132,6 +132,7 @@ MCP 연동 시 부여되는 권한입니다.
 | Environment | ✅ | ✅ | - | ✅ |
 | Table Schema | ✅ | ✅ | ✅ | ✅ |
 | Table Data | ✅ | ✅ | ✅ | ✅ |
+| Access Token | ✅ | - | - | - |
 
 ***
 

@@ -1,7 +1,7 @@
 # What is bkend?
 
 {% hint style="info" %}
-bkend is a Backend-as-a-Service (BaaS) platform that lets you build your backend with AI tools and connect it to your app via REST API.
+💡 bkend is a Backend-as-a-Service (BaaS) platform that lets you build your backend with AI tools and connect it to your app via REST API.
 {% endhint %}
 
 ## Overview
@@ -40,7 +40,7 @@ Traditional backend development requires writing server code, configuring databa
 Create dynamic tables via the console or MCP tools, and access data through the REST API (`/v1/data/{tableName}`) to perform CRUD (Create, Read, Update, Delete) operations. Supports 7 column types, constraints, indexes, and relationship configuration.
 
 {% hint style="info" %}
-A **dynamic table** is a table where defining a schema via the console or MCP tools automatically generates a REST API endpoint (`/v1/data/{tableName}`). You can create tables and access data via API without writing any server code.
+💡 A **dynamic table** is a table where defining a schema via the console or MCP tools automatically generates a REST API endpoint (`/v1/data/{tableName}`). You can create tables and access data via API without writing any server code.
 {% endhint %}
 
 ### Authentication
@@ -72,7 +72,7 @@ You can interact with bkend in three ways.
 | **Console** | Everyone | Manage visually through the web UI |
 
 {% hint style="info" %}
-In bkend, a **Tenant** is the developer who builds the backend (uses the console/MCP), while a **User** is the end user of the app (interacts via REST API). See [Understanding Tenants and Users](05-tenant-vs-user.md) for details.
+💡 In bkend, a **Tenant** is the developer who builds the backend (uses the console/MCP), while a **User** is the end user of the app (interacts via REST API). See [Understanding Tenants and Users](05-tenant-vs-user.md) for details.
 {% endhint %}
 
 ```mermaid
@@ -93,7 +93,7 @@ flowchart TD
 ***
 
 {% hint style="success" %}
-If you are new to bkend, head to [Quick Start](02-quickstart.md) to create your first project in 10 minutes. For framework-specific integration, see [Framework Quick Start](07-quickstart-framework.md).
+✅ If you are new to bkend, head to [Quick Start](02-quickstart.md) to create your first project in 10 minutes. For framework-specific integration, see [Framework Quick Start](07-quickstart-framework.md).
 {% endhint %}
 
 ## Next Steps

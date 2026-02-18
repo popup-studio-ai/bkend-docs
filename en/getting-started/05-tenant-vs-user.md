@@ -1,7 +1,7 @@
 # Understanding Tenant and User
 
 {% hint style="info" %}
-bkend has two user types: Tenant and User.
+💡 bkend has two user types: Tenant and User.
 {% endhint %}
 
 ## Overview
@@ -55,7 +55,7 @@ flowchart TD
 | **Data scope** | Full project management | Permitted data within an environment |
 
 {% hint style="warning" %}
-Tenant credentials (console login, MCP tokens) and User credentials (JWT) are completely separate.
+⚠️ Tenant credentials (console login, MCP tokens) and User credentials (JWT) are completely separate.
 {% endhint %}
 
 ***

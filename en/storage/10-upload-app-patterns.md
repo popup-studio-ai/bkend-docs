@@ -1,7 +1,7 @@
 # File Upload App Patterns
 
 {% hint style="info" %}
-Learn patterns for implementing file upload functionality in your app, from file selection to upload, progress display, and previews.
+💡 Learn patterns for implementing file upload functionality in your app, from file selection to upload, progress display, and previews.
 {% endhint %}
 
 ## Overview
@@ -28,7 +28,7 @@ sequenceDiagram
 ```
 
 {% hint style="warning" %}
-If you have not set up `bkendFetch` yet, see [Integrating bkend with Your App](../getting-started/03-app-integration.md) first.
+⚠️ If you have not set up `bkendFetch` yet, see [Integrating bkend with Your App](../getting-started/03-app-integration.md) first.
 {% endhint %}
 
 ***
@@ -44,7 +44,7 @@ File upload consists of 3 API calls.
 | 3 | `POST` | `/v1/files` | Register metadata with bkend |
 
 {% hint style="info" %}
-Presigned URLs are valid for **15 minutes** only. Complete the upload before they expire.
+💡 Presigned URLs are valid for **15 minutes** only. Complete the upload before they expire.
 {% endhint %}
 
 ***
@@ -231,7 +231,7 @@ function uploadToStorage(url, file, onProgress) {
 ```
 
 {% hint style="warning" %}
-Do not include the `Authorization` header when uploading to a Presigned URL. The Presigned URL itself contains the authentication information.
+⚠️ Do not include the `Authorization` header when uploading to a Presigned URL. The Presigned URL itself contains the authentication information.
 {% endhint %}
 
 ### Connect the Upload Button
@@ -286,6 +286,29 @@ async function showUploadedImage(fileId) {
   document.getElementById('uploadedFiles').appendChild(img);
 }
 ```
+
+### Optimized URL After Upload (Public Images)
+
+If the file's `visibility` is `public`, you can display resized images directly through the `img.bkend.ai` CDN.
+
+```javascript
+const IMAGE_CDN = 'https://img.bkend.ai';
+
+async function showOptimizedImage(fileId) {
+  const fileData = await bkendFetch(`/v1/files/${fileId}`);
+
+  // Public image → use CDN optimized URL
+  const img = document.createElement('img');
+  img.src = `${IMAGE_CDN}/fit-in/400x300/filters:quality(80)/${fileData.key}`;
+  img.alt = fileData.originalName;
+
+  document.getElementById('uploadedFiles').appendChild(img);
+}
+```
+
+{% hint style="info" %}
+💡 The `img.bkend.ai` CDN only supports files with **`public` visibility**. For `private`/`protected`/`shared` files, use the download URL approach above. See [Image Optimization](11-image-optimization.md) for details.
+{% endhint %}
 
 ***
 
@@ -411,7 +434,7 @@ async function deleteFile(fileId) {
 ```
 
 {% hint style="danger" %}
-**Warning** — Deleted files cannot be recovered. Always prompt the user for confirmation before deleting.
+🚨 **Warning** — Deleted files cannot be recovered. Always prompt the user for confirmation before deleting.
 {% endhint %}
 
 ***
@@ -436,4 +459,5 @@ async function deleteFile(fileId) {
 - [File Metadata](04-file-metadata.md) — Register/update metadata
 - [File Access Permissions](08-permissions.md) — Visibility settings
 - [API Reference](09-api-reference.md) — Complete storage API list
+- [Image Optimization](11-image-optimization.md) — CDN resizing/format conversion for public images
 - Example projects — See file upload implementation code in [blog-web](../../examples/blog-web/) · [recipe-web](../../examples/recipe-web/) · [social-network-app](../../examples/social-network-app/)

@@ -31,6 +31,7 @@ import {
   useDeleteShoppingList,
 } from "@/hooks/queries/use-shopping-lists";
 import { formatDate } from "@/lib/format";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 
 interface ShoppingListViewProps {
   listId: string;
@@ -43,6 +44,7 @@ export function ShoppingListView({ listId }: ShoppingListViewProps) {
   const updateList = useUpdateShoppingList();
   const deleteList = useDeleteShoppingList();
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const { isDemoAccount } = useDemoGuard();
 
   const handleToggleItem = async (index: number) => {
     if (!list) return;
@@ -94,7 +96,7 @@ export function ShoppingListView({ listId }: ShoppingListViewProps) {
               </Button>
               <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="destructive" size="sm">
+                  <Button variant="destructive" size="sm" disabled={isDemoAccount}>
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete
                   </Button>
@@ -132,21 +134,21 @@ export function ShoppingListView({ listId }: ShoppingListViewProps) {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+                  <h2 className="text-xl font-bold text-foreground">
                     {list.name}
                   </h2>
-                  <span className="text-sm text-stone-500 dark:text-stone-400">
+                  <span className="text-sm text-muted-foreground">
                     {formatDate(list.date)}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 h-2 rounded-full bg-orange-100 dark:bg-stone-700">
+                  <div className="flex-1 h-2 rounded-full bg-muted">
                     <div
                       className="h-full rounded-full bg-green-500 transition-all duration-300"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
-                  <span className="text-sm font-medium text-stone-600 dark:text-stone-400">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {list.checkedItems}/{list.totalItems}
                   </span>
                   {progress === 100 && (
@@ -204,7 +206,7 @@ export function ShoppingListView({ listId }: ShoppingListViewProps) {
                       })}
                   </div>
                 ) : (
-                  <p className="text-center text-sm text-stone-400 py-8">
+                  <p className="text-center text-sm text-muted-foreground py-8">
                     No items
                   </p>
                 )}

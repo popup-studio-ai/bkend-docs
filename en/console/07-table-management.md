@@ -1,7 +1,7 @@
 # Table Management
 
 {% hint style="info" %}
-This guide explains how to create tables and manage data from the console. Tables can only be created via the console or MCP tools.
+💡 This guide explains how to create tables and manage data from the console. Tables can only be created via the console or MCP tools.
 {% endhint %}
 
 ## Overview
@@ -18,9 +18,13 @@ Use the Database menu to create, browse, and delete tables. Table creation and m
 | Displayed Info | Description |
 |----------------|-------------|
 | **Table Name** | Table identifier |
-| **Status** | Active / Deleted |
+| **Status** | deployed / deploying / updating / failed |
 | **Rows** | Number of stored records |
 | **Updated** | Last modified date |
+
+{% hint style="info" %}
+💡 System tables (`accounts`, `sessions`, `users`, `files`) are created automatically and cannot be edited or deleted.
+{% endhint %}
 
 ***
 
@@ -48,23 +52,29 @@ The MCP tool will automatically create the table and add the columns.
 {% endtabs %}
 
 {% hint style="info" %}
-When you create a table, the `id`, `createdAt`, and `updatedAt` fields are added automatically.
+💡 When you create a table, the `id`, `createdAt`, and `updatedAt` fields are added automatically.
 {% endhint %}
 
 ***
 
-## Browsing Table Data
+## Table Detail Page
 
-1. Click a table in the table list.
-2. View stored data in a tabular format.
-3. Use search, filtering, and pagination to navigate the data.
+Click a table in the table list to open the detail page. The detail page has the following tabs.
+
+| Tab | Description |
+|-----|-------------|
+| **Data** | Browse, search, and paginate stored records |
+| **Schema** | View and edit column definitions |
+| **Indexes** | Manage indexes for query performance |
+| **Permissions** | Configure RBAC permissions per role |
+| **API Docs** | View auto-generated REST API documentation for this table |
 
 ***
 
 ## Deleting a Table
 
 {% hint style="danger" %}
-**Danger** — Deleting a table permanently removes all its data. This action cannot be undone.
+🚨 **Danger** — Deleting a table permanently removes all its data. This action cannot be undone.
 {% endhint %}
 
 1. Click the menu on the table you want to delete in the table list.

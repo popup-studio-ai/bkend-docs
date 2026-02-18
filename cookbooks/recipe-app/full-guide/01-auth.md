@@ -212,11 +212,11 @@ async function bkendFetch(endpoint, options = {}) {
 async function login(email, password) {
   const result = await bkendFetch('/v1/auth/email/signin', {
     method: 'POST',
-    body: JSON.stringify({
+    body: {
       method: 'password',
       email,
       password,
-    }),
+    },
   });
 
   // 토큰 저장
@@ -266,7 +266,7 @@ async function refreshAccessToken() {
 
 | 토큰 | 유효 시간 | 용도 |
 |------|:---------:|------|
-| Access Token | 24시간 | API 인증 |
+| Access Token | 1시간 | API 인증 |
 | Refresh Token | 30일 | Access Token 갱신 |
 
 {% hint style="info" %}
@@ -326,11 +326,11 @@ console.log(me.name); // "김셰프"
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `VALIDATION_ERROR` | 필수 파라미터 누락/형식 오류 | 요청 파라미터 확인 |
-| 401 | `INVALID_CREDENTIALS` | 이메일 또는 비밀번호 오류 | 입력값 확인 |
-| 401 | `TOKEN_EXPIRED` | Access Token 만료 | 토큰 갱신 또는 재로그인 |
-| 409 | `ALREADY_EXISTS` | 이미 가입된 이메일 | 로그인 시도 |
-| 429 | `RATE_LIMIT` | 요청 횟수 초과 | 잠시 후 재시도 |
+| 400 | `auth/validation-error` | 필수 파라미터 누락/형식 오류 | 요청 파라미터 확인 |
+| 401 | `auth/invalid-credentials` | 이메일 또는 비밀번호 오류 | 입력값 확인 |
+| 401 | `auth/token-expired` | Access Token 만료 | 토큰 갱신 또는 재로그인 |
+| 409 | `auth/email-already-exists` | 이미 가입된 이메일 | 로그인 시도 |
+| 429 | `auth/rate-limit` | 요청 횟수 초과 | 잠시 후 재시도 |
 
 ### Rate Limiting
 
@@ -349,9 +349,9 @@ async function handleAuth(email, password) {
     // 로그인 성공 → 홈 화면으로 이동
     window.location.href = '/';
   } catch (error) {
-    if (error.message.includes('INVALID_CREDENTIALS')) {
+    if (error.message.includes('auth/invalid-credentials')) {
       alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-    } else if (error.message.includes('RATE_LIMIT')) {
+    } else if (error.message.includes('auth/rate-limit')) {
       alert('요청 횟수를 초과했습니다. 잠시 후 다시 시도하세요.');
     } else {
       alert('로그인에 실패했습니다. 다시 시도하세요.');

@@ -1,7 +1,7 @@
 # Storage Tools
 
 {% hint style="info" %}
-This page explains how to implement file upload/download features from your AI tool. Storage uses REST API calls, not MCP tools.
+💡 This page explains how to implement file upload/download features from your AI tool. Storage uses REST API calls, not MCP tools.
 {% endhint %}
 
 ## Overview
@@ -172,7 +172,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/{FILE_ID}/complete \
 ***
 
 {% hint style="warning" %}
-Watch out for presigned URL expiration times in the file upload code your AI tool generates. Upload the file immediately after obtaining the URL.
+⚠️ Watch out for presigned URL expiration times in the file upload code your AI tool generates. Upload the file immediately after obtaining the URL.
 {% endhint %}
 
 ## Next Steps

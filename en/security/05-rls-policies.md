@@ -1,7 +1,7 @@
 # Writing RLS Policies
 
 {% hint style="info" %}
-Configure Row Level Security policies per table to control data access permissions.
+💡 Configure Row Level Security policies per table to control data access permissions.
 {% endhint %}
 
 ## Overview
@@ -44,7 +44,7 @@ RLS policies are defined through a table's `permissions` configuration. You can 
 | `list` | List records | Falls back to `read` value |
 
 {% hint style="info" %}
-If `list` is not explicitly set, it falls back to the `read` permission value. Set `list` explicitly when you need separate control.
+💡 If `list` is not explicitly set, it falls back to the `read` permission value. Set `list` explicitly when you need separate control.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -204,7 +204,7 @@ sequenceDiagram
 | Both group and self permissions are `false` or not set | Access denied |
 
 {% hint style="warning" %}
-If the group permission is `true`, the self filter is not applied. To restrict access to only the requester's own data, you must set the group permission to `false`.
+⚠️ If the group permission is `true`, the self filter is not applied. To restrict access to only the requester's own data, you must set the group permission to `false`.
 {% endhint %}
 
 ***
@@ -218,11 +218,11 @@ Expression-based permissions provide finer-grained control than the boolean mode
 ```json
 {
   "expressionPermissions": {
-    "create": "group:user",
-    "read": "group:user OR group:guest",
+    "create": "user",
+    "read": "user | guest",
     "update": "self",
     "delete": "self",
-    "list": "group:user OR self"
+    "list": "user | self"
   }
 }
 ```
@@ -231,16 +231,24 @@ Expression-based permissions provide finer-grained control than the boolean mode
 
 | Condition | Description |
 |-----------|-------------|
-| `group:user` | Matches authenticated users |
-| `group:guest` | Matches unauthenticated users |
+| `user` | Matches authenticated users (includes `admin`) |
+| `guest` | Matches all users (including unauthenticated) |
+| `admin` | Matches admin users only |
 | `self` | Matches the data owner (`createdBy` = requester ID) |
+| `public` | Matches everyone (always true) |
+| `role:{name}` | Matches users with a specific custom role (e.g., `role:moderator`) |
+| `role:*` | Matches users with any custom role |
 
 ### Operators
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `OR` | Allows if **any** condition is true | `group:user OR self` |
-| `AND` | Allows only if **all** conditions are true | `group:user AND self` |
+| Operator | Symbol | Description | Example |
+|----------|:------:|-------------|---------|
+| OR | `\|` | Allows if **any** condition is true | `user \| self` |
+| AND | `&` | Allows only if **all** conditions are true | `user & self` |
+
+{% hint style="info" %}
+Operator precedence: `&` (AND) binds tighter than `|` (OR). For example, `guest | user & self` means `guest OR (user AND self)`.
+{% endhint %}
 
 ### Expression Examples
 
@@ -249,11 +257,11 @@ Expression-based permissions provide finer-grained control than the boolean mode
 ```json
 {
   "expressionPermissions": {
-    "create": "group:user",
-    "read": "group:user OR group:guest",
+    "create": "user",
+    "read": "user | guest",
     "update": "self",
     "delete": "self",
-    "list": "group:user OR group:guest"
+    "list": "user | guest"
   }
 }
 ```
@@ -263,7 +271,7 @@ Expression-based permissions provide finer-grained control than the boolean mode
 ```json
 {
   "expressionPermissions": {
-    "create": "group:user",
+    "create": "user",
     "read": "self",
     "update": "self",
     "delete": "self",
@@ -279,7 +287,7 @@ Expression-based permissions provide finer-grained control than the boolean mode
 3. If `list` is not defined in expressions, the `read` expression is used as fallback
 
 {% hint style="info" %}
-Expression-based permissions and boolean permissions are fully compatible. You can migrate gradually -- tables without expression permissions continue to use the boolean model.
+💡 Expression-based permissions and boolean permissions are fully compatible. You can migrate gradually -- tables without expression permissions continue to use the boolean model.
 {% endhint %}
 
 ***
@@ -294,11 +302,11 @@ Column-level permissions control which fields each user group can read or write.
 {
   "columnPermissions": {
     "secretField": {
-      "read": "group:admin",
-      "write": "group:admin"
+      "read": "admin",
+      "write": "admin"
     },
     "email": {
-      "read": "group:user OR group:admin",
+      "read": "user | admin",
       "write": "self"
     }
   }
@@ -313,7 +321,7 @@ Column-level permissions control which fields each user group can read or write.
 | **Write** | If the user attempts to write a restricted field, a `403 PERMISSION_DENIED` error is returned |
 
 {% hint style="info" %}
-Fields without explicit column permissions inherit the table-level permissions. System fields (`id`, `createdBy`, `createdAt`, `updatedAt`) are always readable.
+💡 Fields without explicit column permissions inherit the table-level permissions. System fields (`id`, `createdBy`, `createdAt`, `updatedAt`) are always readable.
 {% endhint %}
 
 ### Example: User Profiles
@@ -324,16 +332,16 @@ Only admins can read email, and only the data owner can update their bio:
 {
   "columnPermissions": {
     "email": {
-      "read": "group:admin",
+      "read": "admin",
       "write": "self"
     },
     "bio": {
-      "read": "group:user OR group:guest",
+      "read": "user | guest",
       "write": "self"
     },
     "internalNotes": {
-      "read": "group:admin",
-      "write": "group:admin"
+      "read": "admin",
+      "write": "admin"
     }
   }
 }
@@ -351,11 +359,11 @@ Row filters automatically restrict which rows a user can see based on conditions
 {
   "rowFilters": [
     {
-      "expression": "group:user",
+      "expression": "user",
       "filter": { "status": "published" }
     },
     {
-      "expression": "group:admin",
+      "expression": "admin",
       "filter": {}
     }
   ]
@@ -376,11 +384,11 @@ Regular users see only published content, while admins see everything:
 {
   "rowFilters": [
     {
-      "expression": "group:guest",
+      "expression": "guest",
       "filter": { "status": "published", "visibility": "public" }
     },
     {
-      "expression": "group:user",
+      "expression": "user",
       "filter": { "status": "published" }
     },
     {
@@ -394,7 +402,7 @@ Regular users see only published content, while admins see everything:
 **Result:** A regular user sees all published data plus their own drafts. A guest sees only public published content. An admin sees everything (no filter applied).
 
 {% hint style="warning" %}
-Row filters only apply to **list** operations (`GET /v1/data/:tableName`). Single record reads (`GET /v1/data/:tableName/:id`) use the standard permission check.
+⚠️ Row filters only apply to **list** operations (`GET /v1/data/:tableName`). Single record reads (`GET /v1/data/:tableName/:id`) use the standard permission check.
 {% endhint %}
 
 ***

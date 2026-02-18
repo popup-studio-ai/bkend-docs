@@ -25,14 +25,14 @@ export function EmptyState({
         className
       )}
     >
-      <div className="rounded-full bg-orange-100 p-4 dark:bg-stone-800">
+      <div className="rounded-full bg-muted p-4">
         <Icon className="h-8 w-8 text-orange-500 dark:text-orange-400" />
       </div>
-      <h3 className="mt-4 text-lg font-semibold text-stone-900 dark:text-stone-100">
+      <h3 className="mt-4 text-lg font-semibold text-foreground">
         {title}
       </h3>
       {description && (
-        <p className="mt-2 max-w-sm text-sm text-stone-500 dark:text-stone-400">
+        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
           {description}
         </p>
       )}

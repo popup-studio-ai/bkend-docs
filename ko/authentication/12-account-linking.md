@@ -136,7 +136,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts/check \
   -H "Content-Type: application/json" \
   -H "X-API-Key: {pk_publishable_key}" \
   -d '{
-    "type": "email",
+    "type": "credentials",
     "provider": "email",
     "providerAccountId": "user@example.com"
   }'
@@ -144,8 +144,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts/check \
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `type` | `string` | ✅ | `"email"` 또는 `"oauth"` |
-| `provider` | `string` | ✅ | 제공자 이름 |
+| `type` | `string` | ✅ | `"credentials"` 또는 `"oauth"` |
+| `provider` | `string` | ✅ | 제공자 이름 (예: `"email"`, `"google"`, `"github"`) |
 | `providerAccountId` | `string` | ✅ | 제공자별 고유 ID 또는 이메일 |
 
 **응답:**
@@ -153,7 +153,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts/check \
 ```json
 {
   "exists": true,
-  "accountIds": ["account-uuid-1"]
+  "type": "credentials",
+  "provider": "email"
 }
 ```
 

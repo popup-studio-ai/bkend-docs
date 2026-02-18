@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/dialog";
 import { useCreateMealPlan } from "@/hooks/queries/use-meal-plans";
 import { useRecipes } from "@/hooks/queries/use-recipes";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 import type { MealType } from "@/application/dto/meal-plan.dto";
 import { MEAL_TYPE_LABELS } from "@/application/dto/meal-plan.dto";
 
@@ -51,6 +53,7 @@ export function MealPlanForm({
 }: MealPlanFormProps) {
   const createMealPlan = useCreateMealPlan();
   const { data: recipesData } = useRecipes(1, 50);
+  const { isDemoAccount } = useDemoGuard();
 
   const {
     register,
@@ -85,6 +88,7 @@ export function MealPlanForm({
           <DialogTitle>Add Meal ({date})</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {isDemoAccount && <DemoBanner />}
           {/* Meal type */}
           <div className="space-y-2">
             <Label>Meal Type</Label>
@@ -166,7 +170,7 @@ export function MealPlanForm({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={createMealPlan.isPending}>
+            <Button type="submit" disabled={createMealPlan.isPending || isDemoAccount}>
               {createMealPlan.isPending && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}

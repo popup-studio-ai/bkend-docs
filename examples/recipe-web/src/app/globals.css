@@ -1,34 +1,64 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @layer base {
   :root {
+    --background: 36 33% 97%;
+    --foreground: 30 6% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 30 6% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 6% 10%;
+    --primary: 30 6% 10%;
+    --primary-foreground: 60 9% 96%;
+    --secondary: 37 22% 93%;
+    --secondary-foreground: 30 6% 10%;
+    --muted: 37 22% 93%;
+    --muted-foreground: 25 5% 45%;
+    --accent: 37 22% 93%;
+    --accent-foreground: 30 6% 10%;
+    --accent-color: 24.6 95% 53.1%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 32 31% 87%;
+    --input: 32 31% 87%;
+    --ring: 24.6 95% 53.1%;
     --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 30 6% 10%;
+    --foreground: 60 9% 96%;
+    --card: 30 6% 10%;
+    --card-foreground: 60 9% 96%;
+    --popover: 30 6% 10%;
+    --popover-foreground: 60 9% 96%;
+    --primary: 60 9% 96%;
+    --primary-foreground: 30 6% 10%;
+    --secondary: 30 6% 15%;
+    --secondary-foreground: 60 9% 96%;
+    --muted: 30 6% 15%;
+    --muted-foreground: 24 5% 64%;
+    --accent: 30 6% 15%;
+    --accent-foreground: 60 9% 96%;
+    --accent-color: 20.5 90.2% 48.2%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 24 5% 32%;
+    --input: 24 5% 32%;
+    --ring: 20.5 90.2% 48.2%;
   }
 }
 
 @layer base {
   * {
-    @apply border-orange-200;
+    @apply border-border;
   }
-
   body {
-    @apply bg-amber-50 text-stone-900 antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: "Pretendard Variable", Pretendard, -apple-system,
       BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  }
-
-  .dark {
-    --tw-border-opacity: 1;
-  }
-
-  .dark body,
-  .dark {
-    @apply bg-stone-900 text-stone-100;
-  }
-
-  .dark * {
-    @apply border-stone-700;
   }
 }
 
@@ -40,14 +70,134 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-stone-300;
+    border-radius: 9999px;
+    background-color: hsl(var(--muted-foreground) / 0.3);
   }
+}
 
-  .dark ::-webkit-scrollbar-thumb {
-    @apply bg-stone-600;
-  }
+@utility bg-background {
+  background-color: hsl(var(--background));
+}
+
+@utility text-foreground {
+  color: hsl(var(--foreground));
+}
+
+@utility bg-card {
+  background-color: hsl(var(--card));
+}
+
+@utility text-card-foreground {
+  color: hsl(var(--card-foreground));
+}
+
+@utility bg-popover {
+  background-color: hsl(var(--popover));
+}
+
+@utility text-popover-foreground {
+  color: hsl(var(--popover-foreground));
+}
+
+@utility bg-primary {
+  background-color: hsl(var(--primary));
+}
+
+@utility text-primary {
+  color: hsl(var(--primary));
+}
+
+@utility text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
+
+@utility bg-secondary {
+  background-color: hsl(var(--secondary));
+}
+
+@utility text-secondary-foreground {
+  color: hsl(var(--secondary-foreground));
+}
+
+@utility bg-muted {
+  background-color: hsl(var(--muted));
+}
+
+@utility text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+@utility bg-accent {
+  background-color: hsl(var(--accent));
+}
+
+@utility text-accent-foreground {
+  color: hsl(var(--accent-foreground));
+}
+
+@utility text-accent-color {
+  color: hsl(var(--accent-color));
+}
+
+@utility bg-accent-color {
+  background-color: hsl(var(--accent-color));
+}
+
+@utility bg-destructive {
+  background-color: hsl(var(--destructive));
+}
+
+@utility text-destructive {
+  color: hsl(var(--destructive));
+}
+
+@utility text-destructive-foreground {
+  color: hsl(var(--destructive-foreground));
+}
+
+@utility border-border {
+  border-color: hsl(var(--border));
+}
+
+@utility border-input {
+  border-color: hsl(var(--input));
+}
+
+@utility ring-ring {
+  --tw-ring-color: hsl(var(--ring));
+}
+
+@utility ring-offset-background {
+  --tw-ring-offset-color: hsl(var(--background));
+}
+
+@utility bg-gradient-brand {
+  background: linear-gradient(135deg, hsl(24.6 95% 53.1%) 0%, hsl(37.7 92.1% 50.2%) 100%);
+}
+
+@utility bg-gradient-brand-subtle {
+  background: linear-gradient(135deg, hsl(24.6 95% 53.1% / 0.08) 0%, hsl(37.7 92.1% 50.2% / 0.08) 100%);
+}
+
+@utility text-gradient-brand {
+  background: linear-gradient(135deg, hsl(24.6 95% 53.1%) 0%, hsl(37.7 92.1% 50.2%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility bg-success {
+  background-color: hsl(142 76% 36%);
+}
+
+@utility text-success {
+  color: hsl(142 76% 36%);
+}
+
+@utility border-success {
+  border-color: hsl(142 76% 36% / 0.3);
 }

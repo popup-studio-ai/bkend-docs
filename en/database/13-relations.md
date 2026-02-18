@@ -1,7 +1,7 @@
 # Table Relations
 
 {% hint style="info" %}
-Learn how to design relations between tables and efficiently query related data in bkend.
+💡 Learn how to design relations between tables and efficiently query related data in bkend.
 {% endhint %}
 
 ## Overview
@@ -208,7 +208,7 @@ async function getPostWithComments(postId) {
 {% endtabs %}
 
 {% hint style="warning" %}
-The reference pattern requires multiple API calls. Where performance matters, use parallel calls (`Promise.all`) whenever possible.
+⚠️ The reference pattern requires multiple API calls. Where performance matters, use parallel calls (`Promise.all`) whenever possible.
 {% endhint %}
 
 ### Parallel Query Optimization
@@ -242,7 +242,7 @@ async function getPostListWithCommentCounts() {
 ```
 
 {% hint style="info" %}
-When you only need the comment count, query with `limit=1` to get the total from `pagination.total`. This minimizes the actual comment data transferred and reduces network cost.
+💡 When you only need the comment count, query with `limit=1` to get the total from `pagination.total`. This minimizes the actual comment data transferred and reduces network cost.
 {% endhint %}
 
 ***
@@ -370,7 +370,7 @@ When you configure `self` in the table permissions, the user's own data is **aut
 | `self.delete = true` | Only own data can be deleted |
 
 {% hint style="info" %}
-`self` permissions are enforced server-side. Even if a client bypasses the filter, they cannot access another user's data, ensuring security.
+💡 `self` permissions are enforced server-side. Even if a client bypasses the filter, they cannot access another user's data, ensuring security.
 {% endhint %}
 
 ***
@@ -409,7 +409,7 @@ reviews table:  { id, productId, rating, text, createdBy }
 Be aware of the **N+1 problem** in the reference pattern, where an additional API call is made for each item in a list.
 
 {% hint style="warning" %}
-Fetching a list of 20 items + querying related data for each = 21 total API calls. Use `Promise.all` for parallel processing or embed frequently needed fields to reduce call count.
+⚠️ Fetching a list of 20 items + querying related data for each = 21 total API calls. Use `Promise.all` for parallel processing or embed frequently needed fields to reduce call count.
 {% endhint %}
 
 ### 4. Hybrid approach

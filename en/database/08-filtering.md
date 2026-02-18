@@ -1,11 +1,11 @@
 # Filtering
 
 {% hint style="info" %}
-Find exactly the data you need using AND/OR filters and search.
+💡 Find exactly the data you need using AND/OR filters and search.
 {% endhint %}
 
 {% hint style="info" %}
-**API used in this document**
+💡 **API used in this document**
 
 | Endpoint | Method | Auth | Description |
 |----------|:------:|:----:|-------------|
@@ -197,7 +197,7 @@ const url = `/v1/data/users?andFilters={"status":"active"}`;
 {% endtabs %}
 
 {% hint style="warning" %}
-The values for `andFilters` and `orFilters` must be URL-encoded JSON strings. Without encoding, the parameters will not be parsed correctly.
+⚠️ The values for `andFilters` and `orFilters` must be URL-encoded JSON strings. Without encoding, the parameters will not be parsed correctly.
 {% endhint %}
 
 ## Next Steps

@@ -1,7 +1,7 @@
 # Account Deletion
 
 {% hint style="info" %}
-Users can delete their account to withdraw from the service.
+💡 Users can delete their account to withdraw from the service.
 {% endhint %}
 
 ## Overview
@@ -43,7 +43,7 @@ if (response.ok) {
 {% endtabs %}
 
 {% hint style="danger" %}
-**Warning** -- Account deletion is irreversible. Prompt the User for confirmation before proceeding.
+🚨 **Warning** -- Account deletion is irreversible. Prompt the User for confirmation before proceeding.
 {% endhint %}
 
 ***

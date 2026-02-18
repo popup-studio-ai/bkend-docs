@@ -78,7 +78,7 @@ const { items, pagination } = await response.json();
   "items": [
     {
       "id": "file-uuid-1234",
-      "s3Key": "files/a1b2c3d4/profile.jpg",
+      "s3Key": "{server_generated_key}",
       "originalName": "profile.jpg",
       "mimeType": "image/jpeg",
       "size": 1048576,
@@ -133,9 +133,9 @@ curl -X GET "https://api-client.bkend.ai/v1/files?search=profile" \
 
 | 사용자 | 조회 범위 |
 |--------|----------|
-| `admin` | 모든 파일 |
 | 소유자 | 본인 파일 전체 필드 |
-| 비소유자 | 공개 필드만 |
+| 인증된 사용자 | 본인 파일 + 공개/보호 파일 |
+| 비소유자 | 파일의 `visibility` 설정에 따라 다름 |
 
 ***
 

@@ -102,10 +102,10 @@ curl -X POST https://api-client.bkend.ai/v1/data/carts \
 ```javascript
 const cartItem = await bkendFetch('/v1/data/carts', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     productId: 'product_abc123',
     quantity: 2,
-  }),
+  },
 });
 
 console.log('장바구니에 추가:', cartItem);
@@ -230,9 +230,9 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/carts/{cart_item_id} \
 ```javascript
 const updated = await bkendFetch(`/v1/data/carts/${cartItemId}`, {
   method: 'PATCH',
-  body: JSON.stringify({
+  body: {
     quantity: 3,
-  }),
+  },
 });
 
 console.log('수량 변경 완료:', updated);
@@ -341,9 +341,9 @@ flowchart LR
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `INVALID_INPUT` | 필수 필드 누락 | productId, quantity 확인 |
-| 401 | `UNAUTHORIZED` | 인증 실패 | Access Token 확인 |
-| 404 | `NOT_FOUND` | 장바구니 항목 없음 | 장바구니 항목 ID 확인 |
+| 400 | `data/validation-error` | 필수 필드 누락 | productId, quantity 확인 |
+| 401 | `common/authentication-required` | 인증 실패 | Access Token 확인 |
+| 404 | `data/not-found` | 장바구니 항목 없음 | 장바구니 항목 ID 확인 |
 
 ***
 

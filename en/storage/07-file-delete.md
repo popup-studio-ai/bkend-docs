@@ -1,11 +1,11 @@
 # File Deletion
 
 {% hint style="info" %}
-Delete registered files.
+💡 Delete registered files.
 {% endhint %}
 
 {% hint style="info" %}
-**Before you start** — You need the following to proceed:
+💡 **Before you start** — You need the following to proceed:
 - [Project creation](../getting-started/02-quickstart.md) completed
 - User authentication completed (JWT token required — all file APIs require authentication)
 {% endhint %}
@@ -60,25 +60,22 @@ if (response.ok) {
 ### Response (200 OK)
 
 ```json
-{
-  "success": true
-}
+{}
 ```
 
 {% hint style="danger" %}
-**Warning** — Deleted files cannot be recovered. Prompt the user for confirmation before deleting.
+🚨 **Warning** — Deleted files cannot be recovered. Prompt the user for confirmation before deleting.
 {% endhint %}
 
 ***
 
 ## Permissions
 
-Only the file owner or an admin can delete files.
+Only the file owner can delete files.
 
 | User | Can Delete |
 |------|:----------:|
 | File owner | ✅ |
-| `admin` | ✅ |
 | Non-owner | ❌ |
 
 ***
@@ -106,7 +103,7 @@ async function deleteFile(fileId) {
     method: 'DELETE',
   });
 
-  return result; // { success: true }
+  return result; // {}
 }
 
 // Delete with confirmation
@@ -138,7 +135,7 @@ if (result.success) {
 ```
 
 {% hint style="info" %}
-For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
+💡 For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
 {% endhint %}
 
 ***

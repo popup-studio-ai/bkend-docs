@@ -1,26 +1,33 @@
 "use client";
 
+import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "./keys";
 import { signUp, signIn, getMe, googleCallback } from "@/lib/api/auth";
 import { tokenStorage } from "@/infrastructure/storage/token-storage";
 import { useAuthStore } from "@/stores/auth-store";
+import { useCartStore } from "@/stores/cart-store";
 import type { SignInRequest, GoogleCallbackRequest } from "@/application/dto/auth.dto";
 
 export function useMe() {
   const hasToken = typeof window !== "undefined" && tokenStorage.hasTokens();
   const setUser = useAuthStore((s) => s.setUser);
 
-  return useQuery({
+  const query = useQuery({
     queryKey: queryKeys.auth.me(),
     queryFn: getMe,
     enabled: hasToken,
     retry: false,
     staleTime: 5 * 60 * 1000,
-    onSuccess: (user) => {
-      setUser(user);
-    },
   });
+
+  useEffect(() => {
+    if (query.data) {
+      setUser(query.data);
+    }
+  }, [query.data, setUser]);
+
+  return query;
 }
 
 export function useSignIn() {
@@ -79,11 +86,13 @@ export function useGoogleCallback() {
 export function useSignOut() {
   const queryClient = useQueryClient();
   const clearUser = useAuthStore((s) => s.clearUser);
+  const resetCart = useCartStore((s) => s.setItemCount);
 
   return () => {
     tokenStorage.clearTokens();
     clearUser();
+    resetCart(0);
     queryClient.clear();
-    window.location.href = "/sign-in";
+    window.location.href = "/";
   };
 }

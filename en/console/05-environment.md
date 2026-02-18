@@ -1,7 +1,7 @@
 # Environment Management
 
 {% hint style="info" %}
-An Environment is a unit of data isolation. This guide explains how to create and manage dev, staging, and prod environments.
+💡 An Environment is a unit of data isolation. This guide explains how to create and manage dev, staging, and prod environments.
 {% endhint %}
 
 ## Overview
@@ -13,30 +13,37 @@ Environments isolate data within a project. You can create separate development 
 ## Viewing the Environment List
 
 1. Click **Environments** in the project-level sidebar.
-2. View all environments in the current project.
+2. View all environments in the current project as cards.
+
+Each environment card displays the following information.
 
 | Displayed Info | Description |
 |----------------|-------------|
 | **Environment Name** | dev, staging, prod, etc. |
-| **Type** | Development / Staging / Production / Custom |
-| **Status** | Creating / Ready / Active / Failed / Deleting |
+| **Type** | dev / staging / prod / custom |
+| **Cloud Provider** | Cloud provider (e.g., AWS) |
+| **Region** | Deployment region (e.g., ap-northeast-2) |
+| **Cluster** | Cluster assignment (non-dev environments only) |
 | **Created At** | Date and time the environment was created |
 
 ***
 
 ## Creating an Environment
 
-1. Click the **Create Environment** button in the environment list.
-2. Enter the environment name (e.g., `staging`).
-3. Click **Create**.
-
 {% hint style="warning" %}
-Environment provisioning takes approximately 30 seconds. Wait until it reaches **Active** status.
+⚠️ The **Create Environment** button is currently disabled. A `dev` environment is automatically created when a project is created. Additional environment creation (staging, production) will be available in a future update.
 {% endhint %}
 
-{% hint style="warning" %}
-⚠️ On the **Free plan**, only the `dev` environment can be created. Upgrade to a paid plan if you need `staging` or `production` environments.
+***
+
+## Deleting an Environment
+
+{% hint style="danger" %}
+🚨 **Danger** — Deleting an environment permanently removes all tables, data, users, and files within it. This action cannot be undone.
 {% endhint %}
+
+1. Click the **Delete** button on the environment card.
+2. Confirm the deletion in the dialog.
 
 ***
 
@@ -45,7 +52,7 @@ Environment provisioning takes approximately 30 seconds. Wait until it reaches *
 Use the environment selector tabs at the top of the console to switch between environments. When you switch environments, the tables, Users, and file data for that environment are displayed.
 
 {% hint style="warning" %}
-Data is completely isolated between environments. Tables and data created in the `dev` environment do not exist in the `prod` environment.
+⚠️ Data is completely isolated between environments. Tables and data created in the `dev` environment do not exist in the `prod` environment.
 {% endhint %}
 
 ***

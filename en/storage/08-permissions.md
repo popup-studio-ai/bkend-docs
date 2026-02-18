@@ -1,7 +1,7 @@
 # File Access Permissions
 
 {% hint style="info" %}
-Understand visibility-based and owner-based access control for files.
+💡 Understand visibility-based and owner-based access control for files.
 {% endhint %}
 
 ## Overview
@@ -17,7 +17,7 @@ Determines the access scope of a file.
 | Visibility | Description | Accessible By |
 |-----------|-------------|---------------|
 | `public` | Public | All users |
-| `private` | Private (default) | Owner, admin |
+| `private` | Private (default) | Owner only |
 | `protected` | Protected | Authenticated users |
 | `shared` | Shared | Designated users |
 
@@ -77,10 +77,8 @@ Owner information is automatically set when registering file metadata.
 
 ```mermaid
 flowchart TD
-    A[File retrieval request] --> B{admin role?}
-    B -->|Yes| C[Return all fields]
-    B -->|No| D{File owner?}
-    D -->|Yes| C
+    A[File retrieval request] --> D{File owner?}
+    D -->|Yes| C[Return all fields]
     D -->|No| E{visibility?}
     E -->|public| F[Return public fields only]
     E -->|protected| G{Authenticated?}
@@ -94,11 +92,11 @@ flowchart TD
 
 ### File Modification/Deletion
 
-| Action | admin | Owner | Non-owner |
-|--------|:-----:|:-----:|:---------:|
-| View | ✅ All fields | ✅ All fields | Depends on visibility |
-| Edit | ✅ | ✅ | ❌ |
-| Delete | ✅ | ✅ | ❌ |
+| Action | Owner | Non-owner |
+|--------|:-----:|:---------:|
+| View | ✅ All fields | Depends on visibility |
+| Edit | ✅ | ❌ |
+| Delete | ✅ | ❌ |
 
 ***
 
@@ -108,7 +106,6 @@ RLS (Row Level Security) is automatically applied when listing files (`GET /v1/f
 
 | User | Visible Scope |
 |------|---------------|
-| `admin` | All files |
 | Authenticated user | Own files + public/protected files |
 | Unauthenticated user | Public files only |
 
@@ -155,7 +152,7 @@ await uploadFile({
 ***
 
 {% hint style="warning" %}
-Files uploaded with `public` visibility are accessible to anyone who knows the URL. Always set sensitive files to `private`.
+⚠️ Files uploaded with `public` visibility are accessible to anyone who knows the URL. Always set sensitive files to `private`.
 {% endhint %}
 
 ## Next Steps

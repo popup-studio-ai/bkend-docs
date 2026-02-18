@@ -5,6 +5,7 @@ import { Upload, X, Loader2, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUploadFile } from "@/hooks/queries/use-files";
 import { cn } from "@/lib/utils";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 interface ImageUploadProps {
   currentUrl?: string;
@@ -56,9 +57,9 @@ export function ImageUpload({ currentUrl, onUpload, className }: ImageUploadProp
       {preview ? (
         <div className="relative inline-block">
           <img
-            src={preview}
+            src={getOptimizedImageUrl(preview, IMAGE_PRESETS.thumbnail)}
             alt="Preview"
-            className="h-40 w-40 rounded-md border border-slate-200 object-cover dark:border-slate-700"
+            className="h-40 w-40 rounded-md border border-border object-cover"
           />
           <Button
             variant="destructive"
@@ -78,7 +79,7 @@ export function ImageUpload({ currentUrl, onUpload, className }: ImageUploadProp
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-slate-300 text-slate-400 transition-colors hover:border-slate-400 hover:text-slate-500 dark:border-slate-600 dark:text-slate-500 dark:hover:border-slate-500"
+          className="flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-border text-muted-foreground transition-colors hover:border-muted-foreground hover:text-foreground"
         >
           {uploadFile.isPending ? (
             <Loader2 className="h-6 w-6 animate-spin" />

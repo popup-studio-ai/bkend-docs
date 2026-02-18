@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { useChangePassword } from "@/hooks/queries/use-users";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +34,7 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 export function PasswordForm() {
   const { addToast } = useToast();
   const changePassword = useChangePassword();
+  const { isDemoAccount } = useDemoGuard();
 
   const {
     register,
@@ -85,6 +88,8 @@ export function PasswordForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {isDemoAccount && <DemoBanner />}
+
       <div className="space-y-2">
         <Label htmlFor="currentPassword">Current Password</Label>
         <Input
@@ -139,7 +144,7 @@ export function PasswordForm() {
       </div>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting || isDemoAccount}>
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

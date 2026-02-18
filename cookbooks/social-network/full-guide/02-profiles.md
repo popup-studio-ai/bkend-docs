@@ -176,7 +176,7 @@ const checkProfile = async (userId) => {
 const createProfile = async ({ nickname, bio, userId }) => {
   return bkendFetch('/v1/data/profiles', {
     method: 'POST',
-    body: JSON.stringify({ nickname, bio, userId }),
+    body: { nickname, bio, userId },
   });
 };
 ```
@@ -300,7 +300,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/profiles/{profileId} \
 const updateProfile = async (profileId, updates) => {
   return bkendFetch(`/v1/data/profiles/${profileId}`, {
     method: 'PATCH',
-    body: JSON.stringify(updates),
+    body: updates,
   });
 };
 
@@ -328,7 +328,7 @@ sequenceDiagram
 
     U->>A: 프로필 사진 선택
     A->>B: POST /v1/files/presigned-url
-    B-->>A: { url }
+    B-->>A: { url, key }
     A->>B: PUT url (파일 업로드)
     A->>B: PATCH /v1/data/profiles/{id}
     Note over A,B: avatarUrl 설정
@@ -368,7 +368,10 @@ curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
 
 ```json
 {
-  "url": "https://storage.example.com/upload?signature=..."
+  "url": "https://storage.example.com/upload?signature=...",
+  "key": "{file_key}",
+  "filename": "avatar.jpg",
+  "contentType": "image/jpeg"
 }
 ```
 
@@ -398,14 +401,14 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/profiles/{profileId} \
 // 아바타 업로드 전체 흐름
 const uploadAvatar = async (file, profileId) => {
   // 1. Presigned URL 발급
-  const { url } = await bkendFetch(
+  const { url, key } = await bkendFetch(
     '/v1/files/presigned-url',
     {
       method: 'POST',
-      body: JSON.stringify({
+      body: {
         filename: file.name,
         contentType: file.type,
-      }),
+      },
     }
   );
 
@@ -419,7 +422,7 @@ const uploadAvatar = async (file, profileId) => {
   // 3. 프로필에 아바타 URL 연결
   return bkendFetch(`/v1/data/profiles/${profileId}`, {
     method: 'PATCH',
-    body: JSON.stringify({ avatarUrl: '{업로드된 파일의 URL}' }),
+    body: { avatarUrl: '{업로드된 파일의 URL}' },
   });
 };
 ```

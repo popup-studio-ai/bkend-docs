@@ -1,7 +1,7 @@
 # Email Template Customization
 
 {% hint style="info" %}
-Customize the design and content of authentication emails such as sign-up verification and password reset.
+💡 Customize the design and content of authentication emails such as sign-up verification and password reset.
 {% endhint %}
 
 ## Overview

@@ -60,7 +60,7 @@ export function SignUpForm() {
   };
 
   return (
-    <Card className="w-full max-w-md border-orange-200 dark:border-stone-700">
+    <Card className="w-full max-w-md">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Sign Up</CardTitle>
         <CardDescription>
@@ -79,7 +79,7 @@ export function SignUpForm() {
               {...register("name")}
             />
             {errors.name && (
-              <p className="text-xs text-red-500">{errors.name.message}</p>
+              <p className="text-xs text-destructive">{errors.name.message}</p>
             )}
           </div>
 
@@ -93,7 +93,7 @@ export function SignUpForm() {
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-xs text-red-500">{errors.email.message}</p>
+              <p className="text-xs text-destructive">{errors.email.message}</p>
             )}
           </div>
 
@@ -107,7 +107,7 @@ export function SignUpForm() {
               {...register("password")}
             />
             {errors.password && (
-              <p className="text-xs text-red-500">{errors.password.message}</p>
+              <p className="text-xs text-destructive">{errors.password.message}</p>
             )}
           </div>
 
@@ -121,14 +121,14 @@ export function SignUpForm() {
               {...register("confirmPassword")}
             />
             {errors.confirmPassword && (
-              <p className="text-xs text-red-500">
+              <p className="text-xs text-destructive">
                 {errors.confirmPassword.message}
               </p>
             )}
           </div>
 
           {signUp.isError && (
-            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+            <div className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive">
               {(signUp.error as Error)?.message || "Sign up failed."}
             </div>
           )}
@@ -145,11 +145,11 @@ export function SignUpForm() {
           </Button>
         </form>
 
-        <div className="mt-4 text-center text-sm text-stone-500 dark:text-stone-400">
+        <div className="mt-4 text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <Link
             href="/sign-in"
-            className="text-orange-600 hover:underline dark:text-orange-400"
+            className="text-accent-color hover:underline"
           >
             Sign In
           </Link>

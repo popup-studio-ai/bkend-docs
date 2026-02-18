@@ -64,7 +64,7 @@ export function RecipeSearch({
 
   return (
     <div className={cn("relative", className)}>
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-stone-500" />
+      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         ref={inputRef}
         value={localValue}
@@ -80,12 +80,12 @@ export function RecipeSearch({
               handleChange("");
               inputRef.current?.focus();
             }}
-            className="rounded-sm p-0.5 text-stone-400 hover:text-stone-700 dark:text-stone-500 dark:hover:text-stone-300"
+            className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
           >
             <X className="h-3.5 w-3.5" />
           </button>
         )}
-        <kbd className="pointer-events-none hidden h-5 select-none items-center gap-0.5 rounded border border-orange-200 bg-orange-50 px-1.5 font-mono text-[10px] font-medium text-stone-400 sm:flex dark:border-stone-600 dark:bg-stone-700 dark:text-stone-400">
+        <kbd className="pointer-events-none hidden h-5 select-none items-center gap-0.5 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground sm:flex">
           <span className="text-xs">&#8984;</span>K
         </kbd>
       </div>

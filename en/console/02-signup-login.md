@@ -1,7 +1,7 @@
 # Console Sign Up & Login
 
 {% hint style="info" %}
-This guide walks you through signing up and logging in to the bkend console.
+💡 This guide walks you through signing up and logging in to the bkend console.
 {% endhint %}
 
 ## Overview
@@ -45,7 +45,7 @@ The bkend console supports social login (Google, GitHub) and magic link authenti
 {% endtabs %}
 
 {% hint style="success" %}
-Your account is automatically created on your first login. There is no separate sign-up process.
+✅ Your account is automatically created on your first login. There is no separate sign-up process.
 {% endhint %}
 
 ***
@@ -56,7 +56,7 @@ Your account is automatically created on your first login. There is no separate 
 2. Log in using the same method you used when signing up.
 
 {% hint style="warning" %}
-Magic links are only valid for a limited time after being sent. If expired, request a new one.
+⚠️ Magic links are only valid for a limited time after being sent. If expired, request a new one.
 {% endhint %}
 
 ***

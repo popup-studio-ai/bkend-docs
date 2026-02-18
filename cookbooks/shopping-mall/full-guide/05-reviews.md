@@ -108,12 +108,12 @@ curl -X POST https://api-client.bkend.ai/v1/data/reviews \
 ```javascript
 const review = await bkendFetch('/v1/data/reviews', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     productId: 'product_abc123',
     orderId: 'order_xyz789',
     rating: 5,
     content: '품질이 정말 좋아요! 면 소재가 부드럽고 핏도 편합니다.',
-  }),
+  },
 });
 
 console.log('리뷰 작성 완료:', review);
@@ -341,10 +341,10 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/reviews/{review_id} \
 ```javascript
 const updated = await bkendFetch(`/v1/data/reviews/${reviewId}`, {
   method: 'PATCH',
-  body: JSON.stringify({
+  body: {
     rating: 4,
     content: '전체적으로 만족합니다. 다만 사이즈가 약간 크네요.',
-  }),
+  },
 });
 
 console.log('리뷰 수정 완료:', updated);
@@ -435,9 +435,9 @@ products.forEach(p => {
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `INVALID_INPUT` | 필수 필드 누락 또는 잘못된 값 | productId, orderId, rating(1~5), content 확인 |
-| 401 | `UNAUTHORIZED` | 인증 실패 | Access Token 확인 |
-| 404 | `NOT_FOUND` | 리뷰 없음 | 리뷰 ID 확인 |
+| 400 | `data/validation-error` | 필수 필드 누락 또는 잘못된 값 | productId, orderId, rating(1~5), content 확인 |
+| 401 | `common/authentication-required` | 인증 실패 | Access Token 확인 |
+| 404 | `data/not-found` | 리뷰 없음 | 리뷰 ID 확인 |
 
 ***
 

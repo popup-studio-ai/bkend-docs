@@ -1,11 +1,11 @@
 # File Download
 
 {% hint style="info" %}
-Obtain a Presigned URL to download files.
+💡 Obtain a Presigned URL to download files.
 {% endhint %}
 
 {% hint style="info" %}
-**Before you start** — You need the following to proceed:
+💡 **Before you start** — You need the following to proceed:
 - [Project creation](../getting-started/02-quickstart.md) completed
 - User authentication completed (JWT token required — all file APIs require authentication)
 {% endhint %}
@@ -88,7 +88,7 @@ const { url, filename, contentType, size, expiresAt } = await response.json();
 | `expiresAt` | `string` | URL expiration time (ISO 8601) |
 
 {% hint style="warning" %}
-Download URLs have an expiration time. Start the download before `expiresAt`.
+⚠️ Download URLs have an expiration time. Start the download before `expiresAt`.
 {% endhint %}
 
 ***
@@ -208,13 +208,18 @@ await previewImage(fileId, img);
 ```
 
 {% hint style="info" %}
-For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
+💡 For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
 {% endhint %}
 
 ***
 
 ## Next Steps
 
+{% hint style="info" %}
+💡 For `public` images, you can use `img.bkend.ai` CDN URLs to resize and convert formats instead of Presigned URLs. See [Image Optimization](11-image-optimization.md).
+{% endhint %}
+
 - [File List](05-file-list.md) — Search for files to download
 - [File Access Permissions](08-permissions.md) — Configure download permissions
 - [Single File Upload](02-upload-single.md) — Upload files
+- [Image Optimization](11-image-optimization.md) — CDN optimization for public images

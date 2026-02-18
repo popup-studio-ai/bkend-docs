@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { StarRating } from "./star-rating";
 import { useCreateCookingLog } from "@/hooks/queries/use-cooking-logs";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 
 interface CookingLogFormProps {
   recipeId: string;
@@ -16,6 +18,7 @@ export function CookingLogForm({ recipeId }: CookingLogFormProps) {
   const [rating, setRating] = useState(0);
   const [notes, setNotes] = useState("");
   const createCookingLog = useCreateCookingLog();
+  const { isDemoAccount } = useDemoGuard();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,11 +36,12 @@ export function CookingLogForm({ recipeId }: CookingLogFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {isDemoAccount && <DemoBanner />}
       <div className="space-y-2">
         <Label>Rating</Label>
         <StarRating value={rating} onChange={setRating} size="lg" />
         {rating === 0 && (
-          <p className="text-xs text-stone-400">Please select a rating</p>
+          <p className="text-xs text-muted-foreground">Please select a rating</p>
         )}
       </div>
 
@@ -55,7 +59,7 @@ export function CookingLogForm({ recipeId }: CookingLogFormProps) {
 
       <Button
         type="submit"
-        disabled={rating === 0 || createCookingLog.isPending}
+        disabled={rating === 0 || createCookingLog.isPending || isDemoAccount}
         className="w-full"
       >
         {createCookingLog.isPending ? (

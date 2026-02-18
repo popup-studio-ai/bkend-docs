@@ -1,7 +1,7 @@
 # API Key Management
 
 {% hint style="info" %}
-This guide explains how to issue and manage API Keys for calling the REST API.
+💡 This guide explains how to issue and manage API Keys for calling the REST API.
 {% endhint %}
 
 ## Overview
@@ -27,10 +27,10 @@ The page is divided into two sections:
 
 1. In the **Publishable Keys** section, click the **Add Key** button.
 2. Enter a name (e.g., `my-app-key`) and click **Create**.
-3. The key is displayed. Copy it immediately.
+3. The key is created and added to the list.
 
-{% hint style="danger" %}
-**Danger** — The key is only shown once at creation time. If lost, you must delete it and create a new one.
+{% hint style="info" %}
+💡 Publishable Keys are always visible in the list and can be copied at any time by clicking the key value.
 {% endhint %}
 
 ***
@@ -39,10 +39,14 @@ The page is divided into two sections:
 
 1. In the **Secret Keys** section, click the **Add Key** button.
 2. Enter a name (e.g., `server-key`) and click **Create**.
-3. The key is displayed. Copy it immediately.
+3. The full key value is displayed once with a highlight. Copy it immediately.
+
+{% hint style="danger" %}
+🚨 **Danger** — Secret Key values are only shown once at creation time. After navigating away, only a masked version is displayed. If lost, you must delete the key and create a new one.
+{% endhint %}
 
 {% hint style="warning" %}
-Secret Keys (`sk_` prefix) must never be exposed to the client. Use them only in server-side environments.
+⚠️ Secret Keys (`sk_` prefix) must never be exposed to the client. Use them only in server-side environments.
 {% endhint %}
 
 ***
@@ -75,10 +79,11 @@ The API Keys page displays all keys for the current environment.
 
 1. Find the key you want to delete in the list.
 2. Click the **Delete** button.
-3. After confirmation, the key is immediately invalidated.
+3. Enter the key name in the confirmation dialog and click **Confirm Delete**.
+4. The key is immediately invalidated.
 
 {% hint style="warning" %}
-Deleting a key causes API calls to fail for all apps using it. Replace the key in your apps before deleting.
+⚠️ Deleting a key causes API calls to fail for all apps using it. Replace the key in your apps before deleting.
 {% endhint %}
 
 ***

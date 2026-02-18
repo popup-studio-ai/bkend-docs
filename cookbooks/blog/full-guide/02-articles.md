@@ -469,6 +469,68 @@ await bkendFetch(`/v1/data/articles/${articleId}`, {
 
 ***
 
+## 공개/비공개 흐름
+
+`isPublished` 필드를 활용하여 비로그인 사용자에게는 공개 글만 보여주고, 로그인한 작성자에게는 드래프트도 표시할 수 있습니다.
+
+```mermaid
+flowchart TD
+    A["사용자 접속"] --> B{"로그인 여부"}
+    B -- "비로그인" --> C["공개 글만 조회<br/>andFilters: isPublished=true<br/>인증 헤더 없이 호출"]
+    B -- "로그인" --> D["내 글 전체 조회<br/>andFilters: createdBy=userId<br/>인증 헤더 포함"]
+    C --> E["타임라인 피드<br/>읽기 전용"]
+    D --> F["개인 대시보드<br/>수정/삭제 가능"]
+```
+
+### 공개 글 목록 조회 (인증 불필요)
+
+{% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"공개된 블로그 글을 최신순으로 보여주세요"
+{% endhint %}
+
+{% endtab %}
+{% tab title="콘솔 + REST API" %}
+
+```bash
+curl -X GET "https://api-client.bkend.ai/v1/data/articles?page=1&limit=10&sortBy=createdAt&sortDirection=desc&andFilters=%7B%22isPublished%22%3Atrue%7D" \
+  -H "X-API-Key: {pk_publishable_key}"
+```
+
+{% hint style="info" %}
+💡 공개 글 조회에는 `Authorization` 헤더가 필요하지 않습니다. `X-API-Key`만 전송하세요.
+{% endhint %}
+
+{% endtab %}
+{% endtabs %}
+
+### 내 글 목록 조회 (인증 필요)
+
+{% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"내가 작성한 글 목록을 보여주세요. 드래프트도 포함해서요."
+{% endhint %}
+
+{% endtab %}
+{% tab title="콘솔 + REST API" %}
+
+```bash
+curl -X GET "https://api-client.bkend.ai/v1/data/articles?page=1&limit=10&sortBy=createdAt&sortDirection=desc&andFilters=%7B%22createdBy%22%3A%22{userId}%22%7D" \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
+```
+
+{% endtab %}
+{% endtabs %}
+
+***
+
 ## 전체 흐름 요약
 
 ```mermaid
@@ -478,6 +540,7 @@ flowchart LR
     C --> D["게시글 목록<br/>GET"]
     D --> E["게시글 수정<br/>PATCH"]
     E --> F["게시글 삭제<br/>DELETE"]
+    F --> G["공개/비공개 관리<br/>isPublished"]
 ```
 
 ***

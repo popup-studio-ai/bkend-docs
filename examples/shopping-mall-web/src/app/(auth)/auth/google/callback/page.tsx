@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Loader2, AlertCircle } from "lucide-react";
@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useGoogleCallback } from "@/hooks/queries/use-auth";
 import { OAUTH_CALLBACK_PATH, OAUTH_STATE_KEY } from "@/lib/constants";
 
-export default function AuthCallbackPage() {
+function CallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const googleCallback = useGoogleCallback();
@@ -83,5 +83,22 @@ export default function AuthCallbackPage() {
         <p className="text-sm text-muted-foreground">Completing Google login...</p>
       </CardContent>
     </Card>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <Card className="w-full border-border">
+          <CardContent className="flex flex-col items-center gap-4 pt-8 pb-8">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">Loading...</p>
+          </CardContent>
+        </Card>
+      }
+    >
+      <CallbackContent />
+    </Suspense>
   );
 }

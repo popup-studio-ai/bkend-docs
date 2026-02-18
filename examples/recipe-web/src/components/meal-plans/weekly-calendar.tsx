@@ -27,6 +27,8 @@ import {
 import { useRecipes } from "@/hooks/queries/use-recipes";
 import type { MealType } from "@/application/dto/meal-plan.dto";
 import { getShortDayName } from "@/lib/format";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 
 const MEAL_TYPES: MealType[] = ["breakfast", "lunch", "dinner", "snack"];
 
@@ -46,6 +48,7 @@ export function WeeklyCalendar() {
     useWeeklyMealPlans(startStr, endStr);
   const { data: recipesData } = useRecipes(1, 100);
   const deleteMealPlan = useDeleteMealPlan();
+  const { isDemoAccount } = useDemoGuard();
 
   const recipeMap = useMemo(() => {
     const map = new Map<string, string>();
@@ -79,6 +82,7 @@ export function WeeklyCalendar() {
   return (
     <PageTransition>
       <div className="space-y-6">
+        {isDemoAccount && <DemoBanner />}
         <PageHeader
           title="Meal Plans"
           description="Plan your weekly meals"
@@ -95,10 +99,10 @@ export function WeeklyCalendar() {
             Prev Week
           </Button>
           <div className="text-center">
-            <p className="text-sm font-semibold text-stone-900 dark:text-stone-100">
+            <p className="text-sm font-semibold text-foreground">
               {format(weekStart, "MMMM yyyy", { locale: enUS })}
             </p>
-            <p className="text-xs text-stone-500 dark:text-stone-400">
+            <p className="text-xs text-muted-foreground">
               {format(weekStart, "M/d")} - {format(weekEnd, "M/d")}
             </p>
           </div>
@@ -134,14 +138,14 @@ export function WeeklyCalendar() {
                 >
                   <CardHeader className="p-3 pb-2">
                     <CardTitle className="text-sm flex items-center justify-between">
-                      <span className="text-stone-500 dark:text-stone-400">
+                      <span className="text-muted-foreground">
                         {day.dayName}
                       </span>
                       <span
                         className={
                           day.isToday
                             ? "text-orange-600 font-bold dark:text-orange-400"
-                            : "text-stone-700 dark:text-stone-300"
+                            : "text-foreground"
                         }
                       >
                         {day.dayNum}
@@ -163,6 +167,7 @@ export function WeeklyCalendar() {
                           }
                           onAdd={() => handleAddMeal(day.date, mealType)}
                           onDelete={handleDeleteMeal}
+                          disabled={isDemoAccount}
                         />
                       );
                     })}

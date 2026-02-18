@@ -1,12 +1,12 @@
 # Table Tools
 
 {% hint style="info" %}
-This page covers the MCP tools for managing tables, fields, indexes, and schema versions.
+💡 This page covers the MCP tools for managing tables, fields, indexes, and schema versions.
 {% endhint %}
 
 ## Overview
 
-Table tools manage your database structure. They handle everything from creating tables to adding fields, configuring indexes, and managing schema versions.
+Table tools manage your database structure. They handle everything from creating tables to adding fields, configuring indexes, and viewing version history.
 
 ```mermaid
 flowchart LR
@@ -22,23 +22,18 @@ flowchart LR
 
 ### backend_table_list
 
-Retrieves the list of tables in an environment.
+Retrieves the list of tables accessible to the current user.
 
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
+| Item | Value |
+|------|-------|
+| Parameters | None (filtered by your Organization automatically) |
 
 ### backend_table_get
 
-Retrieves table details including fields and indexes.
+Retrieves table details including full schema definition and document count.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
 
 ### backend_table_create
@@ -47,61 +42,55 @@ Creates a new table.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `name` | string | Yes | Table name |
-| `fields` | array | Yes | Field array |
+| `body` | object | Yes | Table creation data |
 
-#### fields Array Structure
+#### body Structure
 
 ```json
 {
-  "fields": [
-    {
-      "name": "title",
-      "type": "string",
-      "required": true
-    },
-    {
-      "name": "content",
-      "type": "string",
-      "required": false
-    },
-    {
-      "name": "published",
-      "type": "boolean",
-      "defaultValue": false
+  "body": {
+    "projectId": "proj_xyz789",
+    "environment": "dev",
+    "tableName": "articles",
+    "schema": {
+      "title": { "bsonType": "string" },
+      "content": { "bsonType": "string" },
+      "published": { "bsonType": "bool" }
     }
-  ]
+  }
 }
 ```
 
-#### Supported Field Types
+| Field | Type | Required | Description |
+|-------|------|:--------:|-------------|
+| `projectId` | string | Yes | Project ID |
+| `environment` | string | Yes | Environment name |
+| `tableName` | string | Yes | Table name (max 64 chars) |
+| `schema` | object | Yes | Table schema (BSON schema format) |
+| `displayName` | string | | Display name |
+| `description` | string | | Table description |
 
-| Type | Description | Examples |
-|------|-------------|----------|
-| `string` | String | Name, email, title |
-| `number` | Number | Price, quantity, age |
-| `boolean` | True/false | Active status, visibility |
-| `date` | Date/time | Created date, updated date |
-| `object` | JSON object | Metadata, settings |
-| `array` | JSON array | Tags, categories |
-| `reference` | Reference to another table | Author, category |
+### backend_table_update
 
-### backend_table_delete
-
-Deletes a table.
+Updates table metadata.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
+| `body` | object | | Fields to update |
 
-{% hint style="danger" %}
-Deleting a table permanently removes all data within it. This action cannot be undone.
+```json
+{
+  "tableId": "tbl_abc123",
+  "body": {
+    "displayName": "Blog Articles",
+    "description": "Blog article table"
+  }
+}
+```
+
+{% hint style="info" %}
+💡 To modify table fields, use `backend_field_manage` instead of `backend_table_update`.
 {% endhint %}
 
 ***
@@ -110,42 +99,46 @@ Deleting a table permanently removes all data within it. This action cannot be u
 
 ### backend_field_manage
 
-Adds, updates, or deletes fields in a table.
+Adds, updates, or removes fields in a table. Creates a new schema version.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
-| `action` | string | Yes | `add`, `update`, `delete` |
-| `field` | object | Yes | Field information |
+| `body` | object | | Field management operations |
 
-#### Add Field Example
+#### Add Fields Example
 
 ```json
 {
-  "action": "add",
-  "field": {
-    "name": "email",
-    "type": "string",
-    "required": true,
-    "unique": true
+  "tableId": "tbl_abc123",
+  "body": {
+    "fieldsToAddOrUpdate": {
+      "email": { "bsonType": "string" },
+      "age": { "bsonType": "int" }
+    },
+    "requiredFieldsToAdd": ["email"]
   }
 }
 ```
 
-#### Update Field Example
+#### Remove Fields Example
 
 ```json
 {
-  "action": "update",
-  "field": {
-    "name": "email",
-    "required": false
+  "tableId": "tbl_abc123",
+  "body": {
+    "fieldsToRemove": ["temporaryField"],
+    "requiredFieldsToRemove": ["temporaryField"]
   }
 }
 ```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `fieldsToAddOrUpdate` | object | Fields to add or update (BSON schema format) |
+| `fieldsToRemove` | string[] | Field names to remove |
+| `requiredFieldsToAdd` | string[] | Field names to add to required list |
+| `requiredFieldsToRemove` | string[] | Field names to remove from required list |
 
 ***
 
@@ -153,98 +146,80 @@ Adds, updates, or deletes fields in a table.
 
 ### backend_index_manage
 
-Adds or deletes indexes on a table.
+Adds or removes indexes on a table. Creates a new index version.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
-| `action` | string | Yes | `add`, `delete` |
-| `index` | object | Yes | Index information |
+| `body` | object | | Index management operations |
 
 #### Add Index Example
 
 ```json
 {
-  "action": "add",
-  "index": {
-    "fields": ["email"],
-    "unique": true
+  "tableId": "tbl_abc123",
+  "body": {
+    "indexesToAddOrUpdate": [
+      {
+        "name": "email_unique",
+        "fields": { "email": 1 },
+        "unique": true
+      }
+    ]
   }
 }
 ```
 
+#### Remove Index Example
+
+```json
+{
+  "tableId": "tbl_abc123",
+  "body": {
+    "indexesToRemove": ["email_unique"]
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `indexesToAddOrUpdate` | array | Indexes to add or update |
+| `indexesToRemove` | string[] | Index names to remove |
+
+Each index object:
+
+| Field | Type | Required | Description |
+|-------|------|:--------:|-------------|
+| `name` | string | Yes | Index name |
+| `fields` | object | Yes | Index fields (`1` for ascending, `-1` for descending) |
+| `unique` | boolean | | Whether unique (default: false) |
+| `sparse` | boolean | | Whether sparse (default: false) |
+
 ***
 
-## Schema Version Tools
+## Version Tools
 
-Manage schema change history.
+View the history of schema and index changes.
 
 ### backend_schema_version_list
 
-Retrieves the list of schema versions.
+Retrieves the list of schema versions for a table.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
-
-### backend_schema_version_get
-
-Retrieves the details of a specific schema version.
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `versionId` | string | Yes | Version ID |
-
-### backend_schema_version_apply
-
-Applies (rolls back to) a specific schema version.
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `versionId` | string | Yes | Version ID to apply |
-
-***
-
-## Index Version Tools
-
-Manage index change history.
+| `page` | number | | Page number |
+| `limit` | number | | Items per page |
 
 ### backend_index_version_list
 
-Retrieves the list of index versions.
+Retrieves the list of index versions for a table.
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
 | `tableId` | string | Yes | Table ID |
-
-### backend_index_version_get
-
-Retrieves the details of a specific index version.
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `versionId` | string | Yes | Version ID |
+| `page` | number | | Page number |
+| `limit` | number | | Items per page |
 
 ***
 
@@ -255,23 +230,23 @@ sequenceDiagram
     participant AI as AI Tool
     participant MCP as bkend MCP
 
-    AI->>MCP: backend_table_create (users table)
+    AI->>MCP: backend_table_create (articles table)
     MCP-->>AI: Table created
 
     AI->>MCP: backend_field_manage (add email field)
-    MCP-->>AI: Field added
+    MCP-->>AI: Field added (new schema version)
 
     AI->>MCP: backend_index_manage (unique index on email)
-    MCP-->>AI: Index added
+    MCP-->>AI: Index added (new index version)
 
     AI->>MCP: backend_table_get (verify schema)
-    MCP-->>AI: Table details
+    MCP-->>AI: Table details with full schema
 ```
 
 ***
 
 ## Next Steps
 
-- [Data Tools](05-data-tools.md) — Data CRUD operations
+- [Data Tools](05-data-tools.md) — Data CRUD via REST API
 - [Project Tools](03-project-tools.md) — Environment management
 - [MCP Tools Overview](01-overview.md) — Complete tool classification

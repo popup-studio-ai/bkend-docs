@@ -1,7 +1,7 @@
 # Row Level Security Overview
 
 {% hint style="info" %}
-Control access to your table data at a granular level with Row Level Security (RLS).
+💡 Control access to your table data at a granular level with Row Level Security (RLS).
 {% endhint %}
 
 ## Overview
@@ -57,7 +57,7 @@ You can configure CRUD + List permissions per user group for each table.
 | `guest` | ❌ | ✅ | ❌ | ❌ | ✅ |
 
 {% hint style="warning" %}
-The `admin` group always has full permissions. This cannot be restricted regardless of any configuration.
+⚠️ The `admin` group always has full permissions. This cannot be restricted regardless of any configuration.
 {% endhint %}
 
 ***
@@ -90,7 +90,7 @@ bkend supports two permission modes. Both can be configured through the console 
 | **Expression** | Rule-based expressions that combine groups and conditions | Fine-grained access control |
 
 {% hint style="info" %}
-Both modes are fully compatible. If expression-based permissions are set, they take priority. Otherwise, the boolean permissions are used as a fallback.
+💡 Both modes are fully compatible. If expression-based permissions are set, they take priority. Otherwise, the boolean permissions are used as a fallback.
 {% endhint %}
 
 ### Expression-Based Permissions
@@ -98,17 +98,19 @@ Both modes are fully compatible. If expression-based permissions are set, they t
 Expression-based permissions let you write rules that combine multiple conditions. For example, you can allow access for the `user` group **or** the data owner in a single expression.
 
 ```text
-group:user OR self
+user | self
 ```
 
 Common expressions:
 
 | Expression | Meaning |
 |-----------|---------|
-| `group:user` | Allow authenticated users |
-| `group:guest` | Allow unauthenticated users |
+| `user` | Allow authenticated users |
+| `guest` | Allow unauthenticated users |
 | `self` | Allow the data owner (where `createdBy` matches the requester) |
-| `group:user OR self` | Allow authenticated users and the data owner |
+| `public` | Allow everyone (no authentication required) |
+| `user \| self` | Allow authenticated users or the data owner |
+| `role:moderator` | Allow users with the `moderator` custom role |
 
 > [Writing RLS Policies](05-rls-policies.md) -- Expression examples and configuration
 
@@ -133,7 +135,7 @@ Row filters automatically restrict which rows a user can access based on conditi
 Tables whose names start with `_` are system tables.
 
 {% hint style="warning" %}
-System tables are accessible only to the `admin` group by default. If no permissions are configured, `user` and `guest` access is blocked.
+⚠️ System tables are accessible only to the `admin` group by default. If no permissions are configured, `user` and `guest` access is blocked.
 {% endhint %}
 
 ***

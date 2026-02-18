@@ -1,11 +1,11 @@
 # File Metadata Management
 
 {% hint style="info" %}
-Register and manage file metadata. You must register metadata after uploading a file.
+💡 Register and manage file metadata. You must register metadata after uploading a file.
 {% endhint %}
 
 {% hint style="info" %}
-**Before you start** — You need the following to proceed:
+💡 **Before you start** — You need the following to proceed:
 - [Project creation](../getting-started/02-quickstart.md) completed
 - User authentication completed (JWT token required — all file APIs require authentication)
 {% endhint %}
@@ -103,7 +103,7 @@ console.log(fileData.id); // File ID
 ```json
 {
   "id": "file-uuid-1234",
-  "s3Key": "files/a1b2c3d4/profile.jpg",
+  "s3Key": "{server_generated_key}",
   "originalName": "profile.jpg",
   "mimeType": "image/jpeg",
   "size": 1048576,
@@ -136,7 +136,7 @@ curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
 ```json
 {
   "id": "file-uuid-1234",
-  "s3Key": "files/a1b2c3d4/profile.jpg",
+  "s3Key": "{server_generated_key}",
   "originalName": "profile.jpg",
   "mimeType": "image/jpeg",
   "size": 1048576,
@@ -152,7 +152,7 @@ curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
 ```
 
 {% hint style="info" %}
-When a non-owner retrieves a file, only public fields are returned. Admins (`admin`) can view all fields.
+💡 When a non-owner retrieves a file, only public fields are returned depending on the file's `visibility` setting.
 {% endhint %}
 
 ***
@@ -185,10 +185,22 @@ curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
 
 ### Response (200 OK)
 
+Returns the updated file metadata object.
+
 ```json
 {
   "id": "file-uuid-1234",
-  "updatedAt": "2025-01-15T14:20:00.000Z"
+  "s3Key": "{server_generated_key}",
+  "originalName": "new-profile.jpg",
+  "mimeType": "image/jpeg",
+  "size": 1048576,
+  "visibility": "public",
+  "ownerId": "user-uuid-1234",
+  "ownerType": "user",
+  "metadata": {
+    "description": "Updated profile image"
+  },
+  "createdAt": "2025-01-15T10:30:00.000Z"
 }
 ```
 
@@ -254,12 +266,12 @@ async function updateFileMetadata(fileId, updates) {
     },
   });
 
-  return result; // { id, updatedAt }
+  return result; // Full file metadata object
 }
 ```
 
 {% hint style="info" %}
-For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
+💡 For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
 {% endhint %}
 
 ***

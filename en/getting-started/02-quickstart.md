@@ -1,7 +1,7 @@
 # Quick Start
 
 {% hint style="info" %}
-Create a project on bkend and fetch your first data from your app in just 10 minutes.
+💡 Create a project on bkend and fetch your first data from your app in just 10 minutes.
 {% endhint %}
 
 ## Overview
@@ -38,7 +38,7 @@ flowchart TD
 2. Log in with your **Google** or **GitHub** account. Magic link login is also supported.
 
 {% hint style="success" %}
-After logging in, you will be automatically redirected to the console home screen.
+✅ After logging in, you will be automatically redirected to the console home screen.
 {% endhint %}
 
 ***
@@ -67,7 +67,7 @@ After logging in, you will be automatically redirected to the console home scree
 4. Click **Create**.
 
 {% hint style="warning" %}
-When you create a project, a `dev` environment is automatically provisioned. Wait about 30 seconds until it reaches **Active** status.
+⚠️ When you create a project, a `dev` environment is automatically provisioned. Wait about 30 seconds until it reaches **Active** status.
 {% endhint %}
 
 ***
@@ -124,7 +124,7 @@ Ask the AI tool something like this:
 Verify the created table in the **Database** menu of the console.
 
 {% hint style="info" %}
-The table has been created, but you need an **API Key** to insert data from your app. Continue to steps 6 and 7.
+💡 The table has been created, but you need an **API Key** to insert data from your app. Continue to steps 6 and 7.
 {% endhint %}
 
 ***
@@ -139,11 +139,11 @@ You need an API Key to call the REST API from your app.
 4. The key will be displayed. Copy it and store it securely.
 
 {% hint style="warning" %}
-This is a **Publishable Key** (prefixed with `pk_`). It is used in clients (browsers, apps) and has limited permissions. For the difference between Publishable Key and Secret Key, see [Publishable Key vs Secret Key](../security/03-public-vs-secret.md).
+⚠️ This is a **Publishable Key** (prefixed with `pk_`). It is used in clients (browsers, apps) and has limited permissions. For the difference between Publishable Key and Secret Key, see [Publishable Key vs Secret Key](../security/03-public-vs-secret.md).
 {% endhint %}
 
 {% hint style="danger" %}
-**Warning** — The key is only shown once when created. If lost, you must delete it and create a new one.
+🚨 **Warning** — The key is only shown once when created. If lost, you must delete it and create a new one.
 {% endhint %}
 
 ***
@@ -153,7 +153,7 @@ This is a **Publishable Key** (prefixed with `pk_`). It is used in clients (brow
 Use the issued Publishable Key to create data from your app.
 
 {% hint style="info" %}
-All bkend data APIs follow the `/v1/data/{tableName}` pattern. The `posts` table you created above is accessible at `/v1/data/posts`.
+💡 All bkend data APIs follow the `/v1/data/{tableName}` pattern. The `posts` table you created above is accessible at `/v1/data/posts`.
 {% endhint %}
 
 {% tabs %}
@@ -204,7 +204,7 @@ console.log(data.id); // ID of the created data
 Verify the created data in the console under **Database** > **posts** table.
 
 {% hint style="success" %}
-Your first project is ready, and you have created data via the REST API!
+✅ Your first project is ready, and you have created data via the REST API!
 {% endhint %}
 
 ***
@@ -258,7 +258,7 @@ console.log(data.createdBy); // User ID
 ```
 
 {% hint style="info" %}
-With authentication in place, you can apply RLS (Row Level Security) policies such as "only the creator can edit or delete their own data." See [Writing RLS Policies](../security/05-rls-policies.md).
+💡 With authentication in place, you can apply RLS (Row Level Security) policies such as "only the creator can edit or delete their own data." See [Writing RLS Policies](../security/05-rls-policies.md).
 {% endhint %}
 
 ***

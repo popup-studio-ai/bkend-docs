@@ -1,7 +1,7 @@
 # Console Overview
 
 {% hint style="info" %}
-The bkend console is a web-based management tool for visually managing projects, databases, authentication, and storage.
+💡 The bkend console is a web-based management tool for visually managing projects, databases, authentication, and storage.
 {% endhint %}
 
 ## Overview
@@ -29,6 +29,7 @@ flowchart TD
     H --> M[File Storage]
     H --> N[Activities]
     H --> O[API Keys]
+    H --> Q[CORS]
     H --> P[Project Settings]
 ```
 
@@ -60,6 +61,7 @@ After selecting a project, the following menus are available.
 | **File Storage** | File list, upload | [Storage Overview](../storage/01-overview.md) |
 | **Activities** | Activity log | - |
 | **API Keys** | Publishable / Secret key management | [API Key Management](11-api-keys.md) |
+| **CORS** | Allowed origins management | [Project Settings](12-settings.md) |
 | **Project Settings** | Project info, deletion | [Project Settings](12-settings.md) |
 
 ***
@@ -71,7 +73,7 @@ After selecting a project, the following menus are available.
 3. Select an existing organization or create a new one.
 
 {% hint style="warning" %}
-Console login accounts are for Tenants only. They are completely separate from User (app end-user) accounts.
+⚠️ Console login accounts are for Tenants only. They are completely separate from User (app end-user) accounts.
 {% endhint %}
 
 ***

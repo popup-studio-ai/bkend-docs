@@ -136,7 +136,7 @@ curl -X POST https://api-client.bkend.ai/v1/data/products \
 
 #### Presigned URL 만료
 
-**원인**: Presigned URL은 발급 후 1시간 동안만 유효합니다.
+**원인**: Presigned URL은 발급 후 **15분** 동안만 유효합니다.
 
 **해결 방법**: 새 Presigned URL을 발급받으세요.
 
@@ -225,16 +225,16 @@ async function addToCart(productId, quantity) {
     const existing = cart.items[0];
     return bkendFetch(`/v1/data/carts/${existing.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({
+      body: {
         quantity: existing.quantity + quantity,
-      }),
+      },
     });
   }
 
   // 3. 없으면 새로 추가
   return bkendFetch('/v1/data/carts', {
     method: 'POST',
-    body: JSON.stringify({ productId, quantity }),
+    body: { productId, quantity },
   });
 }
 ```
@@ -258,7 +258,7 @@ async function updateCartQuantity(cartItemId, quantity) {
 
   return bkendFetch(`/v1/data/carts/${cartItemId}`, {
     method: 'PATCH',
-    body: JSON.stringify({ quantity }),
+    body: { quantity },
   });
 }
 ```
@@ -295,14 +295,14 @@ async function updateCartQuantity(cartItemId, quantity) {
 // 올바른 예
 const order = await bkendFetch('/v1/data/orders', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     items: JSON.stringify([
       { productId: 'product_abc123', name: '프리미엄 면 티셔츠', price: 29000, quantity: 2 }
     ]),
     totalPrice: 58000,
     status: 'pending',
     shippingAddress: '서울시 서초구 반포대로 45',
-  }),
+  },
 });
 ```
 
@@ -355,7 +355,7 @@ async function updateOrderStatus(orderId, newStatus) {
   // 3. 상태 변경
   return bkendFetch(`/v1/data/orders/${orderId}`, {
     method: 'PATCH',
-    body: JSON.stringify({ status: newStatus }),
+    body: { status: newStatus },
   });
 }
 ```
@@ -405,7 +405,7 @@ async function writeReview(productId, orderId, rating, content) {
 
   return bkendFetch('/v1/data/reviews', {
     method: 'POST',
-    body: JSON.stringify({ productId, orderId, rating, content }),
+    body: { productId, orderId, rating, content },
   });
 }
 ```
@@ -445,7 +445,7 @@ async function writeReviewWithValidation(orderId, productId, rating, content) {
 
   return bkendFetch('/v1/data/reviews', {
     method: 'POST',
-    body: JSON.stringify({ productId, orderId, rating, content }),
+    body: { productId, orderId, rating, content },
   });
 }
 ```

@@ -13,7 +13,7 @@ export const filesApi = {
   },
 
   async uploadFile(file: File): Promise<string> {
-    const { url } = await this.getPresignedUrl(file.name, file.type);
+    const { url, key } = await this.getPresignedUrl(file.name, file.type);
 
     await fetch(url, {
       method: "PUT",
@@ -23,6 +23,6 @@ export const filesApi = {
       body: file,
     });
 
-    return url.split("?")[0];
+    return key;
   },
 };

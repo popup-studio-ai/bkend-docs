@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../../features/auth/providers/auth_provider.dart';
+import '../../features/feed/providers/feed_provider.dart';
 
 class BottomNavShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -22,6 +26,13 @@ class BottomNavShell extends StatelessWidget {
             index,
             initialLocation: index == navigationShell.currentIndex,
           );
+          // Refresh feed when switching to Home tab
+          if (index == 0) {
+            final userId = context.read<AuthProvider>().currentUserId;
+            if (userId != null) {
+              context.read<FeedProvider>().loadFeed(userId);
+            }
+          }
         },
         backgroundColor: theme.colorScheme.surface,
         indicatorColor: theme.colorScheme.primary.withValues(alpha: 0.15),

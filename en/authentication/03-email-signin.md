@@ -1,18 +1,18 @@
 # Email Sign-in
 
 {% hint style="info" %}
-Sign in with your email and password to receive JWT tokens.
+💡 Sign in with your email and password to receive JWT tokens.
 {% endhint %}
 
 {% hint style="info" %}
-**Before You Start** — You need the following to proceed:
+💡 **Before You Start** — You need the following to proceed:
 - [Project created](../getting-started/02-quickstart.md)
 - [Email sign-up](02-email-signup.md) completed (you need an account to sign in)
 - [Email auth provider enabled](17-provider-config.md) (enabled by default)
 {% endhint %}
 
 {% hint style="info" %}
-**APIs Used in This Document**
+💡 **APIs Used in This Document**
 
 | Endpoint | Method | Auth | Description |
 |----------|:------:|:----:|-------------|
@@ -151,7 +151,7 @@ localStorage.setItem('refreshToken', result.refreshToken);
 ```
 
 {% hint style="info" %}
-See [Integrating bkend in Your App](../getting-started/03-app-integration.md) for `bkendFetch` setup.
+💡 See [Integrating bkend in Your App](../getting-started/03-app-integration.md) for `bkendFetch` setup.
 {% endhint %}
 
 ***

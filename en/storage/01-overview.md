@@ -1,7 +1,7 @@
 # Storage Overview
 
 {% hint style="info" %}
-Upload files and manage metadata with bkend storage.
+💡 Upload files and manage metadata with bkend storage.
 {% endhint %}
 
 ## What Is Storage?
@@ -56,7 +56,7 @@ flowchart TD
 | **Scalability** | The API server only handles URL issuance, so server resource usage remains minimal even when thousands of users upload files simultaneously. Large files (several GB) are handled without server load. |
 
 {% hint style="info" %}
-Presigned URLs expire after a certain period. Start the upload as soon as possible after obtaining the URL.
+💡 Presigned URLs expire after a certain period. Start the upload as soon as possible after obtaining the URL.
 {% endhint %}
 
 ### Multipart Upload
@@ -77,6 +77,14 @@ Set the access scope (`visibility`) per file to control public/private access.
 | `private` | Accessible only by the owner |
 | `protected` | Accessible only by authenticated users |
 | `shared` | Accessible only by designated users |
+
+### Image Optimization CDN
+
+`public` images can be resized, format-converted, and quality-adjusted via the `img.bkend.ai` CDN using just a URL. No API calls needed — simply construct the URL pattern to get optimized images.
+
+```
+https://img.bkend.ai/fit-in/300x200/filters:quality(80)/{filePath}
+```
 
 ***
 
@@ -150,7 +158,8 @@ flowchart LR
 | [File Access Permissions](08-permissions.md) | Visibility and owner control |
 | [API Reference](09-api-reference.md) | Complete endpoint list |
 | [File Upload App Patterns](10-upload-app-patterns.md) | Implement file upload in your app |
+| [Image Optimization](11-image-optimization.md) | URL-based image resizing/format conversion |
 
 {% hint style="info" %}
-**Learn by doing**: See the [Cookbooks](../../cookbooks/README.md) for how to use image uploads in real-world projects.
+💡 **Learn by doing**: See the [Cookbooks](../../cookbooks/README.md) for how to use image uploads in real-world projects.
 {% endhint %}

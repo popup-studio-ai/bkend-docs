@@ -159,10 +159,10 @@ const followUser = async (myUserId, targetUserId) => {
 
   return bkendFetch('/v1/data/follows', {
     method: 'POST',
-    body: JSON.stringify({
+    body: {
       followerId: myUserId,
       followingId: targetUserId,
-    }),
+    },
   });
 };
 ```

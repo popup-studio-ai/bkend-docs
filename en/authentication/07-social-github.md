@@ -1,7 +1,7 @@
 # GitHub OAuth
 
 {% hint style="info" %}
-Implement social login with a GitHub account.
+💡 Implement social login with a GitHub account.
 {% endhint %}
 
 ## Overview
@@ -28,7 +28,7 @@ GitHub OAuth uses the OAuth 2.0 protocol. It allows you to easily implement GitH
 5. Copy the `Client ID` and click **Generate a new client secret** to create the `Client Secret`.
 
 {% hint style="warning" %}
-The `Client Secret` is only visible immediately after creation. Store it in a secure location.
+⚠️ The `Client Secret` is only visible immediately after creation. Store it in a secure location.
 {% endhint %}
 
 ### Register with bkend
@@ -56,7 +56,7 @@ window.location.href = `${GITHUB_AUTH_URL}?${params}`;
 ```
 
 {% hint style="info" %}
-`client_id` is the OAuth App Client ID obtained from GitHub Developer Settings. `state` is a random value for CSRF protection -- always verify it in the callback.
+💡 `client_id` is the OAuth App Client ID obtained from GitHub Developer Settings. `state` is a random value for CSRF protection -- always verify it in the callback.
 {% endhint %}
 
 ### Step 2: Obtain Tokens in the Callback

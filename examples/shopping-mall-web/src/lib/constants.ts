@@ -1,13 +1,10 @@
 // Product categories
 export const PRODUCT_CATEGORIES = [
-  { value: "Electronics", label: "Electronics" },
-  { value: "Clothing", label: "Clothing" },
-  { value: "Food", label: "Food" },
-  { value: "Furniture", label: "Furniture" },
-  { value: "Books", label: "Books" },
-  { value: "Sports", label: "Sports" },
-  { value: "Beauty", label: "Beauty" },
-  { value: "Other", label: "Other" },
+  { value: "electronics", label: "Electronics" },
+  { value: "home", label: "Home" },
+  { value: "fashion", label: "Fashion" },
+  { value: "food", label: "Food" },
+  { value: "lifestyle", label: "Lifestyle" },
 ] as const;
 
 export const ALL_CATEGORIES_OPTION = {
@@ -31,3 +28,6 @@ export const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 export const GOOGLE_SCOPES = "openid email profile";
 export const OAUTH_CALLBACK_PATH = "/auth/google/callback";
 export const OAUTH_STATE_KEY = "oauth_state";
+
+// Demo account (password change & account deletion disabled)
+export const DEMO_EMAIL = "demo@bkend.ai";

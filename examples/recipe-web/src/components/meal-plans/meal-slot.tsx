@@ -13,6 +13,7 @@ interface MealSlotProps {
   recipeTitle?: string;
   onAdd: () => void;
   onDelete?: (id: string) => void;
+  disabled?: boolean;
 }
 
 export function MealSlot({
@@ -21,26 +22,28 @@ export function MealSlot({
   recipeTitle,
   onAdd,
   onDelete,
+  disabled,
 }: MealSlotProps) {
   return (
     <div
       className={cn(
         "rounded-lg border p-2 text-xs transition-colors",
         plan
-          ? "border-orange-200 bg-orange-50 dark:border-stone-600 dark:bg-stone-800"
-          : "border-dashed border-stone-300 dark:border-stone-600"
+          ? "border-border bg-accent"
+          : "border-dashed border-border"
       )}
     >
       <div className="flex items-center justify-between mb-1">
-        <span className="text-stone-500 dark:text-stone-400">
+        <span className="text-muted-foreground">
           {MEAL_TYPE_ICONS[mealType]} {MEAL_TYPE_LABELS[mealType]}
         </span>
         {plan && onDelete && (
           <Button
             variant="ghost"
             size="icon"
-            className="h-5 w-5 text-stone-400 hover:text-red-500"
+            className="h-5 w-5 text-muted-foreground hover:text-red-500"
             onClick={() => onDelete(plan.id)}
+            disabled={disabled}
           >
             <Trash2 className="h-3 w-3" />
           </Button>
@@ -48,17 +51,23 @@ export function MealSlot({
       </div>
       {plan ? (
         <div>
-          <p className="font-medium text-stone-700 line-clamp-1 dark:text-stone-300">
+          <p className="font-medium text-foreground line-clamp-1">
             {recipeTitle || "Recipe"}
           </p>
           {plan.notes && (
-            <p className="text-stone-400 line-clamp-1 mt-0.5">{plan.notes}</p>
+            <p className="text-muted-foreground line-clamp-1 mt-0.5">{plan.notes}</p>
           )}
         </div>
       ) : (
         <button
-          onClick={onAdd}
-          className="w-full text-center text-stone-400 hover:text-orange-500 transition-colors py-1 dark:hover:text-orange-400"
+          onClick={disabled ? undefined : onAdd}
+          disabled={disabled}
+          className={cn(
+            "w-full text-center transition-colors py-1",
+            disabled
+              ? "text-muted-foreground/50 cursor-not-allowed"
+              : "text-muted-foreground hover:text-orange-500 dark:hover:text-orange-400"
+          )}
         >
           + Add
         </button>

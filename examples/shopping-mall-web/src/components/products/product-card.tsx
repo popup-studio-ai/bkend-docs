@@ -9,6 +9,7 @@ import { PriceDisplay } from "@/components/shared/price-display";
 import { useAddToCart } from "@/hooks/queries/use-carts";
 import { useUiStore } from "@/stores/ui-store";
 import { formatRelativeTime, truncate } from "@/lib/utils";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 import type { ProductDto } from "@/application/dto/product.dto";
 
 const listItemVariants = {
@@ -58,7 +59,7 @@ export function ProductCard({ product, index }: ProductCardProps) {
           <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-muted">
             {product.imageUrl ? (
               <img
-                src={product.imageUrl}
+                src={getOptimizedImageUrl(product.imageUrl, IMAGE_PRESETS.thumbnail)}
                 alt={product.name}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />

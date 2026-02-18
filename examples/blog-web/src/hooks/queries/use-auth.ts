@@ -9,7 +9,6 @@ import type { SignInRequest } from "@/application/dto/auth.dto";
 
 export function useMe() {
   const hasToken = typeof window !== "undefined" && tokenStorage.hasTokens();
-  const setUser = useAuthStore((s) => s.setUser);
 
   return useQuery({
     queryKey: queryKeys.auth.me(),
@@ -17,9 +16,6 @@ export function useMe() {
     enabled: hasToken,
     retry: false,
     staleTime: 5 * 60 * 1000,
-    onSuccess: (user) => {
-      setUser(user);
-    },
   });
 }
 
@@ -69,6 +65,6 @@ export function useSignOut() {
     tokenStorage.clearTokens();
     clearUser();
     queryClient.clear();
-    window.location.href = "/sign-in";
+    window.location.href = "/";
   };
 }

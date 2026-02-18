@@ -1,7 +1,7 @@
 # Storage REST API Reference
 
 {% hint style="info" %}
-View all storage-related REST API endpoints at a glance.
+💡 View all storage-related REST API endpoints at a glance.
 {% endhint %}
 
 ## Common Information
@@ -183,7 +183,7 @@ PATCH /v1/files/:fileId
 | `visibility` | body | `string` | Change access scope |
 | `metadata` | body | `object` | Partial metadata update |
 
-**Response:** `200 OK` — `{ id, updatedAt }`
+**Response:** `200 OK` — File metadata object (updated)
 
 > [File Metadata](04-file-metadata.md)
 
@@ -199,7 +199,7 @@ DELETE /v1/files/:fileId
 |-----------|----------|------|:--------:|-------------|
 | `fileId` | path | `string` | ✅ | File ID |
 
-**Response:** `200 OK` — `{ success: true }`
+**Response:** `200 OK` — `{}`
 
 > [File Deletion](07-file-delete.md)
 
@@ -240,7 +240,7 @@ POST /v1/files/:fileId/download-url
 ***
 
 {% hint style="warning" %}
-All storage APIs require authentication. A `401 common/authentication-required` error is returned if the `Authorization: Bearer {accessToken}` header is missing.
+⚠️ All storage APIs require authentication. A `401 common/authentication-required` error is returned if the `Authorization: Bearer {accessToken}` header is missing.
 {% endhint %}
 
 ## Error Codes

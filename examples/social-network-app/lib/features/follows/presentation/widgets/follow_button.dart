@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/utils/demo_guard.dart';
 import '../../../auth/providers/auth_provider.dart';
 import '../../providers/follow_provider.dart';
 
@@ -38,6 +39,7 @@ class _FollowButtonState extends State<FollowButton> {
   }
 
   Future<void> _handleTap() async {
+    if (DemoGuard.check(context)) return;
     final myUserId = context.read<AuthProvider>().currentUserId;
     if (myUserId == null) return;
 

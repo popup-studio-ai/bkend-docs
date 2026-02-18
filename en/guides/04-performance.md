@@ -1,7 +1,7 @@
 # Performance Optimization
 
 {% hint style="info" %}
-Learn how to optimize the performance of your bkend project.
+💡 Learn how to optimize the performance of your bkend project.
 {% endhint %}
 
 ## Overview
@@ -24,7 +24,7 @@ bkend automatically creates the following indexes when a table is created.
 | `idx_createdBy` | `createdBy` | Ascending | Filter by author |
 
 {% hint style="warning" %}
-Default indexes and the system index (`_id_`) cannot be modified or deleted.
+⚠️ Default indexes and the system index (`_id_`) cannot be modified or deleted.
 {% endhint %}
 
 ### Adding Custom Indexes
@@ -64,32 +64,31 @@ Use indexed fields as your primary filter conditions.
 
 ```bash
 # Good example — filtering by indexed fields
-curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published&sort=-createdAt&limit=20" \
+curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters=%7B%22status%22%3A%22published%22%7D&sortBy=createdAt&sortDirection=desc&limit=20" \
   -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {api_key}"
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### Use Pagination
 
-Always use `limit` and `offset` when querying large datasets.
+Always use `page` and `limit` when querying large datasets.
 
 | Parameter | Description | Recommended |
 |-----------|-------------|:-----------:|
-| `limit` | Number of records per request | 10–50 |
-| `offset` | Number of records to skip | page × limit |
+| `page` | Page number (starts from 1) | 1, 2, 3, ... |
+| `limit` | Number of records per page | 10–50 |
 
 ```javascript
 // Pagination
 const page = 1;
 const limit = 20;
-const offset = (page - 1) * limit;
 
 const response = await fetch(
-  `https://api-client.bkend.ai/v1/data/posts?limit=${limit}&offset=${offset}`,
+  `https://api-client.bkend.ai/v1/data/posts?page=${page}&limit=${limit}`,
   {
     headers: {
       'X-API-Key': '{pk_publishable_key}',
-      'Authorization': `Bearer ${apiKey}`,
+      'Authorization': `Bearer ${accessToken}`,
     },
   }
 );
@@ -101,9 +100,9 @@ Reduce response size by selecting only the fields you need.
 
 ```bash
 # Query only required fields
-curl -X GET "https://api-client.bkend.ai/v1/data/posts?fields=title,status,createdAt" \
+curl -X GET "https://api-client.bkend.ai/v1/data/posts?select=title,status,createdAt" \
   -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {api_key}"
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***
@@ -126,7 +125,7 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?fields=title,status,creat
 | **Presigned URL** (private) | Normal | Has expiry | Sensitive files |
 
 {% hint style="info" %}
-Set frequently accessed non-sensitive files to `public` to take advantage of CDN.
+💡 Set frequently accessed non-sensitive files to `public` to take advantage of CDN.
 {% endhint %}
 
 ***

@@ -1,11 +1,11 @@
 # File List
 
 {% hint style="info" %}
-Filter, sort, and search registered files to retrieve them as a list.
+💡 Filter, sort, and search registered files to retrieve them as a list.
 {% endhint %}
 
 {% hint style="info" %}
-**Before you start** — You need the following to proceed:
+💡 **Before you start** — You need the following to proceed:
 - [Project creation](../getting-started/02-quickstart.md) completed
 - User authentication completed (JWT token required — all file APIs require authentication)
 {% endhint %}
@@ -78,7 +78,7 @@ const { items, pagination } = await response.json();
   "items": [
     {
       "id": "file-uuid-1234",
-      "s3Key": "files/a1b2c3d4/profile.jpg",
+      "s3Key": "{server_generated_key}",
       "originalName": "profile.jpg",
       "mimeType": "image/jpeg",
       "size": 1048576,
@@ -133,9 +133,9 @@ RLS (Row Level Security) is applied when retrieving file lists.
 
 | User | Visible Scope |
 |------|---------------|
-| `admin` | All files |
 | Owner | All fields for own files |
-| Non-owner | Public fields only |
+| Authenticated user | Own files + public/protected files |
+| Non-owner | Depends on file `visibility` setting |
 
 ***
 
@@ -211,7 +211,7 @@ console.log('Total pages:', files.pagination.totalPages);
 ```
 
 {% hint style="info" %}
-For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
+💡 For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
 {% endhint %}
 
 ***

@@ -1,7 +1,7 @@
 # Webhooks
 
 {% hint style="info" %}
-Learn how to configure bkend webhooks and receive events.
+💡 Learn how to configure bkend webhooks and receive events.
 {% endhint %}
 
 ## Overview
@@ -21,7 +21,7 @@ Webhooks allow you to deliver events from bkend to an external server in real ti
 - Idempotency patterns
 
 {% hint style="warning" %}
-Your webhook receiver must be an **HTTPS** endpoint. Always implement **signature verification** to block forged requests.
+⚠️ Your webhook receiver must be an **HTTPS** endpoint. Always implement **signature verification** to block forged requests.
 {% endhint %}
 
 ***

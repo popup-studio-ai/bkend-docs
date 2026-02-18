@@ -31,17 +31,6 @@ AI 도구에 자연어로 요청하면 인증 코드를 생성합니다.
 
 ***
 
-## 내장 문서
-
-`search_docs`가 검색하는 인증 관련 내장 문서:
-
-| 문서 ID | 내용 |
-|---------|------|
-| `3_howto_implement_auth` | 인증 구현 가이드 (회원가입, 로그인, 토큰 관리) |
-| `6_code_examples_auth` | 인증 코드 예제 (이메일, 소셜, 매직링크) |
-
-***
-
 ## 주요 인증 REST API
 
 AI 도구가 코드를 생성할 때 사용하는 주요 엔드포인트:
@@ -102,7 +91,7 @@ const response = await fetch(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": PK_PUBLISHABLE_KEY,
+      "X-API-Key": PUBLISHABLE_KEY,
     },
     body: JSON.stringify({
       email: "user@example.com",

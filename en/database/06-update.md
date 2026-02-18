@@ -1,18 +1,18 @@
 # Update Data
 
 {% hint style="info" %}
-Partially update fields of existing data.
+💡 Partially update fields of existing data.
 {% endhint %}
 
 {% hint style="info" %}
-**Before you start** — You need the following to proceed:
+💡 **Before you start** — You need the following to proceed:
 - [Create a project](../getting-started/02-quickstart.md) completed
 - [Create a table](../console/07-table-management.md) completed
 - Authentication setup — Public tables require no auth; tables with RLS require a JWT
 {% endhint %}
 
 {% hint style="info" %}
-**API used in this document**
+💡 **API used in this document**
 
 | Endpoint | Method | Auth | Description |
 |----------|:------:|:----:|-------------|
@@ -83,7 +83,7 @@ Include only the fields you want to change. Fields not included in the request r
 ```
 
 {% hint style="warning" %}
-System fields (`id`, `createdBy`, `createdAt`) cannot be modified. `updatedAt` is automatically refreshed.
+⚠️ System fields (`id`, `createdBy`, `createdAt`) cannot be modified. `updatedAt` is automatically refreshed.
 {% endhint %}
 
 ### Response (200 OK)
@@ -119,7 +119,7 @@ const updated = await bkendFetch('/v1/data/posts/{id}', {
 ```
 
 {% hint style="info" %}
-For `bkendFetch` setup, see [Integrate bkend in Your App](../getting-started/03-app-integration.md).
+💡 For `bkendFetch` setup, see [Integrate bkend in Your App](../getting-started/03-app-integration.md).
 {% endhint %}
 
 ***

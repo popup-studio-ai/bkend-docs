@@ -30,6 +30,8 @@ import {
 import { useRecipe } from "@/hooks/queries/use-recipes";
 import { UNIT_OPTIONS } from "@/application/dto/ingredient.dto";
 import { cn } from "@/lib/utils";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 
 const ingredientSchema = z.object({
   name: z.string().min(1, "Please enter ingredient name"),
@@ -55,6 +57,8 @@ export function IngredientForm({ recipeId }: IngredientFormProps) {
   } = useIngredients(recipeId);
   const createIngredient = useCreateIngredient();
   const deleteIngredient = useDeleteIngredient(recipeId);
+
+  const { isDemoAccount } = useDemoGuard();
 
   const {
     register,
@@ -93,6 +97,8 @@ export function IngredientForm({ recipeId }: IngredientFormProps) {
           title={recipe ? `${recipe.title} - Ingredients` : "Ingredients"}
           description="Add and manage ingredients for this recipe"
         />
+
+        {isDemoAccount && <DemoBanner />}
 
         {/* Add ingredient form */}
         <Card>
@@ -168,7 +174,7 @@ export function IngredientForm({ recipeId }: IngredientFormProps) {
 
               <Button
                 type="submit"
-                disabled={createIngredient.isPending}
+                disabled={createIngredient.isPending || isDemoAccount}
                 className="sm:w-auto"
               >
                 {createIngredient.isPending ? (
@@ -188,7 +194,7 @@ export function IngredientForm({ recipeId }: IngredientFormProps) {
             <CardTitle>
               Ingredient List{" "}
               {ingredients && (
-                <span className="text-sm font-normal text-stone-500 dark:text-stone-400">
+                <span className="text-sm font-normal text-muted-foreground">
                   ({ingredients.items.length})
                 </span>
               )}
@@ -209,24 +215,24 @@ export function IngredientForm({ recipeId }: IngredientFormProps) {
                       key={item.id}
                       className="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-orange-50 dark:hover:bg-stone-800"
                     >
-                      <GripVertical className="h-4 w-4 text-stone-400 cursor-grab" />
-                      <span className="flex-1 text-sm text-stone-700 dark:text-stone-300">
+                      <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
+                      <span className="flex-1 text-sm text-foreground">
                         {item.name}
                         {item.isOptional && (
-                          <span className="ml-1.5 text-xs text-stone-400">
+                          <span className="ml-1.5 text-xs text-muted-foreground">
                             (optional)
                           </span>
                         )}
                       </span>
-                      <span className="text-sm font-medium text-stone-600 dark:text-stone-400">
+                      <span className="text-sm font-medium text-muted-foreground">
                         {item.amount} {item.unit}
                       </span>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-stone-400 hover:text-red-500"
+                        className="h-8 w-8 text-muted-foreground hover:text-red-500"
                         onClick={() => handleDelete(item.id)}
-                        disabled={deleteIngredient.isPending}
+                        disabled={deleteIngredient.isPending || isDemoAccount}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

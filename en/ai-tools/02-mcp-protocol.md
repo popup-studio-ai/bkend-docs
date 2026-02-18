@@ -1,7 +1,7 @@
 # Understanding the MCP Protocol
 
 {% hint style="info" %}
-Learn the core concepts of MCP (Model Context Protocol) and how the bkend MCP server works.
+💡 Learn the core concepts of MCP (Model Context Protocol) and how the bkend MCP server works.
 {% endhint %}
 
 ## Overview
@@ -84,6 +84,7 @@ Permissions granted to the MCP token.
 | `environment:read` / `environment:create` / `environment:delete` | Manage Environments |
 | `table:read` / `table:create` / `table:update` / `table:delete` | Manage table schemas |
 | `table:data:read` / `table:data:create` / `table:data:update` / `table:data:delete` | Table data CRUD |
+| `access-token:read` | View Access Tokens |
 
 ### Wildcard Scopes
 
@@ -96,7 +97,7 @@ Permissions granted to the MCP token.
 ***
 
 {% hint style="warning" %}
-You **must call `get_context` at the start of each session** before invoking other MCP tools. Subsequent tool calls will fail without the Organization ID and resource hierarchy.
+⚠️ You **must call `get_context` at the start of each session** before invoking other MCP tools. Subsequent tool calls will fail without the Organization ID and resource hierarchy.
 {% endhint %}
 
 ## Error Codes

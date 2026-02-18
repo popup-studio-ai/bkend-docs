@@ -1,7 +1,7 @@
 # Security REST API Reference
 
 {% hint style="info" %}
-Review API authentication methods, headers, and error codes related to security.
+💡 Review API authentication methods, headers, and error codes related to security.
 {% endhint %}
 
 ## Overview
@@ -34,7 +34,7 @@ https://api-client.bkend.ai
 | (none) | -- | Unauthenticated (pk_ alone = guest group) |
 
 {% hint style="info" %}
-Since `pk_`/`sk_` keys contain project ID and environment information, the `X-Project-Id` and `X-Environment` headers are not needed.
+💡 Since `pk_`/`sk_` keys contain project ID and environment information, the `X-Project-Id` and `X-Environment` headers are not needed.
 {% endhint %}
 
 ### Publishable Key Authentication
@@ -198,6 +198,7 @@ flowchart TD
 | `PERMISSION_DENIED` | The group lacks permission | Check RLS policies or change the authentication method |
 | `SCOPE_INSUFFICIENT` | API key scope does not include the operation | Add the required scope to the API key |
 | `SYSTEM_TABLE_ACCESS` | System table access blocked | Use admin authentication (Secret Key) |
+| `PROJECT_ACCESS_DENIED` | API key does not have access to this project | Verify the API key matches the target project |
 
 ### Authorization Error Response Example
 
@@ -219,7 +220,7 @@ flowchart TD
 ***
 
 {% hint style="warning" %}
-Use Secret Keys (`sk_`) only on the server side. Including them in client-side code (JavaScript bundles, mobile apps, etc.) creates an exposure risk.
+⚠️ Use Secret Keys (`sk_`) only on the server side. Including them in client-side code (JavaScript bundles, mobile apps, etc.) creates an exposure risk.
 {% endhint %}
 
 ## Rate Limiting

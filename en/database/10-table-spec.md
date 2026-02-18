@@ -1,7 +1,23 @@
 # Table Schema Query
 
 {% hint style="info" %}
-Retrieve the schema, indexes, and permission settings of a table via the REST API.
+💡 Retrieve the schema, indexes, and permission settings of a table via the REST API.
+{% endhint %}
+
+{% hint style="info" %}
+💡 **Before you start** — You need the following to proceed:
+- [Create a project](../getting-started/02-quickstart.md) completed
+- [Create a table](../console/07-table-management.md) completed
+- Authentication setup — These endpoints require authentication (`isPublic: false`)
+{% endhint %}
+
+{% hint style="info" %}
+💡 **API used in this document**
+
+| Endpoint | Method | Auth | Description |
+|----------|:------:|:----:|-------------|
+| `/v1/data/:tableName/spec` | GET | Required | Query table schema |
+| `/v1/data/:tableName/openapi` | GET | Required | Query OpenAPI 3.0 spec |
 {% endhint %}
 
 ## Overview
@@ -184,7 +200,7 @@ const canDelete = spec.permissions[userRole]?.delete ?? false;
 ***
 
 {% hint style="warning" %}
-The table schema query is available only to the `admin` role or roles that have `read` permission on the table. To query with `guest` permissions, verify the table permission settings.
+⚠️ The table schema query is available only to the `admin` role or roles that have `read` permission on the table. To query with `guest` permissions, verify the table permission settings.
 {% endhint %}
 
 ## OpenAPI Spec Query
@@ -260,7 +276,7 @@ console.log(openApiSpec.paths);    // Path definitions
 | `components` | `object` | Schema component definitions |
 
 {% hint style="info" %}
-The OpenAPI spec is generated dynamically based on the table's current schema. Changes to fields, types, or constraints are immediately reflected.
+💡 The OpenAPI spec is generated dynamically based on the table's current schema. Changes to fields, types, or constraints are immediately reflected.
 {% endhint %}
 
 ***

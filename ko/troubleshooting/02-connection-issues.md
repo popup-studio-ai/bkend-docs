@@ -28,7 +28,6 @@ flowchart TD
 | 항목 | 올바른 값 |
 |------|----------|
 | **REST API** | `https://api-client.bkend.ai` |
-| **MCP 서버** | `https://api.bkend.ai/mcp` |
 
 ### 자주 하는 실수
 

@@ -1,7 +1,7 @@
 # Email Verification
 
 {% hint style="info" %}
-Verify a User's email ownership through email verification.
+💡 Verify a User's email ownership through email verification.
 {% endhint %}
 
 ## Overview
@@ -142,7 +142,7 @@ await bkendFetch('/v1/auth/email/verify/confirm', {
 ```
 
 {% hint style="info" %}
-See [Integrating bkend in Your App](../getting-started/03-app-integration.md) for `bkendFetch` setup.
+💡 See [Integrating bkend in Your App](../getting-started/03-app-integration.md) for `bkendFetch` setup.
 {% endhint %}
 
 ***

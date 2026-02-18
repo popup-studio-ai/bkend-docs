@@ -6,16 +6,18 @@
 
 ## 개요
 
-이미지 업로드는 3단계로 진행됩니다:
+이미지 업로드는 4단계로 진행됩니다:
 
 1. **Presigned URL 발급** — bkend API에서 업로드용 URL을 받습니다.
 2. **파일 업로드** — 발급받은 URL로 파일을 직접 업로드합니다.
-3. **게시글에 연결** — 업로드한 이미지 URL을 게시글의 `coverImage`에 설정합니다.
+3. **메타데이터 등록 + 다운로드 URL 발급** — 파일 정보를 등록하고 다운로드 URL을 받습니다.
+4. **게시글에 연결** — 다운로드 URL을 게시글의 `coverImage`에 설정합니다.
 
 | 기능 | 설명 | API 엔드포인트 |
 |------|------|---------------|
 | Presigned URL 발급 | 업로드용 URL 생성 | `POST /v1/files/presigned-url` |
 | 메타데이터 등록 | 파일 정보 저장 | `POST /v1/files` |
+| 다운로드 URL 발급 | 파일 접근 URL 생성 | `POST /v1/files/{fileId}/download-url` |
 | 파일 조회 | 파일 정보 확인 | `GET /v1/files/{fileId}` |
 | 파일 삭제 | 파일 삭제 | `DELETE /v1/files/{fileId}` |
 
@@ -42,7 +44,9 @@ sequenceDiagram
     S-->>C: 200 OK
     C->>B: 3. POST /v1/files (메타데이터 등록)
     B-->>C: { id, originalName, ... }
-    C->>B: 4. PATCH /v1/data/articles/:id (coverImage 설정)
+    C->>B: 4. POST /v1/files/{id}/download-url
+    B-->>C: { url }
+    C->>B: 5. PATCH /v1/data/articles/:id (coverImage 설정)
     B-->>C: 게시글 업데이트 완료
 ```
 
@@ -154,21 +158,23 @@ await fetch(presigned.url, {
 
 ***
 
-## 3단계: 메타데이터 등록
+## 3단계: 메타데이터 등록 + 다운로드 URL 발급
 
-파일 업로드 완료 후, bkend API에 파일 메타데이터를 등록합니다.
+파일 업로드 완료 후, bkend API에 파일 메타데이터를 등록하고 다운로드 URL을 발급받습니다.
 
 {% tabs %}
 {% tab title="MCP (AI 도구)" %}
 
 {% hint style="warning" %}
-⚠️ 메타데이터 등록은 클라이언트에서 REST API로 수행합니다.
+⚠️ 메타데이터 등록과 다운로드 URL 발급은 클라이언트에서 REST API로 수행합니다.
 {% endhint %}
 
 {% endtab %}
 {% tab title="콘솔 + REST API" %}
 
-### curl
+### 3-1. 메타데이터 등록
+
+#### curl
 
 ```bash
 curl -X POST https://api-client.bkend.ai/v1/files \
@@ -222,6 +228,32 @@ console.log(fileMetadata.id); // 파일 ID
   "visibility": "public",
   "ownerId": "user-uuid-1234",
   "createdAt": "2026-02-08T10:30:00.000Z"
+}
+```
+
+### 3-2. 다운로드 URL 발급
+
+메타데이터 등록 후, 파일의 다운로드 URL을 발급받습니다. 이 URL을 게시글의 `coverImage`에 사용합니다.
+
+```bash
+curl -X POST https://api-client.bkend.ai/v1/files/{fileId}/download-url \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
+```
+
+```javascript
+const download = await bkendFetch(`/v1/files/${fileMetadata.id}/download-url`, {
+  method: 'POST',
+});
+
+console.log(download.url); // 다운로드 URL
+```
+
+#### 성공 응답 (200 OK)
+
+```json
+{
+  "url": "https://cdn.example.com/cover-jeju.jpg"
 }
 ```
 
@@ -294,15 +326,20 @@ async function uploadCoverImage(file, articleId) {
     },
   });
 
-  // 4. 게시글에 이미지 연결
+  // 4. 다운로드 URL 발급
+  const download = await bkendFetch(`/v1/files/${metadata.id}/download-url`, {
+    method: 'POST',
+  });
+
+  // 5. 게시글에 이미지 연결
   await bkendFetch(`/v1/data/articles/${articleId}`, {
     method: 'PATCH',
     body: {
-      coverImage: metadata.url || presigned.url,
+      coverImage: download.url,
     },
   });
 
-  return metadata;
+  return { ...metadata, url: download.url };
 }
 
 // HTML 파일 입력과 함께 사용
@@ -436,6 +473,7 @@ await bkendFetch(`/v1/files/${fileId}`, {
 
 - [단일 파일 업로드](../../../ko/storage/02-upload-single.md) — Presigned URL 업로드 상세
 - [파일 메타데이터](../../../ko/storage/04-file-metadata.md) — 메타데이터 등록/관리 상세
+- [파일 다운로드](../../../ko/storage/06-download.md) — 다운로드 URL 발급 상세
 - [파일 삭제](../../../ko/storage/07-file-delete.md) — 파일 삭제 상세
 - [앱에서 bkend 연동하기](../../../ko/getting-started/06-app-integration.md) — bkendFetch 헬퍼 설정
 

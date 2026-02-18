@@ -20,7 +20,7 @@ export const productFormSchema = z.object({
   price: z.coerce.number().min(0, "Price must be $0 or more"),
   category: z.string().min(1, "Please select a category"),
   stock: z.coerce.number().int().min(0, "Stock must be 0 or more"),
-  imageUrl: z.string().url("Please enter a valid image URL").or(z.literal("")),
+  imageUrl: z.string().or(z.literal("")),
   isActive: z.boolean().default(true),
 });
 
@@ -34,12 +34,9 @@ export interface ProductFilters {
 }
 
 export const PRODUCT_CATEGORIES = [
-  "Electronics",
-  "Clothing",
-  "Food",
-  "Furniture",
-  "Books",
-  "Sports",
-  "Beauty",
-  "Other",
+  "electronics",
+  "home",
+  "fashion",
+  "food",
+  "lifestyle",
 ] as const;

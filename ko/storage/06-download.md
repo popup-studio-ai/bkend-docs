@@ -215,6 +215,11 @@ await previewImage(fileId, img);
 
 ## 다음 단계
 
+{% hint style="info" %}
+💡 `public` 이미지는 Presigned URL 대신 `img.bkend.ai` CDN URL로 리사이즈/포맷 변환하여 표시할 수 있습니다. [이미지 최적화](11-image-optimization.md)를 참고하세요.
+{% endhint %}
+
 - [파일 목록 조회](05-file-list.md) — 다운로드할 파일 검색
 - [파일 접근 권한](08-permissions.md) — 다운로드 권한 설정
 - [단일 파일 업로드](02-upload-single.md) — 파일 업로드
+- [이미지 최적화](11-image-optimization.md) — public 이미지 CDN 최적화

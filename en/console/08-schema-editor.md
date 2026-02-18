@@ -1,7 +1,7 @@
 # Schema Editor
 
 {% hint style="info" %}
-This guide explains how to use the schema editor to add, modify, and delete table columns.
+💡 This guide explains how to use the schema editor to add, modify, and delete table columns.
 {% endhint %}
 
 ## Overview
@@ -66,7 +66,7 @@ Request in natural language from your AI tool.
 3. Click **Save**.
 
 {% hint style="warning" %}
-Changing the type of a column that already contains data may cause compatibility issues with existing data. Proceed with caution.
+⚠️ Changing the type of a column that already contains data may cause compatibility issues with existing data. Proceed with caution.
 {% endhint %}
 
 ***
@@ -74,7 +74,7 @@ Changing the type of a column that already contains data may cause compatibility
 ## Deleting a Column
 
 {% hint style="danger" %}
-**Danger** — Deleting a column permanently removes all data in that column.
+🚨 **Danger** — Deleting a column permanently removes all data in that column.
 {% endhint %}
 
 1. Click the **Delete** icon on the column you want to remove.

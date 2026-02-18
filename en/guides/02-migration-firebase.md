@@ -1,7 +1,7 @@
 # Migrating from Firebase
 
 {% hint style="warning" %}
-This document is under preparation. A migration guide from Firebase to bkend will be available soon.
+⚠️ This document is under preparation. A migration guide from Firebase to bkend will be available soon.
 {% endhint %}
 
 ## Overview

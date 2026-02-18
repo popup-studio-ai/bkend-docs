@@ -183,7 +183,7 @@ PATCH /v1/files/:fileId
 | `visibility` | body | `string` | 접근 범위 변경 |
 | `metadata` | body | `object` | 메타데이터 부분 업데이트 |
 
-**응답:** `200 OK` — `{ id, updatedAt }`
+**응답:** `200 OK` — 파일 메타데이터 객체 (수정됨)
 
 → [파일 메타데이터](04-file-metadata.md)
 
@@ -199,7 +199,7 @@ DELETE /v1/files/:fileId
 |---------|------|------|:----:|------|
 | `fileId` | path | `string` | ✅ | 파일 ID |
 
-**응답:** `200 OK` — `{ success: true }`
+**응답:** `200 OK` — `{}`
 
 → [파일 삭제](07-file-delete.md)
 

@@ -9,6 +9,7 @@ import type { Recipe } from "@/application/dto/recipe.dto";
 import { DIFFICULTY_LABELS, DIFFICULTY_COLORS } from "@/application/dto/recipe.dto";
 import { formatTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 import { motion } from "framer-motion";
 
 interface RecipeCardProps {
@@ -26,10 +27,10 @@ export function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
       <Link href={`/recipes/${recipe.id}`}>
         <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
           {/* Image (4:3 ratio) */}
-          <div className="relative aspect-[4/3] overflow-hidden bg-orange-100 dark:bg-stone-700">
+          <div className="relative aspect-[4/3] overflow-hidden bg-muted">
             {recipe.imageUrl ? (
               <img
-                src={recipe.imageUrl}
+                src={getOptimizedImageUrl(recipe.imageUrl, IMAGE_PRESETS.thumbnail)}
                 alt={recipe.title}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -54,15 +55,15 @@ export function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
 
           {/* Content */}
           <div className="p-4">
-            <h3 className="text-base font-semibold text-stone-900 line-clamp-1 group-hover:text-orange-600 dark:text-stone-100 dark:group-hover:text-orange-400">
+            <h3 className="text-base font-semibold text-foreground line-clamp-1 group-hover:text-orange-600 dark:group-hover:text-orange-400">
               {recipe.title}
             </h3>
-            <p className="mt-1 text-sm text-stone-500 line-clamp-2 dark:text-stone-400">
+            <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
               {recipe.description}
             </p>
 
             {/* Meta info */}
-            <div className="mt-3 flex items-center gap-3 text-xs text-stone-500 dark:text-stone-400">
+            <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5" />
                 {formatTime(recipe.cookingTime)}

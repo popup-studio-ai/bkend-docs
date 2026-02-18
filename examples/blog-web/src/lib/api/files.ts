@@ -45,7 +45,7 @@ async function uploadToPresignedUrl(
 }
 
 async function registerFile(data: CreateFileRequest): Promise<FileRecord> {
-  const response = await bkendFetch<Omit<FileRecord, "url"> & { id: string }>("/v1/files", {
+  const response = await bkendFetch<Omit<FileRecord, "url" | "key"> & { id: string }>("/v1/files", {
     method: "POST",
     body: data,
   });
@@ -85,5 +85,5 @@ export async function uploadFile(
     visibility: "public",
   });
 
-  return fileRecord;
+  return { ...fileRecord, key: presigned.key };
 }

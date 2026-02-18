@@ -30,6 +30,7 @@ class AuthApi {
     return _client.dio.post(
       ApiConstants.signIn,
       data: {
+        'method': 'password',
         'email': email,
         'password': password,
       },
@@ -40,6 +41,13 @@ class AuthApi {
     return _client.dio.post(
       ApiConstants.refresh,
       data: {'refreshToken': refreshToken},
+    );
+  }
+
+  Future<Response> googleCallback({required String idToken}) {
+    return _client.dio.post(
+      ApiConstants.googleCallback,
+      data: {'idToken': idToken},
     );
   }
 

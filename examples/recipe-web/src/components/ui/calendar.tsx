@@ -53,7 +53,7 @@ export function Calendar({ selected, onSelect, className }: CalendarProps) {
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <span className="text-sm font-medium text-stone-900 dark:text-stone-100">
+        <span className="text-sm font-medium text-foreground">
           {format(currentMonth, "MMMM yyyy", { locale: enUS })}
         </span>
         <Button
@@ -69,7 +69,7 @@ export function Calendar({ selected, onSelect, className }: CalendarProps) {
         {weekDays.map((d) => (
           <div
             key={d}
-            className="text-center text-xs font-medium text-stone-500 dark:text-stone-400 py-1"
+            className="text-center text-xs font-medium text-muted-foreground py-1"
           >
             {d}
           </div>
@@ -89,10 +89,10 @@ export function Calendar({ selected, onSelect, className }: CalendarProps) {
               onClick={() => onSelect?.(d)}
               className={cn(
                 "h-9 w-9 rounded-lg text-sm transition-colors flex items-center justify-center",
-                !isCurrentMonth && "text-stone-300 dark:text-stone-600",
+                !isCurrentMonth && "text-muted-foreground/40",
                 isCurrentMonth &&
                   !isSelected &&
-                  "text-stone-700 hover:bg-orange-100 dark:text-stone-300 dark:hover:bg-stone-700",
+                  "text-foreground hover:bg-orange-100 dark:hover:bg-stone-700",
                 isSelected &&
                   "bg-orange-500 text-white hover:bg-orange-600 dark:bg-orange-500",
                 isToday &&

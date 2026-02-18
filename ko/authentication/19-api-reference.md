@@ -45,13 +45,12 @@ POST /v1/auth/email/signup
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `email` | `string` | ✅ | 이메일 주소 |
-| `password` | `string` | ✅ | 비밀번호 |
 | `method` | `string` | ✅ | `"password"` |
-| `name` | `string` | - | 사용자 이름 |
-| `nickname` | `string` | - | 닉네임 |
+| `email` | `string` | ✅ | 이메일 주소 |
+| `password` | `string` | ✅ | 비밀번호 (최소 8자, 대문자+소문자+숫자+특수문자) |
+| `name` | `string` | ✅ | 사용자 이름 |
 
-**응답:** `201 Created` — `{ accessToken, refreshToken, user }`
+**응답:** `201 Created` — `{ accessToken, refreshToken, tokenType, expiresIn }`
 
 → [이메일 회원가입](02-email-signup.md)
 
@@ -63,12 +62,12 @@ POST /v1/auth/email/signin
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
+| `method` | `string` | ✅ | `"password"` |
 | `email` | `string` | ✅ | 이메일 주소 |
 | `password` | `string` | ✅ | 비밀번호 |
-| `method` | `string` | ✅ | `"password"` |
-| `mfaCode` | `string` | - | MFA 인증 코드 (MFA 활성화 시) |
+| `mfaCode` | `string` | - | 6자리 TOTP 코드 (MFA 활성화 시) |
 
-**응답:** `200 OK` — `{ accessToken, refreshToken, user }`
+**응답:** `200 OK` — `{ accessToken, refreshToken, tokenType, expiresIn }`
 
 → [이메일 로그인](03-email-signin.md)
 
@@ -80,12 +79,11 @@ POST /v1/auth/email/signup
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `email` | `string` | ✅ | 이메일 주소 |
 | `method` | `string` | ✅ | `"magiclink"` |
+| `email` | `string` | ✅ | 이메일 주소 |
 | `callbackUrl` | `string` | ✅ | 인증 후 리다이렉트 URL |
-| `name` | `string` | - | 사용자 이름 |
 
-**응답:** `200 OK` — `{ message }`
+**응답:** `201 Created` — `{ message, email }`
 
 ### 매직 링크 로그인
 
@@ -95,11 +93,11 @@ POST /v1/auth/email/signin
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `email` | `string` | ✅ | 이메일 주소 |
 | `method` | `string` | ✅ | `"magiclink"` |
+| `email` | `string` | ✅ | 이메일 주소 |
 | `callbackUrl` | `string` | ✅ | 인증 후 리다이렉트 URL |
 
-**응답:** `200 OK` — `{ message }`
+**응답:** `200 OK` — `{ message, email }`
 
 → [매직 링크 인증](04-magic-link.md)
 
@@ -120,7 +118,7 @@ POST /v1/auth/:provider/callback
 | `redirectUri` | `string` | ✅ | OAuth 인증 시 사용한 redirect URI |
 | `state` | `string` | ✅ | CSRF 방지 상태값 |
 
-**응답:** `302 Redirect` — `callbackUrl?accessToken=...&refreshToken=...`
+**응답:** `200 OK` — `{ accessToken, refreshToken, tokenType, expiresIn }`
 
 → [소셜 로그인 개요](05-social-overview.md) · [Google](06-social-google.md) · [GitHub](07-social-github.md)
 
@@ -184,8 +182,9 @@ POST /v1/auth/signup/email/resend
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
 | `email` | `string` | ✅ | 가입 이메일 |
+| `callbackUrl` | `string` | - | 인증 후 리다이렉트 URL |
 
-**응답:** `200 OK` — `{ message }`
+**응답:** `200 OK` — `{ message, email }`
 
 ### 가입 이메일 인증 확인
 
@@ -196,8 +195,10 @@ GET /v1/auth/signup/email/confirm
 | 쿼리 파라미터 | 타입 | 필수 | 설명 |
 |-------------|------|:----:|------|
 | `token` | `string` | ✅ | 인증 토큰 |
+| `email` | `string` | ✅ | 이메일 주소 |
+| `callbackUrl` | `string` | - | 리다이렉트 URL |
 
-**응답:** `302 Redirect` — 설정된 리다이렉트 URL로 이동
+**응답:** `302 Redirect` 또는 `200 OK` — `callbackUrl` 제공 시 리다이렉트, 아닌 경우 JSON 반환
 
 ### 인증 메일 발송
 
@@ -208,8 +209,9 @@ POST /v1/auth/email/verify/send
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
 | `email` | `string` | ✅ | 인증할 이메일 |
+| `callbackUrl` | `string` | - | 인증 후 리다이렉트 URL |
 
-**응답:** `200 OK` — `{ message }`
+**응답:** `200 OK` — `{ message, email }`
 
 ### 인증 확인
 
@@ -219,9 +221,10 @@ POST /v1/auth/email/verify/confirm
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
+| `email` | `string` | ✅ | 이메일 주소 |
 | `token` | `string` | ✅ | 인증 토큰 |
 
-**응답:** `200 OK` — `{ verified }`
+**응답:** `200 OK` — `{ message, verified }`
 
 ### 인증 메일 재발송
 
@@ -232,8 +235,9 @@ POST /v1/auth/email/verify/resend
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
 | `email` | `string` | ✅ | 인증할 이메일 |
+| `callbackUrl` | `string` | - | 인증 후 리다이렉트 URL |
 
-**응답:** `200 OK` — `{ message }`
+**응답:** `200 OK` — `{ message, email }`
 
 → [이메일 인증](09-email-verification.md)
 
@@ -325,7 +329,7 @@ POST /v1/auth/mfa/enable
 |---------|------|:----:|------|
 | `password` | `string` | ✅ | 현재 비밀번호 |
 
-**응답:** `200 OK` — `{ secret, qrCodeUrl }`
+**응답:** `200 OK` — `{ secret, qrCodeUrl, backupCodes }`
 
 ### MFA 활성화 확인
 
@@ -351,10 +355,10 @@ POST /v1/auth/mfa/disable
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `password` | `string` | ✅ | 현재 비밀번호 |
-| `code` | `string` | ✅ | TOTP 인증 코드 |
+| `password` | `string` | ✅ | 현재 비밀번호 (최소 8자) |
+| `code` | `string` | - | 6자리 TOTP 코드 |
 
-**응답:** `200 OK` — `{ message }`
+**응답:** `200 OK` — `{}`
 
 → [다중 인증 (MFA)](11-mfa.md)
 
@@ -372,10 +376,11 @@ POST /v1/auth/accounts
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `provider` | `string` | ✅ | `google` 또는 `github` |
-| `accessToken` | `string` | ✅ | OAuth Access Token |
+| `provider` | `string` | ✅ | `"google"` 또는 `"github"` |
+| `code` | `string` | - | OAuth 인가 코드 |
+| `state` | `string` | - | OAuth state 토큰 |
 
-**응답:** `200 OK` — `{ provider, linkedAt }`
+**응답:** `201 Created` — `{}`
 
 ### 연동 계정 목록
 
@@ -405,9 +410,11 @@ POST /v1/auth/accounts/check
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `provider` | `string` | ✅ | `google` 또는 `github` |
+| `type` | `string` | ✅ | `"credentials"` 또는 `"oauth"` |
+| `provider` | `string` | ✅ | 제공자 이름 |
+| `providerAccountId` | `string` | ✅ | 제공자별 고유 ID |
 
-**응답:** `200 OK` — `{ linked, provider }`
+**응답:** `200 OK` — `{ exists, type?, provider? }`
 
 → [소셜 계정 연동](12-account-linking.md)
 
@@ -425,10 +432,15 @@ POST /v1/auth/invitations
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
+| `resourceType` | `string` | ✅ | `"organization"` 또는 `"project"` |
+| `resourceId` | `string` | ✅ | 조직 또는 프로젝트 ID |
+| `resourceName` | `string` | ✅ | 리소스 이름 |
 | `email` | `string` | ✅ | 초대 대상 이메일 |
-| `role` | `string` | - | 부여할 역할 (`admin`, `user`, `guest`) |
+| `name` | `string` | ✅ | 초대 대상 이름 |
+| `resourceRole` | `string` | ✅ | 부여할 역할 |
+| `inviterName` | `string` | - | 초대자 이름 |
 
-**응답:** `201 Created` — `{ id, email, role, status, expiresAt }`
+**응답:** `201 Created` — `{ id, resourceType, resourceId, resourceName, status, expiresAt, ... }`
 
 ### 초대 목록 조회
 
@@ -440,21 +452,23 @@ GET /v1/auth/invitations
 
 | 쿼리 파라미터 | 타입 | 필수 | 설명 |
 |-------------|------|:----:|------|
+| `resourceType` | `string` | - | `"user"`, `"organization"`, `"project"` |
+| `resourceId` | `string` | - | 리소스 ID 필터 |
+| `status` | `string` | - | `pending`, `accepted`, `rejected`, `expired`, `revoked` |
 | `page` | `number` | - | 페이지 번호 |
 | `limit` | `number` | - | 페이지당 항목 수 |
-| `status` | `string` | - | `pending`, `accepted`, `rejected`, `expired`, `revoked` |
 
 **응답:** `200 OK` — `{ items: [...], pagination }`
 
 ### 초대 상세 조회
 
 ```http
-GET /v1/auth/invitations/:id
+GET /v1/auth/invitations/:invitationId
 ```
 
 **인증 필요**
 
-**응답:** `200 OK` — `{ id, email, role, status, invitedBy, expiresAt }`
+**응답:** `200 OK` — `{ id, resourceType, resourceId, resourceName, status, expiresAt, ... }`
 
 ### 초대 수락
 
@@ -464,9 +478,10 @@ POST /v1/auth/invitations/accept
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `token` | `string` | ✅ | 초대 토큰 |
+| `token` | `string` | ✅ | 초대 토큰 (SHA256 해시) |
+| `email` | `string` | - | 이메일 주소 (추가 검증용) |
 
-**응답:** `200 OK` — `{ accessToken, refreshToken, user }`
+**응답:** `200 OK` — `{ id, resourceType, resourceId, status, ... }`
 
 ### 초대 거절
 
@@ -477,13 +492,14 @@ POST /v1/auth/invitations/reject
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
 | `token` | `string` | ✅ | 초대 토큰 |
+| `email` | `string` | ✅ | 초대 대상 이메일 주소 |
 
-**응답:** `200 OK` — `{ message }`
+**응답:** `200 OK` — `{}`
 
 ### 초대 취소
 
 ```http
-DELETE /v1/auth/invitations/:id
+DELETE /v1/auth/invitations/:invitationId
 ```
 
 **인증 필요**
@@ -880,10 +896,10 @@ PATCH /v1/users/:userId/public-settings
 | `POST` | `/v1/auth/accounts/check` | - | 연동 확인 |
 | `POST` | `/v1/auth/invitations` | ✅ | 초대 생성 |
 | `GET` | `/v1/auth/invitations` | ✅ | 초대 목록 |
-| `GET` | `/v1/auth/invitations/:id` | ✅ | 초대 상세 |
+| `GET` | `/v1/auth/invitations/:invitationId` | ✅ | 초대 상세 |
 | `POST` | `/v1/auth/invitations/accept` | - | 초대 수락 |
 | `POST` | `/v1/auth/invitations/reject` | - | 초대 거절 |
-| `DELETE` | `/v1/auth/invitations/:id` | ✅ | 초대 취소 |
+| `DELETE` | `/v1/auth/invitations/:invitationId` | ✅ | 초대 취소 |
 | `POST` | `/v1/auth/email/verify/send` | - | 인증 메일 발송 |
 | `POST` | `/v1/auth/email/verify/confirm` | - | 인증 확인 |
 | `POST` | `/v1/auth/email/verify/resend` | - | 인증 메일 재발송 |

@@ -35,10 +35,10 @@ export function QueryBoundary({
         <div className="rounded-full bg-red-100 p-4 dark:bg-red-900/30">
           <AlertCircle className="h-8 w-8 text-red-500" />
         </div>
-        <h3 className="mt-4 text-lg font-semibold text-stone-900 dark:text-stone-100">
+        <h3 className="mt-4 text-lg font-semibold text-foreground">
           Something went wrong
         </h3>
-        <p className="mt-2 max-w-sm text-sm text-stone-500 dark:text-stone-400">
+        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
           {message}
         </p>
         {onRetry && (

@@ -6,10 +6,10 @@ export default function AccountPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-stone-900 dark:text-stone-100">
+        <h2 className="text-xl font-semibold text-foreground">
           Account Management
         </h2>
-        <p className="text-stone-500 text-sm mt-1 dark:text-stone-400">
+        <p className="text-muted-foreground text-sm mt-1">
           Manage your account settings and data
         </p>
       </div>

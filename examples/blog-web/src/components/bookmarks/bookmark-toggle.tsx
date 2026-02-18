@@ -6,6 +6,8 @@ import {
   useBookmarkByArticle,
   useToggleBookmark,
 } from "@/hooks/queries/use-bookmarks";
+import { useMe } from "@/hooks/queries/use-auth";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { cn } from "@/lib/utils";
 
 interface BookmarkToggleProps {
@@ -18,7 +20,9 @@ export function BookmarkToggle({
   size = "default",
 }: BookmarkToggleProps) {
   const { data: bookmark } = useBookmarkByArticle(articleId);
+  const { data: currentUser } = useMe();
   const toggle = useToggleBookmark();
+  const { isDemoAccount } = useDemoGuard();
 
   const isBookmarked = !!bookmark;
 
@@ -30,8 +34,9 @@ export function BookmarkToggle({
         size === "sm" ? "h-7 w-7" : "h-9",
         isBookmarked && "text-accent-color"
       )}
-      onClick={() => toggle.mutate(articleId)}
-      disabled={toggle.isPending}
+      onClick={() => toggle.mutate({ articleId, userId: currentUser?.id })}
+      disabled={toggle.isPending || isDemoAccount}
+      title={isDemoAccount ? "Demo account: bookmarks are disabled" : undefined}
     >
       <Bookmark
         className={cn(

@@ -23,6 +23,8 @@ import {
   useCreateRecipe,
   useUpdateRecipe,
 } from "@/hooks/queries/use-recipes";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 import type { Recipe, Difficulty } from "@/application/dto/recipe.dto";
 import {
   RECIPE_CATEGORIES,
@@ -50,6 +52,7 @@ export function RecipeForm({ recipe }: RecipeFormProps) {
   const createRecipe = useCreateRecipe();
   const updateRecipe = useUpdateRecipe();
   const isEditing = !!recipe;
+  const { isDemoAccount } = useDemoGuard();
 
   const {
     register,
@@ -90,6 +93,7 @@ export function RecipeForm({ recipe }: RecipeFormProps) {
   return (
     <PageTransition>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {isDemoAccount && <DemoBanner />}
         <Card>
           <CardHeader>
             <CardTitle>
@@ -108,6 +112,7 @@ export function RecipeForm({ recipe }: RecipeFormProps) {
                     value={field.value}
                     onChange={field.onChange}
                     className="max-w-md"
+                    disabled={isDemoAccount}
                   />
                 )}
               />
@@ -250,7 +255,7 @@ export function RecipeForm({ recipe }: RecipeFormProps) {
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={isPending || isDemoAccount}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {isEditing ? "Save Changes" : "Add Recipe"}
           </Button>

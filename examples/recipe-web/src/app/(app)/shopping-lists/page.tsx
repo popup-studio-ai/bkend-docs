@@ -16,12 +16,14 @@ import { RecipeListSkeleton } from "@/components/shared/loading-skeleton";
 import { QueryBoundary } from "@/components/shared/query-boundary";
 import { PageTransition } from "@/components/motion/page-transition";
 import { useShoppingLists } from "@/hooks/queries/use-shopping-lists";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { formatDate } from "@/lib/format";
 import { motion } from "framer-motion";
 
 export default function ShoppingListsPage() {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error, refetch } = useShoppingLists(page);
+  const { isDemoAccount } = useDemoGuard();
 
   return (
     <PageTransition>
@@ -31,7 +33,7 @@ export default function ShoppingListsPage() {
           description="Auto-generate from recipes or create your own"
         >
           <Link href="/shopping-lists/generate">
-            <Button>
+            <Button disabled={isDemoAccount}>
               <Sparkles className="mr-2 h-4 w-4" />
               Auto Generate
             </Button>
@@ -67,7 +69,7 @@ export default function ShoppingListsPage() {
                       <Card className="transition-shadow hover:shadow-md">
                         <CardContent className="p-4">
                           <div className="flex items-center gap-4">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 dark:bg-stone-700">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-muted">
                               {isComplete ? (
                                 <CheckCircle2 className="h-6 w-6 text-green-500" />
                               ) : (
@@ -75,18 +77,18 @@ export default function ShoppingListsPage() {
                               )}
                             </div>
                             <div className="flex-1">
-                              <h3 className="font-semibold text-stone-900 dark:text-stone-100">
+                              <h3 className="font-semibold text-foreground">
                                 {list.name}
                               </h3>
-                              <p className="text-xs text-stone-500 dark:text-stone-400">
+                              <p className="text-xs text-muted-foreground">
                                 {formatDate(list.date)} | {list.totalItems} items
                               </p>
                             </div>
                             <div className="text-right">
-                              <span className="text-sm font-semibold text-stone-700 dark:text-stone-300">
+                              <span className="text-sm font-semibold text-foreground">
                                 {progress}%
                               </span>
-                              <div className="mt-1 h-1.5 w-20 rounded-full bg-orange-100 dark:bg-stone-700">
+                              <div className="mt-1 h-1.5 w-20 rounded-full bg-muted">
                                 <div
                                   className="h-full rounded-full bg-green-500 transition-all"
                                   style={{ width: `${progress}%` }}
@@ -111,7 +113,7 @@ export default function ShoppingListsPage() {
                   >
                     Previous
                   </Button>
-                  <span className="text-sm text-stone-500">
+                  <span className="text-sm text-muted-foreground">
                     {data.pagination.page} / {data.pagination.totalPages}
                   </span>
                   <Button
@@ -132,7 +134,7 @@ export default function ShoppingListsPage() {
               description="Auto-generate a shopping list from your recipes"
             >
               <Link href="/shopping-lists/generate">
-                <Button>
+                <Button disabled={isDemoAccount}>
                   <Sparkles className="mr-2 h-4 w-4" />
                   Auto Generate
                 </Button>

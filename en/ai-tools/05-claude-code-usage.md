@@ -1,7 +1,7 @@
 # Claude Code Usage
 
 {% hint style="info" %}
-Use bkend MCP in Claude Code to manage your backend with natural language.
+💡 Use bkend MCP in Claude Code to manage your backend with natural language.
 {% endhint %}
 
 ## Overview
@@ -9,7 +9,7 @@ Use bkend MCP in Claude Code to manage your backend with natural language.
 Once Claude Code is connected to bkend MCP, you can manage your backend with natural language from the terminal. Create projects, design tables, and perform data CRUD directly.
 
 {% hint style="warning" %}
-If you haven't completed the setup yet, see [Claude Code Setup](04-claude-code-setup.md) first.
+⚠️ If you haven't completed the setup yet, see [Claude Code Setup](04-claude-code-setup.md) first.
 {% endhint %}
 
 ***

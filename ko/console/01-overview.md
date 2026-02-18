@@ -29,6 +29,7 @@ flowchart TD
     H --> M[스토리지]
     H --> N[활동 로그]
     H --> O[API Keys]
+    H --> Q[CORS]
     H --> P[프로젝트 설정]
 ```
 
@@ -60,6 +61,7 @@ flowchart TD
 | **스토리지** | 파일 목록, 업로드 | [스토리지 개요](../storage/01-overview.md) |
 | **활동 로그** | 활동 로그 | - |
 | **API Keys** | Publishable / Secret 키 관리 | [API 키 관리](11-api-keys.md) |
+| **CORS** | 허용 출처 관리 | [프로젝트 설정](12-settings.md) |
 | **프로젝트 설정** | 프로젝트 정보, 삭제 | [프로젝트 설정](12-settings.md) |
 
 ***

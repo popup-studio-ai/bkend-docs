@@ -1,7 +1,7 @@
 # Connection Issues
 
 {% hint style="info" %}
-This page covers common connectivity problems when calling the bkend API and how to resolve them.
+💡 This page covers common connectivity problems when calling the bkend API and how to resolve them.
 {% endhint %}
 
 ## Overview
@@ -28,7 +28,6 @@ Make sure you are using the correct API URL.
 | Item | Correct Value |
 |------|----------|
 | **REST API** | `https://api-client.bkend.ai` |
-| **MCP Server** | `https://api.bkend.ai/mcp` |
 
 ### Common Mistakes
 
@@ -56,11 +55,11 @@ curl -X GET https://api-client.bkend.ai/v1/data/posts \
 | `Authorization` | Conditional | `Bearer ` prefix required (note the space). Only for authenticated APIs |
 
 {% hint style="warning" %}
-In `Authorization: Bearer {token}`, there must be a **space** between `Bearer` and the token. `Bearer{token}` is invalid.
+⚠️ In `Authorization: Bearer {token}`, there must be a **space** between `Bearer` and the token. `Bearer{token}` is invalid.
 {% endhint %}
 
 {% hint style="info" %}
-Since `pk_` keys contain project ID and environment information, the `X-Project-Id` and `X-Environment` headers are not needed.
+💡 Since `pk_` keys contain project ID and environment information, the `X-Project-Id` and `X-Environment` headers are not needed.
 {% endhint %}
 
 ***

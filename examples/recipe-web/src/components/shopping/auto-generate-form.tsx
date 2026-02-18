@@ -20,6 +20,8 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { useRecipes } from "@/hooks/queries/use-recipes";
 import { useCreateShoppingList } from "@/hooks/queries/use-shopping-lists";
 import { getIngredientsByRecipe } from "@/lib/api/ingredients";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 import type { ShoppingItem } from "@/application/dto/shopping-list.dto";
 
 const formSchema = z.object({
@@ -36,6 +38,7 @@ export function AutoGenerateForm() {
   const { data: recipesData, isLoading, isError, error, refetch } =
     useRecipes(1, 50);
   const createList = useCreateShoppingList();
+  const { isDemoAccount } = useDemoGuard();
 
   const {
     register,
@@ -103,6 +106,7 @@ export function AutoGenerateForm() {
           description="Select recipes to auto-generate a shopping list"
         />
 
+        {isDemoAccount && <DemoBanner />}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* List name */}
           <Card>
@@ -129,7 +133,7 @@ export function AutoGenerateForm() {
             <CardHeader>
               <CardTitle>
                 Select Recipes{" "}
-                <span className="text-sm font-normal text-stone-500">
+                <span className="text-sm font-normal text-muted-foreground">
                   ({selectedRecipeIds.size} selected)
                 </span>
               </CardTitle>
@@ -147,7 +151,7 @@ export function AutoGenerateForm() {
                     {recipesData.items.map((recipe) => (
                       <div
                         key={recipe.id}
-                        className="flex items-center gap-3 rounded-lg border border-orange-100 p-3 transition-colors hover:bg-orange-50 dark:border-stone-700 dark:hover:bg-stone-800 cursor-pointer"
+                        className="flex items-center gap-3 rounded-lg border border-border p-3 transition-colors hover:bg-accent cursor-pointer"
                         onClick={() => toggleRecipe(recipe.id)}
                       >
                         <div
@@ -155,7 +159,7 @@ export function AutoGenerateForm() {
                             "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border shadow-sm transition-colors",
                             selectedRecipeIds.has(recipe.id)
                               ? "bg-orange-500 border-orange-500 text-white"
-                              : "border-orange-300 dark:border-stone-600"
+                              : "border-border"
                           )}
                         >
                           {selectedRecipeIds.has(recipe.id) && (
@@ -163,10 +167,10 @@ export function AutoGenerateForm() {
                           )}
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-stone-700 dark:text-stone-300">
+                          <p className="text-sm font-medium text-foreground">
                             {recipe.title}
                           </p>
-                          <p className="text-xs text-stone-400">
+                          <p className="text-xs text-muted-foreground">
                             {recipe.category} | {recipe.servings} servings
                           </p>
                         </div>
@@ -196,7 +200,7 @@ export function AutoGenerateForm() {
             <Button
               type="submit"
               disabled={
-                selectedRecipeIds.size === 0 || createList.isPending
+                selectedRecipeIds.size === 0 || createList.isPending || isDemoAccount
               }
             >
               {createList.isPending ? (

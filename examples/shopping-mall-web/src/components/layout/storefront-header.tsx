@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ShoppingBag,
   ShoppingCart,
@@ -31,6 +31,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useSignOut } from "@/hooks/queries/use-auth";
 import { useUiStore } from "@/stores/ui-store";
 import { useCartStore } from "@/stores/cart-store";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { cn } from "@/lib/utils";
 import { PRODUCT_CATEGORIES } from "@/lib/constants";
 
@@ -44,12 +45,14 @@ const navLinks = [
 
 export function StorefrontHeader() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const signOut = useSignOut();
   const openCartDrawer = useUiStore((s) => s.openCartDrawer);
   const { itemCount } = useCartStore();
+  const { isDemoAccount } = useDemoGuard();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -130,7 +133,7 @@ export function StorefrontHeader() {
                 }}
               >
                 <ShoppingCart className="h-4 w-4" />
-                {itemCount > 0 && (
+                {isAuthenticated && itemCount > 0 && (
                   <Badge
                     variant="destructive"
                     className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center p-0 text-[10px]"
@@ -222,7 +225,14 @@ export function StorefrontHeader() {
                   href={link.href}
                   className={cn(
                     "shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors",
-                    pathname === link.href || (link.href !== "/products" && pathname + "?" === link.href.split("?")[0] + "?")
+                    (() => {
+                      const currentCategory = searchParams.get("category");
+                      const linkUrl = new URL(link.href, "http://x");
+                      const linkCategory = linkUrl.searchParams.get("category");
+                      if (pathname !== "/products") return false;
+                      if (link.href === "/products") return !currentCategory;
+                      return currentCategory === linkCategory;
+                    })()
                       ? "bg-accent-color/10 text-accent-color"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   )}

@@ -15,7 +15,8 @@ export const reviewsApi = {
     if (params.sortDirection) searchParams.set("sortDirection", params.sortDirection);
 
     return bkendFetch<PaginatedResponse<ReviewDto>>(
-      `/v1/data/reviews?${searchParams.toString()}`
+      `/v1/data/reviews?${searchParams.toString()}`,
+      { skipAuth: true }
     );
   },
 

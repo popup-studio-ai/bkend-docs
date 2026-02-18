@@ -8,20 +8,25 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/shared/page-header";
 import { QueryBoundary } from "@/components/shared/query-boundary";
 import { EmptyState } from "@/components/shared/empty-state";
+import { DemoBanner } from "@/components/shared/demo-banner";
 import { StarRating } from "@/components/reviews/star-rating";
 import { PageTransition } from "@/components/motion/page-transition";
 import { useMyReviews, useDeleteReview } from "@/hooks/queries/use-reviews";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { formatDate } from "@/lib/format";
 
 export default function ReviewsPage() {
   const { data, isLoading, isError, error, refetch } = useMyReviews();
   const deleteReview = useDeleteReview();
+  const { isDemoAccount } = useDemoGuard();
 
   const reviews = data?.items ?? [];
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
       <div className="space-y-6">
+        {isDemoAccount && <DemoBanner />}
+
         <PageHeader
           title="My Reviews"
           description={`${reviews.length} review(s) written`}
@@ -64,10 +69,10 @@ export default function ReviewsPage() {
                           </Avatar>
                           <div>
                             <StarRating value={review.rating} readonly size="sm" />
-                            <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+                            <p className="mt-2 text-sm text-foreground whitespace-pre-wrap">
                               {review.content}
                             </p>
-                            <span className="mt-2 block text-xs text-slate-400">
+                            <span className="mt-2 block text-xs text-muted-foreground">
                               {formatDate(review.createdAt)}
                             </span>
                           </div>
@@ -75,13 +80,14 @@ export default function ReviewsPage() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-slate-400 hover:text-red-500"
+                          className="h-8 w-8 text-muted-foreground hover:text-red-500"
                           onClick={() =>
                             deleteReview.mutate({
                               id: review.id,
                               productId: review.productId,
                             })
                           }
+                          disabled={isDemoAccount}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { useMe } from "@/hooks/queries/use-auth";
 import { useDeleteAccount } from "@/hooks/queries/use-users";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { DemoBanner } from "@/components/shared/demo-banner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,6 +21,7 @@ export function DangerZone() {
   const { data: user } = useMe();
   const { addToast } = useToast();
   const deleteAccount = useDeleteAccount();
+  const { isDemoAccount } = useDemoGuard();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -44,6 +47,8 @@ export function DangerZone() {
 
   return (
     <div className="space-y-4">
+      {isDemoAccount && <DemoBanner />}
+
       <div className="border border-destructive/50 rounded-lg p-6 space-y-4">
         <div className="flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-destructive mt-0.5" />
@@ -56,6 +61,7 @@ export function DangerZone() {
             <Button
               variant="destructive"
               onClick={() => setIsDialogOpen(true)}
+              disabled={isDemoAccount}
             >
               Delete My Account
             </Button>

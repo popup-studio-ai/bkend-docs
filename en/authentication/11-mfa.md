@@ -1,7 +1,7 @@
 # Multi-Factor Authentication (MFA)
 
 {% hint style="info" %}
-Strengthen your account security with TOTP-based two-step verification.
+💡 Strengthen your account security with TOTP-based two-step verification.
 {% endhint %}
 
 ## Overview
@@ -51,18 +51,20 @@ curl -X POST https://api-client.bkend.ai/v1/auth/mfa/enable \
 ```json
 {
   "secret": "JBSWY3DPEHPK3PXP",
-  "qrCode": "data:image/png;base64,...",
-  "issuer": "Bkend",
-  "otpauth": "otpauth://totp/Bkend:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Bkend"
+  "qrCodeUrl": "otpauth://totp/bkend:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=bkend",
+  "backupCodes": [
+    "a1b2c3d4",
+    "e5f6g7h8",
+    "..."
+  ]
 }
 ```
 
 | Field | Description |
 |-------|-------------|
-| `secret` | Base32-encoded secret (for manual entry) |
-| `qrCode` | QR code image (Base64) |
-| `issuer` | Service name |
-| `otpauth` | OTPAuth URI (for opening directly in the app) |
+| `secret` | TOTP secret key (for manual entry) |
+| `qrCodeUrl` | QR code URL for the authenticator app |
+| `backupCodes` | Backup recovery codes (save securely) |
 
 ### Step 2: Confirm MFA Activation
 
@@ -83,7 +85,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/mfa/confirm \
 | `code` | `string` | Yes | 6-digit code from the Authenticator app |
 
 {% hint style="success" %}
-Once MFA is enabled, you must enter a 6-digit code along with your password for subsequent sign-ins.
+✅ Once MFA is enabled, you must enter a 6-digit code along with your password for subsequent sign-ins.
 {% endhint %}
 
 ***
@@ -109,7 +111,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/mfa/disable \
 | `code` | `string` | - | 6-digit code from the Authenticator app |
 
 {% hint style="danger" %}
-**Warning** -- Disabling MFA weakens your account security.
+🚨 **Warning** -- Disabling MFA weakens your account security.
 {% endhint %}
 
 ***

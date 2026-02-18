@@ -1,7 +1,7 @@
 # Custom Domain
 
 {% hint style="info" %}
-Learn how to set up a custom domain for your bkend project.
+💡 Learn how to set up a custom domain for your bkend project.
 {% endhint %}
 
 ## Overview
@@ -21,7 +21,7 @@ Setting up a custom domain lets you access the bkend API through your own domain
 - Domain activation and management
 
 {% hint style="warning" %}
-DNS propagation may take up to **48 hours** after changes. During the transition, keep both the existing domain and your custom domain accessible.
+⚠️ DNS propagation may take up to **48 hours** after changes. During the transition, keep both the existing domain and your custom domain accessible.
 {% endhint %}
 
 ***

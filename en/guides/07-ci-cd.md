@@ -1,7 +1,7 @@
 # CI/CD Pipeline
 
 {% hint style="warning" %}
-This document is under preparation. A guide for configuring CI/CD with bkend environments (dev/staging/prod) will be available soon.
+⚠️ This document is under preparation. A guide for configuring CI/CD with bkend environments (dev/staging/prod) will be available soon.
 {% endhint %}
 
 ## Overview

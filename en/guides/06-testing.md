@@ -1,7 +1,7 @@
 # Testing Strategy
 
 {% hint style="info" %}
-Learn how to set up test environments and automation strategies for your bkend project. Test authentication, CRUD operations, and permissions safely.
+💡 Learn how to set up test environments and automation strategies for your bkend project. Test authentication, CRUD operations, and permissions safely.
 {% endhint %}
 
 ## Overview
@@ -744,7 +744,7 @@ Add test scripts to `package.json`.
 - [ ] Test coverage > 80%
 
 {% hint style="success" %}
-Once all tests pass, you can safely proceed with production deployment.
+✅ Once all tests pass, you can safely proceed with production deployment.
 {% endhint %}
 
 ***

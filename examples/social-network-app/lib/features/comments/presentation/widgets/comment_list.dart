@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/utils/demo_guard.dart';
 import '../../../auth/providers/auth_provider.dart';
 import '../../../profiles/data/profile_repository.dart';
 import '../../../profiles/models/profile.dart';
@@ -163,6 +164,7 @@ class _CommentItemState extends State<_CommentItem> {
   }
 
   void _showDeleteDialog(BuildContext context) {
+    if (DemoGuard.check(context)) return;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(

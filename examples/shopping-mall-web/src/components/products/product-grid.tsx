@@ -27,14 +27,15 @@ const VIEW_STORAGE_KEY = "shopping-mall-view";
 
 interface ProductListProps {
   initialCategory?: string;
+  initialSearch?: string;
 }
 
-export function ProductList({ initialCategory }: ProductListProps) {
+export function ProductList({ initialCategory, initialSearch }: ProductListProps) {
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState<string>(
     initialCategory ?? ALL_CATEGORIES_OPTION.value
   );
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch ?? "");
   const [sortBy, setSortBy] = useState<string>("createdAt");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");

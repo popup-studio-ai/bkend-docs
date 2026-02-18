@@ -25,16 +25,16 @@ export function ShoppingItem({ item, index, onToggle }: ShoppingItemProps) {
       />
       <span
         className={cn(
-          "flex-1 text-sm text-stone-700 dark:text-stone-300",
-          item.checked && "line-through text-stone-400 dark:text-stone-500"
+          "flex-1 text-sm text-foreground",
+          item.checked && "line-through text-muted-foreground"
         )}
       >
         {item.name}
       </span>
       <span
         className={cn(
-          "text-sm font-medium text-stone-600 dark:text-stone-400",
-          item.checked && "line-through text-stone-400 dark:text-stone-500"
+          "text-sm font-medium text-muted-foreground",
+          item.checked && "line-through text-muted-foreground"
         )}
       >
         {item.amount} {item.unit}

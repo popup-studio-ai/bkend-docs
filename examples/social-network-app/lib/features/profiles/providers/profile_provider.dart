@@ -54,6 +54,21 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  /// Load profile, auto-create if not exists
+  Future<void> ensureProfile({
+    required String userId,
+    String? name,
+    String? email,
+  }) async {
+    await loadMyProfile(userId);
+    if (_myProfile == null) {
+      final nickname = (name != null && name.isNotEmpty)
+          ? name
+          : (email != null ? email.split('@').first : 'User');
+      await createProfile(userId: userId, nickname: nickname);
+    }
+  }
+
   Future<bool> createProfile({
     required String userId,
     required String nickname,

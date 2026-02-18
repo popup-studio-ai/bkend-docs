@@ -23,6 +23,10 @@ export function SignInForm() {
     formState: { errors },
   } = useForm<SignInInput>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "demo@bkend.ai",
+      password: "Bkend123$",
+    },
   });
 
   const onSubmit = (data: SignInInput) => {

@@ -103,7 +103,7 @@ console.log(fileData.id); // 파일 ID
 ```json
 {
   "id": "file-uuid-1234",
-  "s3Key": "files/a1b2c3d4/profile.jpg",
+  "s3Key": "{server_generated_key}",
   "originalName": "profile.jpg",
   "mimeType": "image/jpeg",
   "size": 1048576,
@@ -136,7 +136,7 @@ curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
 ```json
 {
   "id": "file-uuid-1234",
-  "s3Key": "files/a1b2c3d4/profile.jpg",
+  "s3Key": "{server_generated_key}",
   "originalName": "profile.jpg",
   "mimeType": "image/jpeg",
   "size": 1048576,
@@ -152,7 +152,7 @@ curl -X GET https://api-client.bkend.ai/v1/files/{fileId} \
 ```
 
 {% hint style="info" %}
-💡 소유자가 아닌 사용자가 조회하면 공개 필드만 반환됩니다. 관리자(`admin`)는 모든 필드를 조회할 수 있습니다.
+💡 소유자가 아닌 사용자가 조회하면 파일의 `visibility` 설정에 따라 공개 필드만 반환됩니다.
 {% endhint %}
 
 ***
@@ -185,10 +185,22 @@ curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
 
 ### 응답 (200 OK)
 
+수정된 파일 메타데이터 객체를 반환합니다.
+
 ```json
 {
   "id": "file-uuid-1234",
-  "updatedAt": "2025-01-15T14:20:00.000Z"
+  "s3Key": "{server_generated_key}",
+  "originalName": "new-profile.jpg",
+  "mimeType": "image/jpeg",
+  "size": 1048576,
+  "visibility": "public",
+  "ownerId": "user-uuid-1234",
+  "ownerType": "user",
+  "metadata": {
+    "description": "업데이트된 프로필 이미지"
+  },
+  "createdAt": "2025-01-15T10:30:00.000Z"
 }
 ```
 
@@ -254,7 +266,7 @@ async function updateFileMetadata(fileId, updates) {
     },
   });
 
-  return result; // { id, updatedAt }
+  return result; // 전체 파일 메타데이터 객체
 }
 ```
 

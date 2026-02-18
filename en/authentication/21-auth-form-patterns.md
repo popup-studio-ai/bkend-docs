@@ -1,7 +1,7 @@
 # Auth Form Patterns
 
 {% hint style="info" %}
-Learn practical patterns for implementing sign-up, sign-in, and social login forms in JavaScript.
+💡 Learn practical patterns for implementing sign-up, sign-in, and social login forms in JavaScript.
 {% endhint %}
 
 ## Overview
@@ -197,7 +197,7 @@ function getSigninErrorMessage(code) {
 | `auth/account-banned` | 403 | Suspended account | "This account has been suspended." |
 
 {% hint style="warning" %}
-For security, do not distinguish between "Email does not exist" and "Password is incorrect." For the `auth/invalid-credentials` error, display a combined message like "Email or password is incorrect."
+⚠️ For security, do not distinguish between "Email does not exist" and "Password is incorrect." For the `auth/invalid-credentials` error, display a combined message like "Email or password is incorrect."
 {% endhint %}
 
 ***
@@ -449,7 +449,7 @@ async function checkAuthStatus() {
 ```
 
 {% hint style="info" %}
-See [Token Storage & Refresh](20-token-management.md) for the full `bkendFetch` function implementation.
+💡 See [Token Storage & Refresh](20-token-management.md) for the full `bkendFetch` function implementation.
 {% endhint %}
 
 ***

@@ -9,6 +9,8 @@ import { ArticleForm } from "@/components/articles/article-form";
 import { QueryBoundary } from "@/components/shared/query-boundary";
 import { FormSkeleton } from "@/components/shared/loading-skeleton";
 import { PageTransition } from "@/components/motion/page-transition";
+import { AuthGuard } from "@/components/shared/auth-guard";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 
 interface EditArticlePageProps {
   params: Promise<{ id: string }>;
@@ -19,6 +21,7 @@ export default function EditArticlePage({ params }: EditArticlePageProps) {
   const router = useRouter();
   const { data: article, isLoading, isError, error, refetch } = useArticle(id);
   const { data: currentUser } = useMe();
+  const { isDemoAccount } = useDemoGuard();
 
   // Permission check: redirect if not the author
   useEffect(() => {
@@ -28,20 +31,22 @@ export default function EditArticlePage({ params }: EditArticlePageProps) {
   }, [article, currentUser, id, router]);
 
   return (
-    <PageTransition className="mx-auto max-w-3xl space-y-6">
-      <PageHeader
-        title="Edit Article"
-        description="Edit your blog article"
-      />
-      <QueryBoundary
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-        loadingFallback={<FormSkeleton />}
-        onRetry={() => refetch()}
-      >
-        {article && <ArticleForm article={article} />}
-      </QueryBoundary>
-    </PageTransition>
+    <AuthGuard>
+      <PageTransition className="mx-auto max-w-3xl space-y-6">
+        <PageHeader
+          title="Edit Article"
+          description="Edit your blog article"
+        />
+        <QueryBoundary
+          isLoading={isLoading}
+          isError={isError}
+          error={error}
+          loadingFallback={<FormSkeleton />}
+          onRetry={() => refetch()}
+        >
+          {article && <ArticleForm article={article} disabled={isDemoAccount} />}
+        </QueryBoundary>
+      </PageTransition>
+    </AuthGuard>
   );
 }

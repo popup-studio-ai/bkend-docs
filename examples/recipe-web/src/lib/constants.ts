@@ -35,3 +35,6 @@ export const ACCEPTED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp"];
 
 // Search
 export const SEARCH_DEBOUNCE_MS = 300;
+
+// Demo account (password change & account deletion disabled)
+export const DEMO_EMAIL = "demo@bkend.ai";

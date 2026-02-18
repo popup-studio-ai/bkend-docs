@@ -1,7 +1,7 @@
 # Scaling Guide
 
 {% hint style="info" %}
-Learn strategies and best practices for scaling your bkend project, including environment separation, index optimization, and permission design.
+💡 Learn strategies and best practices for scaling your bkend project, including environment separation, index optimization, and permission design.
 {% endhint %}
 
 ## Overview
@@ -125,7 +125,7 @@ syncProdToStaging('posts');
 ```
 
 {% hint style="warning" %}
-Anonymize tables containing personal information before syncing. Mask emails, phone numbers, and similar data.
+⚠️ Anonymize tables containing personal information before syncing. Mask emails, phone numbers, and similar data.
 {% endhint %}
 
 ***
@@ -201,39 +201,51 @@ Add indexes in the following situations:
 
 | Scenario | Index Target | Example |
 |----------|-------------|---------|
-| **WHERE clause filter** | Frequently searched columns | `WHERE user_id = '...'` → `user_id` index |
-| **ORDER BY sort** | Sort key columns | `ORDER BY created_at DESC` → `created_at` index |
-| **JOIN conditions** | Foreign key columns | `JOIN orders ON user_id` → `user_id` index |
-| **Unique constraints** | Columns requiring no duplicates | `email` column → UNIQUE index |
+| **Filter condition** | Frequently filtered fields | `andFilters: { userId: '...' }` → `userId` index |
+| **Sort key** | Sort target fields | `sortBy: createdAt` → `createdAt` index |
+| **Unique constraints** | Fields requiring no duplicates | `email` field → Unique index |
 
 ### 3.2 Index Creation Examples
 
-Create indexes from the console or with SQL.
+Create indexes from the **console** or **MCP tools**.
 
 {% tabs %}
 {% tab title="Console" %}
 1. Go to **Database** → **Tables** → **posts** → **Indexes**
 2. Click **New Index**
-3. Index name: `idx_posts_user_id`
-4. Column: `user_id`
-5. Type: B-Tree (default)
-6. Click **Create**
+3. Index name: `idx_posts_userId`
+4. Field: `userId`
+5. Click **Create**
 {% endtab %}
 
-{% tab title="SQL" %}
-```sql
--- Single column index
-CREATE INDEX idx_posts_user_id ON posts(user_id);
+{% tab title="JSON (MCP / REST API)" %}
+```json
+// Single field index
+{
+  "name": "idx_posts_userId",
+  "fields": { "userId": 1 }
+}
 
--- Compound index (user_id + created_at)
-CREATE INDEX idx_posts_user_created ON posts(user_id, created_at DESC);
+// Compound index (userId + createdAt descending)
+{
+  "name": "idx_posts_userId_createdAt",
+  "fields": { "userId": 1, "createdAt": -1 }
+}
 
--- Partial index (only where status is 'published')
-CREATE INDEX idx_posts_published ON posts(created_at)
-WHERE status = 'published';
+// Unique index
+{
+  "name": "idx_users_email",
+  "fields": { "email": 1 },
+  "unique": true
+}
 
--- Unique index
-CREATE UNIQUE INDEX idx_users_email ON users(email);
+// Sparse index (excludes documents without the field)
+{
+  "name": "idx_posts_slug",
+  "fields": { "slug": 1 },
+  "unique": true,
+  "sparse": true
+}
 ```
 {% endtab %}
 {% endtabs %}
@@ -264,7 +276,7 @@ console.timeEnd('with index'); // e.g., 45ms
 ```
 
 {% hint style="info" %}
-Indexes improve read performance but slightly degrade write performance. Add indexes to columns that are queried frequently but written to less often.
+💡 Indexes improve read performance but slightly degrade write performance. Add indexes to columns that are queried frequently but written to less often.
 {% endhint %}
 
 ***
@@ -286,69 +298,73 @@ flowchart LR
 
 **Table Design**
 
-```sql
--- User roles table
-CREATE TABLE user_roles (
-  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-  user_id TEXT NOT NULL REFERENCES users(id),
-  role TEXT NOT NULL, -- 'user', 'editor', 'admin'
-  created_at TIMESTAMP DEFAULT now()
-);
+Create a `user_roles` table with the following schema:
 
-CREATE INDEX idx_user_roles_user_id ON user_roles(user_id);
+```json
+{
+  "userId": { "bsonType": "string" },
+  "role": { "bsonType": "string" }
+}
+```
+
+Add an index on `userId` for fast lookups:
+
+```json
+{
+  "name": "idx_user_roles_userId",
+  "fields": { "userId": 1 }
+}
 ```
 
 **Permission Settings (posts table)**
 
-| Operation | Condition |
-|-----------|-----------|
-| **SELECT** | `true` (everyone can read) |
-| **INSERT** | `auth.role = 'authenticated'` |
-| **UPDATE** | `user.id = author_id OR (SELECT COUNT(*) FROM user_roles WHERE user_id = user.id AND role IN ('editor', 'admin')) > 0` |
-| **DELETE** | `(SELECT COUNT(*) FROM user_roles WHERE user_id = user.id AND role = 'admin') > 0` |
+| Group | create | read | update | delete |
+|-------|:------:|:----:|:------:|:------:|
+| **guest** | - | ✅ | - | - |
+| **user** | ✅ | ✅ | - | - |
+| **self** | - | ✅ | ✅ | ✅ |
+| **admin** | ✅ | ✅ | ✅ | ✅ |
+
+{% hint style="info" %}
+💡 bkend provides 4 permission groups: `admin`, `user`, `self`, and `guest`. The `self` group restricts operations to records created by the authenticated user (`createdBy` field match).
+{% endhint %}
 
 ### 4.2 Organization-Level Data Isolation
 
-In multi-tenant apps, isolate data by organization.
+In multi-tenant apps, isolate data by organization using separate tables with permission control.
 
 **Table Design**
 
-```sql
--- Organizations table
-CREATE TABLE organizations (
-  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-  name TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT now()
-);
+Create an `organizations` table and an `organization_members` table:
 
--- Organization members table
-CREATE TABLE organization_members (
-  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-  organization_id TEXT NOT NULL REFERENCES organizations(id),
-  user_id TEXT NOT NULL REFERENCES users(id),
-  role TEXT NOT NULL, -- 'owner', 'admin', 'member'
-  created_at TIMESTAMP DEFAULT now()
-);
+```json
+// organizations table schema
+{
+  "name": { "bsonType": "string" }
+}
 
--- Posts table (with organization ID)
-CREATE TABLE posts (
-  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-  organization_id TEXT NOT NULL REFERENCES organizations(id),
-  author_id TEXT NOT NULL REFERENCES users(id),
-  title TEXT NOT NULL,
-  content TEXT,
-  created_at TIMESTAMP DEFAULT now()
-);
+// organization_members table schema
+{
+  "organizationId": { "bsonType": "string" },
+  "userId": { "bsonType": "string" },
+  "role": { "bsonType": "string" }
+}
+
+// posts table schema (with organizationId)
+{
+  "organizationId": { "bsonType": "string" },
+  "title": { "bsonType": "string" },
+  "content": { "bsonType": "string" }
+}
 ```
 
 **Permission Settings (posts table)**
 
-| Operation | Condition |
-|-----------|-----------|
-| **SELECT** | `(SELECT COUNT(*) FROM organization_members WHERE organization_id = posts.organization_id AND user_id = user.id) > 0` |
-| **INSERT** | `(SELECT COUNT(*) FROM organization_members WHERE organization_id = NEW.organization_id AND user_id = user.id) > 0` |
-| **UPDATE** | `user.id = author_id` |
-| **DELETE** | `user.id = author_id OR (SELECT role FROM organization_members WHERE organization_id = posts.organization_id AND user_id = user.id) = 'owner'` |
+| Group | create | read | update | delete |
+|-------|:------:|:----:|:------:|:------:|
+| **user** | ✅ | ✅ | - | - |
+| **self** | - | ✅ | ✅ | ✅ |
+| **admin** | ✅ | ✅ | ✅ | ✅ |
 
 ***
 
@@ -609,7 +625,7 @@ async function apiRequestWithMetrics(url, options) {
 - [ ] Performance monitoring dashboard configured
 
 {% hint style="success" %}
-Once you complete all steps, your bkend project will be ready for scalable operation.
+✅ Once you complete all steps, your bkend project will be ready for scalable operation.
 {% endhint %}
 
 ***

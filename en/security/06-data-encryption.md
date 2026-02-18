@@ -1,7 +1,7 @@
 # Data Encryption
 
 {% hint style="info" %}
-Understand bkend's multi-layered encryption approach to protecting your data.
+💡 Understand bkend's multi-layered encryption approach to protecting your data.
 {% endhint %}
 
 ## Overview
@@ -30,7 +30,7 @@ All API communication is encrypted with TLS (Transport Layer Security).
 | **Certificates** | Auto-renewed |
 
 {% hint style="warning" %}
-If you send a request over HTTP (`http://`), it is automatically redirected to HTTPS (`https://`). Always use `https://api-client.bkend.ai`.
+⚠️ If you send a request over HTTP (`http://`), it is automatically redirected to HTTPS (`https://`). Always use `https://api-client.bkend.ai`.
 {% endhint %}
 
 ***
@@ -41,10 +41,10 @@ If you send a request over HTTP (`http://`), it is automatically redirected to H
 
 | Layer | Method | Target |
 |-------|--------|--------|
-| **Infrastructure Encryption** | MongoDB Atlas Encryption at Rest | All stored data |
+| **Infrastructure Encryption** | Encryption at Rest | All stored data |
 | **Application Encryption** | AES-256-GCM | Sensitive internal configuration data |
 
-MongoDB Atlas automatically encrypts stored data. In addition, sensitive internal configuration data is double-encrypted at the application level using AES-256-GCM.
+The database infrastructure automatically encrypts all stored data at rest. In addition, sensitive internal configuration data is double-encrypted at the application level using AES-256-GCM.
 
 ### File Storage
 
@@ -67,7 +67,7 @@ User passwords are hashed using the **Argon2id** algorithm. The original passwor
 | **Strength** | Exceeds OWASP minimum recommendations |
 
 {% hint style="info" %}
-Argon2id is the top-recommended password hashing algorithm by the OWASP Password Storage Cheat Sheet. It uses memory-hard hashing that is resistant to GPU brute-force attacks, and is configured with parameters that exceed OWASP minimum recommendations.
+💡 Argon2id is the top-recommended password hashing algorithm by the OWASP Password Storage Cheat Sheet. It uses memory-hard hashing that is resistant to GPU brute-force attacks, and is configured with parameters that exceed OWASP minimum recommendations.
 {% endhint %}
 
 ### API Key Hashing
@@ -95,7 +95,7 @@ API keys are stored as **SHA-256** one-way hashes.
 | Target | Encryption Method | One-Way |
 |--------|------------------|:-------:|
 | Network communication | TLS 1.2+ | -- |
-| Database | MongoDB Atlas Encryption at Rest | -- |
+| Database | Encryption at Rest | -- |
 | Sensitive internal configuration data | AES-256-GCM (application level) | -- |
 | File storage | AES-256 server-side encryption | -- |
 | Passwords | Argon2id | Yes |

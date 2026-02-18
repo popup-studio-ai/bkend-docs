@@ -50,12 +50,9 @@ class FeedProvider extends ChangeNotifier {
     try {
       _followingIds = await _followProvider.getFollowingIds(userId);
 
-      if (_followingIds.isEmpty) {
-        _feedPosts = [];
-        _feedPagination = Pagination.empty;
-        _isFeedLoading = false;
-        notifyListeners();
-        return;
+      // Include own posts in feed
+      if (!_followingIds.contains(userId)) {
+        _followingIds.add(userId);
       }
 
       final filters = {

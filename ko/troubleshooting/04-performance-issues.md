@@ -32,8 +32,7 @@ flowchart TD
 ```bash
 # 필터링하는 필드 확인
 curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published" \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {api_key}"
+  -H "X-API-Key: {pk_publishable_key}"
 ```
 
 응답이 느리다면 `status` 필드에 인덱스를 추가하세요.
@@ -69,11 +68,15 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=publis
 **해결:**
 
 ```javascript
-// ❌ 나쁜 예 — 전체 데이터 조회
-const response = await fetch('/v1/data/posts');
+// 나쁜 예 — 전체 데이터 조회
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts', {
+  headers: { 'X-API-Key': '{pk_publishable_key}' },
+});
 
-// ✅ 좋은 예 — 페이지네이션 적용
-const response = await fetch('/v1/data/posts?limit=20&offset=0');
+// 좋은 예 — 페이지네이션 적용
+const response = await fetch('https://api-client.bkend.ai/v1/data/posts?limit=20&offset=0', {
+  headers: { 'X-API-Key': '{pk_publishable_key}' },
+});
 ```
 
 ### 권장 limit 값
@@ -97,22 +100,34 @@ const response = await fetch('/v1/data/posts?limit=20&offset=0');
 | 동일 데이터 반복 조회 | 클라이언트 캐싱 적용 |
 | 불필요한 필드 포함 | `fields` 파라미터로 필요한 필드만 선택 |
 
-### 배치 처리
+### API 호출 최소화
 
 ```javascript
-// ❌ 나쁜 예 — 개별 삽입 (10번 호출)
+// 나쁜 예 — 루프 내 개별 삽입 (10번 호출)
 for (const item of items) {
-  await fetch('/v1/data/posts', {
+  await fetch('https://api-client.bkend.ai/v1/data/posts', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key': '{pk_publishable_key}',
+    },
     body: JSON.stringify(item),
   });
 }
 
-// ✅ 좋은 예 — 배치 삽입 (1번 호출)
-await fetch('/v1/data/posts', {
-  method: 'POST',
-  body: JSON.stringify(items), // 배열로 전달
-});
+// 좋은 예 — Promise.all로 동시 삽입
+await Promise.all(
+  items.map(item =>
+    fetch('https://api-client.bkend.ai/v1/data/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': '{pk_publishable_key}',
+      },
+      body: JSON.stringify(item),
+    })
+  )
+);
 ```
 
 ***

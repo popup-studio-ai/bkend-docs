@@ -16,12 +16,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthStore } from "@/stores/auth-store";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { useRecipes } from "@/hooks/queries/use-recipes";
 import { useWeeklyMealPlans } from "@/hooks/queries/use-meal-plans";
 import { useShoppingLists } from "@/hooks/queries/use-shopping-lists";
 import { formatTime } from "@/lib/format";
 import { DIFFICULTY_LABELS, DIFFICULTY_COLORS } from "@/application/dto/recipe.dto";
 import { cn } from "@/lib/utils";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 import { PageTransition } from "@/components/motion/page-transition";
 
 function StatCard({
@@ -46,13 +48,13 @@ function StatCard({
       transition={{ duration: 0.3, delay: index * 0.1 }}
     >
       <Link href={href}>
-        <Card className="group transition-all duration-200 hover:shadow-md hover:border-orange-300 border-orange-200 dark:border-stone-700 dark:hover:border-orange-600/40">
+        <Card className="group transition-all duration-200 hover:shadow-md hover:border-orange-300 border-border dark:hover:border-orange-600/50">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-stone-500 dark:text-stone-400">{label}</p>
+                <p className="text-sm text-muted-foreground">{label}</p>
                 {value !== undefined ? (
-                  <p className="mt-1 text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">{value}</p>
+                  <p className="mt-1 text-3xl font-bold tracking-tight text-foreground">{value}</p>
                 ) : (
                   <Skeleton className="mt-2 h-8 w-12" />
                 )}
@@ -68,8 +70,10 @@ function StatCard({
   );
 }
 
-export default function DashboardPage() {
+function PersonalizedDashboard() {
   const user = useAuthStore((s) => s.user);
+  const userId = user?.id;
+  const { isDemoAccount } = useDemoGuard();
 
   const { data: recipesData } = useRecipes(1, 1);
 
@@ -130,7 +134,7 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold tracking-tight text-stone-900 sm:text-3xl dark:text-stone-100">
           {greeting}, {user?.name || "there"}
         </h1>
-        <p className="mt-1 text-stone-500 dark:text-stone-400">
+        <p className="mt-1 text-muted-foreground">
           Here&apos;s an overview of your kitchen
         </p>
       </motion.div>
@@ -145,7 +149,7 @@ export default function DashboardPage() {
       {/* Recent Recipes */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">Recent Recipes</h2>
+          <h2 className="text-lg font-semibold text-foreground">Recent Recipes</h2>
           <Button variant="ghost" size="sm" asChild>
             <Link href="/recipes" className="text-orange-600 hover:text-orange-700 dark:text-orange-400">
               View all
@@ -164,11 +168,11 @@ export default function DashboardPage() {
                 transition={{ duration: 0.3, delay: 0.2 + i * 0.05 }}
               >
                 <Link href={`/recipes/${recipe.id}`}>
-                  <Card className="group h-full transition-all duration-200 hover:shadow-md hover:border-orange-300 border-orange-200 dark:border-stone-700 dark:hover:border-orange-600/40">
+                  <Card className="group h-full transition-all duration-200 hover:shadow-md hover:border-orange-300 border-border dark:hover:border-orange-600/50">
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
-                          <h3 className="font-medium line-clamp-1 group-hover:text-orange-600 transition-colors text-stone-900 dark:text-stone-100 dark:group-hover:text-orange-400">
+                          <h3 className="font-medium line-clamp-1 group-hover:text-orange-600 transition-colors text-foreground dark:group-hover:text-orange-400">
                             {recipe.title}
                           </h3>
                           <p className="mt-1 text-sm text-stone-500 line-clamp-2 dark:text-stone-400">
@@ -178,7 +182,7 @@ export default function DashboardPage() {
                         {recipe.imageUrl && (
                           <div className="h-14 w-14 shrink-0 overflow-hidden rounded-xl">
                             <img
-                              src={recipe.imageUrl}
+                              src={getOptimizedImageUrl(recipe.imageUrl, IMAGE_PRESETS.thumbnail)}
                               alt=""
                               className="h-full w-full object-cover"
                             />
@@ -194,11 +198,11 @@ export default function DashboardPage() {
                         >
                           {DIFFICULTY_LABELS[recipe.difficulty]}
                         </Badge>
-                        <span className="flex items-center gap-1 text-xs text-stone-400 dark:text-stone-500">
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
                           <Clock className="h-3 w-3" />
                           {formatTime(recipe.cookingTime)}
                         </span>
-                        <span className="flex items-center gap-1 text-xs text-stone-400 dark:text-stone-500">
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
                           <Users className="h-3 w-3" />
                           {recipe.servings}
                         </span>
@@ -210,17 +214,24 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : (
-          <Card className="border-orange-200 dark:border-stone-700">
+          <Card className="border-border">
             <CardContent className="flex flex-col items-center justify-center py-12">
-              <ChefHat className="h-8 w-8 text-stone-400 dark:text-stone-500" />
-              <p className="mt-3 text-sm text-stone-500 dark:text-stone-400">
+              <ChefHat className="h-8 w-8 text-muted-foreground" />
+              <p className="mt-3 text-sm text-muted-foreground">
                 No recipes yet. Create your first one!
               </p>
-              <Button className="mt-4 bg-orange-600 hover:bg-orange-700 text-white" size="sm" asChild>
-                <Link href="/recipes/new">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create Recipe
-                </Link>
+              <Button className="mt-4 bg-orange-600 hover:bg-orange-700 text-white" size="sm" disabled={isDemoAccount} asChild={!isDemoAccount}>
+                {isDemoAccount ? (
+                  <>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Recipe
+                  </>
+                ) : (
+                  <Link href="/recipes/new">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Recipe
+                  </Link>
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -229,13 +240,20 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold mb-4 text-stone-900 dark:text-stone-100">Quick Actions</h2>
+        <h2 className="text-lg font-semibold mb-4 text-foreground">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
-          <Button asChild className="bg-orange-600 hover:bg-orange-700 text-white">
-            <Link href="/recipes/new">
-              <Plus className="mr-2 h-4 w-4" />
-              New Recipe
-            </Link>
+          <Button className="bg-orange-600 hover:bg-orange-700 text-white" disabled={isDemoAccount} asChild={!isDemoAccount}>
+            {isDemoAccount ? (
+              <>
+                <Plus className="mr-2 h-4 w-4" />
+                New Recipe
+              </>
+            ) : (
+              <Link href="/recipes/new">
+                <Plus className="mr-2 h-4 w-4" />
+                New Recipe
+              </Link>
+            )}
           </Button>
           <Button variant="outline" asChild>
             <Link href="/meal-plans">
@@ -253,4 +271,102 @@ export default function DashboardPage() {
       </div>
     </PageTransition>
   );
+}
+
+function PublicRecipeFeed() {
+  const { data: recentRecipes } = useRecipes(1, 8, undefined, "createdAt", "desc");
+
+  return (
+    <PageTransition className="space-y-8">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <h1 className="text-2xl font-bold tracking-tight text-stone-900 sm:text-3xl dark:text-stone-100">
+          Discover Recipes
+        </h1>
+        <p className="mt-1 text-muted-foreground">
+          Explore the latest recipes from the community
+        </p>
+      </motion.div>
+
+      {recentRecipes?.items && recentRecipes.items.length > 0 ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {recentRecipes.items.map((recipe, i) => (
+            <motion.div
+              key={recipe.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+            >
+              <Link href={`/recipes/${recipe.id}`}>
+                <Card className="group h-full transition-all duration-200 hover:shadow-md hover:border-orange-300 border-border dark:hover:border-orange-600/50">
+                  {recipe.imageUrl && (
+                    <div className="h-40 w-full overflow-hidden rounded-t-xl">
+                      <img
+                        src={getOptimizedImageUrl(recipe.imageUrl, IMAGE_PRESETS.thumbnail)}
+                        alt={recipe.title}
+                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
+                  <CardContent className="p-4">
+                    <h3 className="font-medium line-clamp-1 group-hover:text-orange-600 transition-colors text-foreground dark:group-hover:text-orange-400">
+                      {recipe.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-stone-500 line-clamp-2 dark:text-stone-400">
+                      {recipe.description}
+                    </p>
+                    <div className="mt-3 flex items-center gap-3">
+                      <Badge
+                        className={cn(
+                          "text-xs",
+                          DIFFICULTY_COLORS[recipe.difficulty]
+                        )}
+                      >
+                        {DIFFICULTY_LABELS[recipe.difficulty]}
+                      </Badge>
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {formatTime(recipe.cookingTime)}
+                      </span>
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Users className="h-3 w-3" />
+                        {recipe.servings}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <Card className="border-border">
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <ChefHat className="h-10 w-10 text-muted-foreground" />
+            <p className="mt-3 text-muted-foreground">
+              No recipes yet. Sign in to create the first one!
+            </p>
+            <Button className="mt-4 bg-orange-600 hover:bg-orange-700 text-white" size="sm" asChild>
+              <Link href="/sign-in">
+                Sign In
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+    </PageTransition>
+  );
+}
+
+export default function HomePage() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  if (isAuthenticated) {
+    return <PersonalizedDashboard />;
+  }
+
+  return <PublicRecipeFeed />;
 }

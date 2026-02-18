@@ -6,10 +6,10 @@ export default function PasswordPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-stone-900 dark:text-stone-100">
+        <h2 className="text-xl font-semibold text-foreground">
           Change Password
         </h2>
-        <p className="text-stone-500 text-sm mt-1 dark:text-stone-400">
+        <p className="text-muted-foreground text-sm mt-1">
           Update your password to keep your account secure
         </p>
       </div>

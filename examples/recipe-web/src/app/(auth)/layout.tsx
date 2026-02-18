@@ -1,10 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ChefHat, CalendarDays, ShoppingCart, Shield } from "lucide-react";
-import { tokenStorage } from "@/infrastructure/storage/token-storage";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const features = [
@@ -35,15 +32,6 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (tokenStorage.hasTokens()) {
-      router.replace("/");
-      return;
-    }
-  }, [router]);
-
   return (
     <div className="flex min-h-screen">
       {/* Left branding panel - hidden on mobile */}
@@ -96,7 +84,7 @@ export default function AuthLayout({
       </div>
 
       {/* Right form panel */}
-      <div className="flex flex-1 flex-col items-center justify-center bg-amber-50 p-4 sm:p-8 dark:bg-stone-900">
+      <div className="flex flex-1 flex-col items-center justify-center bg-background p-4 sm:p-8">
         <div className="absolute top-4 right-4">
           <ThemeToggle />
         </div>
@@ -107,7 +95,7 @@ export default function AuthLayout({
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500">
               <ChefHat className="h-4 w-4 text-white" />
             </div>
-            <span className="text-xl font-bold text-stone-900 dark:text-stone-100">Recipe App</span>
+            <span className="text-xl font-bold text-foreground">Recipe App</span>
           </div>
 
           {children}
@@ -117,15 +105,15 @@ export default function AuthLayout({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mt-6 rounded-xl border border-dashed border-orange-300 bg-orange-50/50 p-4 dark:border-stone-600 dark:bg-stone-800/50"
+            className="mt-6 rounded-xl border border-dashed border-border bg-muted/50 p-4"
           >
-            <p className="text-xs font-medium text-stone-500 mb-2 dark:text-stone-400">Demo Account</p>
-            <div className="space-y-1 text-xs text-stone-500 dark:text-stone-400">
+            <p className="text-xs font-medium text-muted-foreground mb-2">Demo Account</p>
+            <div className="space-y-1 text-xs text-muted-foreground">
               <p>
-                Email: <code className="rounded bg-orange-100 px-1.5 py-0.5 font-mono text-stone-700 dark:bg-stone-700 dark:text-stone-300">demo@bkend.ai</code>
+                Email: <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">demo@bkend.ai</code>
               </p>
               <p>
-                Password: <code className="rounded bg-orange-100 px-1.5 py-0.5 font-mono text-stone-700 dark:bg-stone-700 dark:text-stone-300">Bkend123$</code>
+                Password: <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">Bkend123$</code>
               </p>
             </div>
           </motion.div>

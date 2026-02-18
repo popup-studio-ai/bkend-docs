@@ -1,7 +1,7 @@
 # Security Best Practices
 
 {% hint style="info" %}
-Review the security recommendations for using bkend safely.
+💡 Review the security recommendations for using bkend safely.
 {% endhint %}
 
 ## Overview
@@ -29,7 +29,7 @@ This document covers the security best practices you should follow when running 
 | Server side (API Routes, batch) | **Secret Key** |
 
 {% hint style="danger" %}
-**Warning** -- Including a Secret Key in client-side code exposes it through browser DevTools or app decompilation. Always use a Publishable Key on the frontend.
+🚨 **Warning** -- Including a Secret Key in client-side code exposes it through browser DevTools or app decompilation. Always use a Publishable Key on the frontend.
 {% endhint %}
 
 ***
@@ -87,7 +87,7 @@ localStorage.setItem('token', jwt)  // Do not use this
 | `guest` | ❌ | ✅ | ❌ | ❌ | ✅ |
 
 {% hint style="warning" %}
-By default, `guest` has `read` and `list` enabled. For private tables, make sure to explicitly restrict `guest` permissions.
+⚠️ By default, `guest` has `read` and `list` enabled. For private tables, make sure to explicitly restrict `guest` permissions.
 {% endhint %}
 
 ### Recommended Policy Patterns
@@ -141,7 +141,7 @@ flowchart LR
 ```
 
 {% hint style="warning" %}
-Do not mix API keys across environments. Using a development key to access production data can lead to a security incident.
+⚠️ Do not mix API keys across environments. Using a development key to access production data can lead to a security incident.
 {% endhint %}
 
 ***

@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function RecipeCardSkeleton() {
   return (
-    <div className="rounded-xl border border-orange-200 bg-white overflow-hidden dark:border-stone-700 dark:bg-stone-800">
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
       <Skeleton className="h-48 w-full rounded-none" />
       <div className="p-4 space-y-3">
         <Skeleton className="h-5 w-3/4" />

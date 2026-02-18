@@ -28,12 +28,13 @@ export const productsApi = {
 
     const query = searchParams.toString();
     return bkendFetch<PaginatedResponse<ProductDto>>(
-      `/v1/data/products${query ? `?${query}` : ""}`
+      `/v1/data/products${query ? `?${query}` : ""}`,
+      { skipAuth: true }
     );
   },
 
   getById(id: string): Promise<ProductDto> {
-    return bkendFetch<ProductDto>(`/v1/data/products/${id}`);
+    return bkendFetch<ProductDto>(`/v1/data/products/${id}`, { skipAuth: true });
   },
 
   create(input: ProductFormInput): Promise<ProductDto> {

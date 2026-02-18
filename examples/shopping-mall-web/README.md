@@ -43,41 +43,36 @@ cd examples/shopping-mall-web
 pnpm install
 ```
 
-### Running (Mock Mode)
+### Configuration
 
-Runs immediately with mock data, no API server required.
+Copy `.env.local.example` to `.env.local` and configure your bkend project:
 
 ```bash
 cp .env.local.example .env.local
-pnpm dev
 ```
-
-Open `http://localhost:3000` in your browser.
-
-**Demo Account:**
-
-```
-Email: demo@bkend.ai
-Password: Bkend123$
-```
-
-### Running (bkend API Integration)
 
 Edit `.env.local`:
 
 ```env
-# Disable mock mode
-NEXT_PUBLIC_MOCK_MODE=false
-
-# bkend API
 NEXT_PUBLIC_API_URL=https://api-client.bkend.ai
 NEXT_PUBLIC_PUBLISHABLE_KEY=pk_your_publishable_key
+
+# Google OAuth (optional - Google login button hidden if not set)
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
 ```
 
+### Running
+
 1. Create a project in the [bkend console](https://console.bkend.ai)
-2. Set your publishable key in `NEXT_PUBLIC_PUBLISHABLE_KEY`
+2. Set your publishable key in `.env.local`
 3. Create the table structures (products, carts, orders, reviews) from the cookbook in the console
-4. Run with `pnpm dev`
+4. Start the dev server:
+
+```bash
+pnpm dev
+```
+
+Open `http://localhost:3000` in your browser.
 
 ### Build
 
@@ -93,10 +88,9 @@ src/
 ├── app/                    # Next.js pages
 │   ├── (auth)/             #   Sign in (/sign-in), Sign up (/sign-up)
 │   └── (app)/              #   Dashboard, Products, Cart, Orders, Reviews, Settings
-├── infrastructure/         # HTTP client, token, mock
+├── infrastructure/         # HTTP client, token storage
 │   ├── api/client.ts       #   bkendFetch (unified API client)
-│   ├── storage/            #   Token storage (setTokens/clearTokens)
-│   └── mock/               #   Mock handler + data
+│   └── storage/            #   Token storage (setTokens/clearTokens)
 ├── application/dto/        # TypeScript type definitions
 ├── lib/api/                # Domain API functions (bkendFetch based)
 ├── hooks/queries/          # React Query hooks

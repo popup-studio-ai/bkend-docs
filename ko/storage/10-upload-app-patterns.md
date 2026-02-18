@@ -287,6 +287,29 @@ async function showUploadedImage(fileId) {
 }
 ```
 
+### 업로드 완료 후 최적화 URL 사용 (public 이미지)
+
+파일의 `visibility`가 `public`이면, `img.bkend.ai` CDN을 통해 리사이즈된 이미지를 바로 표시할 수 있습니다.
+
+```javascript
+const IMAGE_CDN = 'https://img.bkend.ai';
+
+async function showOptimizedImage(fileId) {
+  const fileData = await bkendFetch(`/v1/files/${fileId}`);
+
+  // public 이미지 → CDN 최적화 URL 사용
+  const img = document.createElement('img');
+  img.src = `${IMAGE_CDN}/fit-in/400x300/filters:quality(80)/${fileData.key}`;
+  img.alt = fileData.originalName;
+
+  document.getElementById('uploadedFiles').appendChild(img);
+}
+```
+
+{% hint style="info" %}
+💡 `img.bkend.ai` CDN은 **`public` visibility 파일만** 지원합니다. `private`/`protected`/`shared` 파일은 위의 다운로드 URL 방식을 사용하세요. 자세한 내용은 [이미지 최적화](11-image-optimization.md)를 참고하세요.
+{% endhint %}
+
 ***
 
 ## 5. 에러 처리
@@ -436,4 +459,5 @@ async function deleteFile(fileId) {
 - [파일 메타데이터](04-file-metadata.md) — 메타데이터 등록/수정
 - [파일 접근 권한](08-permissions.md) — Visibility 설정
 - [API 레퍼런스](09-api-reference.md) — 전체 스토리지 API 목록
+- [이미지 최적화](11-image-optimization.md) — public 이미지 CDN 리사이즈/포맷 변환
 - 예제 프로젝트 — [blog-web](../../examples/blog-web/) · [recipe-web](../../examples/recipe-web/) · [social-network-app](../../examples/social-network-app/)에서 파일 업로드 구현 코드 확인

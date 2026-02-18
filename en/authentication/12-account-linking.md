@@ -1,7 +1,7 @@
 # Account Linking
 
 {% hint style="info" %}
-Link multiple social logins to your existing account to sign in with various methods.
+💡 Link multiple social logins to your existing account to sign in with various methods.
 {% endhint %}
 
 ## Overview
@@ -120,7 +120,7 @@ curl -X DELETE https://api-client.bkend.ai/v1/auth/accounts/google \
 ```
 
 {% hint style="warning" %}
-You cannot unlink the last remaining sign-in method (email or social). At least one authentication method must remain.
+⚠️ You cannot unlink the last remaining sign-in method (email or social). At least one authentication method must remain.
 {% endhint %}
 
 ***
@@ -136,7 +136,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts/check \
   -H "Content-Type: application/json" \
   -H "X-API-Key: {pk_publishable_key}" \
   -d '{
-    "type": "email",
+    "type": "credentials",
     "provider": "email",
     "providerAccountId": "user@example.com"
   }'
@@ -144,8 +144,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts/check \
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `type` | `string` | Yes | `"email"` or `"oauth"` |
-| `provider` | `string` | Yes | Provider name |
+| `type` | `string` | Yes | `"credentials"` or `"oauth"` |
+| `provider` | `string` | Yes | Provider name (e.g., `"email"`, `"google"`, `"github"`) |
 | `providerAccountId` | `string` | Yes | Provider-specific unique ID or email |
 
 **Response:**
@@ -153,7 +153,8 @@ curl -X POST https://api-client.bkend.ai/v1/auth/accounts/check \
 ```json
 {
   "exists": true,
-  "accountIds": ["account-uuid-1"]
+  "type": "credentials",
+  "provider": "email"
 }
 ```
 

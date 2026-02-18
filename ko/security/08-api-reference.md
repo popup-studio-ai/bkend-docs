@@ -198,6 +198,7 @@ flowchart TD
 | `PERMISSION_DENIED` | 해당 그룹에 권한 없음 | RLS 정책 확인 또는 인증 방식 변경 |
 | `SCOPE_INSUFFICIENT` | API 키 스코프에 요청한 작업 미포함 | API 키에 필요한 스코프 추가 |
 | `SYSTEM_TABLE_ACCESS` | 시스템 테이블 접근 차단 | admin 인증(Secret Key) 사용 |
+| `PROJECT_ACCESS_DENIED` | API 키의 프로젝트 접근 권한 없음 | 대상 프로젝트에 맞는 API 키를 사용하세요 |
 
 ### 인가 에러 응답 예시
 

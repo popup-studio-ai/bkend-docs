@@ -105,7 +105,7 @@ const presignedResponse = await fetch(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": PK_PUBLISHABLE_KEY,
+      "X-API-Key": PUBLISHABLE_KEY,
       "Authorization": `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
@@ -129,7 +129,7 @@ await fetch(
   {
     method: "POST",
     headers: {
-      "X-API-Key": PK_PUBLISHABLE_KEY,
+      "X-API-Key": PUBLISHABLE_KEY,
       "Authorization": `Bearer ${accessToken}`,
     },
   }

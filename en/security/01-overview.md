@@ -1,7 +1,7 @@
 # Security Overview
 
 {% hint style="info" %}
-Understand bkend's security architecture and how your data is protected.
+💡 Understand bkend's security architecture and how your data is protected.
 {% endhint %}
 
 ## Overview
@@ -35,7 +35,7 @@ flowchart TD
 | **Authentication** | API access | API keys, JWT tokens |
 | **Authorization** | Resource access | RLS policies, permission groups |
 | **In-Transit Encryption** | Network communication | TLS 1.2+ |
-| **At-Rest Encryption** | Stored data | AES-256-GCM, MongoDB Atlas Encryption at Rest |
+| **At-Rest Encryption** | Stored data | AES-256-GCM, Encryption at Rest |
 | **Password Hashing** | User passwords | Argon2id (OWASP recommended) |
 | **Token Security** | API keys | SHA-256 one-way hash |
 
@@ -45,10 +45,10 @@ flowchart TD
 
 ### API Keys
 
-Authentication keys generated from the console. Use them in the `Authorization: Bearer {api_key}` format.
+Authentication keys generated from the console. Use them via the `X-API-Key` header. Keys contain project ID and environment information, so no additional context headers are needed.
 
-- **Publishable Key**: Used on the client side (limited permissions)
-- **Secret Key**: Used on the server side only (full permissions)
+- **Publishable Key (`pk_`)**: Used on the client side (limited permissions based on RLS)
+- **Secret Key (`sk_`)**: Used on the server side only (full admin permissions)
 
 > [Understanding API Keys](02-api-keys.md), [Publishable Key vs Secret Key](03-public-vs-secret.md)
 
@@ -85,8 +85,8 @@ All API communication is encrypted with TLS 1.2 or higher.
 
 | Target | Method |
 |--------|--------|
-| Database connection credentials | AES-256-GCM (application level) |
-| MongoDB stored data | Atlas Encryption at Rest |
+| Sensitive internal configuration data | AES-256-GCM (application level) |
+| Database stored data | Encryption at Rest |
 | API keys | SHA-256 hash (one-way) |
 | Passwords | Argon2id (OWASP 2025 recommended) |
 
@@ -95,7 +95,7 @@ All API communication is encrypted with TLS 1.2 or higher.
 ***
 
 {% hint style="warning" %}
-Publishable Keys are safe to expose on the client side, but you must use Secret Keys only in server environments. See [Publishable Key vs Secret Key](03-public-vs-secret.md) for details.
+⚠️ Publishable Keys are safe to expose on the client side, but you must use Secret Keys only in server environments. See [Publishable Key vs Secret Key](03-public-vs-secret.md) for details.
 {% endhint %}
 
 ***

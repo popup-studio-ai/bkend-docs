@@ -41,41 +41,33 @@ cd examples/recipe-web
 pnpm install
 ```
 
-### Run (Mock Mode)
+### Configuration
 
-Runs immediately with mock data, no API server required.
+Copy `.env.local.example` to `.env.local` and configure your bkend project:
 
 ```bash
 cp .env.local.example .env.local
-pnpm dev
 ```
-
-Open `http://localhost:3000` in your browser.
-
-**Demo account:**
-
-```
-Email: demo@bkend.ai
-Password: abc123
-```
-
-### Run (bkend API Integration)
 
 Edit `.env.local`:
 
 ```env
-# Disable mock mode
-NEXT_PUBLIC_MOCK_MODE=false
-
-# bkend API
 NEXT_PUBLIC_API_URL=https://api-client.bkend.ai
 NEXT_PUBLIC_PUBLISHABLE_KEY=pk_your_publishable_key
 ```
 
-1. Create a project at the [bkend console](https://console.bkend.ai)
-2. Set your publishable key in `NEXT_PUBLIC_PUBLISHABLE_KEY`
-3. Create the cookbook table structures (recipes, ingredients, meal_plans, shopping_lists, cooking_logs) in the console
-4. Run `pnpm dev`
+### Running
+
+1. Create a project in the [bkend console](https://console.bkend.ai)
+2. Set your publishable key in `.env.local`
+3. Create the table structures (recipes, ingredients, meal_plans, shopping_lists, cooking_logs) from the cookbook in the console
+4. Start the dev server:
+
+```bash
+pnpm dev
+```
+
+Open `http://localhost:3000` in your browser.
 
 ### Build
 
@@ -91,10 +83,9 @@ src/
 ├── app/                    # Next.js pages
 │   ├── (auth)/             #   Sign-in, sign-up
 │   └── (app)/              #   Recipes, ingredients, meal plans, shopping
-├── infrastructure/         # HTTP client, token, mock
-│   ├── api/client.ts       #   API client
-│   ├── storage/            #   Token storage
-│   └── mock/               #   Mock handler + data
+├── infrastructure/         # HTTP client, token storage
+│   ├── api/client.ts       #   bkendFetch wrapper
+│   └── storage/            #   Token storage
 ├── application/dto/        # TypeScript type definitions
 ├── lib/
 │   ├── api/                #   Domain API functions

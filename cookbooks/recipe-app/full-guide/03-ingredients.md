@@ -171,11 +171,11 @@ const ingredients = [
 for (const ingredient of ingredients) {
   await bkendFetch('/v1/data/ingredients', {
     method: 'POST',
-    body: JSON.stringify({
+    body: {
       recipeId,
       ...ingredient,
       isOptional: ingredient.isOptional || false,
-    }),
+    },
   });
 }
 
@@ -220,7 +220,7 @@ curl -X GET "https://api-client.bkend.ai/v1/data/ingredients?andFilters=%7B%22re
     { "id": "...", "name": "대파", "amount": "1", "unit": "대", "orderIndex": 4, "isOptional": false },
     { "id": "...", "name": "고춧가루", "amount": "1", "unit": "큰술", "orderIndex": 5, "isOptional": true }
   ],
-  "pagination": { "currentPage": 1, "totalItems": 5 }
+  "pagination": { "total": 5, "page": 1, "limit": 20, "totalPages": 1, "hasNext": false, "hasPrev": false }
 }
 ```
 
@@ -286,10 +286,10 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/ingredients/{ingredientId} \
 // 김치 양을 500g으로 수정
 await bkendFetch(`/v1/data/ingredients/${ingredientId}`, {
   method: 'PATCH',
-  body: JSON.stringify({
+  body: {
     amount: '500',
     unit: 'g',
-  }),
+  },
 });
 ```
 
@@ -388,9 +388,9 @@ console.log(convertAmount('1', 2, 4));    // "2"
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `VALIDATION_ERROR` | 필수 필드 누락 | recipeId, name, amount, unit 확인 |
-| 404 | `NOT_FOUND` | 존재하지 않는 재료 | 재료 ID 확인 |
-| 403 | `FORBIDDEN` | 권한 없음 | 본인이 등록한 재료만 수정/삭제 가능 |
+| 400 | `data/validation-error` | 필수 필드 누락 | recipeId, name, amount, unit 확인 |
+| 404 | `data/not-found` | 존재하지 않는 재료 | 재료 ID 확인 |
+| 403 | `common/forbidden` | 권한 없음 | 본인이 등록한 재료만 수정/삭제 가능 |
 
 ***
 

@@ -1,7 +1,7 @@
 # User Management
 
 {% hint style="info" %}
-View Users registered in your project and manage their roles, settings, and notifications.
+💡 View Users registered in your project and manage their roles, settings, and notifications.
 {% endhint %}
 
 ## Overview
@@ -79,7 +79,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users?${params}`, {
 ```
 
 {% hint style="info" %}
-Response fields are filtered based on the requester's role. Admins can view all fields, while regular Users can only see public fields.
+💡 Response fields are filtered based on the requester's role. Admins can view all fields, while regular Users can only see public fields.
 {% endhint %}
 
 ***
@@ -143,7 +143,7 @@ curl -X DELETE https://api-client.bkend.ai/v1/users/{userId} \
 ```
 
 {% hint style="danger" %}
-**Warning** -- User deletion is processed as a soft delete. Deleted user data is retained for a certain period.
+🚨 **Warning** -- User deletion is processed as a soft delete. Deleted user data is retained for a certain period.
 {% endhint %}
 
 ***

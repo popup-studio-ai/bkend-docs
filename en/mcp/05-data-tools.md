@@ -1,91 +1,112 @@
 # Data Tools
 
 {% hint style="info" %}
-This page covers the MCP tools for querying, creating, updating, and deleting data.
+💡 This page explains how to perform data CRUD operations from your AI tool. Data CRUD uses REST API calls, not dedicated MCP tools.
 {% endhint %}
 
 ## Overview
 
-Data tools perform CRUD (Create, Read, Update, Delete) operations on table data. There are 5 tools in total.
+The bkend MCP server does not include dedicated data CRUD tools. Instead, the AI tool uses `search_docs` to find data operation documentation and generates REST API calling code.
 
-| Tool | Description |
-|------|-------------|
-| `backend_data_list` | List data (filter, sort, paginate) |
-| `backend_data_get` | Retrieve a single record |
-| `backend_data_create` | Create data |
-| `backend_data_update` | Update data |
-| `backend_data_delete` | Delete data |
+```mermaid
+flowchart LR
+    A[Request data operation from AI] --> B[search_docs finds documentation]
+    B --> C[Database guide returned]
+    C --> D[REST API code generated]
+```
 
 ***
 
-## backend_data_list
+## Using from Your AI Tool
 
-Retrieves a list of data. Supports filtering, sorting, and pagination.
+Ask your AI tool in natural language and it will generate the data operation code.
 
-### Parameters
+```text
+"List all articles sorted by date"
 
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `page` | number | | Page number (default: 1) |
-| `limit` | number | | Items per page (default: 20, max: 100) |
-| `sortBy` | string | | Sort field |
-| `sortDirection` | string | | `asc` or `desc` (default: `desc`) |
-| `andFilters` | object | | AND condition filters |
-| `orFilters` | array | | OR condition filters |
+"Create a new user record"
 
-### Filtering
+"Update the user's role to editor"
 
-#### AND Filters
+"Delete the article with this ID"
+```
+
+***
+
+## Key Data REST API Endpoints
+
+All data operations use the dynamic table endpoint pattern: `/v1/data/{tableName}`
+
+### CRUD Operations
+
+| Endpoint | Method | Description |
+|----------|:------:|-------------|
+| `/v1/data/{tableName}` | GET | List records (with filtering, sorting, pagination) |
+| `/v1/data/{tableName}/{id}` | GET | Get a single record |
+| `/v1/data/{tableName}` | POST | Create a record |
+| `/v1/data/{tableName}/{id}` | PATCH | Update a record |
+| `/v1/data/{tableName}/{id}` | DELETE | Delete a record |
+
+***
+
+## Filtering
+
+### AND Filters
 
 Retrieve data that satisfies all conditions simultaneously.
 
-```json
-{
-  "andFilters": {
-    "role": "admin",
-    "status": "active"
+```bash
+curl -X GET "https://api-client.bkend.ai/v1/data/users?andFilters=%7B%22role%22%3A%22admin%22%7D" \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
+```
+
+### Sorting and Pagination
+
+```bash
+curl -X GET "https://api-client.bkend.ai/v1/data/articles?sortBy=createdAt&sortDirection=desc&page=1&limit=20" \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `sortBy` | Sort field |
+| `sortDirection` | `asc` or `desc` |
+| `page` | Page number (default: 1) |
+| `limit` | Items per page (default: 20) |
+| `andFilters` | JSON string of AND condition filters |
+
+***
+
+## Code Generation Example
+
+When you ask the AI tool to "list all articles," it generates code like this:
+
+{% tabs %}
+{% tab title="TypeScript" %}
+```typescript
+const response = await fetch(
+  "https://api-client.bkend.ai/v1/data/articles?sortBy=createdAt&sortDirection=desc",
+  {
+    headers: {
+      "X-API-Key": PUBLISHABLE_KEY,
+      "Authorization": `Bearer ${accessToken}`,
+    },
   }
-}
+);
+
+const { items, pagination } = await response.json();
 ```
-
-#### OR Filters
-
-Retrieve data that satisfies at least one condition.
-
-```json
-{
-  "orFilters": [
-    { "role": "admin" },
-    { "role": "editor" }
-  ]
-}
+{% endtab %}
+{% tab title="cURL" %}
+```bash
+curl -X GET "https://api-client.bkend.ai/v1/data/articles?sortBy=createdAt&sortDirection=desc" \
+  -H "X-API-Key: {pk_publishable_key}" \
+  -H "Authorization: Bearer {accessToken}"
 ```
-
-#### Operator Filters
-
-```json
-{
-  "andFilters": {
-    "age": { "$gte": 20 },
-    "status": { "$ne": "deleted" }
-  }
-}
-```
-
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `$eq` | Equal to | `{ "$eq": "admin" }` |
-| `$ne` | Not equal to | `{ "$ne": "deleted" }` |
-| `$gt` | Greater than | `{ "$gt": 100 }` |
-| `$gte` | Greater than or equal to | `{ "$gte": 20 }` |
-| `$lt` | Less than | `{ "$lt": 50 }` |
-| `$lte` | Less than or equal to | `{ "$lte": 100 }` |
-| `$in` | Included in | `{ "$in": ["admin", "editor"] }` |
-| `$nin` | Not included in | `{ "$nin": ["deleted"] }` |
+{% endtab %}
+{% endtabs %}
 
 ### Response Structure
 
@@ -94,9 +115,7 @@ Retrieve data that satisfies at least one condition.
   "items": [
     {
       "id": "rec_abc123",
-      "name": "John Doe",
-      "email": "john@example.com",
-      "role": "admin",
+      "title": "My Article",
       "createdAt": "2025-01-01T00:00:00Z",
       "updatedAt": "2025-01-01T00:00:00Z"
     }
@@ -111,144 +130,13 @@ Retrieve data that satisfies at least one condition.
 ```
 
 {% hint style="warning" %}
-List data is contained in the `items` array and pagination info is in the `pagination` object. The ID field is `id`.
+⚠️ List data is contained in the `items` array and pagination info is in the `pagination` object. The ID field is `id`.
 {% endhint %}
-
-***
-
-## backend_data_get
-
-Retrieves a single record.
-
-### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `recordId` | string | Yes | Record ID |
-
-### Response Structure
-
-```json
-{
-  "id": "rec_abc123",
-  "name": "John Doe",
-  "email": "john@example.com",
-  "role": "admin",
-  "createdAt": "2025-01-01T00:00:00Z",
-  "updatedAt": "2025-01-01T00:00:00Z"
-}
-```
-
-***
-
-## backend_data_create
-
-Creates a new record.
-
-### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `data` | object | Yes | Data to create |
-
-### Usage Example
-
-```json
-{
-  "organizationId": "org_abc123",
-  "projectId": "proj_xyz789",
-  "environmentId": "env_dev001",
-  "tableId": "tbl_users",
-  "data": {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "role": "admin"
-  }
-}
-```
-
-***
-
-## backend_data_update
-
-Updates a record. Only the fields you pass are modified (Partial Update).
-
-### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `recordId` | string | Yes | Record ID |
-| `data` | object | Yes | Data to update (only fields to change) |
-
-### Usage Example
-
-```json
-{
-  "recordId": "rec_abc123",
-  "data": {
-    "role": "editor"
-  }
-}
-```
-
-***
-
-## backend_data_delete
-
-Deletes a record.
-
-### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `organizationId` | string | Yes | Organization ID |
-| `projectId` | string | Yes | Project ID |
-| `environmentId` | string | Yes | Environment ID |
-| `tableId` | string | Yes | Table ID |
-| `recordId` | string | Yes | Record ID |
-
-{% hint style="danger" %}
-Deleted data cannot be recovered.
-{% endhint %}
-
-***
-
-## CRUD Flow Example
-
-```mermaid
-sequenceDiagram
-    participant AI as AI Tool
-    participant MCP as bkend MCP
-
-    AI->>MCP: backend_data_create (add user)
-    MCP-->>AI: { id: "rec_abc123", ... }
-
-    AI->>MCP: backend_data_list (list query)
-    MCP-->>AI: { items: [...], pagination: {...} }
-
-    AI->>MCP: backend_data_update (change role)
-    MCP-->>AI: { id: "rec_abc123", role: "editor" }
-
-    AI->>MCP: backend_data_delete (delete)
-    MCP-->>AI: Deletion complete
-```
 
 ***
 
 ## Next Steps
 
-- [Table Tools](04-table-tools.md) — Manage table structure
+- [Table Tools](04-table-tools.md) — Manage table structure via MCP
 - [Auth Tools](06-auth-tools.md) — Auth implementation guide
-- [MCP Tools Overview](01-overview.md) — Complete tool classification
+- [Database Overview](../database/01-overview.md) — Detailed database guide

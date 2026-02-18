@@ -6,50 +6,72 @@
 
 ## 개요
 
-MCP 리소스는 도구(Tools)와 달리 **읽기 전용**입니다. `bkend://` URI 스키마를 사용하여 Organization, 프로젝트, 환경, 테이블의 현재 상태를 조회합니다.
+MCP 리소스는 도구(Tools)와 달리 **읽기 전용**입니다. `bkend://` URI 스키마를 사용하여 Organization, 프로젝트, 환경, 테이블의 현재 상태를 조회합니다. MCP가 활성화된 GET 엔드포인트에서 자동으로 생성됩니다.
 
 ```mermaid
 flowchart TD
-    A["bkend://orgs"] --> B["bkend://orgs/{orgId}/projects"]
-    B --> C["bkend://orgs/{orgId}/projects/{projectId}/environments"]
-    C --> D["bkend://orgs/{orgId}/projects/{projectId}/environments/{envId}/tables"]
+    A["bkend://organizations"] --> B["bkend://projects"]
+    B --> C["bkend://environments"]
+    C --> D["bkend://tables"]
 ```
 
 ***
 
 ## 리소스 URI
 
-### Organization 목록
+### Organization 리소스
 
 ```text
-bkend://orgs
+bkend://organizations
+bkend://organizations/{organizationId}
 ```
 
-접근 가능한 Organization 목록을 반환합니다.
+Organization 목록 또는 특정 Organization의 상세 정보를 반환합니다.
 
-### 프로젝트 목록
+### 프로젝트 리소스
 
 ```text
-bkend://orgs/{orgId}/projects
+bkend://projects
+bkend://projects/{projectId}
 ```
 
-특정 Organization의 프로젝트 목록을 반환합니다.
+프로젝트 목록 또는 특정 프로젝트의 상세 정보를 반환합니다.
 
-### 환경 목록
+### 환경 리소스
 
 ```text
-bkend://orgs/{orgId}/projects/{projectId}/environments
+bkend://environments
+bkend://environments/{environmentId}
 ```
 
-특정 프로젝트의 환경 목록을 반환합니다.
+환경 목록 또는 특정 환경의 상세 정보를 반환합니다.
 
-### 테이블 목록
+### 테이블 리소스
 
 ```text
-bkend://orgs/{orgId}/projects/{projectId}/environments/{envId}/tables
+bkend://tables
+bkend://tables/{tableId}
 ```
 
-특정 환경의 테이블 목록(스키마 포함)을 반환합니다.
+테이블 목록 또는 특정 테이블(스키마 포함)의 상세 정보를 반환합니다.
+
+### 스키마 및 인덱스 버전 리소스
+
+```text
+bkend://tables/{tableId}/schema/versions
+bkend://tables/{tableId}/indexes/versions
+```
+
+특정 테이블의 스키마 또는 인덱스 버전 목록을 반환합니다.
+
+### 액세스 토큰 리소스
+
+```text
+bkend://access-tokens
+bkend://access-tokens/{accessTokenId}
+```
+
+액세스 토큰 목록 또는 특정 토큰의 상세 정보를 반환합니다.
 
 ***
 
@@ -71,13 +93,15 @@ bkend://orgs/{orgId}/projects/{projectId}/environments/{envId}/tables
 {
   "resources": [
     {
-      "uri": "bkend://orgs",
-      "name": "Organizations",
+      "uri": "bkend://organizations",
+      "name": "Organization",
+      "description": "접근 가능한 Organization 목록 조회",
       "mimeType": "application/json"
     },
     {
-      "uri": "bkend://orgs/org_abc123/projects",
-      "name": "Projects",
+      "uri": "bkend://projects",
+      "name": "Project",
+      "description": "접근 가능한 프로젝트 목록 조회",
       "mimeType": "application/json"
     }
   ]
@@ -92,7 +116,7 @@ bkend://orgs/{orgId}/projects/{projectId}/environments/{envId}/tables
 {
   "method": "resources/read",
   "params": {
-    "uri": "bkend://orgs/org_abc123/projects"
+    "uri": "bkend://projects"
   }
 }
 ```
@@ -103,9 +127,9 @@ bkend://orgs/{orgId}/projects/{projectId}/environments/{envId}/tables
 {
   "contents": [
     {
-      "uri": "bkend://orgs/org_abc123/projects",
+      "uri": "bkend://projects",
       "mimeType": "application/json",
-      "text": "[{\"id\":\"proj_xyz789\",\"name\":\"my-app\"}]"
+      "text": "{\"items\":[{\"id\":\"proj_xyz789\",\"name\":\"my-app\"}],\"pagination\":{...}}"
     }
   ]
 }
@@ -119,11 +143,10 @@ MCP 리소스는 성능을 위해 캐싱됩니다.
 
 | 항목 | 값 |
 |------|-----|
-| TTL | 60초 |
 | 범위 | Organization 단위 |
 
 {% hint style="info" %}
-💡 리소스 데이터는 최대 60초간 캐시됩니다. 테이블을 생성한 직후에는 캐시가 갱신될 때까지 테이블 목록에 반영되지 않을 수 있습니다.
+💡 리소스 데이터는 캐시됩니다. 새 리소스를 생성한 직후에는 목록에 즉시 반영되지 않을 수 있습니다.
 {% endhint %}
 
 ***
@@ -134,8 +157,8 @@ MCP 리소스는 성능을 위해 캐싱됩니다.
 |------|-------------------|-------------|
 | 용도 | 상태 조회 | 작업 실행 |
 | 권한 | 읽기 전용 | 읽기/쓰기 |
-| 호출 방식 | URI 기반 | 함수 호출 |
-| 캐싱 | 60초 TTL | 없음 |
+| 호출 방식 | URI 기반 (`bkend://...`) | 함수 호출 (`backend_*`) |
+| 캐싱 | 있음 | 없음 |
 | 예시 | 프로젝트 목록 조회 | 테이블 생성 |
 
 ### 언제 리소스를 사용하나요?
@@ -145,8 +168,8 @@ MCP 리소스는 성능을 위해 캐싱됩니다.
 
 ### 언제 도구를 사용하나요?
 
-- **데이터를 변경**할 때 (테이블 생성, 데이터 추가, 필드 수정)
-- **특정 작업을 수행**할 때 (문서 검색, 스키마 조회)
+- **데이터를 변경**할 때 (테이블 생성, 필드 수정, 인덱스 관리)
+- **특정 작업을 수행**할 때 (문서 검색, 프로젝트 생성)
 
 ***
 
@@ -168,8 +191,8 @@ sequenceDiagram
     MCP-->>AI: 테이블 스키마 데이터
 
     Note over AI,MCP: 도구로 작업 수행
-    AI->>MCP: backend_data_create
-    MCP-->>AI: 데이터 생성 완료
+    AI->>MCP: backend_table_create
+    MCP-->>AI: 테이블 생성 완료
 ```
 
 ***

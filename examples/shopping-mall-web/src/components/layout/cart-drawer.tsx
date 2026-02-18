@@ -13,10 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useUiStore } from "@/stores/ui-store";
 import { useCartItems, useRemoveFromCart, useUpdateCartQuantity } from "@/hooks/queries/use-carts";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { QuantityStepper } from "@/components/cart/quantity-stepper";
 import { PriceDisplay } from "@/components/shared/price-display";
 import { formatPrice } from "@/lib/format";
 import { CartSkeleton } from "@/components/shared/loading-skeleton";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 export function CartDrawer() {
   const router = useRouter();
@@ -24,6 +26,7 @@ export function CartDrawer() {
   const { data: cartItems, isLoading } = useCartItems();
   const updateQuantity = useUpdateCartQuantity();
   const removeItem = useRemoveFromCart();
+  const { isDemoAccount } = useDemoGuard();
 
   const totalPrice =
     cartItems?.reduce((sum, item) => {
@@ -65,7 +68,7 @@ export function CartDrawer() {
                 <div key={item.id} className="flex gap-3 rounded-xl border bg-card p-3">
                   {item.product?.imageUrl ? (
                     <img
-                      src={item.product.imageUrl}
+                      src={getOptimizedImageUrl(item.product.imageUrl, IMAGE_PRESETS.cartItem)}
                       alt={item.product.name}
                       className="h-20 w-20 rounded-lg object-cover"
                     />
@@ -91,12 +94,14 @@ export function CartDrawer() {
                           updateQuantity.mutate({ cartId: item.id, quantity: qty })
                         }
                         size="sm"
+                        disabled={isDemoAccount}
                       />
                       <Button
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-muted-foreground hover:text-destructive"
                         onClick={() => removeItem.mutate(item.id)}
+                        disabled={isDemoAccount}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -119,7 +124,12 @@ export function CartDrawer() {
               </span>
             </div>
             <Separator className="mb-4" />
-            <Button className="w-full bg-accent-color text-white hover:bg-accent-color/90" size="lg" onClick={handleCheckout}>
+            <Button
+              className="w-full bg-gradient-brand text-white hover:opacity-90"
+              size="lg"
+              onClick={handleCheckout}
+              disabled={isDemoAccount}
+            >
               Checkout
             </Button>
           </div>

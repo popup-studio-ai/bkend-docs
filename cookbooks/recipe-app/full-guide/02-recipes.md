@@ -145,14 +145,14 @@ curl -X POST https://api-client.bkend.ai/v1/data/recipes \
 ```javascript
 const recipe = await bkendFetch('/v1/data/recipes', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     title: '김치찌개',
     description: '돼지고기와 잘 익은 김치로 만드는 얼큰한 찌개입니다.',
     cookingTime: 30,
     difficulty: 'easy',
     servings: 2,
     category: '한식',
-  }),
+  },
 });
 
 console.log('레시피 ID:', recipe.id);
@@ -272,13 +272,13 @@ async function uploadRecipeImage(recipeId, file) {
   // 1. Presigned URL 발급
   const presigned = await bkendFetch('/v1/files/presigned-url', {
     method: 'POST',
-    body: JSON.stringify({
+    body: {
       filename: file.name,
       contentType: file.type,
       fileSize: file.size,
       visibility: 'public',
       category: 'images',
-    }),
+    },
   });
 
   // 2. 스토리지에 파일 업로드 (Presigned URL은 bkendFetch 사용 금지)
@@ -291,19 +291,19 @@ async function uploadRecipeImage(recipeId, file) {
   // 3. 메타데이터 등록
   const metadata = await bkendFetch('/v1/files', {
     method: 'POST',
-    body: JSON.stringify({
+    body: {
       s3Key: presigned.key,
       originalName: file.name,
       mimeType: file.type,
       size: file.size,
       visibility: 'public',
-    }),
+    },
   });
 
   // 4. 레시피에 이미지 연결
   await bkendFetch(`/v1/data/recipes/${recipeId}`, {
     method: 'PATCH',
-    body: JSON.stringify({ imageUrl: metadata.url }),
+    body: { imageUrl: metadata.url },
   });
 
   return metadata;
@@ -366,10 +366,12 @@ curl -X GET "https://api-client.bkend.ai/v1/data/recipes?page=1&limit=20&sortBy=
     }
   ],
   "pagination": {
-    "currentPage": 1,
+    "total": 1,
+    "page": 1,
+    "limit": 20,
     "totalPages": 1,
-    "totalItems": 1,
-    "limit": 20
+    "hasNext": false,
+    "hasPrev": false
   }
 }
 ```
@@ -487,11 +489,11 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/recipes/{recipeId} \
 ```javascript
 const updated = await bkendFetch(`/v1/data/recipes/${recipeId}`, {
   method: 'PATCH',
-  body: JSON.stringify({
+  body: {
     servings: 4,
     cookingTime: 40,
     description: '4인분으로 넉넉하게 끓이는 김치찌개입니다.',
-  }),
+  },
 });
 ```
 
@@ -567,7 +569,7 @@ const myRecipes = await bkendFetch(
   '&sortBy=createdAt&sortDirection=desc'
 );
 
-console.log(`내 레시피 ${myRecipes.pagination.totalItems}개`);
+console.log(`내 레시피 ${myRecipes.pagination.total}개`);
 myRecipes.items.forEach(r => {
   console.log(`- ${r.title} (${r.difficulty}, ${r.cookingTime}분)`);
 });
@@ -584,19 +586,19 @@ myRecipes.items.forEach(r => {
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `VALIDATION_ERROR` | 필수 필드 누락 또는 형식 오류 | title, description, cookingTime, difficulty, servings 확인 |
-| 401 | `UNAUTHORIZED` | 인증 토큰 누락 또는 만료 | 토큰 갱신 후 재시도 |
-| 404 | `NOT_FOUND` | 존재하지 않는 레시피 | 레시피 ID 확인 |
-| 403 | `FORBIDDEN` | 다른 사용자의 레시피 수정/삭제 시도 | 본인 레시피만 수정 가능 |
+| 400 | `data/validation-error` | 필수 필드 누락 또는 형식 오류 | title, description, cookingTime, difficulty, servings 확인 |
+| 401 | `common/authentication-required` | 인증 토큰 누락 또는 만료 | 토큰 갱신 후 재시도 |
+| 404 | `data/not-found` | 존재하지 않는 레시피 | 레시피 ID 확인 |
+| 403 | `common/forbidden` | 다른 사용자의 레시피 수정/삭제 시도 | 본인 레시피만 수정 가능 |
 
 ```javascript
 try {
   const recipe = await bkendFetch('/v1/data/recipes', {
     method: 'POST',
-    body: JSON.stringify({ title: '김치찌개' }), // 필수 필드 누락
+    body: { title: '김치찌개' }, // 필수 필드 누락
   });
 } catch (error) {
-  if (error.message.includes('VALIDATION_ERROR')) {
+  if (error.message.includes('data/validation-error')) {
     console.error('필수 필드를 모두 입력하세요.');
   }
 }

@@ -5,11 +5,14 @@ import { motion } from "framer-motion";
 import {
   FileText,
   FilePlus,
+  FileEdit,
   Bookmark,
   PenSquare,
   Tag,
   ArrowRight,
   Clock,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,6 +23,9 @@ import { useArticles } from "@/hooks/queries/use-articles";
 import { useBookmarks } from "@/hooks/queries/use-bookmarks";
 import { calculateReadingTime, formatRelativeTime, stripHtml, truncate } from "@/lib/utils";
 import { PageTransition } from "@/components/motion/page-transition";
+import { TimelineFeed } from "@/components/articles/timeline-feed";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 function StatCard({
   label,
@@ -65,43 +71,52 @@ function StatCard({
   );
 }
 
-export default function DashboardPage() {
+function PersonalizedDashboard() {
   const user = useAuthStore((s) => s.user);
+  const userId = user?.id;
+  const { isDemoAccount } = useDemoGuard();
 
-  const { data: publishedData } = useArticles({
+  // My articles - published (disabled until userId is available)
+  const { data: myPublishedData } = useArticles({
     page: 1,
     limit: 1,
-    filters: { isPublished: true },
+    filters: { createdBy: userId, isPublished: true },
+    enabled: !!userId,
   });
 
-  const { data: draftData } = useArticles({
+  // My articles - drafts
+  const { data: myDraftData } = useArticles({
     page: 1,
     limit: 1,
-    filters: { isPublished: false },
+    filters: { createdBy: userId, isPublished: false },
+    enabled: !!userId,
   });
 
-  const { data: recentArticles } = useArticles({
+  // My recent articles (all statuses)
+  const { data: myRecentArticles } = useArticles({
     page: 1,
     limit: 4,
     sortBy: "createdAt",
     sortDirection: "desc",
+    filters: { createdBy: userId },
+    enabled: !!userId,
   });
 
   const { data: bookmarkData } = useBookmarks(1, 1);
 
   const stats = [
     {
-      label: "Published",
-      value: publishedData?.pagination.total,
+      label: "My Published",
+      value: myPublishedData?.pagination.total,
       icon: FileText,
-      href: "/articles",
+      href: "/my-articles",
       color: "bg-gradient-brand",
     },
     {
-      label: "Drafts",
-      value: draftData?.pagination.total,
+      label: "My Drafts",
+      value: myDraftData?.pagination.total,
       icon: FilePlus,
-      href: "/articles",
+      href: "/my-articles",
       color: "bg-amber-500",
     },
     {
@@ -143,21 +158,21 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Recent Articles */}
+      {/* My Recent Articles */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Recent Articles</h2>
+          <h2 className="text-lg font-semibold">My Recent Articles</h2>
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/articles">
+            <Link href="/my-articles">
               View all
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
         </div>
 
-        {recentArticles?.items && recentArticles.items.length > 0 ? (
+        {myRecentArticles?.items && myRecentArticles.items.length > 0 ? (
           <div className="grid gap-3 sm:grid-cols-2">
-            {recentArticles.items.map((article, i) => (
+            {myRecentArticles.items.map((article, i) => (
               <motion.div
                 key={article.id}
                 initial={{ opacity: 0, y: 10 }}
@@ -169,9 +184,16 @@ export default function DashboardPage() {
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
-                          <h3 className="font-medium line-clamp-1 group-hover:text-accent-color transition-colors">
-                            {article.title}
-                          </h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-medium line-clamp-1 group-hover:text-accent-color transition-colors">
+                              {article.title}
+                            </h3>
+                            {article.isPublished ? (
+                              <Eye className="h-3.5 w-3.5 shrink-0 text-green-500" />
+                            ) : (
+                              <EyeOff className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                            )}
+                          </div>
                           <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
                             {truncate(stripHtml(article.content), 100)}
                           </p>
@@ -179,7 +201,7 @@ export default function DashboardPage() {
                         {article.coverImage && (
                           <div className="h-14 w-14 shrink-0 overflow-hidden rounded-md">
                             <img
-                              src={article.coverImage}
+                              src={getOptimizedImageUrl(article.coverImage, IMAGE_PRESETS.thumbnail)}
                               alt=""
                               className="h-full w-full object-cover"
                             />
@@ -192,6 +214,12 @@ export default function DashboardPage() {
                             {article.category}
                           </Badge>
                         )}
+                        <Badge
+                          variant={article.isPublished ? "default" : "outline"}
+                          className="text-xs"
+                        >
+                          {article.isPublished ? "Published" : "Draft"}
+                        </Badge>
                         <span className="flex items-center gap-1 text-xs text-muted-foreground">
                           <Clock className="h-3 w-3" />
                           {calculateReadingTime(article.content)} min read
@@ -213,11 +241,18 @@ export default function DashboardPage() {
               <p className="mt-3 text-sm text-muted-foreground">
                 No articles yet. Write your first one!
               </p>
-              <Button className="mt-4" size="sm" asChild>
-                <Link href="/articles/new">
-                  <PenSquare className="mr-2 h-4 w-4" />
-                  Write Article
-                </Link>
+              <Button className="mt-4" size="sm" disabled={isDemoAccount} asChild={!isDemoAccount}>
+                {isDemoAccount ? (
+                  <>
+                    <PenSquare className="mr-2 h-4 w-4" />
+                    Write Article
+                  </>
+                ) : (
+                  <Link href="/articles/new">
+                    <PenSquare className="mr-2 h-4 w-4" />
+                    Write Article
+                  </Link>
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -228,17 +263,37 @@ export default function DashboardPage() {
       <div>
         <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
-          <Button asChild>
-            <Link href="/articles/new">
-              <PenSquare className="mr-2 h-4 w-4" />
-              Write New Article
-            </Link>
+          <Button disabled={isDemoAccount} asChild={!isDemoAccount}>
+            {isDemoAccount ? (
+              <>
+                <PenSquare className="mr-2 h-4 w-4" />
+                Write New Article
+              </>
+            ) : (
+              <Link href="/articles/new">
+                <PenSquare className="mr-2 h-4 w-4" />
+                Write New Article
+              </Link>
+            )}
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/tags">
-              <Tag className="mr-2 h-4 w-4" />
-              Manage Tags
+            <Link href="/my-articles">
+              <FileEdit className="mr-2 h-4 w-4" />
+              My Posts
             </Link>
+          </Button>
+          <Button variant="outline" disabled={isDemoAccount} asChild={!isDemoAccount}>
+            {isDemoAccount ? (
+              <>
+                <Tag className="mr-2 h-4 w-4" />
+                Manage Tags
+              </>
+            ) : (
+              <Link href="/tags">
+                <Tag className="mr-2 h-4 w-4" />
+                Manage Tags
+              </Link>
+            )}
           </Button>
           <Button variant="outline" asChild>
             <Link href="/bookmarks">
@@ -250,4 +305,35 @@ export default function DashboardPage() {
       </div>
     </PageTransition>
   );
+}
+
+function PublicTimeline() {
+  return (
+    <PageTransition className="space-y-8">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          Latest Articles
+        </h1>
+        <p className="mt-1 text-muted-foreground">
+          Discover the latest published articles
+        </p>
+      </motion.div>
+
+      <TimelineFeed />
+    </PageTransition>
+  );
+}
+
+export default function HomePage() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  if (isAuthenticated) {
+    return <PersonalizedDashboard />;
+  }
+
+  return <PublicTimeline />;
 }

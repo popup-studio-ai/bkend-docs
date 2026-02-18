@@ -30,6 +30,8 @@ import {
 import { CATEGORIES } from "@/lib/constants";
 import { calculateReadingTime, formatDate } from "@/lib/utils";
 import type { Article } from "@/application/dto/article.dto";
+import { MarkdownContent } from "@/components/shared/markdown-content";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 const articleSchema = z.object({
   title: z.string().min(1, "Please enter a title"),
@@ -44,9 +46,10 @@ type ArticleFormData = z.infer<typeof articleSchema>;
 
 interface ArticleFormProps {
   article?: Article;
+  disabled?: boolean;
 }
 
-export function ArticleForm({ article }: ArticleFormProps) {
+export function ArticleForm({ article, disabled = false }: ArticleFormProps) {
   const router = useRouter();
   const { addToast } = useToast();
   const createArticle = useCreateArticle();
@@ -146,6 +149,7 @@ export function ArticleForm({ article }: ArticleFormProps) {
                   shouldTouch: true,
                 });
               }}
+              disabled={disabled}
             />
             {coverImage && (
               <p className="text-xs text-muted-foreground">
@@ -196,6 +200,7 @@ export function ArticleForm({ article }: ArticleFormProps) {
             <TagSelect
               selected={tags}
               onChange={(newTags) => setValue("tags", newTags)}
+              disabled={disabled}
             />
           </div>
 
@@ -213,7 +218,7 @@ export function ArticleForm({ article }: ArticleFormProps) {
           </div>
 
           <div className="flex gap-3">
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={disabled || isPending}>
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {isEditing ? "Update" : "Publish"}
             </Button>
@@ -261,7 +266,7 @@ export function ArticleForm({ article }: ArticleFormProps) {
               {coverImage && (
                 <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-xl">
                   <img
-                    src={coverImage}
+                    src={getOptimizedImageUrl(coverImage, IMAGE_PRESETS.detail)}
                     alt={title || "Cover"}
                     className="h-full w-full object-cover"
                   />
@@ -270,12 +275,7 @@ export function ArticleForm({ article }: ArticleFormProps) {
 
               <Separator className="my-8" />
 
-              <div className="prose prose-zinc max-w-none dark:prose-invert">
-                <div
-                  className="whitespace-pre-wrap text-base leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: content || "<em>No content yet...</em>" }}
-                />
-              </div>
+              <MarkdownContent content={content || "*No content yet...*"} />
             </article>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 text-center">

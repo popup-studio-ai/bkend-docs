@@ -1,55 +1,77 @@
 # MCP Resources
 
 {% hint style="info" %}
-This page explains how to query the current state of bkend in read-only mode through MCP Resources.
+💡 This page explains how to query the current state of bkend in read-only mode through MCP Resources.
 {% endhint %}
 
 ## Overview
 
-Unlike Tools, MCP Resources are **read-only**. They use the `bkend://` URI schema to query the current state of Organizations, projects, environments, and tables.
+Unlike Tools, MCP Resources are **read-only**. They use the `bkend://` URI schema to query the current state of Organizations, projects, environments, and tables. Resources are automatically generated from MCP-enabled GET endpoints.
 
 ```mermaid
 flowchart TD
-    A["bkend://orgs"] --> B["bkend://orgs/{orgId}/projects"]
-    B --> C["bkend://orgs/{orgId}/projects/{projectId}/environments"]
-    C --> D["bkend://orgs/{orgId}/projects/{projectId}/environments/{envId}/tables"]
+    A["bkend://organizations"] --> B["bkend://projects"]
+    B --> C["bkend://environments"]
+    C --> D["bkend://tables"]
 ```
 
 ***
 
 ## Resource URIs
 
-### Organization List
+### Organization Resources
 
 ```text
-bkend://orgs
+bkend://organizations
+bkend://organizations/{organizationId}
 ```
 
-Returns the list of accessible Organizations.
+Returns the list of Organizations or details of a specific Organization.
 
-### Project List
+### Project Resources
 
 ```text
-bkend://orgs/{orgId}/projects
+bkend://projects
+bkend://projects/{projectId}
 ```
 
-Returns the list of projects in a specific Organization.
+Returns the list of projects or details of a specific project.
 
-### Environment List
+### Environment Resources
 
 ```text
-bkend://orgs/{orgId}/projects/{projectId}/environments
+bkend://environments
+bkend://environments/{environmentId}
 ```
 
-Returns the list of environments in a specific project.
+Returns the list of environments or details of a specific environment.
 
-### Table List
+### Table Resources
 
 ```text
-bkend://orgs/{orgId}/projects/{projectId}/environments/{envId}/tables
+bkend://tables
+bkend://tables/{tableId}
 ```
 
-Returns the list of tables (including schemas) in a specific environment.
+Returns the list of tables or details of a specific table (including schema).
+
+### Schema and Index Version Resources
+
+```text
+bkend://tables/{tableId}/schema/versions
+bkend://tables/{tableId}/indexes/versions
+```
+
+Returns the list of schema or index versions for a specific table.
+
+### Access Token Resources
+
+```text
+bkend://access-tokens
+bkend://access-tokens/{accessTokenId}
+```
+
+Returns the list of access tokens or details of a specific token.
 
 ***
 
@@ -71,13 +93,15 @@ Retrieves the list of available resource URIs.
 {
   "resources": [
     {
-      "uri": "bkend://orgs",
-      "name": "Organizations",
+      "uri": "bkend://organizations",
+      "name": "Organization",
+      "description": "List all accessible organizations",
       "mimeType": "application/json"
     },
     {
-      "uri": "bkend://orgs/org_abc123/projects",
-      "name": "Projects",
+      "uri": "bkend://projects",
+      "name": "Project",
+      "description": "List all accessible projects",
       "mimeType": "application/json"
     }
   ]
@@ -92,7 +116,7 @@ Reads the data of a specific resource.
 {
   "method": "resources/read",
   "params": {
-    "uri": "bkend://orgs/org_abc123/projects"
+    "uri": "bkend://projects"
   }
 }
 ```
@@ -103,9 +127,9 @@ Reads the data of a specific resource.
 {
   "contents": [
     {
-      "uri": "bkend://orgs/org_abc123/projects",
+      "uri": "bkend://projects",
       "mimeType": "application/json",
-      "text": "[{\"id\":\"proj_xyz789\",\"name\":\"my-app\"}]"
+      "text": "{\"items\":[{\"id\":\"proj_xyz789\",\"name\":\"my-app\"}],\"pagination\":{...}}"
     }
   ]
 }
@@ -119,11 +143,10 @@ MCP Resources are cached for performance.
 
 | Item | Value |
 |------|-------|
-| TTL | 60 seconds |
 | Scope | Per Organization |
 
 {% hint style="info" %}
-Resource data is cached for up to 60 seconds. After creating a table, it may not appear in the table list until the cache refreshes.
+💡 Resource data is cached. After creating a new resource, it may not appear immediately in the list.
 {% endhint %}
 
 ***
@@ -134,8 +157,8 @@ Resource data is cached for up to 60 seconds. After creating a table, it may not
 |--------|-----------|-------|
 | Purpose | Query state | Execute operations |
 | Access | Read-only | Read/write |
-| Invocation | URI-based | Function call |
-| Caching | 60-second TTL | None |
+| Invocation | URI-based (`bkend://...`) | Function call (`backend_*`) |
+| Caching | Yes | None |
 | Example | List projects | Create a table |
 
 ### When should you use Resources?
@@ -145,8 +168,8 @@ Resource data is cached for up to 60 seconds. After creating a table, it may not
 
 ### When should you use Tools?
 
-- When **modifying data** (creating tables, adding data, updating fields)
-- When **performing specific operations** (searching docs, querying schemas)
+- When **modifying data** (creating tables, updating fields, managing indexes)
+- When **performing specific operations** (searching docs, creating projects)
 
 ***
 
@@ -168,8 +191,8 @@ sequenceDiagram
     MCP-->>AI: Table schema data
 
     Note over AI,MCP: Perform operations via Tools
-    AI->>MCP: backend_data_create
-    MCP-->>AI: Data created
+    AI->>MCP: backend_table_create
+    MCP-->>AI: Table created
 ```
 
 ***

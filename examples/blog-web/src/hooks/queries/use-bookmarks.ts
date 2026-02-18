@@ -21,10 +21,12 @@ export function useBookmarks(page = 1, limit = 20) {
 }
 
 export function useBookmarkByArticle(articleId: string) {
+  const { data: currentUser } = useMe();
+
   return useQuery({
     queryKey: queryKeys.bookmarks.byArticle(articleId),
-    queryFn: () => getBookmarkByArticleId(articleId),
-    enabled: !!articleId,
+    queryFn: () => getBookmarkByArticleId(articleId, currentUser?.id),
+    enabled: !!articleId && !!currentUser?.id,
   });
 }
 
@@ -32,19 +34,17 @@ export function useToggleBookmark() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (articleId: string) => toggleBookmark(articleId),
-    onMutate: async (articleId) => {
-      // Cancel outgoing refetches
+    mutationFn: ({ articleId, userId }: { articleId: string; userId?: string }) =>
+      toggleBookmark(articleId, userId),
+    onMutate: async ({ articleId }) => {
       await queryClient.cancelQueries({
         queryKey: queryKeys.bookmarks.byArticle(articleId),
       });
 
-      // Snapshot previous value
       const previous = queryClient.getQueryData<Bookmark | null>(
         queryKeys.bookmarks.byArticle(articleId)
       );
 
-      // Optimistically toggle
       queryClient.setQueryData(
         queryKeys.bookmarks.byArticle(articleId),
         previous ? null : { id: "optimistic", articleId, createdAt: new Date().toISOString() }
@@ -52,8 +52,7 @@ export function useToggleBookmark() {
 
       return { previous };
     },
-    onError: (_err, articleId, context) => {
-      // Rollback on error
+    onError: (_err, { articleId }, context) => {
       if (context) {
         queryClient.setQueryData(
           queryKeys.bookmarks.byArticle(articleId),
@@ -61,8 +60,7 @@ export function useToggleBookmark() {
         );
       }
     },
-    onSettled: (_data, _err, articleId) => {
-      // Always refetch after settle
+    onSettled: (_data, _err, { articleId }) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.bookmarks.byArticle(articleId),
       });

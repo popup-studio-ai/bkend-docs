@@ -25,12 +25,18 @@ export async function getBookmarks(
 }
 
 export async function getBookmarkByArticleId(
-  articleId: string
+  articleId: string,
+  userId?: string
 ): Promise<Bookmark | null> {
+  const filters: Record<string, string> = { articleId };
+  if (userId) {
+    filters.createdBy = userId;
+  }
+
   const params = new URLSearchParams({
     page: "1",
     limit: "1",
-    andFilters: JSON.stringify({ articleId }),
+    andFilters: JSON.stringify(filters),
   });
 
   const result = await bkendFetch<PaginatedResponse<Bookmark>>(
@@ -54,9 +60,10 @@ export async function deleteBookmark(id: string): Promise<void> {
 }
 
 export async function toggleBookmark(
-  articleId: string
+  articleId: string,
+  userId?: string
 ): Promise<{ bookmarked: boolean; bookmark: Bookmark | null }> {
-  const existing = await getBookmarkByArticleId(articleId);
+  const existing = await getBookmarkByArticleId(articleId, userId);
 
   if (existing) {
     await deleteBookmark(existing.id);

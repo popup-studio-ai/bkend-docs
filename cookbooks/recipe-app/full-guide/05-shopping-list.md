@@ -218,13 +218,13 @@ async function createShoppingListFromRecipes(recipeIds, listName) {
   // 3. 쇼핑 목록 생성
   const shoppingList = await bkendFetch('/v1/data/shopping_lists', {
     method: 'POST',
-    body: JSON.stringify({
+    body: {
       name: listName,
       date: new Date().toISOString().split('T')[0],
       items,
       totalItems: items.length,
       checkedItems: 0,
-    }),
+    },
   });
 
   console.log(`쇼핑 목록 생성 완료: ${items.length}개 항목`);
@@ -370,10 +370,10 @@ async function toggleItem(listId, itemName, checked) {
   // 4. 업데이트
   await bkendFetch(`/v1/data/shopping_lists/${listId}`, {
     method: 'PATCH',
-    body: JSON.stringify({
+    body: {
       items: updatedItems,
       checkedItems: checkedCount,
-    }),
+    },
   });
 
   console.log(`${itemName} ${checked ? '체크' : '체크 해제'} 완료`);
@@ -400,10 +400,10 @@ async function checkMultipleItems(listId, itemNames) {
 
   await bkendFetch(`/v1/data/shopping_lists/${listId}`, {
     method: 'PATCH',
-    body: JSON.stringify({
+    body: {
       items: updatedItems,
       checkedItems: checkedCount,
-    }),
+    },
   });
 
   console.log(`${itemNames.join(', ')} 체크 완료`);
@@ -442,10 +442,10 @@ async function addItem(listId, newItem) {
 
   await bkendFetch(`/v1/data/shopping_lists/${listId}`, {
     method: 'PATCH',
-    body: JSON.stringify({
+    body: {
       items: updatedItems,
       totalItems: updatedItems.length,
-    }),
+    },
   });
 }
 
@@ -479,11 +479,11 @@ async function removeItem(listId, itemName) {
 
   await bkendFetch(`/v1/data/shopping_lists/${listId}`, {
     method: 'PATCH',
-    body: JSON.stringify({
+    body: {
       items: updatedItems,
       totalItems: updatedItems.length,
       checkedItems: checkedCount,
-    }),
+    },
   });
 }
 
@@ -609,10 +609,10 @@ const sharedList = await bkendFetch(`/v1/data/shopping_lists/${listId}`);
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `VALIDATION_ERROR` | 필수 필드 누락 | name, items 확인 |
-| 400 | `VALIDATION_ERROR` | items 형식 오류 | 각 항목에 name, amount, unit, checked 포함 |
-| 404 | `NOT_FOUND` | 존재하지 않는 목록 | 목록 ID 확인 |
-| 403 | `FORBIDDEN` | 권한 없음 | 본인의 목록만 수정/삭제 가능 |
+| 400 | `data/validation-error` | 필수 필드 누락 | name, items 확인 |
+| 400 | `data/validation-error` | items 형식 오류 | 각 항목에 name, amount, unit, checked 포함 |
+| 404 | `data/not-found` | 존재하지 않는 목록 | 목록 ID 확인 |
+| 403 | `common/forbidden` | 권한 없음 | 본인의 목록만 수정/삭제 가능 |
 
 ***
 

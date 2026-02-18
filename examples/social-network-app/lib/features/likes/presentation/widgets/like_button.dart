@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/utils/demo_guard.dart';
 import '../../../auth/providers/auth_provider.dart';
 import '../../../posts/providers/post_provider.dart';
 import '../../providers/like_provider.dart';
@@ -70,6 +71,7 @@ class _LikeButtonState extends State<LikeButton>
   }
 
   Future<void> _handleTap() async {
+    if (DemoGuard.check(context)) return;
     final userId = context.read<AuthProvider>().currentUserId;
     if (userId == null) return;
 

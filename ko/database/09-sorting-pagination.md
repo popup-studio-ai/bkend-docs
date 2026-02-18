@@ -52,7 +52,7 @@ const params3 = new URLSearchParams({
 ```
 
 {% hint style="info" %}
-💡 `sortBy`를 지정하지 않으면 기본 정렬 순서(보통 `_id` 기준)가 적용됩니다.
+💡 `sortBy`를 지정하지 않으면 기본 정렬 순서(`id` 기준)가 적용됩니다.
 {% endhint %}
 
 ***

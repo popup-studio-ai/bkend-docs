@@ -7,6 +7,7 @@ import { PriceDisplay } from "@/components/shared/price-display";
 import { QuantityStepper } from "./quantity-stepper";
 import { formatPrice } from "@/lib/format";
 import { useUpdateCartQuantity, useRemoveFromCart } from "@/hooks/queries/use-carts";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 import type { CartItemWithProduct } from "@/application/dto/cart.dto";
 import Link from "next/link";
 
@@ -26,17 +27,17 @@ export function CartItem({ item }: CartItemProps) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className="flex gap-4 rounded-md border border-slate-200 p-4 dark:border-slate-700"
+      className="flex gap-4 rounded-md border border-border p-4"
     >
       <Link href={`/products/${item.productId}`} className="shrink-0">
         {item.product?.imageUrl ? (
           <img
-            src={item.product.imageUrl}
+            src={getOptimizedImageUrl(item.product.imageUrl, IMAGE_PRESETS.cartItem)}
             alt={item.product.name}
             className="h-24 w-24 rounded-md object-cover"
           />
         ) : (
-          <div className="flex h-24 w-24 items-center justify-center rounded-md bg-slate-100 dark:bg-slate-800">
+          <div className="flex h-24 w-24 items-center justify-center rounded-md bg-muted">
             <Package className="h-8 w-8 text-slate-300" />
           </div>
         )}
@@ -46,7 +47,7 @@ export function CartItem({ item }: CartItemProps) {
         <div>
           <Link
             href={`/products/${item.productId}`}
-            className="font-medium text-slate-900 hover:underline dark:text-slate-50"
+            className="font-medium text-foreground hover:underline"
           >
             {item.product?.name ?? "Product info unavailable"}
           </Link>

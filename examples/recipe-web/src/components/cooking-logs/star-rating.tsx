@@ -47,7 +47,7 @@ export function StarRating({
               SIZE_CLASSES[size],
               star <= displayValue
                 ? "fill-amber-400 text-amber-400"
-                : "fill-none text-stone-300 dark:text-stone-600"
+                : "fill-none text-muted-foreground/50"
             )}
           />
         </button>

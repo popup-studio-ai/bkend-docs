@@ -1,7 +1,7 @@
 # Database REST API Reference
 
 {% hint style="info" %}
-View all database REST API endpoints at a glance.
+💡 View all database REST API endpoints at a glance.
 {% endhint %}
 
 ## Common
@@ -30,7 +30,7 @@ All endpoints support two path formats.
 | `Content-Type` | Conditional | `application/json` — Required for POST and PATCH requests |
 
 {% hint style="info" %}
-The Publishable Key contains project and environment information, so no additional headers are needed.
+💡 The Publishable Key contains project and environment information, so no additional headers are needed.
 {% endhint %}
 
 ### System Fields
@@ -178,7 +178,7 @@ GET /v1/data/:tableName/openapi
 ```
 
 {% hint style="info" %}
-Returns an OpenAPI 3.0 specification for the CRUD operations of the specified table. Useful for auto-generating client SDKs or importing into API testing tools.
+💡 Returns an OpenAPI 3.0 specification for the CRUD operations of the specified table. Useful for auto-generating client SDKs or importing into API testing tools.
 {% endhint %}
 
 ***
@@ -230,7 +230,7 @@ Returns an OpenAPI 3.0 specification for the CRUD operations of the specified ta
 | `GET` | `/v1/data/:tableName/openapi` | OpenAPI 3.0 spec |
 
 {% hint style="info" %}
-All endpoints also support the `/v1/:tableName` shorthand path.
+💡 All endpoints also support the `/v1/:tableName` shorthand path.
 {% endhint %}
 
 ***

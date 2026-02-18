@@ -1,7 +1,7 @@
 # Project Management
 
 {% hint style="info" %}
-A Project corresponds to a single service or app. This guide explains how to create and manage projects.
+💡 A Project corresponds to a single service or app. This guide explains how to create and manage projects.
 {% endhint %}
 
 ## Overview
@@ -26,7 +26,7 @@ A Project is created under an Organization. When you create a project, a `dev` e
 4. Click **Create**.
 
 {% hint style="warning" %}
-When you create a project, a `dev` environment is automatically provisioned. Wait approximately 30 seconds until it reaches **Active** status.
+⚠️ When you create a project, a `dev` environment is automatically provisioned. Wait approximately 30 seconds until it reaches **Active** status.
 {% endhint %}
 
 ***
@@ -56,7 +56,7 @@ Click a project in the list to switch to the **project-level sidebar**. From the
 Click **Project Settings** in the project-level sidebar to modify project information.
 
 {% hint style="info" %}
-You can find the Project ID on the project settings page. The Publishable Key (`pk_` prefix) includes the project ID and environment information, so you only need the `X-API-Key` header for REST API calls.
+💡 You can find the Project ID on the project settings page. The Publishable Key (`pk_` prefix) includes the project ID and environment information, so you only need the `X-API-Key` header for REST API calls.
 {% endhint %}
 
 ***
@@ -64,7 +64,7 @@ You can find the Project ID on the project settings page. The Publishable Key (`
 ## Deleting a Project
 
 {% hint style="danger" %}
-**Danger** — Deleting a project permanently removes all environments, tables, Users, and files. This action cannot be undone.
+🚨 **Danger** — Deleting a project permanently removes all environments, tables, Users, and files. This action cannot be undone.
 {% endhint %}
 
 1. Click **Project Settings** in the project-level sidebar.

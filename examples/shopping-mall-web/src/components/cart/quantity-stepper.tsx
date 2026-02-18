@@ -10,6 +10,7 @@ interface QuantityStepperProps {
   max?: number;
   onChange: (value: number) => void;
   size?: "sm" | "md";
+  disabled?: boolean;
 }
 
 export function QuantityStepper({
@@ -18,6 +19,7 @@ export function QuantityStepper({
   max = 99,
   onChange,
   size = "md",
+  disabled = false,
 }: QuantityStepperProps) {
   const handleDecrease = () => {
     if (value > min) onChange(value - 1);
@@ -28,7 +30,7 @@ export function QuantityStepper({
   };
 
   return (
-    <div className="inline-flex items-center rounded-md border border-slate-200 dark:border-slate-700">
+    <div className={cn("inline-flex items-center rounded-md border border-border", disabled && "opacity-50")}>
       <Button
         variant="ghost"
         size="icon"
@@ -37,13 +39,13 @@ export function QuantityStepper({
           size === "sm" ? "h-7 w-7" : "h-9 w-9"
         )}
         onClick={handleDecrease}
-        disabled={value <= min}
+        disabled={value <= min || disabled}
       >
         <Minus className={cn(size === "sm" ? "h-3 w-3" : "h-4 w-4")} />
       </Button>
       <span
         className={cn(
-          "flex items-center justify-center border-x border-slate-200 font-medium text-slate-900 dark:border-slate-700 dark:text-slate-50",
+          "flex items-center justify-center border-x border-border font-medium text-foreground",
           size === "sm" ? "h-7 w-8 text-xs" : "h-9 w-12 text-sm"
         )}
       >
@@ -57,7 +59,7 @@ export function QuantityStepper({
           size === "sm" ? "h-7 w-7" : "h-9 w-9"
         )}
         onClick={handleIncrease}
-        disabled={value >= max}
+        disabled={value >= max || disabled}
       >
         <Plus className={cn(size === "sm" ? "h-3 w-3" : "h-4 w-4")} />
       </Button>

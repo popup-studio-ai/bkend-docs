@@ -218,11 +218,11 @@ sequenceDiagram
 ```json
 {
   "expressionPermissions": {
-    "create": "group:user",
-    "read": "group:user OR group:guest",
+    "create": "user",
+    "read": "user | guest",
     "update": "self",
     "delete": "self",
-    "list": "group:user OR self"
+    "list": "user | self"
   }
 }
 ```
@@ -231,16 +231,24 @@ sequenceDiagram
 
 | 조건 | 설명 |
 |------|------|
-| `group:user` | 인증된 사용자 |
-| `group:guest` | 미인증 사용자 |
+| `user` | 인증된 사용자 (`admin` 포함) |
+| `guest` | 모든 사용자 (미인증 포함) |
+| `admin` | 관리자만 |
 | `self` | 데이터 소유자 (`createdBy` = 요청자 ID) |
+| `public` | 모든 사용자 (항상 true) |
+| `role:{name}` | 특정 커스텀 역할 사용자 (예: `role:moderator`) |
+| `role:*` | 커스텀 역할이 있는 모든 사용자 |
 
 ### 연산자
 
-| 연산자 | 설명 | 예시 |
-|--------|------|------|
-| `OR` | 조건 중 **하나라도** 충족 시 허용 | `group:user OR self` |
-| `AND` | **모든** 조건 충족 시만 허용 | `group:user AND self` |
+| 연산자 | 기호 | 설명 | 예시 |
+|--------|:----:|------|------|
+| OR | `\|` | 조건 중 **하나라도** 충족 시 허용 | `user \| self` |
+| AND | `&` | **모든** 조건 충족 시만 허용 | `user & self` |
+
+{% hint style="info" %}
+연산자 우선순위: `&`(AND)가 `|`(OR)보다 먼저 바인딩됩니다. 예: `guest | user & self`는 `guest OR (user AND self)`를 의미합니다.
+{% endhint %}
 
 ### 표현식 예시
 
@@ -249,11 +257,11 @@ sequenceDiagram
 ```json
 {
   "expressionPermissions": {
-    "create": "group:user",
-    "read": "group:user OR group:guest",
+    "create": "user",
+    "read": "user | guest",
     "update": "self",
     "delete": "self",
-    "list": "group:user OR group:guest"
+    "list": "user | guest"
   }
 }
 ```
@@ -263,7 +271,7 @@ sequenceDiagram
 ```json
 {
   "expressionPermissions": {
-    "create": "group:user",
+    "create": "user",
     "read": "self",
     "update": "self",
     "delete": "self",
@@ -294,11 +302,11 @@ sequenceDiagram
 {
   "columnPermissions": {
     "secretField": {
-      "read": "group:admin",
-      "write": "group:admin"
+      "read": "admin",
+      "write": "admin"
     },
     "email": {
-      "read": "group:user OR group:admin",
+      "read": "user | admin",
       "write": "self"
     }
   }
@@ -324,16 +332,16 @@ sequenceDiagram
 {
   "columnPermissions": {
     "email": {
-      "read": "group:admin",
+      "read": "admin",
       "write": "self"
     },
     "bio": {
-      "read": "group:user OR group:guest",
+      "read": "user | guest",
       "write": "self"
     },
     "internalNotes": {
-      "read": "group:admin",
-      "write": "group:admin"
+      "read": "admin",
+      "write": "admin"
     }
   }
 }
@@ -351,11 +359,11 @@ sequenceDiagram
 {
   "rowFilters": [
     {
-      "expression": "group:user",
+      "expression": "user",
       "filter": { "status": "published" }
     },
     {
-      "expression": "group:admin",
+      "expression": "admin",
       "filter": {}
     }
   ]
@@ -376,11 +384,11 @@ sequenceDiagram
 {
   "rowFilters": [
     {
-      "expression": "group:guest",
+      "expression": "guest",
       "filter": { "status": "published", "visibility": "public" }
     },
     {
-      "expression": "group:user",
+      "expression": "user",
       "filter": { "status": "published" }
     },
     {

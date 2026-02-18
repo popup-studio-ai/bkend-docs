@@ -206,39 +206,51 @@ async function getUserInfo(userId) {
 
 | 상황 | 인덱스 대상 | 예시 |
 |------|-------------|------|
-| **WHERE 절 필터** | 자주 검색하는 컬럼 | `WHERE user_id = '...'` → `user_id` 인덱스 |
-| **ORDER BY 정렬** | 정렬 기준 컬럼 | `ORDER BY created_at DESC` → `created_at` 인덱스 |
-| **JOIN 조건** | Foreign Key 컬럼 | `JOIN orders ON user_id` → `user_id` 인덱스 |
-| **고유 제약** | 중복 방지 컬럼 | `email` 컬럼 → UNIQUE 인덱스 |
+| **필터 조건** | 자주 필터링하는 필드 | `andFilters: { userId: '...' }` → `userId` 인덱스 |
+| **정렬 기준** | 정렬 대상 필드 | `sortBy: createdAt` → `createdAt` 인덱스 |
+| **고유 제약** | 중복 방지 필드 | `email` 필드 → Unique 인덱스 |
 
 ### 3.2 인덱스 생성 예시
 
-콘솔 또는 SQL로 인덱스를 생성하세요.
+**콘솔** 또는 **MCP 도구**로 인덱스를 생성하세요.
 
 {% tabs %}
 {% tab title="콘솔" %}
 1. **데이터베이스** → **테이블** → **posts** → **인덱스**
 2. **새 인덱스** 클릭
-3. 인덱스명: `idx_posts_user_id`
-4. 컬럼: `user_id`
-5. 타입: B-Tree (기본값)
-6. **생성**
+3. 인덱스명: `idx_posts_userId`
+4. 필드: `userId`
+5. **생성** 클릭
 {% endtab %}
 
-{% tab title="SQL" %}
-```sql
--- 단일 컬럼 인덱스
-CREATE INDEX idx_posts_user_id ON posts(user_id);
+{% tab title="JSON (MCP / REST API)" %}
+```json
+// 단일 필드 인덱스
+{
+  "name": "idx_posts_userId",
+  "fields": { "userId": 1 }
+}
 
--- 복합 인덱스 (user_id + created_at)
-CREATE INDEX idx_posts_user_created ON posts(user_id, created_at DESC);
+// 복합 인덱스 (userId + createdAt 내림차순)
+{
+  "name": "idx_posts_userId_createdAt",
+  "fields": { "userId": 1, "createdAt": -1 }
+}
 
--- 부분 인덱스 (status가 'published'인 것만)
-CREATE INDEX idx_posts_published ON posts(created_at)
-WHERE status = 'published';
+// 고유 인덱스
+{
+  "name": "idx_users_email",
+  "fields": { "email": 1 },
+  "unique": true
+}
 
--- 고유 인덱스
-CREATE UNIQUE INDEX idx_users_email ON users(email);
+// 희소 인덱스 (필드가 없는 문서 제외)
+{
+  "name": "idx_posts_slug",
+  "fields": { "slug": 1 },
+  "unique": true,
+  "sparse": true
+}
 ```
 {% endtab %}
 {% endtabs %}
@@ -291,69 +303,73 @@ flowchart LR
 
 **테이블 설계**
 
-```sql
--- 사용자 역할 테이블
-CREATE TABLE user_roles (
-  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-  user_id TEXT NOT NULL REFERENCES users(id),
-  role TEXT NOT NULL, -- 'user', 'editor', 'admin'
-  created_at TIMESTAMP DEFAULT now()
-);
+`user_roles` 테이블을 다음 스키마로 생성하세요:
 
-CREATE INDEX idx_user_roles_user_id ON user_roles(user_id);
+```json
+{
+  "userId": { "bsonType": "string" },
+  "role": { "bsonType": "string" }
+}
+```
+
+빠른 조회를 위해 `userId`에 인덱스를 추가하세요:
+
+```json
+{
+  "name": "idx_user_roles_userId",
+  "fields": { "userId": 1 }
+}
 ```
 
 **권한 설정 (posts 테이블)**
 
-| 작업 | 조건 |
-|------|------|
-| **SELECT** | `true` (모두 읽기) |
-| **INSERT** | `auth.role = 'authenticated'` |
-| **UPDATE** | `user.id = author_id OR (SELECT COUNT(*) FROM user_roles WHERE user_id = user.id AND role IN ('editor', 'admin')) > 0` |
-| **DELETE** | `(SELECT COUNT(*) FROM user_roles WHERE user_id = user.id AND role = 'admin') > 0` |
+| 그룹 | create | read | update | delete |
+|------|:------:|:----:|:------:|:------:|
+| **guest** | - | ✅ | - | - |
+| **user** | ✅ | ✅ | - | - |
+| **self** | - | ✅ | ✅ | ✅ |
+| **admin** | ✅ | ✅ | ✅ | ✅ |
+
+{% hint style="info" %}
+💡 bkend는 4가지 권한 그룹을 제공합니다: `admin`, `user`, `self`, `guest`. `self` 그룹은 인증된 사용자가 본인이 생성한 레코드(`createdBy` 필드 일치)에만 작업할 수 있도록 제한합니다.
+{% endhint %}
 
 ### 4.2 조직별 데이터 격리
 
-멀티 테넌트 앱에서는 조직(Organization)별로 데이터를 격리하세요.
+멀티 테넌트 앱에서는 테이블을 분리하고 권한을 설정하여 조직별로 데이터를 격리하세요.
 
 **테이블 설계**
 
-```sql
--- 조직 테이블
-CREATE TABLE organizations (
-  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-  name TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT now()
-);
+`organizations` 테이블과 `organization_members` 테이블을 생성하세요:
 
--- 조직 멤버 테이블
-CREATE TABLE organization_members (
-  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-  organization_id TEXT NOT NULL REFERENCES organizations(id),
-  user_id TEXT NOT NULL REFERENCES users(id),
-  role TEXT NOT NULL, -- 'owner', 'admin', 'member'
-  created_at TIMESTAMP DEFAULT now()
-);
+```json
+// organizations 테이블 스키마
+{
+  "name": { "bsonType": "string" }
+}
 
--- 게시글 테이블 (조직 ID 추가)
-CREATE TABLE posts (
-  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-  organization_id TEXT NOT NULL REFERENCES organizations(id),
-  author_id TEXT NOT NULL REFERENCES users(id),
-  title TEXT NOT NULL,
-  content TEXT,
-  created_at TIMESTAMP DEFAULT now()
-);
+// organization_members 테이블 스키마
+{
+  "organizationId": { "bsonType": "string" },
+  "userId": { "bsonType": "string" },
+  "role": { "bsonType": "string" }
+}
+
+// posts 테이블 스키마 (organizationId 포함)
+{
+  "organizationId": { "bsonType": "string" },
+  "title": { "bsonType": "string" },
+  "content": { "bsonType": "string" }
+}
 ```
 
 **권한 설정 (posts 테이블)**
 
-| 작업 | 조건 |
-|------|------|
-| **SELECT** | `(SELECT COUNT(*) FROM organization_members WHERE organization_id = posts.organization_id AND user_id = user.id) > 0` |
-| **INSERT** | `(SELECT COUNT(*) FROM organization_members WHERE organization_id = NEW.organization_id AND user_id = user.id) > 0` |
-| **UPDATE** | `user.id = author_id` |
-| **DELETE** | `user.id = author_id OR (SELECT role FROM organization_members WHERE organization_id = posts.organization_id AND user_id = user.id) = 'owner'` |
+| 그룹 | create | read | update | delete |
+|------|:------:|:----:|:------:|:------:|
+| **user** | ✅ | ✅ | - | - |
+| **self** | - | ✅ | ✅ | ✅ |
+| **admin** | ✅ | ✅ | ✅ | ✅ |
 
 ***
 

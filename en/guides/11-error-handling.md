@@ -1,7 +1,7 @@
 # Error Handling Guide
 
 {% hint style="info" %}
-Handle bkend API errors effectively in your app. This document covers response strategies per HTTP status code and user notification patterns.
+💡 Handle bkend API errors effectively in your app. This document covers response strategies per HTTP status code and user notification patterns.
 {% endhint %}
 
 ## Overview
@@ -109,7 +109,7 @@ function redirectToLogin() {
 ```
 
 {% hint style="info" %}
-Using the `bkendFetch` helper, the 401 → token refresh → retry flow is handled automatically. See [Integrating bkend in Your App](../getting-started/03-app-integration.md) for detailed setup.
+💡 Using the `bkendFetch` helper, the 401 → token refresh → retry flow is handled automatically. See [Integrating bkend in Your App](../getting-started/03-app-integration.md) for detailed setup.
 {% endhint %}
 
 ***
@@ -164,7 +164,7 @@ async function handleForbidden(error) {
 ```
 
 {% hint style="warning" %}
-If 403 errors occur repeatedly, check the table's **Permissions** settings in the console. Verify that the required CRUD permissions are granted for the User role.
+⚠️ If 403 errors occur repeatedly, check the table's **Permissions** settings in the console. Verify that the required CRUD permissions are granted for the User role.
 {% endhint %}
 
 ***

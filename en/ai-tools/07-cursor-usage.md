@@ -1,7 +1,7 @@
 # Cursor Usage
 
 {% hint style="info" %}
-Use bkend MCP in Cursor to manage your backend while writing code.
+💡 Use bkend MCP in Cursor to manage your backend while writing code.
 {% endhint %}
 
 ## Overview
@@ -9,7 +9,7 @@ Use bkend MCP in Cursor to manage your backend while writing code.
 Once Cursor is connected to bkend MCP, you can manage your backend with natural language from AI Chat. Manipulate Database, Auth, and Storage while writing code at the same time.
 
 {% hint style="warning" %}
-If you haven't completed the setup yet, see [Cursor Setup](06-cursor-setup.md) first.
+⚠️ If you haven't completed the setup yet, see [Cursor Setup](06-cursor-setup.md) first.
 {% endhint %}
 
 ***

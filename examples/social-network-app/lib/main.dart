@@ -67,9 +67,13 @@ void main() async {
   // Check initial auth status
   await authProvider.checkAuth();
 
-  // If authenticated, load profile
+  // If authenticated, ensure profile exists
   if (authProvider.isAuthenticated && authProvider.currentUserId != null) {
-    await profileProvider.loadMyProfile(authProvider.currentUserId!);
+    await profileProvider.ensureProfile(
+      userId: authProvider.currentUserId!,
+      name: authProvider.user?.name,
+      email: authProvider.user?.email,
+    );
   }
 
   runApp(

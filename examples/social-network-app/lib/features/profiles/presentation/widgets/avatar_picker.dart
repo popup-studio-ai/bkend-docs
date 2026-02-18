@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,6 +9,7 @@ class AvatarPicker extends StatelessWidget {
   final String? currentAvatarUrl;
   final double radius;
   final Function(File file) onPicked;
+  final Function(String url)? onRandomPicked;
   final File? selectedFile;
 
   const AvatarPicker({
@@ -15,12 +17,12 @@ class AvatarPicker extends StatelessWidget {
     this.currentAvatarUrl,
     this.radius = 48,
     required this.onPicked,
+    this.onRandomPicked,
     this.selectedFile,
   });
 
   Future<void> _pickImage(BuildContext context) async {
-    final picker = ImagePicker();
-    final source = await showModalBottomSheet<ImageSource>(
+    final choice = await showModalBottomSheet<String>(
       context: context,
       builder: (context) => SafeArea(
         child: Column(
@@ -29,29 +31,51 @@ class AvatarPicker extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.photo_library_outlined),
               title: const Text('Choose from gallery'),
-              onTap: () => Navigator.pop(context, ImageSource.gallery),
+              onTap: () => Navigator.pop(context, 'gallery'),
             ),
             ListTile(
               leading: const Icon(Icons.camera_alt_outlined),
               title: const Text('Take a photo'),
-              onTap: () => Navigator.pop(context, ImageSource.camera),
+              onTap: () => Navigator.pop(context, 'camera'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.shuffle_rounded),
+              title: const Text('Random avatar (demo)'),
+              onTap: () => Navigator.pop(context, 'random'),
             ),
           ],
         ),
       ),
     );
 
-    if (source == null) return;
+    if (choice == null) return;
 
-    final picked = await picker.pickImage(
-      source: source,
-      maxWidth: 512,
-      maxHeight: 512,
-      imageQuality: 85,
-    );
+    if (choice == 'random') {
+      final seed = Random().nextInt(9999);
+      onRandomPicked?.call('https://i.pravatar.cc/256?img=${seed % 70}');
+      return;
+    }
 
-    if (picked != null) {
-      onPicked(File(picked.path));
+    final picker = ImagePicker();
+    try {
+      final picked = await picker.pickImage(
+        source:
+            choice == 'camera' ? ImageSource.camera : ImageSource.gallery,
+        maxWidth: 512,
+        maxHeight: 512,
+        imageQuality: 85,
+      );
+      if (picked != null) {
+        onPicked(File(picked.path));
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Camera is not available on this device.'),
+          ),
+        );
+      }
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/utils/demo_guard.dart';
 import '../../../shared/widgets/loading_indicator.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../comments/presentation/comment_sheet.dart';
@@ -73,6 +74,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   }
 
   Future<void> _handleDelete(Post post) async {
+    if (DemoGuard.check(context)) return;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(

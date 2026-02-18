@@ -1,7 +1,7 @@
 # Session & Token Management
 
 {% hint style="info" %}
-View active sessions, refresh tokens, and terminate sessions remotely.
+💡 View active sessions, refresh tokens, and terminate sessions remotely.
 {% endhint %}
 
 ## Overview
@@ -91,7 +91,7 @@ const { accessToken, refreshToken } = await response.json();
 ```
 
 {% hint style="warning" %}
-A new Refresh Token is issued during token refresh. The previous Refresh Token is immediately invalidated, so always save the new tokens.
+⚠️ A new Refresh Token is issued during token refresh. The previous Refresh Token is immediately invalidated, so always save the new tokens.
 {% endhint %}
 
 ***
@@ -151,7 +151,7 @@ curl -X DELETE https://api-client.bkend.ai/v1/auth/sessions/{sessionId} \
 ```
 
 {% hint style="warning" %}
-Deleting your current active session will immediately sign you out.
+⚠️ Deleting your current active session will immediately sign you out.
 {% endhint %}
 
 ***

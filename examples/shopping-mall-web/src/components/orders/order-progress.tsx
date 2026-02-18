@@ -25,7 +25,7 @@ export function OrderProgress({ currentStatus }: OrderProgressProps) {
                   "flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-bold transition-colors",
                   isCompleted
                     ? "border-green-500 bg-green-500 text-white"
-                    : "border-slate-300 text-slate-400 dark:border-slate-600 dark:text-slate-500",
+                    : "border-border text-muted-foreground",
                   isCurrent && "ring-2 ring-green-200 dark:ring-green-800"
                 )}
               >
@@ -40,7 +40,7 @@ export function OrderProgress({ currentStatus }: OrderProgressProps) {
                   "mt-1.5 text-xs font-medium",
                   isCompleted
                     ? "text-green-600 dark:text-green-400"
-                    : "text-slate-400 dark:text-slate-500"
+                    : "text-muted-foreground"
                 )}
               >
                 {step.label}
@@ -52,7 +52,7 @@ export function OrderProgress({ currentStatus }: OrderProgressProps) {
                   "mx-2 h-0.5 flex-1",
                   index < currentIndex
                     ? "bg-green-500"
-                    : "bg-slate-200 dark:bg-slate-700"
+                    : "bg-muted"
                 )}
               />
             )}

@@ -18,6 +18,7 @@ import { OrderDetail } from "@/components/orders/order-detail";
 import { ReviewForm } from "@/components/reviews/review-form";
 import { PageTransition } from "@/components/motion/page-transition";
 import { useOrder } from "@/hooks/queries/use-orders";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { parseOrderItems } from "@/application/dto/order.dto";
 import { formatDate } from "@/lib/format";
 
@@ -28,6 +29,7 @@ export default function OrderDetailPage({
 }) {
   const { id } = use(params);
   const { data: order, isLoading, isError, error, refetch } = useOrder(id);
+  const { isDemoAccount } = useDemoGuard();
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<string>("");
 
@@ -70,6 +72,7 @@ export default function OrderDetailPage({
                         variant="outline"
                         size="sm"
                         onClick={() => handleWriteReview(item.productId)}
+                        disabled={isDemoAccount}
                       >
                         <Pencil className="mr-1 h-3 w-3" />
                         Review {item.name}

@@ -13,6 +13,8 @@ import {
   createArticle,
   updateArticle,
   deleteArticle,
+  getPublishedArticles,
+  getPublishedArticle,
 } from "@/lib/api/articles";
 import type {
   CreateArticleRequest,
@@ -23,13 +25,16 @@ import type { PaginationParams } from "@/application/dto/pagination.dto";
 
 interface UseArticlesParams extends PaginationParams {
   filters?: ArticleFilters;
+  enabled?: boolean;
 }
 
 export function useArticles(params: UseArticlesParams = {}) {
+  const { enabled, ...queryParams } = params;
   return useQuery({
-    queryKey: queryKeys.articles.list(params as Record<string, unknown>),
-    queryFn: () => getArticles(params),
+    queryKey: queryKeys.articles.list(queryParams as Record<string, unknown>),
+    queryFn: () => getArticles(queryParams),
     placeholderData: keepPreviousData,
+    enabled,
   });
 }
 
@@ -73,5 +78,23 @@ export function useDeleteArticle() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.articles.all });
     },
+  });
+}
+
+// --- Public (no auth required) ---
+
+export function usePublishedArticles(params: { page?: number; limit?: number } = {}) {
+  return useQuery({
+    queryKey: queryKeys.articles.list({ ...params, scope: "public", isPublished: true }),
+    queryFn: () => getPublishedArticles(params),
+    placeholderData: keepPreviousData,
+  });
+}
+
+export function usePublishedArticle(id: string) {
+  return useQuery({
+    queryKey: queryKeys.articles.detail(`public-${id}`),
+    queryFn: () => getPublishedArticle(id),
+    enabled: !!id,
   });
 }

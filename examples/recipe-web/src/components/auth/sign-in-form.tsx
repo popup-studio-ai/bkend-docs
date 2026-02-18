@@ -35,6 +35,10 @@ export function SignInForm() {
     formState: { errors },
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "demo@bkend.ai",
+      password: "Bkend123$",
+    },
   });
 
   const onSubmit = (data: SignInFormData) => {
@@ -46,7 +50,7 @@ export function SignInForm() {
   };
 
   return (
-    <Card className="w-full max-w-md border-orange-200 dark:border-stone-700">
+    <Card className="w-full max-w-md">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Sign In</CardTitle>
         <CardDescription>
@@ -65,7 +69,7 @@ export function SignInForm() {
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-xs text-red-500">{errors.email.message}</p>
+              <p className="text-xs text-destructive">{errors.email.message}</p>
             )}
           </div>
 
@@ -79,12 +83,12 @@ export function SignInForm() {
               {...register("password")}
             />
             {errors.password && (
-              <p className="text-xs text-red-500">{errors.password.message}</p>
+              <p className="text-xs text-destructive">{errors.password.message}</p>
             )}
           </div>
 
           {signIn.isError && (
-            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+            <div className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive">
               {(signIn.error as Error)?.message || "Sign in failed."}
             </div>
           )}
@@ -101,11 +105,11 @@ export function SignInForm() {
           </Button>
         </form>
 
-        <div className="mt-4 text-center text-sm text-stone-500 dark:text-stone-400">
+        <div className="mt-4 text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
           <Link
             href="/sign-up"
-            className="text-orange-600 hover:underline dark:text-orange-400"
+            className="text-accent-color hover:underline"
           >
             Sign Up
           </Link>

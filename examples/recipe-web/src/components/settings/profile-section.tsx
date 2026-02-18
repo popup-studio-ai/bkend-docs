@@ -20,6 +20,7 @@ import {
   useDeleteAccount
 } from "@/hooks/queries/use-users";
 import { cn, getInitials } from "@/lib/utils";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -169,15 +170,15 @@ export function ProfileSection() {
   return (
     <div className="space-y-6">
       {/* Profile Card */}
-      <Card className="overflow-hidden border-orange-200 dark:border-stone-700">
+      <Card className="overflow-hidden">
         <div className="h-24 bg-gradient-to-r from-orange-400 via-amber-400 to-orange-300 dark:from-orange-700 dark:via-amber-700 dark:to-orange-600" />
         <CardContent className="relative pt-0 -mt-12 px-6 pb-6">
           {/* Avatar */}
           <div className="relative mb-6 inline-block">
-            <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-4 border-white bg-gradient-to-br from-orange-500 to-amber-500 text-2xl font-bold text-white shadow-lg dark:border-stone-800">
+            <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-4 border-card bg-gradient-to-br from-orange-500 to-amber-500 text-2xl font-bold text-white shadow-lg">
               {imageUrl ? (
                 <img
-                  src={imageUrl}
+                  src={getOptimizedImageUrl(imageUrl, IMAGE_PRESETS.avatar)}
                   alt={user?.name || "Avatar"}
                   className="h-full w-full rounded-2xl object-cover"
                 />
@@ -187,7 +188,7 @@ export function ProfileSection() {
             </div>
             <label
               className={cn(
-                "absolute -bottom-1 -right-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-white bg-orange-500 text-white shadow-md transition-colors hover:bg-orange-600 dark:border-stone-800",
+                "absolute -bottom-1 -right-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-card bg-orange-500 text-white shadow-md transition-colors hover:bg-orange-600",
                 isUploading && "pointer-events-none opacity-50"
               )}
             >
@@ -204,7 +205,7 @@ export function ProfileSection() {
               />
             </label>
             {isUploading && uploadProgress > 0 && (
-              <div className="absolute -bottom-3 left-0 right-0 h-1 overflow-hidden rounded-full bg-orange-100">
+              <div className="absolute -bottom-3 left-0 right-0 h-1 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full rounded-full bg-orange-500 transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
@@ -235,9 +236,9 @@ export function ProfileSection() {
                   id="email"
                   value={user?.email || ""}
                   disabled
-                  className="bg-stone-50 dark:bg-stone-800"
+                  className="bg-muted"
                 />
-                <p className="text-xs text-stone-400">Email cannot be changed</p>
+                <p className="text-xs text-muted-foreground">Email cannot be changed</p>
               </div>
             </div>
 
@@ -268,7 +269,7 @@ export function ProfileSection() {
       </Card>
 
       {/* Password Card */}
-      <Card className="border-orange-200 dark:border-stone-700">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
             <Lock className="h-5 w-5 text-orange-500" />
@@ -357,7 +358,7 @@ export function ProfileSection() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="mb-4 text-sm text-stone-500 dark:text-stone-400">
+          <p className="mb-4 text-sm text-muted-foreground">
             Once you delete your account, all your recipes, meal plans, and
             cooking logs will be permanently removed. This action cannot be
             undone.

@@ -1,11 +1,11 @@
 # Large File Upload (Multipart)
 
 {% hint style="info" %}
-Split large files into multiple parts and upload them in parallel.
+💡 Split large files into multiple parts and upload them in parallel.
 {% endhint %}
 
 {% hint style="info" %}
-**Before you start** — You need the following to proceed:
+💡 **Before you start** — You need the following to proceed:
 - [Project creation](../getting-started/02-quickstart.md) completed
 - User authentication completed (JWT token required — all file APIs require authentication)
 {% endhint %}
@@ -68,7 +68,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/init \
 ```json
 {
   "uploadId": "multipart-upload-id",
-  "key": "files/a1b2c3d4/video.mp4",
+  "key": "{server_generated_key}",
   "filename": "video.mp4"
 }
 ```
@@ -164,8 +164,8 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
 
 ```json
 {
-  "key": "files/a1b2c3d4/video.mp4",
-  "location": "https://s3.amazonaws.com/bucket/..."
+  "key": "{server_generated_key}",
+  "location": "https://storage.example.com/..."
 }
 ```
 
@@ -193,7 +193,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/abort \
 ```json
 {
   "success": true,
-  "key": "files/a1b2c3d4/video.mp4"
+  "key": "{server_generated_key}"
 }
 ```
 
@@ -356,7 +356,7 @@ fileInput.addEventListener('change', async (e) => {
 ```
 
 {% hint style="info" %}
-For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
+💡 For `bkendFetch` setup, see [Integrating bkend with Your App](../getting-started/03-app-integration.md).
 {% endhint %}
 
 ***

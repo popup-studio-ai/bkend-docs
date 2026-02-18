@@ -1,7 +1,7 @@
 # Index Management
 
 {% hint style="info" %}
-This guide explains how to create indexes to improve data query performance.
+💡 This guide explains how to create indexes to improve data query performance.
 {% endhint %}
 
 ## Overview
@@ -42,7 +42,7 @@ Request in natural language from your AI tool.
 {% endtabs %}
 
 {% hint style="info" %}
-Compound indexes combine multiple columns into a single index. Grouping columns that are frequently queried together into one index is effective.
+💡 Compound indexes combine multiple columns into a single index. Grouping columns that are frequently queried together into one index is effective.
 {% endhint %}
 
 ***
@@ -53,7 +53,7 @@ Compound indexes combine multiple columns into a single index. Grouping columns 
 2. The index is deleted after confirmation.
 
 {% hint style="warning" %}
-Deleting an index may degrade query performance on that column. Data is not affected.
+⚠️ Deleting an index may degrade query performance on that column. Data is not affected.
 {% endhint %}
 
 ***

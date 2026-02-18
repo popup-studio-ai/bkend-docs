@@ -64,32 +64,31 @@ bkend는 테이블 생성 시 다음 인덱스를 자동 생성합니다.
 
 ```bash
 # ✅ 좋은 예 — 인덱스된 필드로 필터링
-curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters[status]=published&sort=-createdAt&limit=20" \
+curl -X GET "https://api-client.bkend.ai/v1/data/posts?andFilters=%7B%22status%22%3A%22published%22%7D&sortBy=createdAt&sortDirection=desc&limit=20" \
   -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {api_key}"
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ### 페이지네이션 활용하기
 
-대량 데이터를 조회할 때는 반드시 `limit`과 `offset`을 사용하세요.
+대량 데이터를 조회할 때는 반드시 `page`와 `limit`을 사용하세요.
 
 | 파라미터 | 설명 | 권장값 |
 |---------|------|:-----:|
+| `page` | 페이지 번호 (1부터 시작) | 1, 2, 3, ... |
 | `limit` | 한 번에 조회할 레코드 수 | 10~50 |
-| `offset` | 건너뛸 레코드 수 | 페이지 × limit |
 
 ```javascript
 // 페이지네이션
 const page = 1;
 const limit = 20;
-const offset = (page - 1) * limit;
 
 const response = await fetch(
-  `https://api-client.bkend.ai/v1/data/posts?limit=${limit}&offset=${offset}`,
+  `https://api-client.bkend.ai/v1/data/posts?page=${page}&limit=${limit}`,
   {
     headers: {
       'X-API-Key': '{pk_publishable_key}',
-      'Authorization': `Bearer ${apiKey}`,
+      'Authorization': `Bearer ${accessToken}`,
     },
   }
 );
@@ -101,9 +100,9 @@ const response = await fetch(
 
 ```bash
 # 필요한 필드만 조회
-curl -X GET "https://api-client.bkend.ai/v1/data/posts?fields=title,status,createdAt" \
+curl -X GET "https://api-client.bkend.ai/v1/data/posts?select=title,status,createdAt" \
   -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {api_key}"
+  -H "Authorization: Bearer {accessToken}"
 ```
 
 ***

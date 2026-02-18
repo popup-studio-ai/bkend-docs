@@ -1,7 +1,7 @@
 # Data CRUD App Patterns
 
 {% hint style="info" %}
-Learn patterns for implementing data CRUD features like bulletin boards and to-do lists in your app.
+💡 Learn patterns for implementing data CRUD features like bulletin boards and to-do lists in your app.
 {% endhint %}
 
 ## Overview
@@ -9,7 +9,7 @@ Learn patterns for implementing data CRUD features like bulletin boards and to-d
 This document explains how to implement the **Create > List > Update > Delete** flow in your app using the bkend data API. It assumes the `bkendFetch` helper function is already configured.
 
 {% hint style="warning" %}
-If you have not set up `bkendFetch` yet, see [Integrate bkend in Your App](../getting-started/03-app-integration.md) first.
+⚠️ If you have not set up `bkendFetch` yet, see [Integrate bkend in Your App](../getting-started/03-app-integration.md) first.
 {% endhint %}
 
 ```mermaid
@@ -36,7 +36,7 @@ A CRUD app combines the following four APIs.
 | Delete | `DELETE` | `/v1/data/{tableName}/{id}` | Delete data |
 
 {% hint style="info" %}
-All endpoints also support the shorthand path. `/v1/data/posts` and `/v1/posts` work identically.
+💡 All endpoints also support the shorthand path. `/v1/data/posts` and `/v1/posts` work identically.
 {% endhint %}
 
 ***
@@ -256,7 +256,7 @@ document.getElementById('editForm').addEventListener('submit', async (e) => {
 ```
 
 {% hint style="warning" %}
-System fields (`id`, `createdBy`, `createdAt`) cannot be modified. `updatedAt` is automatically refreshed.
+⚠️ System fields (`id`, `createdBy`, `createdAt`) cannot be modified. `updatedAt` is automatically refreshed.
 {% endhint %}
 
 ***
@@ -287,7 +287,7 @@ async function confirmDelete(postId) {
 ```
 
 {% hint style="danger" %}
-**Warning** — Deleted data cannot be recovered. Always prompt the user for confirmation before deleting.
+🚨 **Warning** — Deleted data cannot be recovered. Always prompt the user for confirmation before deleting.
 {% endhint %}
 
 ***
@@ -345,7 +345,7 @@ function handleError(error) {
 | `self` | - | Own data only | Own data only | Own data only |
 
 {% hint style="info" %}
-Permissions per role depend on the table's `permissions` settings. For details, see [Data Model](02-data-model.md).
+💡 Permissions per role depend on the table's `permissions` settings. For details, see [Data Model](02-data-model.md).
 {% endhint %}
 
 ***
@@ -489,7 +489,7 @@ Below is the complete code for a simple bulletin board app combining all the pat
 ***
 
 {% hint style="info" %}
-**Real-world examples**: To see how CRUD patterns are used in real projects, check out the [Cookbooks](../../cookbooks/README.md).
+💡 **Real-world examples**: To see how CRUD patterns are used in real projects, check out the [Cookbooks](../../cookbooks/README.md).
 {% endhint %}
 
 ## Next Steps

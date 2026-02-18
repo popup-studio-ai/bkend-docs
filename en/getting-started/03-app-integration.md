@@ -1,7 +1,7 @@
 # Integrating bkend in Your App
 
 {% hint style="info" %}
-Connect your bkend backend to your app using the REST API. The fetch helper pattern defined in this document is referenced by other app integration guides.
+💡 Connect your bkend backend to your app using the REST API. The fetch helper pattern defined in this document is referenced by other app integration guides.
 {% endhint %}
 
 ## Overview
@@ -22,7 +22,7 @@ This document covers:
 | Access Token | Login API response | JWT (for authenticated APIs) |
 
 {% hint style="warning" %}
-If you do not have a Publishable Key, refer to [API Key Management](../console/11-api-keys.md) to issue one first.
+⚠️ If you do not have a Publishable Key, refer to [API Key Management](../console/11-api-keys.md) to issue one first.
 {% endhint %}
 
 ***
@@ -38,7 +38,7 @@ All REST API requests require the following headers.
 | `Authorization` | `Bearer {accessToken}` | Conditional | Only for APIs that require authentication |
 
 {% hint style="info" %}
-The `pk_` key includes project ID and environment information, so no additional context headers are needed.
+💡 The `pk_` key includes project ID and environment information, so no additional context headers are needed.
 {% endhint %}
 
 ***
@@ -226,7 +226,7 @@ The bkend API supports direct calls from browsers. You can call the API using `f
 | `500` | Server error | Retry after a short delay |
 
 {% hint style="info" %}
-The `bkendFetch` helper automatically refreshes the token and retries on 401 errors. If the refresh fails, it throws an error.
+💡 The `bkendFetch` helper automatically refreshes the token and retries on 401 errors. If the refresh fails, it throws an error.
 {% endhint %}
 
 ***

@@ -13,6 +13,7 @@ import {
 } from "@/lib/utils";
 import type { Article } from "@/application/dto/article.dto";
 import { listItemVariants } from "@/components/motion/page-transition";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 interface ArticleCardProps {
   article: Article;
@@ -34,7 +35,7 @@ export function ArticleCard({ article, index }: ArticleCardProps) {
           {article.coverImage && (
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg">
               <img
-                src={article.coverImage}
+                src={getOptimizedImageUrl(article.coverImage, IMAGE_PRESETS.thumbnail)}
                 alt={article.title}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />

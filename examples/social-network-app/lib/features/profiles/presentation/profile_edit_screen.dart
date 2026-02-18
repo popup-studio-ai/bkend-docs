@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/utils/demo_guard.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../providers/profile_provider.dart';
 import 'widgets/avatar_picker.dart';
@@ -21,12 +22,14 @@ class ProfileEditScreen extends StatefulWidget {
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   File? _selectedAvatar;
+  String? _randomAvatarUrl;
   bool _isUploading = false;
 
   bool get _isEditing =>
       context.read<ProfileProvider>().myProfile != null;
 
   Future<void> _handleSave() async {
+    if (DemoGuard.check(context)) return;
     if (!(_formKey.currentState?.saveAndValidate() ?? false)) return;
 
     final values = _formKey.currentState!.value;
@@ -36,7 +39,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
     if (userId == null) return;
 
-    String? avatarUrl;
+    String? avatarUrl = _randomAvatarUrl;
 
     // Upload avatar if selected
     if (_selectedAvatar != null) {
@@ -134,11 +137,21 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 children: [
                   Center(
                     child: AvatarPicker(
-                      currentAvatarUrl: profile?.avatarUrl,
+                      currentAvatarUrl:
+                          _randomAvatarUrl ?? profile?.avatarUrl,
                       radius: 48,
                       selectedFile: _selectedAvatar,
                       onPicked: (file) {
-                        setState(() => _selectedAvatar = file);
+                        setState(() {
+                          _selectedAvatar = file;
+                          _randomAvatarUrl = null;
+                        });
+                      },
+                      onRandomPicked: (url) {
+                        setState(() {
+                          _selectedAvatar = null;
+                          _randomAvatarUrl = url;
+                        });
                       },
                     ),
                   ),

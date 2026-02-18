@@ -1,7 +1,7 @@
 # Realtime Data
 
 {% hint style="info" %}
-Learn how to implement realtime data synchronization with bkend.
+💡 Learn how to implement realtime data synchronization with bkend.
 {% endhint %}
 
 ## Overview
@@ -21,7 +21,7 @@ bkend currently operates on a REST API basis. If you need realtime data synchron
 - WebSocket / SSE support status
 
 {% hint style="warning" %}
-If the polling interval is too short, you may hit the API rate limit (429). A minimum interval of **5 seconds** is recommended. Use adaptive polling to reduce unnecessary requests.
+⚠️ If the polling interval is too short, you may hit the API rate limit (429). A minimum interval of **5 seconds** is recommended. Use adaptive polling to reduce unnecessary requests.
 {% endhint %}
 
 ***

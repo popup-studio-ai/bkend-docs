@@ -5,10 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { useChangePassword } from "@/hooks/queries/use-users";
+import { useMe } from "@/hooks/queries/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
+import { DEMO_EMAIL } from "@/lib/constants";
 
 const passwordSchema = z
   .object({
@@ -31,7 +33,9 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 
 export function PasswordForm() {
   const { addToast } = useToast();
+  const { data: user } = useMe();
   const changePassword = useChangePassword();
+  const isDemoAccount = user?.email === DEMO_EMAIL;
 
   const {
     register,
@@ -139,7 +143,7 @@ export function PasswordForm() {
       </div>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isDemoAccount || isSubmitting}>
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

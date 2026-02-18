@@ -13,26 +13,34 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useUiStore } from "@/stores/ui-store";
+import { getInitials } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth-store";
 import { useSignOut } from "@/hooks/queries/use-auth";
-import { getInitials } from "@/lib/utils";
-
+import { useUIStore } from "@/stores/ui-store";
 export function Topbar() {
-  const { toggleSidebar, setSidebarOpen } = useUiStore();
   const user = useAuthStore((s) => s.user);
   const signOut = useSignOut();
+  const toggleSidebar = useUIStore((s) => s.toggleSidebar);
+  const setMobileSidebarOpen = useUIStore((s) => s.setMobileSidebarOpen);
 
   const initials = user?.name ? getInitials(user.name) : "U";
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-orange-200 bg-white/80 px-4 backdrop-blur-sm dark:border-stone-700 dark:bg-stone-900/80">
+    <header className="flex h-14 items-center justify-between border-b bg-card/80 backdrop-blur-sm px-4">
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden"
-          onClick={() => setSidebarOpen(true)}
+          className="hidden md:flex"
+          onClick={toggleSidebar}
+        >
+          <Menu className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={() => setMobileSidebarOpen(true)}
         >
           <Menu className="h-4 w-4" />
         </Button>
@@ -45,7 +53,7 @@ export function Topbar() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-9 w-9 rounded-full">
               <Avatar className="h-9 w-9">
-                <AvatarFallback className="text-xs bg-gradient-to-br from-orange-500 to-amber-500 text-white">
+                <AvatarFallback className="text-xs bg-gradient-brand text-white">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -55,7 +63,7 @@ export function Topbar() {
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium">{user?.name || "User"}</p>
-                <p className="text-xs text-stone-500 dark:text-stone-400">
+                <p className="text-xs text-muted-foreground">
                   {user?.email || ""}
                 </p>
               </div>
@@ -76,7 +84,7 @@ export function Topbar() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={signOut}
-              className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
+              className="text-destructive focus:text-destructive"
             >
               <LogOut className="mr-2 h-4 w-4" />
               Sign Out

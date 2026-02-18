@@ -23,6 +23,7 @@ import {
 } from "@/hooks/queries/use-cooking-logs";
 import { calculateAverageRating } from "@/lib/api/cooking-logs";
 import { formatDate } from "@/lib/format";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 
 interface CookingLogListProps {
   recipeId: string;
@@ -33,6 +34,7 @@ export function CookingLogList({ recipeId }: CookingLogListProps) {
     useCookingLogs(recipeId);
   const deleteCookingLog = useDeleteCookingLog(recipeId);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const { isDemoAccount } = useDemoGuard();
 
   const handleDelete = async (id: string) => {
     await deleteCookingLog.mutateAsync(id);
@@ -51,19 +53,19 @@ export function CookingLogList({ recipeId }: CookingLogListProps) {
         <div className="space-y-4">
           {/* Stats summary */}
           {data.items.length > 0 && (
-            <div className="flex items-center gap-4 rounded-lg bg-amber-50 px-4 py-3 dark:bg-stone-800">
+            <div className="flex items-center gap-4 rounded-lg bg-accent px-4 py-3">
               <div className="flex items-center gap-2">
                 <StarRating
                   value={Math.round(calculateAverageRating(data.items))}
                   readonly
                   size="sm"
                 />
-                <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
+                <span className="text-sm font-medium text-foreground">
                   {calculateAverageRating(data.items)}
                 </span>
               </div>
               <Separator orientation="vertical" className="h-5" />
-              <span className="text-sm text-stone-500 dark:text-stone-400">
+              <span className="text-sm text-muted-foreground">
                 {data.items.length} times cooked
               </span>
             </div>
@@ -81,17 +83,17 @@ export function CookingLogList({ recipeId }: CookingLogListProps) {
               {data.items.map((log) => (
                 <li
                   key={log.id}
-                  className="flex items-start justify-between rounded-lg border border-orange-100 p-4 dark:border-stone-700"
+                  className="flex items-start justify-between rounded-lg border border-border p-4"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-3">
                       <StarRating value={log.rating} readonly size="sm" />
-                      <span className="text-xs text-stone-400">
+                      <span className="text-xs text-muted-foreground">
                         {formatDate(log.cookedAt, "yyyy.MM.dd")}
                       </span>
                     </div>
                     {log.notes && (
-                      <p className="text-sm text-stone-600 dark:text-stone-400">
+                      <p className="text-sm text-muted-foreground">
                         {log.notes}
                       </p>
                     )}
@@ -102,8 +104,8 @@ export function CookingLogList({ recipeId }: CookingLogListProps) {
                     onOpenChange={(open) => setDeleteId(open ? log.id : null)}
                   >
                     <DialogTrigger asChild>
-                      <Button variant="ghost" size="icon" className="shrink-0">
-                        <Trash2 className="h-4 w-4 text-stone-400" />
+                      <Button variant="ghost" size="icon" className="shrink-0" disabled={isDemoAccount}>
+                        <Trash2 className="h-4 w-4 text-muted-foreground" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>

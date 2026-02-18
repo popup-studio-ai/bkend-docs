@@ -1,7 +1,7 @@
 # Comparison with Other Services
 
 {% hint style="info" %}
-This document compares bkend with major BaaS platforms such as Firebase, Supabase, and Appwrite.
+💡 This document compares bkend with major BaaS platforms such as Firebase, Supabase, and Appwrite.
 {% endhint %}
 
 ## Overview
@@ -46,7 +46,7 @@ Scope of each service's free plan.
 | **Realtime Connections** | — | 100 (RTDB) | 200 | 250 |
 
 {% hint style="warning" %}
-Starting February 2026, Firebase no longer supports Cloud Storage on the Spark (free) plan. You must upgrade to Blaze (pay-as-you-go).
+⚠️ Starting February 2026, Firebase no longer supports Cloud Storage on the Spark (free) plan. You must upgrade to Blaze (pay-as-you-go).
 {% endhint %}
 
 ***
@@ -67,7 +67,7 @@ Starting February 2026, Firebase no longer supports Cloud Storage on the Spark (
 | **Cloud Functions** | $0.40/M invocations | 2M invocations included | 3.5M executions included |
 
 {% hint style="info" %}
-For bkend pricing details, visit the [bkend official website](https://bkend.ai).
+💡 For bkend pricing details, visit the [bkend official website](https://bkend.ai).
 {% endhint %}
 
 ***
@@ -135,7 +135,7 @@ For bkend pricing details, visit the [bkend official website](https://bkend.ai).
 | **AI Native** | pgvector, etc. — | Vertex AI, Gemini API integration | pgvector vector search | — |
 
 {% hint style="info" %}
-bkend MCP is built into the service, so you can start using it simply by registering the URL. Other services require installing and running the MCP server locally.
+💡 bkend MCP is built into the service, so you can start using it simply by registering the URL. Other services require installing and running the MCP server locally.
 {% endhint %}
 
 ***

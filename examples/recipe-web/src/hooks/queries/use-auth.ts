@@ -66,6 +66,6 @@ export function useSignOut() {
     tokenStorage.clearTokens();
     clearUser();
     queryClient.clear();
-    window.location.href = "/sign-in";
+    window.location.href = "/";
   };
 }

@@ -9,6 +9,7 @@ import { formatRelativeTime } from "@/lib/utils";
 import type { Recipe } from "@/application/dto/recipe.dto";
 import { DIFFICULTY_LABELS, DIFFICULTY_COLORS } from "@/application/dto/recipe.dto";
 import { cn } from "@/lib/utils";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 interface RecipeGridCardProps {
   recipe: Recipe;
@@ -23,12 +24,12 @@ export function RecipeGridCard({ recipe, index }: RecipeGridCardProps) {
       transition={{ duration: 0.3, delay: index * 0.05 }}
     >
       <Link href={`/recipes/${recipe.id}`}>
-        <div className="group flex flex-col overflow-hidden rounded-xl border border-orange-200 bg-white transition-all duration-200 hover:shadow-lg hover:border-orange-300 dark:border-stone-700 dark:bg-stone-800 dark:hover:border-orange-600/40">
+        <div className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all duration-200 hover:shadow-lg hover:border-orange-300 dark:hover:border-orange-600/40">
           {/* Cover Image */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden bg-orange-100 dark:bg-stone-700">
+          <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
             {recipe.imageUrl ? (
               <img
-                src={recipe.imageUrl}
+                src={getOptimizedImageUrl(recipe.imageUrl, IMAGE_PRESETS.thumbnail)}
                 alt={recipe.title}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -58,26 +59,26 @@ export function RecipeGridCard({ recipe, index }: RecipeGridCardProps) {
                   {recipe.category}
                 </Badge>
               )}
-              <span className="flex items-center gap-1 text-xs text-stone-400 dark:text-stone-500">
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
                 {formatTime(recipe.cookingTime)}
               </span>
             </div>
 
-            <h3 className="font-semibold text-stone-900 line-clamp-1 group-hover:text-orange-600 transition-colors dark:text-stone-100 dark:group-hover:text-orange-400">
+            <h3 className="font-semibold text-foreground line-clamp-1 group-hover:text-orange-600 transition-colors dark:group-hover:text-orange-400">
               {recipe.title}
             </h3>
 
-            <p className="mt-1.5 text-sm text-stone-500 line-clamp-2 flex-1 dark:text-stone-400">
+            <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2 flex-1">
               {recipe.description}
             </p>
 
-            <div className="mt-3 flex items-center justify-between pt-3 border-t border-orange-100 dark:border-stone-700">
-              <span className="flex items-center gap-1 text-xs text-stone-400 dark:text-stone-500">
+            <div className="mt-3 flex items-center justify-between pt-3 border-t border-border">
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Users className="h-3 w-3" />
                 {recipe.servings} servings
               </span>
-              <span className="flex items-center gap-1 text-xs text-stone-400 dark:text-stone-500">
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Calendar className="h-3 w-3" />
                 {formatRelativeTime(recipe.createdAt)}
               </span>

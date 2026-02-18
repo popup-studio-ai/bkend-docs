@@ -1,7 +1,7 @@
 # Frequently Asked Questions
 
 {% hint style="info" %}
-This page compiles frequently asked questions and key terms related to bkend.
+💡 This page compiles frequently asked questions and key terms related to bkend.
 {% endhint %}
 
 ## General
@@ -117,7 +117,7 @@ See [Publishable Key vs Secret Key](../security/03-public-vs-secret.md)
 ***
 
 {% hint style="info" %}
-If you did not find the answer you were looking for in this FAQ, check the [Common Error Codes](01-common-errors.md) and the troubleshooting documents for each category.
+💡 If you did not find the answer you were looking for in this FAQ, check the [Common Error Codes](01-common-errors.md) and the troubleshooting documents for each category.
 {% endhint %}
 
 ## Glossary

@@ -1,18 +1,18 @@
 # List Data
 
 {% hint style="info" %}
-Retrieve data from a table as a list. Supports filtering, sorting, and pagination.
+💡 Retrieve data from a table as a list. Supports filtering, sorting, and pagination.
 {% endhint %}
 
 {% hint style="info" %}
-**Before you start** — You need the following to proceed:
+💡 **Before you start** — You need the following to proceed:
 - [Create a project](../getting-started/02-quickstart.md) completed
 - [Create a table](../console/07-table-management.md) completed
 - Authentication setup — Public tables require no auth; tables with RLS require a JWT
 {% endhint %}
 
 {% hint style="info" %}
-**API used in this document**
+💡 **API used in this document**
 
 | Endpoint | Method | Auth | Description |
 |----------|:------:|:----:|-------------|
@@ -73,7 +73,7 @@ const { items, pagination } = await response.json();
 | `select` | `string[]` | - | Fields to include in the response (comma-separated) |
 
 {% hint style="info" %}
-For more details on filtering and sorting, see [Filtering](08-filtering.md) and [Sorting & Pagination](09-sorting-pagination.md).
+💡 For more details on filtering and sorting, see [Filtering](08-filtering.md) and [Sorting & Pagination](09-sorting-pagination.md).
 {% endhint %}
 
 ### Response (200 OK)
@@ -139,7 +139,7 @@ console.log(result.pagination);  // Pagination info
 ```
 
 {% hint style="info" %}
-For `bkendFetch` setup, see [Integrate bkend in Your App](../getting-started/03-app-integration.md).
+💡 For `bkendFetch` setup, see [Integrate bkend in Your App](../getting-started/03-app-integration.md).
 {% endhint %}
 
 ***
@@ -156,7 +156,7 @@ Listing data requires the `list` permission on the corresponding table.
 | `self` | Automatically adds a `createdBy` filter (own data only) |
 
 {% hint style="warning" %}
-When only `self` permission is configured, only data created by the requester is returned, even without an explicit filter.
+⚠️ When only `self` permission is configured, only data created by the requester is returned, even without an explicit filter.
 {% endhint %}
 
 ***
@@ -172,7 +172,7 @@ curl -X GET "https://api-client.bkend.ai/v1/data/posts?select=id,title,createdAt
 ```
 
 {% hint style="info" %}
-System fields (`id`, `createdBy`, `createdAt`, `updatedAt`) are always included regardless of the `select` parameter.
+💡 System fields (`id`, `createdBy`, `createdAt`, `updatedAt`) are always included regardless of the `select` parameter.
 {% endhint %}
 
 ***

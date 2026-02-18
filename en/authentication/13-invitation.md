@@ -1,7 +1,7 @@
 # Invitation System
 
 {% hint style="info" %}
-Invite users to your organization or project via email.
+💡 Invite users to your organization or project via email.
 {% endhint %}
 
 ## Overview
@@ -81,7 +81,7 @@ curl -X POST https://api-client.bkend.ai/v1/auth/invitations \
 ```
 
 {% hint style="info" %}
-Invitations expire after 7 days by default.
+💡 Invitations expire after 7 days by default.
 {% endhint %}
 
 ***

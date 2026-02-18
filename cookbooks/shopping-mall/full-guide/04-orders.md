@@ -196,14 +196,14 @@ for (const item of cartItems) {
 // 3. 주문 생성
 const order = await bkendFetch('/v1/data/orders', {
   method: 'POST',
-  body: JSON.stringify({
+  body: {
     items: JSON.stringify(orderItems),
     totalPrice: totalPrice,
     status: 'pending',
     shippingAddress: '서울시 서초구 반포대로 45',
     recipientName: '김고객',
     recipientPhone: '010-1234-5678',
-  }),
+  },
 });
 
 console.log('주문 생성 완료:', order);
@@ -433,7 +433,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/orders/{order_id} \
 async function updateOrderStatus(orderId, newStatus) {
   const result = await bkendFetch(`/v1/data/orders/${orderId}`, {
     method: 'PATCH',
-    body: JSON.stringify({ status: newStatus }),
+    body: { status: newStatus },
   });
 
   console.log(`주문 ${orderId}: ${newStatus}로 변경 완료`);
@@ -481,9 +481,9 @@ console.log(`상태: ${label}`); // "상태: 배송 중"
 
 | HTTP 상태 | 에러 코드 | 설명 | 해결 방법 |
 |:---------:|----------|------|----------|
-| 400 | `INVALID_INPUT` | 필수 필드 누락 | items, totalPrice, status, shippingAddress 확인 |
-| 401 | `UNAUTHORIZED` | 인증 실패 | Access Token 확인 |
-| 404 | `NOT_FOUND` | 주문 없음 | 주문 ID 확인 |
+| 400 | `data/validation-error` | 필수 필드 누락 | items, totalPrice, status, shippingAddress 확인 |
+| 401 | `common/authentication-required` | 인증 실패 | Access Token 확인 |
+| 404 | `data/not-found` | 주문 없음 | 주문 ID 확인 |
 
 ***
 

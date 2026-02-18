@@ -1,7 +1,7 @@
 # Next Steps
 
 {% hint style="info" %}
-Now that you understand the core concepts of bkend, pick the scenario that best fits your needs.
+💡 Now that you understand the core concepts of bkend, pick the scenario that best fits your needs.
 {% endhint %}
 
 ## Overview
@@ -23,7 +23,7 @@ Connect your bkend backend to your app via REST API. This is the most common use
 | 5 | Set up access control | [Writing RLS Policies](../security/05-rls-policies.md) |
 
 {% hint style="success" %}
-For framework-specific setup, see [Framework Quick Start](07-quickstart-framework.md).
+✅ For framework-specific setup, see [Framework Quick Start](07-quickstart-framework.md).
 {% endhint %}
 
 ***

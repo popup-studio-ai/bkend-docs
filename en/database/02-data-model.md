@@ -1,7 +1,7 @@
 # Understanding the Data Model
 
 {% hint style="info" %}
-Learn about the schema, permissions, and system fields in the bkend database.
+💡 Learn about the schema, permissions, and system fields in the bkend database.
 {% endhint %}
 
 ## Overview
@@ -104,7 +104,7 @@ System fields are automatically included in every record. These fields cannot be
 | `updatedAt` | `string` | Last modified timestamp (ISO 8601) | ✅ |
 
 {% hint style="info" %}
-`createdBy` is automatically set to the requester's User ID. For guest requests, it may be an empty string.
+💡 `createdBy` is automatically set to the requester's User ID. For guest requests, it may be an empty string.
 {% endhint %}
 
 ***
@@ -176,7 +176,7 @@ flowchart TD
 ```
 
 {% hint style="warning" %}
-When `self` permissions are configured, a `list` request automatically adds a `createdBy` filter so that only the user's own data is returned.
+⚠️ When `self` permissions are configured, a `list` request automatically adds a `createdBy` filter so that only the user's own data is returned.
 {% endhint %}
 
 ***

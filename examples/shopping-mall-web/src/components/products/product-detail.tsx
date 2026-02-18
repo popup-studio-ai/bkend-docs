@@ -13,6 +13,8 @@ import { ProductGallery } from "./product-gallery";
 import { ReviewList } from "@/components/reviews/review-list";
 import { useAddToCart } from "@/hooks/queries/use-carts";
 import { useUiStore } from "@/stores/ui-store";
+import { useAuthStore } from "@/stores/auth-store";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import type { ProductDto } from "@/application/dto/product.dto";
 
 interface ProductDetailProps {
@@ -25,14 +27,24 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const [addedToCart, setAddedToCart] = useState(false);
   const addToCart = useAddToCart();
   const { openCartDrawer } = useUiStore();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { isDemoAccount } = useDemoGuard();
 
   const handleAddToCart = async () => {
+    if (!isAuthenticated) {
+      router.push("/sign-in");
+      return;
+    }
     await addToCart.mutateAsync({ productId: product.id, quantity });
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
   const handleBuyNow = async () => {
+    if (!isAuthenticated) {
+      router.push("/sign-in");
+      return;
+    }
     await addToCart.mutateAsync({ productId: product.id, quantity });
     openCartDrawer();
     router.push("/checkout");
@@ -48,7 +60,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
         <div className="lg:sticky lg:top-24 lg:self-start">
           <div className="space-y-4">
             <Badge variant="secondary">{product.category}</Badge>
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
               {product.name}
             </h1>
 
@@ -57,7 +69,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <Separator />
 
             <div className="prose prose-slate max-w-none text-sm dark:prose-invert">
-              <p className="whitespace-pre-wrap text-slate-600 dark:text-slate-300">
+              <p className="whitespace-pre-wrap text-muted-foreground">
                 {product.description}
               </p>
             </div>
@@ -65,7 +77,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <Separator />
 
             <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              <span className="text-sm font-medium text-muted-foreground">
                 Stock
               </span>
               {isOutOfStock ? (
@@ -79,7 +91,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
             {!isOutOfStock && (
               <div className="flex items-center gap-4">
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                <span className="text-sm font-medium text-muted-foreground">
                   Quantity
                 </span>
                 <QuantityStepper
@@ -96,7 +108,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 size="lg"
                 className="flex-1"
                 onClick={handleAddToCart}
-                disabled={isOutOfStock || addToCart.isPending}
+                disabled={isOutOfStock || addToCart.isPending || isDemoAccount}
               >
                 {addedToCart ? (
                   <>
@@ -116,7 +128,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   size="lg"
                   className="w-full"
                   onClick={handleBuyNow}
-                  disabled={isOutOfStock}
+                  disabled={isOutOfStock || isDemoAccount}
                 >
                   Buy Now
                 </Button>
@@ -124,11 +136,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </div>
 
             <div className="flex gap-2 pt-1">
-              <Button variant="ghost" size="sm" className="text-slate-500">
+              <Button variant="ghost" size="sm" className="text-muted-foreground">
                 <Heart className="mr-1 h-4 w-4" />
                 Wishlist
               </Button>
-              <Button variant="ghost" size="sm" className="text-slate-500">
+              <Button variant="ghost" size="sm" className="text-muted-foreground">
                 <Share2 className="mr-1 h-4 w-4" />
                 Share
               </Button>
@@ -140,7 +152,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
       <Separator />
 
       <section>
-        <h2 className="mb-6 text-xl font-extrabold text-slate-900 dark:text-slate-50">
+        <h2 className="mb-6 text-xl font-extrabold text-foreground">
           Product Reviews
         </h2>
         <ReviewList productId={product.id} />

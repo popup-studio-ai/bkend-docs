@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../data/auth_repository.dart';
 
 enum AuthStatus { initial, loading, authenticated, unauthenticated, error }
@@ -84,6 +85,46 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } on DioException catch (e) {
       _error = _parseError(e);
+      _status = AuthStatus.error;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> signInWithGoogle() async {
+    _status = AuthStatus.loading;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _user = await _repository.signInWithGoogle();
+      _status = AuthStatus.authenticated;
+      notifyListeners();
+      return true;
+    } on DioException catch (e) {
+      debugPrint('[GoogleAuth] DioException: ${e.response?.statusCode} ${e.response?.data}');
+      _error = _parseError(e);
+      _status = AuthStatus.error;
+      notifyListeners();
+      return false;
+    } on GoogleSignInException catch (e) {
+      if (e.code == GoogleSignInExceptionCode.canceled) {
+        _status = AuthStatus.unauthenticated;
+        notifyListeners();
+        return false;
+      }
+      _error = e.description ?? 'Google sign in failed.';
+      _status = AuthStatus.error;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      final message = e.toString().replaceFirst('Exception: ', '');
+      if (message == 'cancelled') {
+        _status = AuthStatus.unauthenticated;
+        notifyListeners();
+        return false;
+      }
+      _error = message;
       _status = AuthStatus.error;
       notifyListeners();
       return false;

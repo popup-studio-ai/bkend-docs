@@ -7,11 +7,13 @@ import { z } from "zod";
 import { User, Upload, Loader2 } from "lucide-react";
 import { useMe } from "@/hooks/queries/use-auth";
 import { useUpdateProfile, useGetAvatarUploadUrl } from "@/hooks/queries/use-users";
+import { DEMO_EMAIL } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
 import Image from "next/image";
+import { getOptimizedImageUrl, IMAGE_PRESETS } from "@/lib/image";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name is too long"),
@@ -26,6 +28,7 @@ export function ProfileForm() {
   const getUploadUrl = useGetAvatarUploadUrl();
   const [imageUrl, setImageUrl] = useState(user?.image);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const isDemoAccount = user?.email === DEMO_EMAIL;
 
   const {
     register,
@@ -142,7 +145,7 @@ export function ProfileForm() {
           <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center overflow-hidden">
             {imageUrl ? (
               <Image
-                src={imageUrl}
+                src={getOptimizedImageUrl(imageUrl, IMAGE_PRESETS.avatar)!}
                 alt="Avatar"
                 width={80}
                 height={80}
@@ -167,7 +170,7 @@ export function ProfileForm() {
                 type="button"
                 variant="outline"
                 size="sm"
-                disabled={isUploadingAvatar}
+                disabled={isUploadingAvatar || isDemoAccount}
                 onClick={() => document.getElementById("avatar-upload")?.click()}
               >
                 {isUploadingAvatar ? (
@@ -188,7 +191,7 @@ export function ProfileForm() {
       </div>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting || isDemoAccount}>
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

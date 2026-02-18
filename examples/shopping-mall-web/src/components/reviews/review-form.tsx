@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StarRating } from "./star-rating";
 import { useCreateReview } from "@/hooks/queries/use-reviews";
+import { useDemoGuard } from "@/hooks/use-demo-guard";
 import { reviewFormSchema, type ReviewFormInput } from "@/application/dto/review.dto";
 
 interface ReviewFormProps {
@@ -19,6 +20,7 @@ interface ReviewFormProps {
 
 export function ReviewForm({ productId, orderId, onSuccess }: ReviewFormProps) {
   const createReview = useCreateReview();
+  const { isDemoAccount } = useDemoGuard();
 
   const {
     control,
@@ -82,7 +84,7 @@ export function ReviewForm({ productId, orderId, onSuccess }: ReviewFormProps) {
             </div>
           )}
 
-          <Button type="submit" disabled={createReview.isPending}>
+          <Button type="submit" disabled={createReview.isPending || isDemoAccount}>
             {createReview.isPending && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}

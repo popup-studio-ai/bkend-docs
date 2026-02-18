@@ -84,6 +84,7 @@ MCP 토큰에 부여되는 권한입니다.
 | `environment:read` / `environment:create` / `environment:delete` | Environment 관리 |
 | `table:read` / `table:create` / `table:update` / `table:delete` | 테이블 스키마 관리 |
 | `table:data:read` / `table:data:create` / `table:data:update` / `table:data:delete` | 테이블 데이터 CRUD |
+| `access-token:read` | Access Token 조회 |
 
 ### 와일드카드 스코프
 

@@ -1,7 +1,7 @@
 # Database Overview
 
 {% hint style="info" %}
-Understand the bkend database system and learn how to manage data with the REST API.
+💡 Understand the bkend database system and learn how to manage data with the REST API.
 {% endhint %}
 
 ## What is the Database?
@@ -72,7 +72,7 @@ Both paths work identically. This documentation uses the standard path (`/v1/dat
 | `Authorization` | Conditional | `Bearer {accessToken}` — Required depending on permissions |
 
 {% hint style="info" %}
-The Publishable Key contains project and environment information, so no additional headers are needed.
+💡 The Publishable Key contains project and environment information, so no additional headers are needed.
 {% endhint %}
 
 ***
@@ -96,7 +96,7 @@ flowchart LR
 | 4 | REST API | Perform data CRUD from your app | `POST/GET/PATCH/DELETE /v1/data/:tableName` |
 
 {% hint style="info" %}
-You can find your **Publishable Key** in Console > **API Keys**.
+💡 You can find your **Publishable Key** in Console > **API Keys**.
 {% endhint %}
 
 If you are integrating the REST API in your app for the first time, see [Integrate bkend in Your App](../getting-started/03-app-integration.md) first.
@@ -138,5 +138,5 @@ If you use AI tools, you can also manage tables through MCP tools.
 | [Data CRUD App Patterns](12-crud-app-patterns.md) | Implement CRUD in your app |
 
 {% hint style="info" %}
-**Learn by doing**: To see how data CRUD is used in real projects, check out the [Cookbooks](../../cookbooks/README.md).
+💡 **Learn by doing**: To see how data CRUD is used in real projects, check out the [Cookbooks](../../cookbooks/README.md).
 {% endhint %}

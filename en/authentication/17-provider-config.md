@@ -1,7 +1,7 @@
 # Auth Provider Configuration
 
 {% hint style="info" %}
-Configure email authentication policies and OAuth providers (Google, GitHub) per project.
+💡 Configure email authentication policies and OAuth providers (Google, GitHub) per project.
 {% endhint %}
 
 ## Overview
@@ -121,7 +121,7 @@ Configure OAuth providers (Google, GitHub) with Client ID and Secret for social 
 | `enabled` | `boolean` | Yes | Whether enabled |
 
 {% hint style="info" %}
-For security, `clientSecret` is never returned in responses. You can only set or update it.
+💡 For security, `clientSecret` is never returned in responses. You can only set or update it.
 {% endhint %}
 
 ***

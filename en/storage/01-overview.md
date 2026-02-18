@@ -8,13 +8,13 @@ Upload files and manage metadata with bkend storage.
 
 Use bkend file storage to safely upload and download profile photos, post images, and document files in your app. With the Presigned URL approach, files are stored directly in storage without passing through the server.
 
-bkend storage is a service for uploading, downloading, and managing file metadata. A Presigned URL is a signed URL that is valid for a limited time, allowing clients to upload and download files directly to storage without going through the server. It uses S3 Presigned URLs so clients upload files directly, while the metadata API handles file information.
+bkend storage is a service for uploading, downloading, and managing file metadata. A Presigned URL is a signed URL that is valid for a limited time, allowing clients to upload and download files directly to storage without going through the server. It uses Presigned URLs so clients upload files directly, while the metadata API handles file information.
 
 ```mermaid
 sequenceDiagram
     participant C as Client
     participant B as bkend API
-    participant S as S3 Storage
+    participant S as Storage
 
     C->>B: Request Presigned URL
     B-->>C: Return upload URL
@@ -29,7 +29,7 @@ sequenceDiagram
 
 ### Presigned URL Upload
 
-Files are uploaded directly to S3 without passing through the bkend server. This allows efficient handling of large files without any server load.
+Files are uploaded directly to storage without passing through the bkend server. This allows efficient handling of large files without any server load.
 
 #### Why Presigned URLs?
 
@@ -39,20 +39,20 @@ bkend does not send files directly to the API server (Direct Upload). Instead, i
 flowchart TD
     subgraph "Direct Upload (Inefficient)"
         A1[Client] -->|Send entire file| B1[API Server]
-        B1 -->|Forward again| C1[S3]
+        B1 -->|Forward again| C1[Storage]
     end
 
     subgraph "Presigned URL (bkend approach)"
         A2[Client] -->|Request URL only| B2[API Server]
         B2 -->|Return signed URL| A2
-        A2 -->|Upload file directly| C2[S3]
+        A2 -->|Upload file directly| C2[Storage]
     end
 ```
 
 | Benefit | Description |
 |---------|-------------|
 | **Security** | Files never pass through the API server, so file data is never exposed in server memory. Presigned URLs are valid only for a limited time, preventing unauthorized access. |
-| **Performance** | Clients upload directly to S3, eliminating the bottleneck of the API server relaying file data. Upload speed is not limited by server bandwidth. |
+| **Performance** | Clients upload directly to storage, eliminating the bottleneck of the API server relaying file data. Upload speed is not limited by server bandwidth. |
 | **Scalability** | The API server only handles URL issuance, so server resource usage remains minimal even when thousands of users upload files simultaneously. Large files (several GB) are handled without server load. |
 
 {% hint style="info" %}
@@ -100,13 +100,13 @@ Set the access scope (`visibility`) per file to control public/private access.
 
 ```mermaid
 flowchart LR
-    A[Request Presigned URL] --> B[Upload to S3]
+    A[Request Presigned URL] --> B[Upload to Storage]
     B --> C[Register metadata]
     C --> D[Done]
 ```
 
 1. `POST /v1/files/presigned-url` — Obtain upload URL
-2. Upload file directly to S3 (PUT)
+2. Upload file directly to storage (PUT)
 3. `POST /v1/files` — Register metadata
 
 ### Multipart Upload (Large Files)
@@ -121,7 +121,7 @@ flowchart LR
 
 1. `POST /v1/files/multipart/init` — Initialize upload
 2. `POST /v1/files/multipart/presigned-url` — Get URL per part
-3. Upload each part to S3 (PUT)
+3. Upload each part to storage (PUT)
 4. `POST /v1/files/multipart/complete` — Complete upload
 5. `POST /v1/files` — Register metadata
 

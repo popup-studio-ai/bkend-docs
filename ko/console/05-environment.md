@@ -34,6 +34,10 @@
 ⚠️ 환경 프로비저닝에 약 30초가 소요됩니다. **Active** 상태가 될 때까지 기다리세요.
 {% endhint %}
 
+{% hint style="warning" %}
+⚠️ **Free 요금제**에서는 `dev` 환경만 생성할 수 있습니다. `staging`, `production` 환경이 필요하면 유료 플랜으로 업그레이드하세요.
+{% endhint %}
+
 ***
 
 ## 환경 전환하기

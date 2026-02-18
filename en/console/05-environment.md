@@ -34,6 +34,10 @@ Environments isolate data within a project. You can create separate development 
 Environment provisioning takes approximately 30 seconds. Wait until it reaches **Active** status.
 {% endhint %}
 
+{% hint style="warning" %}
+⚠️ On the **Free plan**, only the `dev` environment can be created. Upgrade to a paid plan if you need `staging` or `production` environments.
+{% endhint %}
+
 ***
 
 ## Switching Environments

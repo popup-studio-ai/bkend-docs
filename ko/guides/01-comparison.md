@@ -17,7 +17,7 @@ bkend는 MCP 네이티브 통합을 제공하는 Backend 서비스입니다. 이
 | **데이터베이스** | MongoDB | Firestore (Document DB) | PostgreSQL 15/17 | MariaDB (Document API) |
 | **데이터 모델** | 동적 BSON Schema | 스키마리스 Document | 정적 SQL Schema | Document (내부 관계형) |
 | **인증 프로바이더** | Email, Google, GitHub | Email, Google, GitHub 등 9+ (SAML/OIDC) | Email, Google, GitHub 등 20+ | Email, Google, GitHub 등 40+ |
-| **파일 저장소** | S3 호환 | Cloud Storage | S3 호환 | 자체 스토리지 |
+| **파일 저장소** | 오브젝트 스토리지 | Cloud Storage | 오브젝트 스토리지 | 자체 스토리지 |
 | **실시간** | — | Firestore onSnapshot | Realtime Channels | Realtime Events (WebSocket) |
 | **MCP 연동** | 서비스 내장 (URL 등록) | 별도 서버 (Firebase CLI) | 별도 서버 (npm 패키지) | 별도 서버 (npm 패키지) |
 | **멀티테넌시** | 프로젝트 분리로 구현 | 프로젝트 분리로 구현 | RLS 기반 직접 구현 | 프로젝트 분리로 구현 |

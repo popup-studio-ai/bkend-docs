@@ -97,7 +97,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `key` | `string` | ✅ | init 응답의 S3 키 |
+| `key` | `string` | ✅ | init 응답의 파일 키 |
 | `uploadId` | `string` | ✅ | init 응답의 업로드 ID |
 | `partNumber` | `number` | ✅ | 파트 번호 (1~10000) |
 
@@ -114,7 +114,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
 
 ## 3단계: 파트 업로드
 
-발급받은 URL로 파일 조각을 S3에 업로드합니다. 응답의 `ETag` 헤더를 저장해두세요.
+발급받은 URL로 파일 조각을 스토리지에 업로드합니다. 응답의 `ETag` 헤더를 저장해두세요.
 
 ```javascript
 const response = await fetch(partUrl, {
@@ -154,11 +154,11 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `key` | `string` | ✅ | S3 키 |
+| `key` | `string` | ✅ | 파일 키 |
 | `uploadId` | `string` | ✅ | 업로드 ID |
 | `parts` | `array` | ✅ | 업로드된 파트 목록 |
 | `parts[].partNumber` | `number` | ✅ | 파트 번호 |
-| `parts[].etag` | `string` | ✅ | S3 응답의 ETag |
+| `parts[].etag` | `string` | ✅ | 스토리지 응답의 ETag |
 
 ### 응답 (200 OK)
 

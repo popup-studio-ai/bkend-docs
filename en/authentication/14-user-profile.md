@@ -108,7 +108,7 @@ Passing `null` for a field removes that value.
 
 ### Generate Avatar Upload URL
 
-Obtain an S3 Presigned URL and upload directly.
+Obtain a Presigned URL and upload directly.
 
 #### POST /v1/users/:userId/avatar/upload-url
 
@@ -140,7 +140,7 @@ curl -X POST https://api-client.bkend.ai/v1/users/{userId}/avatar/upload-url \
 
 ### Save Avatar After Upload
 
-After uploading the file to S3, register the S3 key.
+After uploading the file to storage, register the file key.
 
 #### PATCH /v1/users/:userId/avatar
 

@@ -18,13 +18,13 @@ Obtain a Presigned URL to download files.
 
 ## Overview
 
-File downloads also use the Presigned URL approach, just like uploads. You obtain a time-limited download URL from the bkend API and download the file directly from S3.
+File downloads also use the Presigned URL approach, just like uploads. You obtain a time-limited download URL from the bkend API and download the file directly from storage.
 
 ```mermaid
 sequenceDiagram
     participant C as Client
     participant B as bkend API
-    participant S as S3
+    participant S as Storage
 
     C->>B: 1. POST /v1/files/:fileId/download-url
     B-->>C: { url, filename, contentType, size, expiresAt }
@@ -81,7 +81,7 @@ const { url, filename, contentType, size, expiresAt } = await response.json();
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `url` | `string` | S3 Presigned URL |
+| `url` | `string` | Presigned URL |
 | `filename` | `string` | Original file name |
 | `contentType` | `string` | MIME type |
 | `size` | `number` | File size in bytes |
@@ -132,7 +132,7 @@ async function downloadToBlob(fileId, accessToken) {
 
   const { url, contentType } = await res.json();
 
-  // Fetch file data from S3
+  // Fetch file data from storage
   const fileRes = await fetch(url);
   const blob = await fileRes.blob();
 
@@ -180,7 +180,7 @@ async function downloadToBlob(fileId) {
     method: 'POST',
   });
 
-  // 2. Fetch file data from S3 (do not use bkendFetch — no Authorization header needed)
+  // 2. Fetch file data from storage (do not use bkendFetch — no Authorization header needed)
   const fileRes = await fetch(url);
   const blob = await fileRes.blob();
 

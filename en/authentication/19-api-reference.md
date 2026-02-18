@@ -508,185 +508,6 @@ DELETE /v1/auth/withdraw
 
 ***
 
-## Auth Provider Configuration
-
-### Get All Settings
-
-```http
-GET /v1/auth/providers
-```
-
-**Authentication required**
-
-**Response:** `200 OK` -- All provider settings object
-
-### Get Email Settings
-
-```http
-GET /v1/auth/providers/email
-```
-
-**Authentication required**
-
-**Response:** `200 OK` -- `{ provider, passwordPolicy, magicLinkEnabled, magicLinkExpirationMinutes }`
-
-### Update Email Settings
-
-```http
-PUT /v1/auth/providers/email
-```
-
-**Authentication required**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `passwordPolicy` | `object` | Password policy |
-| `passwordPolicy.minLength` | `number` | Minimum length |
-| `passwordPolicy.requireUppercase` | `boolean` | Require uppercase |
-| `passwordPolicy.requireLowercase` | `boolean` | Require lowercase |
-| `passwordPolicy.requireNumbers` | `boolean` | Require numbers |
-| `passwordPolicy.requireSpecialChars` | `boolean` | Require special characters |
-| `passwordPolicy.expirationDays` | `number` | Expiration period (days) |
-| `magicLinkEnabled` | `boolean` | Enable magic link |
-| `magicLinkExpirationMinutes` | `number` | Magic link expiration (minutes) |
-
-**Response:** `200 OK` -- Updated settings object
-
-### List OAuth Settings
-
-```http
-GET /v1/auth/providers/oauth
-```
-
-**Authentication required**
-
-**Response:** `200 OK` -- `[ { provider, clientId, redirectUri, scopes, enabled } ]`
-
-### Get Individual OAuth Settings
-
-```http
-GET /v1/auth/providers/oauth/:provider
-```
-
-**Authentication required**
-
-**Response:** `200 OK` -- `{ provider, clientId, redirectUri, scopes, enabled }`
-
-### Update OAuth Settings
-
-```http
-PUT /v1/auth/providers/oauth/:provider
-```
-
-**Authentication required**
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `clientId` | `string` | Yes | OAuth Client ID |
-| `clientSecret` | `string` | Yes | OAuth Client Secret |
-| `redirectUri` | `string` | Yes | Callback URL |
-| `scopes` | `string[]` | Yes | Requested permission scopes |
-| `enabled` | `boolean` | Yes | Whether enabled |
-
-**Response:** `200 OK` -- Updated settings object
-
-### Delete OAuth Settings
-
-```http
-DELETE /v1/auth/providers/oauth/:provider
-```
-
-**Authentication required**
-
-**Response:** `200 OK` -- `{ message }`
-
--> [Auth Provider Configuration](17-provider-config.md)
-
-***
-
-## Email Templates
-
-### Get Global Settings
-
-```http
-GET /v1/auth/email-templates/config
-```
-
-**Authentication required**
-
-**Response:** `200 OK` -- `{ senderEmail, senderName, logoUrl, brandColor, overrideDefaults }`
-
-### Update Global Settings
-
-```http
-PUT /v1/auth/email-templates/config
-```
-
-**Authentication required**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `senderEmail` | `string` | Sender email |
-| `senderName` | `string` | Sender name |
-| `logoUrl` | `string` | Header logo URL |
-| `brandColor` | `string` | Brand color (HEX) |
-| `overrideDefaults` | `boolean` | Use custom template |
-
-**Response:** `200 OK` -- Updated settings object
-
-### List Templates
-
-```http
-GET /v1/auth/email-templates
-```
-
-**Authentication required**
-
-**Response:** `200 OK` -- `[ { id, name, category, subject, customized, locale } ]`
-
-### Get Individual Template
-
-```http
-GET /v1/auth/email-templates/:templateId
-```
-
-**Authentication required**
-
-**Response:** `200 OK` -- `{ id, name, category, subject, body, customized, locale }`
-
-### Update Template
-
-```http
-PUT /v1/auth/email-templates/:templateId
-```
-
-**Authentication required**
-
-| Parameter | Type | Required | Description |
-|-----------|------|:--------:|-------------|
-| `subject` | `string` | Yes | Email subject |
-| `body` | `string` | Yes | Email body (HTML) |
-
-**Response:** `200 OK` -- Updated template object
-
-### Preview Template
-
-```http
-GET /v1/auth/email-templates/preview/:templateId
-```
-
-**Authentication required**
-
-| Query Parameter | Type | Description |
-|-----------------|------|-------------|
-| `locale` | `string` | Language code (e.g., `ko`) |
-
-**Response:** `200 OK` -- `{ subject, htmlBody, textBody }`
-
--> [Email Templates](18-email-templates.md)
-
-***
-
 ## User Management
 
 ### List Users
@@ -839,7 +660,7 @@ PATCH /v1/users/:userId/avatar
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `s3Key` | `string` | Yes | Uploaded S3 key |
+| `s3Key` | `string` | Yes | Uploaded file key |
 
 **Response:** `200 OK` -- `{ image }`
 
@@ -982,10 +803,6 @@ PATCH /v1/users/:userId/public-settings
 
 ***
 
-{% hint style="warning" %}
-Auth provider configuration (`/v1/auth/providers/*`) and email template (`/v1/auth/email-templates/*`) APIs are management-purpose endpoints. Do not call them directly from client apps -- configure them in the console instead.
-{% endhint %}
-
 ## Error Codes
 
 ### Authentication Errors
@@ -1036,7 +853,7 @@ Auth provider configuration (`/v1/auth/providers/*`) and email template (`/v1/au
 
 ## Endpoint Summary
 
-### Auth Endpoints (45)
+### Auth Endpoints (32)
 
 | Method | Path | Auth | Description |
 |--------|------|:----:|-------------|
@@ -1072,19 +889,6 @@ Auth provider configuration (`/v1/auth/providers/*`) and email template (`/v1/au
 | `POST` | `/v1/auth/email/verify/resend` | - | Resend verification email |
 | `POST` | `/v1/auth/signup/email/resend` | - | Resend sign-up verification |
 | `GET` | `/v1/auth/signup/email/confirm` | - | Confirm sign-up verification |
-| `GET` | `/v1/auth/providers` | Yes | Get all settings |
-| `GET` | `/v1/auth/providers/email` | Yes | Get email settings |
-| `PUT` | `/v1/auth/providers/email` | Yes | Update email settings |
-| `GET` | `/v1/auth/providers/oauth` | Yes | List OAuth settings |
-| `GET` | `/v1/auth/providers/oauth/:provider` | Yes | Get OAuth settings |
-| `PUT` | `/v1/auth/providers/oauth/:provider` | Yes | Update OAuth settings |
-| `DELETE` | `/v1/auth/providers/oauth/:provider` | Yes | Delete OAuth settings |
-| `GET` | `/v1/auth/email-templates/config` | Yes | Get template settings |
-| `PUT` | `/v1/auth/email-templates/config` | Yes | Update template settings |
-| `GET` | `/v1/auth/email-templates` | Yes | List templates |
-| `GET` | `/v1/auth/email-templates/:templateId` | Yes | Template details |
-| `PUT` | `/v1/auth/email-templates/:templateId` | Yes | Update template |
-| `GET` | `/v1/auth/email-templates/preview/:templateId` | Yes | Preview template |
 
 ### User Endpoints (19)
 

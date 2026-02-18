@@ -108,7 +108,7 @@ const response = await fetch(`https://api-client.bkend.ai/v1/users/${userId}/pro
 
 ### 아바타 업로드 URL 생성
 
-S3 Presigned URL을 발급받아 직접 업로드합니다.
+Presigned URL을 발급받아 직접 업로드합니다.
 
 #### POST /v1/users/:userId/avatar/upload-url
 
@@ -140,7 +140,7 @@ curl -X POST https://api-client.bkend.ai/v1/users/{userId}/avatar/upload-url \
 
 ### 아바타 업로드 후 저장
 
-S3에 파일을 업로드한 후, S3 key를 등록하세요.
+스토리지에 파일을 업로드한 후, 파일 key를 등록하세요.
 
 #### PATCH /v1/users/:userId/avatar
 

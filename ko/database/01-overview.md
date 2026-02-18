@@ -105,6 +105,10 @@ flowchart LR
 
 ## 테이블 관리
 
+{% hint style="info" %}
+💡 **테이블명 규칙**: 영문자로 시작, 영문자·숫자·대시·언더스코어 허용 (`/^[a-zA-Z][a-zA-Z0-9_-]*$/`). 예: `posts`, `user-profiles`, `order_items`
+{% endhint %}
+
 테이블 생성, 스키마 편집, 인덱스 관리는 **콘솔**에서 수행합니다.
 
 - [테이블 관리](../console/07-table-management.md) — 콘솔에서 테이블 생성/관리

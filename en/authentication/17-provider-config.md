@@ -8,70 +8,43 @@ Configure email authentication policies and OAuth providers (Google, GitHub) per
 
 Auth provider configuration manages the authentication methods for your project. You can set password policies, enable/disable magic links, and configure Client ID/Secret for each OAuth provider.
 
-***
-
-## Get All Provider Settings
-
-### GET /v1/auth/providers
-
-Retrieve all authentication provider settings at once.
-
-```bash
-curl -X GET https://api-client.bkend.ai/v1/auth/providers \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
+{% hint style="warning" %}
+⚠️ Provider configuration is a management operation. Use the **console** or **MCP tools** to manage settings. These APIs are not available from client apps.
+{% endhint %}
 
 ***
 
 ## Email Authentication Settings
 
-### GET /v1/auth/providers/email
+Manage password policy and magic link settings for email-based authentication.
 
-```bash
-curl -X GET https://api-client.bkend.ai/v1/auth/providers/email \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
+{% tabs %}
+{% tab title="MCP (AI Tools)" %}
 
-**Response:**
+{% hint style="success" %}
+✅ **Ask your AI agent:**
+"Show me the current email authentication settings for my project."
+{% endhint %}
 
-```json
-{
-  "provider": "email",
-  "passwordPolicy": {
-    "minLength": 8,
-    "requireUppercase": true,
-    "requireLowercase": true,
-    "requireNumbers": true,
-    "requireSpecialChars": true
-  },
-  "magicLinkEnabled": true,
-  "magicLinkExpirationMinutes": 15
-}
-```
+{% hint style="success" %}
+✅ **Ask your AI agent:**
+"Update the password policy to require minimum 10 characters with uppercase, lowercase, numbers, and special characters. Also enable magic link with 30-minute expiration."
+{% endhint %}
 
-### PUT /v1/auth/providers/email
+{% endtab %}
+{% tab title="Console" %}
 
-Update email authentication settings.
+1. Go to your project in the console
+2. Navigate to **Authentication** > **Providers**
+3. Select **Email** provider
+4. Configure password policy and magic link settings
+5. Click **Save**
 
-```bash
-curl -X PUT https://api-client.bkend.ai/v1/auth/providers/email \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}" \
-  -d '{
-    "passwordPolicy": {
-      "minLength": 10,
-      "requireUppercase": true,
-      "requireLowercase": true,
-      "requireNumbers": true,
-      "requireSpecialChars": true
-    },
-    "magicLinkEnabled": true,
-    "magicLinkExpirationMinutes": 30
-  }'
-```
+<!-- 📸 IMG: Email provider settings screen -->
+![Email Provider Settings](../.gitbook/assets/2026-02/console-auth-providers.png)
+
+{% endtab %}
+{% endtabs %}
 
 ### Password Policy Parameters
 
@@ -95,76 +68,45 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/email \
 
 ## OAuth Provider Settings
 
-### List OAuth Settings
-
-#### GET /v1/auth/providers/oauth
-
-```bash
-curl -X GET https://api-client.bkend.ai/v1/auth/providers/oauth \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
-
-### Get Individual OAuth Provider
-
-#### GET /v1/auth/providers/oauth/:provider
-
-```bash
-curl -X GET https://api-client.bkend.ai/v1/auth/providers/oauth/google \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
-
-**Response:**
-
-```json
-{
-  "provider": "google",
-  "clientId": "123456789.apps.googleusercontent.com",
-  "redirectUri": "https://api-client.bkend.ai/v1/auth/google/callback",
-  "scopes": ["openid", "email", "profile"],
-  "enabled": true
-}
-```
-
-{% hint style="info" %}
-For security, `clientSecret` is not included in the response.
-{% endhint %}
-
-### Update OAuth Provider Settings
-
-#### PUT /v1/auth/providers/oauth/:provider
+Configure OAuth providers (Google, GitHub) with Client ID and Secret for social login.
 
 {% tabs %}
-{% tab title="Google" %}
-```bash
-curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/google \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}" \
-  -d '{
-    "clientId": "{google_client_id}",
-    "clientSecret": "{google_client_secret}",
-    "redirectUri": "https://api-client.bkend.ai/v1/auth/google/callback",
-    "scopes": ["openid", "email", "profile"],
-    "enabled": true
-  }'
-```
+{% tab title="MCP (AI Tools)" %}
+
+{% hint style="success" %}
+✅ **Ask your AI agent:**
+"Show me the current OAuth provider settings."
+{% endhint %}
+
+{% hint style="success" %}
+✅ **Ask your AI agent:**
+"Set up Google OAuth with client ID 'xxx' and client secret 'yyy'. Enable it with openid, email, and profile scopes."
+{% endhint %}
+
+{% hint style="success" %}
+✅ **Ask your AI agent:**
+"Remove the GitHub OAuth configuration."
+{% endhint %}
+
 {% endtab %}
-{% tab title="GitHub" %}
-```bash
-curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/github \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}" \
-  -d '{
-    "clientId": "{github_client_id}",
-    "clientSecret": "{github_client_secret}",
-    "redirectUri": "https://api-client.bkend.ai/v1/auth/github/callback",
-    "scopes": ["user:email"],
-    "enabled": true
-  }'
-```
+{% tab title="Console" %}
+
+### Add or Update an OAuth Provider
+
+1. Go to your project in the console
+2. Navigate to **Authentication** > **Providers**
+3. Select the OAuth provider (e.g., **Google**, **GitHub**)
+4. Enter the **Client ID** and **Client Secret** from the provider's developer console
+5. Verify the **Redirect URI** is correct
+6. Toggle **Enabled** on
+7. Click **Save**
+
+### Delete an OAuth Provider
+
+1. Navigate to **Authentication** > **Providers**
+2. Select the OAuth provider to remove
+3. Click **Delete** and confirm
+
 {% endtab %}
 {% endtabs %}
 
@@ -178,24 +120,9 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/providers/oauth/github \
 | `scopes` | `string[]` | Yes | Requested permission scopes |
 | `enabled` | `boolean` | Yes | Whether enabled |
 
-### Delete OAuth Provider
-
-#### DELETE /v1/auth/providers/oauth/:provider
-
-```bash
-curl -X DELETE https://api-client.bkend.ai/v1/auth/providers/oauth/github \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
-
-***
-
-## Configure in the Console
-
-You can also configure auth providers in the console. Go to **Authentication** settings in your project and enable each provider with the appropriate keys.
-
-<!-- IMG: Auth provider settings screen -->
-![Auth Provider Configuration](../.gitbook/assets/2026-02/console-auth-providers.png)
+{% hint style="info" %}
+For security, `clientSecret` is never returned in responses. You can only set or update it.
+{% endhint %}
 
 ***
 

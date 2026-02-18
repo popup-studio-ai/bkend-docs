@@ -47,6 +47,10 @@ RLS policies are defined through a table's `permissions` configuration. You can 
 If `list` is not explicitly set, it falls back to the `read` permission value. Set `list` explicitly when you need separate control.
 {% endhint %}
 
+{% hint style="warning" %}
+⚠️ Granting `create`, `update`, or `delete` to `guest` allows unauthenticated users to modify data. If you only need public read access, allow only `read` and `list`.
+{% endhint %}
+
 ***
 
 ## Permission Check Flow

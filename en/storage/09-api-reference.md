@@ -68,7 +68,7 @@ POST /v1/files/multipart/presigned-url
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `key` | `string` | ✅ | S3 key from init response |
+| `key` | `string` | ✅ | File key from init response |
 | `uploadId` | `string` | ✅ | Upload ID from init response |
 | `partNumber` | `number` | ✅ | Part number (1–10000) |
 
@@ -82,7 +82,7 @@ POST /v1/files/multipart/complete
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `key` | `string` | ✅ | S3 key |
+| `key` | `string` | ✅ | File key |
 | `uploadId` | `string` | ✅ | Upload ID |
 | `parts` | `array` | ✅ | `[{ partNumber, etag }]` |
 
@@ -96,7 +96,7 @@ POST /v1/files/multipart/abort
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `key` | `string` | ✅ | S3 key |
+| `key` | `string` | ✅ | File key |
 | `uploadId` | `string` | ✅ | Upload ID |
 
 **Response:** `200 OK` — `{ success, key }`
@@ -253,13 +253,13 @@ All storage APIs require authentication. A `401 common/authentication-required` 
 | `file/file-too-small` | 400 | File size too small |
 | `file/invalid-format` | 400 | Unsupported format |
 | `file/invalid-path` | 400 | Invalid path |
-| `file/bucket-not-configured` | 500 | S3 bucket not configured |
+| `file/bucket-not-configured` | 500 | Storage bucket not configured |
 | `file/invalid-part-number-range` | 400 | Part number out of range |
 | `file/upload-init-failed` | 500 | Multipart initialization failed |
 | `file/invalid-parts-array` | 400 | Invalid parts array |
 | `file/access-denied` | 403 | Access denied |
-| `file/s3-key-already-exists` | 409 | Duplicate S3 key |
-| `file/s3-key-too-long` | 400 | S3 key too long |
+| `file/s3-key-already-exists` | 409 | Duplicate file key |
+| `file/s3-key-too-long` | 400 | File key too long |
 | `file/original-name-too-long` | 400 | File name too long |
 | `file/mime-type-too-long` | 400 | MIME type too long |
 | `file/size-negative` | 400 | Negative file size |

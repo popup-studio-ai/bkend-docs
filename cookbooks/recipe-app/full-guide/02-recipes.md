@@ -187,12 +187,12 @@ console.log('레시피 ID:', recipe.id);
 sequenceDiagram
     participant App as 앱
     participant API as bkend API
-    participant S3 as S3 스토리지
+    participant S as 스토리지
 
     App->>API: 1. POST /v1/files/presigned-url
     API-->>App: { url, key }
-    App->>S3: 2. PUT url (이미지 파일)
-    S3-->>App: 200 OK
+    App->>S: 2. PUT url (이미지 파일)
+    S-->>App: 200 OK
     App->>API: 3. POST /v1/files (메타데이터 등록)
     API-->>App: { id, url, ... }
     App->>API: 4. PATCH /v1/data/recipes/{id}
@@ -229,7 +229,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/presigned-url \
   }'
 ```
 
-**Step 2: S3에 파일 업로드**
+**Step 2: 스토리지에 파일 업로드**
 
 ```bash
 curl -X PUT "{발급받은_presigned_url}" \
@@ -281,7 +281,7 @@ async function uploadRecipeImage(recipeId, file) {
     }),
   });
 
-  // 2. S3에 파일 업로드 (Presigned URL은 bkendFetch 사용 금지)
+  // 2. 스토리지에 파일 업로드 (Presigned URL은 bkendFetch 사용 금지)
   await fetch(presigned.url, {
     method: 'PUT',
     headers: { 'Content-Type': file.type },

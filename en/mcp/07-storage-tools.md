@@ -77,13 +77,13 @@ File uploads follow a 3-step process:
 sequenceDiagram
     participant App as App
     participant API as bkend API
-    participant S3 as Storage
+    participant S as Storage
 
     App->>API: 1. Request presigned URL
     API-->>App: URL returned
 
-    App->>S3: 2. Upload file directly
-    S3-->>App: Upload complete
+    App->>S: 2. Upload file directly
+    S-->>App: Upload complete
 
     App->>API: 3. Mark upload as complete
     API-->>App: File metadata

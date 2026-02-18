@@ -50,7 +50,7 @@ MongoDB Atlas automatically encrypts stored data. In addition, sensitive interna
 
 | Item | Value |
 |------|-------|
-| **Method** | AWS S3 server-side encryption |
+| **Method** | Server-side encryption (AES-256) |
 | **Scope** | All uploaded files |
 
 ***
@@ -97,7 +97,7 @@ API keys are stored as **SHA-256** one-way hashes.
 | Network communication | TLS 1.2+ | -- |
 | Database | MongoDB Atlas Encryption at Rest | -- |
 | Sensitive internal configuration data | AES-256-GCM (application level) | -- |
-| File storage | AWS S3 SSE | -- |
+| File storage | AES-256 server-side encryption | -- |
 | Passwords | Argon2id | Yes |
 | API keys | SHA-256 | Yes |
 

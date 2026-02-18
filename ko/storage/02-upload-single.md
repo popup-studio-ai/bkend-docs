@@ -1,7 +1,7 @@
 # 단일 파일 업로드
 
 {% hint style="info" %}
-💡 Presigned URL을 발급받아 S3에 직접 파일을 업로드하세요.
+💡 Presigned URL을 발급받아 스토리지에 직접 파일을 업로드하세요.
 {% endhint %}
 
 {% hint style="info" %}
@@ -21,13 +21,13 @@
 단일 파일 업로드는 2단계로 진행됩니다:
 
 1. bkend API에서 **Presigned URL**을 발급받습니다.
-2. 발급받은 URL로 S3에 **파일을 직접 업로드**합니다.
+2. 발급받은 URL로 스토리지에 **파일을 직접 업로드**합니다.
 
 ```mermaid
 sequenceDiagram
     participant C as 클라이언트
     participant B as bkend API
-    participant S as S3
+    participant S as 스토리지
 
     C->>B: 1. POST /v1/files/presigned-url
     B-->>C: { url, key, filename }
@@ -105,7 +105,7 @@ const { url, key, filename } = await response.json();
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `url` | `string` | S3 Presigned URL (15분 유효) |
+| `url` | `string` | Presigned URL (15분 유효) |
 | `key` | `string` | 파일 식별 키 (메타데이터 등록 시 사용) |
 | `filename` | `string` | 원본 파일명 |
 | `contentType` | `string` | MIME 타입 |
@@ -116,7 +116,7 @@ const { url, key, filename } = await response.json();
 
 ***
 
-## 2단계: S3 업로드
+## 2단계: 파일 업로드
 
 발급받은 `url`로 파일을 직접 업로드합니다.
 
@@ -158,7 +158,7 @@ const presigned = await fetch('https://api-client.bkend.ai/v1/files/presigned-ur
   }),
 }).then(res => res.json());
 
-// 2. S3에 파일 업로드
+// 2. 스토리지에 파일 업로드
 await fetch(presigned.url, {
   method: 'PUT',
   headers: { 'Content-Type': file.type },
@@ -204,7 +204,7 @@ API 응답의 `key` 필드가 파일의 고유 키입니다. 이 값을 그대�
 | `file/invalid-name` | 400 | 유효하지 않은 파일명 |
 | `file/file-too-large` | 400 | 파일 크기 초과 |
 | `file/invalid-format` | 400 | 지원하지 않는 파일 형식 |
-| `file/bucket-not-configured` | 500 | S3 버킷 미설정 |
+| `file/bucket-not-configured` | 500 | 스토리지 버킷 미설정 |
 | `common/authentication-required` | 401 | 인증 필요 |
 
 ***
@@ -229,7 +229,7 @@ async function uploadFile(file) {
     },
   });
 
-  // 2. S3에 파일 업로드 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
+  // 2. 스토리지에 파일 업로드 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
   await fetch(presigned.url, {
     method: 'PUT',
     headers: { 'Content-Type': file.type },

@@ -20,7 +20,7 @@ Register and manage file metadata. You must register metadata after uploading a 
 
 ## Overview
 
-After uploading a file to S3, you need to register file metadata with the bkend API. Metadata includes information such as file name, size, MIME type, category, and tags.
+After uploading a file to storage, you need to register file metadata with the bkend API. Metadata includes information such as file name, size, MIME type, category, and tags.
 
 ***
 
@@ -199,7 +199,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
 | Error Code | HTTP | Description |
 |------------|:----:|-------------|
 | `file/not-found` | 404 | File not found |
-| `file/s3-key-already-exists` | 409 | S3 key already registered |
+| `file/s3-key-already-exists` | 409 | Duplicate file key |
 | `file/invalid-name` | 400 | Invalid file name |
 | `file/access-denied` | 403 | Access denied |
 | `common/authentication-required` | 401 | Authentication required |

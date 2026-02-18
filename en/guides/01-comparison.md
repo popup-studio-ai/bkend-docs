@@ -17,7 +17,7 @@ bkend is a backend service with native MCP integration. This document compares i
 | **Database** | MongoDB | Firestore (Document DB) | PostgreSQL 15/17 | MariaDB (Document API) |
 | **Data Model** | Dynamic BSON Schema | Schemaless Document | Static SQL Schema | Document (relational internally) |
 | **Auth Providers** | Email, Google, GitHub | Email, Google, GitHub, etc. 9+ (SAML/OIDC) | Email, Google, GitHub, etc. 20+ | Email, Google, GitHub, etc. 40+ |
-| **File Storage** | S3-compatible | Cloud Storage | S3-compatible | Built-in storage |
+| **File Storage** | Object Storage | Cloud Storage | Object Storage | Built-in storage |
 | **Realtime** | — | Firestore onSnapshot | Realtime Channels | Realtime Events (WebSocket) |
 | **MCP Integration** | Built into the service (register URL) | Separate server (Firebase CLI) | Separate server (npm package) | Separate server (npm package) |
 | **Multi-tenancy** | Project-based isolation | Project-based isolation | RLS-based custom implementation | Project-based isolation |

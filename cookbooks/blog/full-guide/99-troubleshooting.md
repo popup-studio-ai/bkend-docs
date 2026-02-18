@@ -230,7 +230,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/data/articles/
 
 ### Presigned URL 만료
 
-**증상:** S3에 파일 업로드 시 `403 Forbidden` 또는 `Access Denied` 에러가 발생합니다.
+**증상:** 스토리지에 파일 업로드 시 `403 Forbidden` 또는 `Access Denied` 에러가 발생합니다.
 
 **원인:** Presigned URL의 유효 시간은 **15분**입니다. 발급 후 15분이 지나면 만료됩니다.
 
@@ -294,11 +294,11 @@ await fetch(presigned.url, {
 
 ***
 
-### S3 업로드 시 Authorization 에러
+### 파일 업로드 시 Authorization 에러
 
 **증상:** Presigned URL로 업로드할 때 인증 에러가 발생합니다.
 
-**원인:** S3 업로드 시 `Authorization` 헤더를 포함했습니다.
+**원인:** 파일 업로드 시 `Authorization` 헤더를 포함했습니다.
 
 **해결:** Presigned URL로 업로드할 때는 `Authorization` 헤더를 제거하세요. Presigned URL 자체에 인증 정보가 포함되어 있습니다.
 

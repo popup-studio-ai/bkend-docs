@@ -27,6 +27,10 @@ flowchart TD
 
 테이블의 스키마는 각 필드의 타입과 제약 조건을 정의합니다.
 
+{% hint style="info" %}
+💡 아래 코드의 `bsonType`은 API 응답에 포함되는 내부 저장 형식입니다. 테이블 생성 시에는 `string`, `number`, `boolean`, `date`, `object`, `array`, `reference` 7가지 타입을 사용하세요.
+{% endhint %}
+
 ```json
 {
   "bsonType": "object",
@@ -74,6 +78,17 @@ flowchart TD
 | `minLength` / `maxLength` | `string` | 길이 제한 |
 | `enum` | `string` | 허용 값 목록 |
 | `items` | `array` | 배열 요소 타입 |
+
+{% hint style="warning" %}
+⚠️ **필드명 작성 규칙** — 영문자로 시작하고, 영문자/숫자/언더스코어만 사용하세요. `$`, `.`으로 시작하는 필드명이나 빈 문자열은 데이터 조회 시 문제를 일으킬 수 있습니다.
+{% endhint %}
+
+| 권장 | 비권장 | 이유 |
+|------|--------|------|
+| `userName` | `$userName` | `$` 접두사는 내부 연산자와 충돌 |
+| `home_address` | `home.address` | `.`은 중첩 필드 구분자로 해석 |
+| `title` | `""` (빈 문자열) | 조회/필터 불가 |
+| `field1` | `123field` | 숫자로 시작하면 일부 SDK에서 문제 |
 
 ***
 

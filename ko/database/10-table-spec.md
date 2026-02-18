@@ -46,6 +46,10 @@ console.log(spec.permissions);  // 권한 설정
 
 ### 응답 (200 OK)
 
+{% hint style="info" %}
+💡 응답의 `bsonType`은 내부 저장 형식입니다. 테이블 생성 시에는 `string`, `number`, `boolean`, `date`, `object`, `array`, `reference` 7가지 타입을 사용하세요.
+{% endhint %}
+
 ```json
 {
   "tableName": "posts",
@@ -114,6 +118,14 @@ console.log(spec.permissions);  // 권한 설정
 | `schema` | `object` | 스키마 정의 (필드, 타입, 제약 조건) |
 | `indexes` | `array` | 인덱스 목록 |
 | `permissions` | `object` | 역할별 CRUD 권한 |
+
+{% hint style="danger" %}
+🚨 **권한 업데이트는 전체 교체(PUT)로 동작합니다** — `guest` 권한만 전송하면 `admin`, `user`, `self` 권한이 삭제됩니다. 반드시 모든 역할의 권한을 함께 전송하세요.
+{% endhint %}
+
+{% hint style="warning" %}
+⚠️ `guest`에 `create`, `update`, `delete` 권한을 부여하면 비인증 사용자가 데이터를 변경할 수 있습니다. 공개 읽기만 필요한 경우 `read`와 `list`만 허용하세요.
+{% endhint %}
 
 ***
 

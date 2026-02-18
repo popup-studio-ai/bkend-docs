@@ -20,7 +20,7 @@
 
 ## 개요
 
-S3에 파일을 업로드한 후, bkend API에 파일 메타데이터를 등록해야 합니다. 메타데이터에는 파일명, 크기, MIME 타입, 카테고리, 태그 등의 정보가 포함됩니다.
+스토리지에 파일을 업로드한 후, bkend API에 파일 메타데이터를 등록해야 합니다. 메타데이터에는 파일명, 크기, MIME 타입, 카테고리, 태그 등의 정보가 포함됩니다.
 
 ***
 
@@ -199,7 +199,7 @@ curl -X PATCH https://api-client.bkend.ai/v1/files/{fileId} \
 | 에러 코드 | HTTP | 설명 |
 |----------|:----:|------|
 | `file/not-found` | 404 | 파일을 찾을 수 없음 |
-| `file/s3-key-already-exists` | 409 | 이미 등록된 S3 키 |
+| `file/s3-key-already-exists` | 409 | 이미 등록된 파일 키 |
 | `file/invalid-name` | 400 | 유효하지 않은 파일명 |
 | `file/access-denied` | 403 | 접근 권한 없음 |
 | `common/authentication-required` | 401 | 인증 필요 |

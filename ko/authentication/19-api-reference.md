@@ -508,185 +508,6 @@ DELETE /v1/auth/withdraw
 
 ***
 
-## 인증 제공자 설정
-
-### 전체 설정 조회
-
-```http
-GET /v1/auth/providers
-```
-
-**인증 필요**
-
-**응답:** `200 OK` — 전체 제공자 설정 객체
-
-### 이메일 설정 조회
-
-```http
-GET /v1/auth/providers/email
-```
-
-**인증 필요**
-
-**응답:** `200 OK` — `{ provider, passwordPolicy, magicLinkEnabled, magicLinkExpirationMinutes }`
-
-### 이메일 설정 수정
-
-```http
-PUT /v1/auth/providers/email
-```
-
-**인증 필요**
-
-| 파라미터 | 타입 | 설명 |
-|---------|------|------|
-| `passwordPolicy` | `object` | 비밀번호 정책 |
-| `passwordPolicy.minLength` | `number` | 최소 길이 |
-| `passwordPolicy.requireUppercase` | `boolean` | 대문자 필수 |
-| `passwordPolicy.requireLowercase` | `boolean` | 소문자 필수 |
-| `passwordPolicy.requireNumbers` | `boolean` | 숫자 필수 |
-| `passwordPolicy.requireSpecialChars` | `boolean` | 특수문자 필수 |
-| `passwordPolicy.expirationDays` | `number` | 만료 기간 (일) |
-| `magicLinkEnabled` | `boolean` | 매직 링크 활성화 |
-| `magicLinkExpirationMinutes` | `number` | 매직 링크 만료 시간 (분) |
-
-**응답:** `200 OK` — 업데이트된 설정 객체
-
-### OAuth 설정 목록 조회
-
-```http
-GET /v1/auth/providers/oauth
-```
-
-**인증 필요**
-
-**응답:** `200 OK` — `[ { provider, clientId, redirectUri, scopes, enabled } ]`
-
-### 개별 OAuth 설정 조회
-
-```http
-GET /v1/auth/providers/oauth/:provider
-```
-
-**인증 필요**
-
-**응답:** `200 OK` — `{ provider, clientId, redirectUri, scopes, enabled }`
-
-### OAuth 설정 수정
-
-```http
-PUT /v1/auth/providers/oauth/:provider
-```
-
-**인증 필요**
-
-| 파라미터 | 타입 | 필수 | 설명 |
-|---------|------|:----:|------|
-| `clientId` | `string` | ✅ | OAuth Client ID |
-| `clientSecret` | `string` | ✅ | OAuth Client Secret |
-| `redirectUri` | `string` | ✅ | 콜백 URL |
-| `scopes` | `string[]` | ✅ | 요청 권한 범위 |
-| `enabled` | `boolean` | ✅ | 활성화 여부 |
-
-**응답:** `200 OK` — 업데이트된 설정 객체
-
-### OAuth 설정 삭제
-
-```http
-DELETE /v1/auth/providers/oauth/:provider
-```
-
-**인증 필요**
-
-**응답:** `200 OK` — `{ message }`
-
-→ [인증 제공자 설정](17-provider-config.md)
-
-***
-
-## 이메일 템플릿
-
-### 전역 설정 조회
-
-```http
-GET /v1/auth/email-templates/config
-```
-
-**인증 필요**
-
-**응답:** `200 OK` — `{ senderEmail, senderName, logoUrl, brandColor, overrideDefaults }`
-
-### 전역 설정 수정
-
-```http
-PUT /v1/auth/email-templates/config
-```
-
-**인증 필요**
-
-| 파라미터 | 타입 | 설명 |
-|---------|------|------|
-| `senderEmail` | `string` | 발신자 이메일 |
-| `senderName` | `string` | 발신자 이름 |
-| `logoUrl` | `string` | 헤더 로고 URL |
-| `brandColor` | `string` | 브랜드 색상 (HEX) |
-| `overrideDefaults` | `boolean` | 커스텀 템플릿 사용 |
-
-**응답:** `200 OK` — 업데이트된 설정 객체
-
-### 템플릿 목록 조회
-
-```http
-GET /v1/auth/email-templates
-```
-
-**인증 필요**
-
-**응답:** `200 OK` — `[ { id, name, category, subject, customized, locale } ]`
-
-### 개별 템플릿 조회
-
-```http
-GET /v1/auth/email-templates/:templateId
-```
-
-**인증 필요**
-
-**응답:** `200 OK` — `{ id, name, category, subject, body, customized, locale }`
-
-### 템플릿 수정
-
-```http
-PUT /v1/auth/email-templates/:templateId
-```
-
-**인증 필요**
-
-| 파라미터 | 타입 | 필수 | 설명 |
-|---------|------|:----:|------|
-| `subject` | `string` | ✅ | 이메일 제목 |
-| `body` | `string` | ✅ | 이메일 본문 (HTML) |
-
-**응답:** `200 OK` — 업데이트된 템플릿 객체
-
-### 템플릿 미리보기
-
-```http
-GET /v1/auth/email-templates/preview/:templateId
-```
-
-**인증 필요**
-
-| 쿼리 파라미터 | 타입 | 설명 |
-|-------------|------|------|
-| `locale` | `string` | 언어 코드 (예: `ko`) |
-
-**응답:** `200 OK` — `{ subject, htmlBody, textBody }`
-
-→ [이메일 템플릿](18-email-templates.md)
-
-***
-
 ## 사용자 관리
 
 ### 사용자 목록 조회
@@ -839,7 +660,7 @@ PATCH /v1/users/:userId/avatar
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `s3Key` | `string` | ✅ | 업로드된 S3 키 |
+| `s3Key` | `string` | ✅ | 업로드된 파일 키 |
 
 **응답:** `200 OK` — `{ image }`
 
@@ -982,10 +803,6 @@ PATCH /v1/users/:userId/public-settings
 
 ***
 
-{% hint style="warning" %}
-인증 제공자 설정(`/v1/auth/providers/*`) 및 이메일 템플릿(`/v1/auth/email-templates/*`) API는 관리 목적의 엔드포인트입니다. 클라이언트 앱에서 직접 호출하지 말고 콘솔에서 설정하세요.
-{% endhint %}
-
 ## 에러 코드
 
 ### 인증 에러
@@ -1036,7 +853,7 @@ PATCH /v1/users/:userId/public-settings
 
 ## 엔드포인트 요약
 
-### Auth 엔드포인트 (45)
+### Auth 엔드포인트 (32)
 
 | 메서드 | 경로 | 인증 | 설명 |
 |--------|------|:----:|------|
@@ -1072,19 +889,6 @@ PATCH /v1/users/:userId/public-settings
 | `POST` | `/v1/auth/email/verify/resend` | - | 인증 메일 재발송 |
 | `POST` | `/v1/auth/signup/email/resend` | - | 가입 인증 재발송 |
 | `GET` | `/v1/auth/signup/email/confirm` | - | 가입 인증 확인 |
-| `GET` | `/v1/auth/providers` | ✅ | 전체 설정 조회 |
-| `GET` | `/v1/auth/providers/email` | ✅ | 이메일 설정 조회 |
-| `PUT` | `/v1/auth/providers/email` | ✅ | 이메일 설정 수정 |
-| `GET` | `/v1/auth/providers/oauth` | ✅ | OAuth 목록 |
-| `GET` | `/v1/auth/providers/oauth/:provider` | ✅ | OAuth 설정 조회 |
-| `PUT` | `/v1/auth/providers/oauth/:provider` | ✅ | OAuth 설정 수정 |
-| `DELETE` | `/v1/auth/providers/oauth/:provider` | ✅ | OAuth 설정 삭제 |
-| `GET` | `/v1/auth/email-templates/config` | ✅ | 템플릿 설정 조회 |
-| `PUT` | `/v1/auth/email-templates/config` | ✅ | 템플릿 설정 수정 |
-| `GET` | `/v1/auth/email-templates` | ✅ | 템플릿 목록 |
-| `GET` | `/v1/auth/email-templates/:templateId` | ✅ | 템플릿 상세 |
-| `PUT` | `/v1/auth/email-templates/:templateId` | ✅ | 템플릿 수정 |
-| `GET` | `/v1/auth/email-templates/preview/:templateId` | ✅ | 템플릿 미리보기 |
 
 ### User 엔드포인트 (19)
 

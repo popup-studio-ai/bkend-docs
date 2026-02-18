@@ -47,6 +47,10 @@ RLS 정책은 테이블의 `permissions` 설정을 통해 정의합니다. 각 �
 💡 `list` 권한이 명시적으로 설정되지 않으면 `read` 권한 값으로 대체됩니다. 별도 제어가 필요하면 `list`를 명시하세요.
 {% endhint %}
 
+{% hint style="warning" %}
+⚠️ `guest`에 `create`, `update`, `delete` 권한을 부여하면 비인증 사용자가 데이터를 변경할 수 있습니다. 공개 읽기만 필요한 경우 `read`와 `list`만 허용하세요.
+{% endhint %}
+
 ***
 
 ## 권한 검사 흐름

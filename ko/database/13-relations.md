@@ -253,6 +253,10 @@ async function getPostListWithCommentCounts() {
 
 ### 스키마 설계
 
+{% hint style="info" %}
+💡 아래 코드의 `bsonType`은 API 응답에 포함되는 내부 저장 형식입니다. 테이블 생성 시에는 `string`, `number`, `boolean`, `date`, `object`, `array`, `reference` 7가지 타입을 사용하세요.
+{% endhint %}
+
 ```json
 {
   "bsonType": "object",

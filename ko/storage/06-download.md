@@ -18,13 +18,13 @@
 
 ## 개요
 
-파일 다운로드도 업로드와 마찬가지로 Presigned URL 방식을 사용합니다. bkend API에서 시간 제한이 있는 다운로드 URL을 발급받아 S3에서 직접 파일을 다운로드합니다.
+파일 다운로드도 업로드와 마찬가지로 Presigned URL 방식을 사용합니다. bkend API에서 시간 제한이 있는 다운로드 URL을 발급받아 스토리지에서 직접 파일을 다운로드합니다.
 
 ```mermaid
 sequenceDiagram
     participant C as 클라이언트
     participant B as bkend API
-    participant S as S3
+    participant S as 스토리지
 
     C->>B: 1. POST /v1/files/:fileId/download-url
     B-->>C: { url, filename, contentType, size, expiresAt }
@@ -81,7 +81,7 @@ const { url, filename, contentType, size, expiresAt } = await response.json();
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `url` | `string` | S3 Presigned URL |
+| `url` | `string` | Presigned URL |
 | `filename` | `string` | 원본 파일명 |
 | `contentType` | `string` | MIME 타입 |
 | `size` | `number` | 파일 크기 (바이트) |
@@ -132,7 +132,7 @@ async function downloadToBlob(fileId, accessToken) {
 
   const { url, contentType } = await res.json();
 
-  // S3에서 파일 데이터 가져오기
+  // 스토리지에서 파일 데이터 가져오기
   const fileRes = await fetch(url);
   const blob = await fileRes.blob();
 
@@ -180,7 +180,7 @@ async function downloadToBlob(fileId) {
     method: 'POST',
   });
 
-  // 2. S3에서 파일 데이터 가져오기 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
+  // 2. 스토리지에서 파일 데이터 가져오기 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
   const fileRes = await fetch(url);
   const blob = await fileRes.blob();
 

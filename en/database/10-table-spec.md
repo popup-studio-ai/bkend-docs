@@ -46,6 +46,10 @@ console.log(spec.permissions);  // Permission settings
 
 ### Response (200 OK)
 
+{% hint style="info" %}
+💡 The `bsonType` in the response is the internal storage format. When creating tables, use one of the 7 abstract types: `string`, `number`, `boolean`, `date`, `object`, `array`, `reference`.
+{% endhint %}
+
 ```json
 {
   "tableName": "posts",
@@ -114,6 +118,14 @@ console.log(spec.permissions);  // Permission settings
 | `schema` | `object` | Schema definition (fields, types, constraints) |
 | `indexes` | `array` | Index list |
 | `permissions` | `object` | CRUD permissions per role |
+
+{% hint style="danger" %}
+🚨 **Permission updates use full replacement (PUT)** — If you only send `guest` permissions, `admin`, `user`, and `self` permissions will be deleted. Always send permissions for all roles together.
+{% endhint %}
+
+{% hint style="warning" %}
+⚠️ Granting `create`, `update`, or `delete` to `guest` allows unauthenticated users to modify data. If you only need public read access, allow only `read` and `list`.
+{% endhint %}
 
 ***
 

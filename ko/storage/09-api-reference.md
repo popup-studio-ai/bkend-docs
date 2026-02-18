@@ -68,7 +68,7 @@ POST /v1/files/multipart/presigned-url
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `key` | `string` | ✅ | init 응답의 S3 키 |
+| `key` | `string` | ✅ | init 응답의 파일 키 |
 | `uploadId` | `string` | ✅ | init 응답의 업로드 ID |
 | `partNumber` | `number` | ✅ | 파트 번호 (1~10000) |
 
@@ -82,7 +82,7 @@ POST /v1/files/multipart/complete
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `key` | `string` | ✅ | S3 키 |
+| `key` | `string` | ✅ | 파일 키 |
 | `uploadId` | `string` | ✅ | 업로드 ID |
 | `parts` | `array` | ✅ | `[{ partNumber, etag }]` |
 
@@ -96,7 +96,7 @@ POST /v1/files/multipart/abort
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
-| `key` | `string` | ✅ | S3 키 |
+| `key` | `string` | ✅ | 파일 키 |
 | `uploadId` | `string` | ✅ | 업로드 ID |
 
 **응답:** `200 OK` — `{ success, key }`
@@ -253,13 +253,13 @@ POST /v1/files/:fileId/download-url
 | `file/file-too-small` | 400 | 파일 크기 미달 |
 | `file/invalid-format` | 400 | 지원하지 않는 형식 |
 | `file/invalid-path` | 400 | 유효하지 않은 경로 |
-| `file/bucket-not-configured` | 500 | S3 버킷 미설정 |
+| `file/bucket-not-configured` | 500 | 스토리지 버킷 미설정 |
 | `file/invalid-part-number-range` | 400 | 파트 번호 범위 초과 |
 | `file/upload-init-failed` | 500 | 멀티파트 초기화 실패 |
 | `file/invalid-parts-array` | 400 | 파트 배열 오류 |
 | `file/access-denied` | 403 | 접근 권한 없음 |
-| `file/s3-key-already-exists` | 409 | 중복 S3 키 |
-| `file/s3-key-too-long` | 400 | S3 키 길이 초과 |
+| `file/s3-key-already-exists` | 409 | 중복 파일 키 |
+| `file/s3-key-too-long` | 400 | 파일 키 길이 초과 |
 | `file/original-name-too-long` | 400 | 파일명 길이 초과 |
 | `file/mime-type-too-long` | 400 | MIME 타입 길이 초과 |
 | `file/size-negative` | 400 | 파일 크기 음수 |

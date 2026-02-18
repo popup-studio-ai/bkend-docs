@@ -77,13 +77,13 @@ AI 도구가 코드를 생성할 때 사용하는 주요 엔드포인트:
 sequenceDiagram
     participant App as 앱
     participant API as bkend API
-    participant S3 as 스토리지
+    participant S as 스토리지
 
     App->>API: 1. Presigned URL 요청
     API-->>App: URL 반환
 
-    App->>S3: 2. 파일 직접 업로드
-    S3-->>App: 업로드 완료
+    App->>S: 2. 파일 직접 업로드
+    S-->>App: 업로드 완료
 
     App->>API: 3. 업로드 완료 처리
     API-->>App: 파일 메타데이터

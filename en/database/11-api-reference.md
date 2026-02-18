@@ -211,6 +211,10 @@ Returns an OpenAPI 3.0 specification for the CRUD operations of the specified ta
 | update | ✅ | Configurable | Configurable | Own only |
 | delete | ✅ | Configurable | Configurable | Own only |
 
+{% hint style="danger" %}
+🚨 **Permission updates use full replacement (PUT)** — If you only send `guest` permissions, `admin`, `user`, and `self` permissions will be deleted. Always send permissions for all roles together.
+{% endhint %}
+
 ***
 
 ## Endpoint Summary

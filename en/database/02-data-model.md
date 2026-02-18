@@ -27,6 +27,10 @@ flowchart TD
 
 A table schema defines the type and constraints for each field.
 
+{% hint style="info" %}
+💡 The `bsonType` in the code below is the internal storage format included in API responses. When creating tables, use one of the 7 abstract types: `string`, `number`, `boolean`, `date`, `object`, `array`, `reference`.
+{% endhint %}
+
 ```json
 {
   "bsonType": "object",
@@ -74,6 +78,17 @@ A table schema defines the type and constraints for each field.
 | `minLength` / `maxLength` | `string` | Length limits |
 | `enum` | `string` | Allowed values |
 | `items` | `array` | Array element type |
+
+{% hint style="warning" %}
+⚠️ **Field naming rules** — Start with a letter and use only letters, numbers, and underscores. Field names starting with `$` or `.`, or empty strings, can cause issues when querying data.
+{% endhint %}
+
+| Recommended | Not Recommended | Reason |
+|-------------|-----------------|--------|
+| `userName` | `$userName` | `$` prefix conflicts with internal operators |
+| `home_address` | `home.address` | `.` is interpreted as a nested field separator |
+| `title` | `""` (empty string) | Cannot be queried or filtered |
+| `field1` | `123field` | Starting with a number causes issues in some SDKs |
 
 ***
 

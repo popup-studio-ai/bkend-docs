@@ -6,14 +6,14 @@
 
 ## 개요
 
-bkend 스토리지 API를 활용하여 앱에 파일 업로드 기능을 구현하는 방법을 설명합니다. Presigned URL 방식으로 S3에 직접 업로드하므로 대용량 파일도 안정적으로 처리할 수 있습니다.
+bkend 스토리지 API를 활용하여 앱에 파일 업로드 기능을 구현하는 방법을 설명합니다. Presigned URL 방식으로 스토리지에 직접 업로드하므로 대용량 파일도 안정적으로 처리할 수 있습니다.
 
 ```mermaid
 sequenceDiagram
     participant U as 사용자
     participant A as 앱
     participant B as API
-    participant S as S3
+    participant S as 스토리지
 
     U->>A: 1. 파일 선택
     A->>A: 2. 유효성 검사
@@ -40,7 +40,7 @@ sequenceDiagram
 | 단계 | 메서드 | 엔드포인트 | 설명 |
 |:----:|:------:|-----------|------|
 | 1 | `POST` | `/v1/files/presigned-url` | Presigned URL 발급 |
-| 2 | `PUT` | 발급받은 S3 URL | S3에 파일 직접 업로드 |
+| 2 | `PUT` | 발급받은 업로드 URL | 스토리지에 파일 직접 업로드 |
 | 3 | `POST` | `/v1/files` | bkend에 메타데이터 등록 |
 
 {% hint style="info" %}
@@ -159,7 +159,7 @@ async function uploadFile(file) {
       }),
     });
 
-    // 2단계: S3에 파일 업로드
+    // 2단계: 스토리지에 파일 업로드
     updateProgress(30, '업로드 중...');
     await uploadToS3(presigned.url, file, (percent) => {
       const adjusted = 30 + Math.round(percent * 0.6); // 30~90%
@@ -195,7 +195,7 @@ function updateProgress(percent, text) {
 }
 ```
 
-### S3 업로드 (진행 상태 표시)
+### 파일 업로드 (진행 상태 표시)
 
 `XMLHttpRequest`를 사용하면 업로드 진행률을 추적할 수 있습니다.
 
@@ -215,7 +215,7 @@ function uploadToS3(url, file, onProgress) {
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve();
       } else {
-        reject(new Error(`S3 업로드 실패: ${xhr.status}`));
+        reject(new Error(`파일 업로드 실패: ${xhr.status}`));
       }
     });
 
@@ -231,7 +231,7 @@ function uploadToS3(url, file, onProgress) {
 ```
 
 {% hint style="warning" %}
-⚠️ S3 Presigned URL로 업로드할 때는 `Authorization` 헤더를 포함하지 마세요. Presigned URL 자체에 인증 정보가 포함되어 있습니다.
+⚠️ Presigned URL로 업로드할 때는 `Authorization` 헤더를 포함하지 마세요. Presigned URL 자체에 인증 정보가 포함되어 있습니다.
 {% endhint %}
 
 ### 업로드 버튼 연결
@@ -319,7 +319,7 @@ function handleUploadError(error) {
     return;
   }
 
-  if (error.message?.includes('S3 업로드 실패')) {
+  if (error.message?.includes('파일 업로드 실패')) {
     alert('파일 저장에 실패했습니다. 다시 시도해주세요.');
     return;
   }
@@ -344,7 +344,7 @@ function handleUploadError(error) {
 | `file/s3-key-already-exists` | 409 | 메타데이터 등록 | 이미 등록된 파일 |
 | `file/access-denied` | 403 | 모든 단계 | 접근 권한 없음 |
 | `common/authentication-required` | 401 | 모든 단계 | 인증 필요 |
-| `file/bucket-not-configured` | 500 | Presigned URL | S3 버킷 미설정 |
+| `file/bucket-not-configured` | 500 | Presigned URL | 스토리지 버킷 미설정 |
 
 ***
 
@@ -421,7 +421,7 @@ async function deleteFile(fileId) {
 | 기능 | 메서드 | 엔드포인트 | Content-Type |
 |------|:------:|-----------|:------------:|
 | Presigned URL 발급 | `POST` | `/v1/files/presigned-url` | `application/json` |
-| S3 업로드 | `PUT` | 발급받은 URL | 파일의 MIME 타입 |
+| 파일 업로드 | `PUT` | 발급받은 URL | 파일의 MIME 타입 |
 | 메타데이터 등록 | `POST` | `/v1/files` | `application/json` |
 | 파일 목록 | `GET` | `/v1/files` | - |
 | 파일 조회 | `GET` | `/v1/files/{fileId}` | - |

@@ -253,6 +253,10 @@ The embedding pattern uses `object` or `array` types in the schema.
 
 ### Schema Design
 
+{% hint style="info" %}
+💡 The `bsonType` in the code below is the internal storage format included in API responses. When creating tables, use one of the 7 abstract types: `string`, `number`, `boolean`, `date`, `object`, `array`, `reference`.
+{% endhint %}
+
 ```json
 {
   "bsonType": "object",

@@ -105,6 +105,10 @@ If you are integrating the REST API in your app for the first time, see [Integra
 
 ## Table Management
 
+{% hint style="info" %}
+💡 **Table naming rules**: Must start with a letter. Only letters, numbers, dashes, and underscores are allowed (`/^[a-zA-Z][a-zA-Z0-9_-]*$/`). Examples: `posts`, `user-profiles`, `order_items`
+{% endhint %}
+
 Table creation, schema editing, and index management are performed in the **console**.
 
 - [Table Management](../console/07-table-management.md) — Create and manage tables in the console

@@ -9,7 +9,7 @@
 이미지 업로드는 3단계로 진행됩니다:
 
 1. **Presigned URL 발급** — bkend API에서 업로드용 URL을 받습니다.
-2. **S3 업로드** — 발급받은 URL로 파일을 직접 업로드합니다.
+2. **파일 업로드** — 발급받은 URL로 파일을 직접 업로드합니다.
 3. **게시글에 연결** — 업로드한 이미지 URL을 게시글의 `coverImage`에 설정합니다.
 
 | 기능 | 설명 | API 엔드포인트 |
@@ -34,7 +34,7 @@
 sequenceDiagram
     participant C as 클라이언트
     participant B as bkend API
-    participant S as S3
+    participant S as 스토리지
 
     C->>B: 1. POST /v1/files/presigned-url
     B-->>C: { url, key, filename }
@@ -54,7 +54,7 @@ sequenceDiagram
 {% tab title="MCP (AI 도구)" %}
 
 {% hint style="warning" %}
-⚠️ 파일 업로드는 클라이언트에서 직접 수행하는 기능입니다. Presigned URL 발급과 S3 업로드는 REST API로 구현하세요.
+⚠️ 파일 업로드는 클라이언트에서 직접 수행하는 기능입니다. Presigned URL 발급과 파일 업로드는 REST API로 구현하세요.
 {% endhint %}
 
 MCP 도구는 테이블/데이터 관리에 사용합니다. 파일 업로드 후 게시글에 이미지를 연결하는 작업은 MCP로 수행할 수 있습니다.
@@ -99,7 +99,7 @@ const presigned = await bkendFetch('/v1/files/presigned-url', {
   },
 });
 
-console.log(presigned.url); // S3 업로드 URL
+console.log(presigned.url); // 업로드 URL
 console.log(presigned.key); // 파일 식별 키
 ```
 
@@ -133,7 +133,7 @@ console.log(presigned.key); // 파일 식별 키
 
 ***
 
-## 2단계: S3에 파일 업로드
+## 2단계: 스토리지에 파일 업로드
 
 발급받은 Presigned URL로 파일을 직접 업로드합니다.
 
@@ -149,14 +149,14 @@ await fetch(presigned.url, {
 ```
 
 {% hint style="warning" %}
-⚠️ S3 업로드 시에는 `Authorization` 헤더를 포함하지 마세요. Presigned URL 자체에 인증 정보가 포함되어 있습니다.
+⚠️ 파일 업로드 시에는 `Authorization` 헤더를 포함하지 마세요. Presigned URL 자체에 인증 정보가 포함되어 있습니다.
 {% endhint %}
 
 ***
 
 ## 3단계: 메타데이터 등록
 
-S3 업로드 완료 후, bkend API에 파일 메타데이터를 등록합니다.
+파일 업로드 완료 후, bkend API에 파일 메타데이터를 등록합니다.
 
 {% tabs %}
 {% tab title="MCP (AI 도구)" %}
@@ -275,7 +275,7 @@ async function uploadCoverImage(file, articleId) {
     },
   });
 
-  // 2. S3에 파일 업로드 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
+  // 2. 스토리지에 파일 업로드 (bkendFetch 사용 금지 — Authorization 헤더 불필요)
   await fetch(presigned.url, {
     method: 'PUT',
     headers: { 'Content-Type': file.type },

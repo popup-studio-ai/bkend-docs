@@ -6,14 +6,14 @@ Learn patterns for implementing file upload functionality in your app, from file
 
 ## Overview
 
-This guide explains how to implement file upload functionality using the bkend storage API. Since files are uploaded directly to S3 via Presigned URLs, even large files can be handled reliably.
+This guide explains how to implement file upload functionality using the bkend storage API. Since files are uploaded directly to storage via Presigned URLs, even large files can be handled reliably.
 
 ```mermaid
 sequenceDiagram
     participant U as User
     participant A as App
     participant B as API
-    participant S as S3
+    participant S as Storage
 
     U->>A: 1. Select file
     A->>A: 2. Validate
@@ -40,7 +40,7 @@ File upload consists of 3 API calls.
 | Step | Method | Endpoint | Description |
 |:----:|:------:|----------|-------------|
 | 1 | `POST` | `/v1/files/presigned-url` | Obtain Presigned URL |
-| 2 | `PUT` | Issued S3 URL | Upload file directly to S3 |
+| 2 | `PUT` | Issued storage URL | Upload file directly to storage |
 | 3 | `POST` | `/v1/files` | Register metadata with bkend |
 
 {% hint style="info" %}
@@ -159,9 +159,9 @@ async function uploadFile(file) {
       }),
     });
 
-    // Step 2: Upload file to S3
+    // Step 2: Upload file to storage
     updateProgress(30, 'Uploading...');
-    await uploadToS3(presigned.url, file, (percent) => {
+    await uploadToStorage(presigned.url, file, (percent) => {
       const adjusted = 30 + Math.round(percent * 0.6); // 30~90%
       updateProgress(adjusted, `Uploading... ${adjusted}%`);
     });
@@ -195,12 +195,12 @@ function updateProgress(percent, text) {
 }
 ```
 
-### S3 Upload (with Progress Tracking)
+### Storage Upload (with Progress Tracking)
 
 Use `XMLHttpRequest` to track upload progress.
 
 ```javascript
-function uploadToS3(url, file, onProgress) {
+function uploadToStorage(url, file, onProgress) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
@@ -215,7 +215,7 @@ function uploadToS3(url, file, onProgress) {
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve();
       } else {
-        reject(new Error(`S3 upload failed: ${xhr.status}`));
+        reject(new Error(`Storage upload failed: ${xhr.status}`));
       }
     });
 
@@ -231,7 +231,7 @@ function uploadToS3(url, file, onProgress) {
 ```
 
 {% hint style="warning" %}
-Do not include the `Authorization` header when uploading to an S3 Presigned URL. The Presigned URL itself contains the authentication information.
+Do not include the `Authorization` header when uploading to a Presigned URL. The Presigned URL itself contains the authentication information.
 {% endhint %}
 
 ### Connect the Upload Button
@@ -319,7 +319,7 @@ function handleUploadError(error) {
     return;
   }
 
-  if (error.message?.includes('S3 upload failed')) {
+  if (error.message?.includes('Storage upload failed')) {
     alert('Failed to save the file. Please try again.');
     return;
   }
@@ -344,7 +344,7 @@ function handleUploadError(error) {
 | `file/s3-key-already-exists` | 409 | Metadata registration | File already registered |
 | `file/access-denied` | 403 | All stages | Access denied |
 | `common/authentication-required` | 401 | All stages | Authentication required |
-| `file/bucket-not-configured` | 500 | Presigned URL | S3 bucket not configured |
+| `file/bucket-not-configured` | 500 | Presigned URL | Storage bucket not configured |
 
 ***
 
@@ -421,7 +421,7 @@ async function deleteFile(fileId) {
 | Feature | Method | Endpoint | Content-Type |
 |---------|:------:|----------|:------------:|
 | Obtain Presigned URL | `POST` | `/v1/files/presigned-url` | `application/json` |
-| Upload to S3 | `PUT` | Issued URL | File's MIME type |
+| Upload to Storage | `PUT` | Issued URL | File's MIME type |
 | Register metadata | `POST` | `/v1/files` | `application/json` |
 | File list | `GET` | `/v1/files` | - |
 | Retrieve file | `GET` | `/v1/files/{fileId}` | - |

@@ -97,7 +97,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `key` | `string` | ✅ | S3 key from init response |
+| `key` | `string` | ✅ | File key from init response |
 | `uploadId` | `string` | ✅ | Upload ID from init response |
 | `partNumber` | `number` | ✅ | Part number (1–10000) |
 
@@ -114,7 +114,7 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/presigned-url \
 
 ## Step 3: Upload Parts
 
-Upload file chunks to S3 using the issued URLs. Save the `ETag` header from the response.
+Upload file chunks to storage using the issued URLs. Save the `ETag` header from the response.
 
 ```javascript
 const response = await fetch(partUrl, {
@@ -154,11 +154,11 @@ curl -X POST https://api-client.bkend.ai/v1/files/multipart/complete \
 
 | Parameter | Type | Required | Description |
 |-----------|------|:--------:|-------------|
-| `key` | `string` | ✅ | S3 key |
+| `key` | `string` | ✅ | File key |
 | `uploadId` | `string` | ✅ | Upload ID |
 | `parts` | `array` | ✅ | List of uploaded parts |
 | `parts[].partNumber` | `number` | ✅ | Part number |
-| `parts[].etag` | `string` | ✅ | ETag from S3 response |
+| `parts[].etag` | `string` | ✅ | ETag from storage response |
 
 ### Response (200 OK)
 

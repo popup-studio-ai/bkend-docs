@@ -8,51 +8,44 @@
 
 bkend는 인증 과정에서 발송되는 이메일의 템플릿을 프로젝트별로 커스터마이징할 수 있습니다. 발신자 이메일, 로고, 브랜드 색상, 이메일 본문을 자유롭게 설정하세요.
 
-***
-
-## 이메일 템플릿 설정 조회
-
-### GET /v1/auth/email-templates/config
-
-전역 이메일 설정(발신자, 로고, 브랜드 색상)을 조회합니다.
-
-```bash
-curl -X GET https://api-client.bkend.ai/v1/auth/email-templates/config \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
-
-**응답:**
-
-```json
-{
-  "senderEmail": "noreply@myapp.com",
-  "senderName": "MyApp",
-  "logoUrl": "https://myapp.com/logo.png",
-  "brandColor": "#4F46E5",
-  "overrideDefaults": false
-}
-```
+{% hint style="warning" %}
+⚠️ 이메일 템플릿 설정은 관리 작업입니다. **콘솔** 또는 **MCP 도구**를 사용하여 관리하세요. 클라이언트 앱에서 직접 호출할 수 있는 API가 아닙니다.
+{% endhint %}
 
 ***
 
-## 이메일 템플릿 설정 수정
+## 전역 이메일 설정
 
-### PUT /v1/auth/email-templates/config
+모든 이메일 템플릿에 적용되는 발신자 정보, 로고, 브랜드 색상을 설정합니다.
 
-```bash
-curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/config \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}" \
-  -d '{
-    "senderEmail": "hello@myapp.com",
-    "senderName": "MyApp Team",
-    "logoUrl": "https://myapp.com/logo.png",
-    "brandColor": "#2563EB",
-    "overrideDefaults": true
-  }'
-```
+{% tabs %}
+{% tab title="MCP (AI 도구)" %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"현재 이메일 템플릿 설정을 보여줘."
+{% endhint %}
+
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"이메일 발신자를 'hello@myapp.com', 발신자 이름을 'MyApp Team'으로 변경하고, 브랜드 색상을 #2563EB로 설정해줘. 커스텀 템플릿을 활성화해줘."
+{% endhint %}
+
+{% endtab %}
+{% tab title="콘솔" %}
+
+1. 콘솔에서 프로젝트로 이동하세요
+2. **Authentication** > **Email Templates**로 이동하세요
+3. **Settings** 탭에서 발신자 및 브랜딩을 설정하세요
+4. **Save**를 클릭하세요
+
+<!-- 📸 IMG: 이메일 템플릿 설정 -->
+![이메일 템플릿 설정](../.gitbook/assets/2026-02/console-email-templates.png)
+
+{% endtab %}
+{% endtabs %}
+
+### 설정 파라미터
 
 | 파라미터 | 타입 | 설명 |
 |---------|------|------|
@@ -64,42 +57,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/config \
 
 ***
 
-## 템플릿 목록 조회
-
-### GET /v1/auth/email-templates
-
-사용 가능한 이메일 템플릿 목록을 조회합니다.
-
-```bash
-curl -X GET https://api-client.bkend.ai/v1/auth/email-templates \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
-
-**응답:**
-
-```json
-[
-  {
-    "id": "signup_confirmation",
-    "name": "회원가입 인증",
-    "category": "signup_confirmation",
-    "subject": "[MyApp] 이메일 인증을 완료해주세요",
-    "customized": false,
-    "locale": "ko"
-  },
-  {
-    "id": "password_reset",
-    "name": "비밀번호 재설정",
-    "category": "password_reset",
-    "subject": "[MyApp] 비밀번호를 재설정하세요",
-    "customized": true,
-    "locale": "ko"
-  }
-]
-```
-
-### 템플릿 카테고리
+## 템플릿 카테고리
 
 | 카테고리 | 설명 |
 |---------|------|
@@ -111,46 +69,42 @@ curl -X GET https://api-client.bkend.ai/v1/auth/email-templates \
 
 ***
 
-## 개별 템플릿 조회
+## 템플릿 편집
 
-### GET /v1/auth/email-templates/:templateId
+{% tabs %}
+{% tab title="MCP (AI 도구)" %}
 
-```bash
-curl -X GET https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"이메일 템플릿 목록을 보여줘."
+{% endhint %}
 
-**응답:**
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"비밀번호 재설정 이메일 템플릿을 수정해줘. 제목을 '[MyApp] 비밀번호를 재설정해주세요'로 변경하고, 본문에 브랜드 헤더를 추가해줘."
+{% endhint %}
 
-```json
-{
-  "id": "password_reset",
-  "name": "비밀번호 재설정",
-  "category": "password_reset",
-  "subject": "[MyApp] 비밀번호를 재설정하세요",
-  "body": "<html>...<a href=\"{{resetLink}}\">비밀번호 재설정</a>...</html>",
-  "customized": true,
-  "locale": "ko"
-}
-```
+{% hint style="success" %}
+✅ **AI에게 이렇게 말해보세요**
+"비밀번호 재설정 이메일 템플릿을 한국어로 미리보기해줘."
+{% endhint %}
 
-***
+{% endtab %}
+{% tab title="콘솔" %}
 
-## 템플릿 수정
+1. **Authentication** > **Email Templates**로 이동하세요
+2. 편집할 템플릿을 선택하세요 (예: **비밀번호 재설정**)
+3. **Subject**와 **Body** (HTML)를 수정하세요
+4. **Preview** 버튼으로 확인하세요
+5. **Save**를 클릭하세요
 
-### PUT /v1/auth/email-templates/:templateId
+<!-- 📸 IMG: 이메일 템플릿 편집 -->
+![이메일 템플릿 편집](../.gitbook/assets/2026-02/console-email-template-edit.png)
 
-```bash
-curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}" \
-  -d '{
-    "subject": "[MyApp] 비밀번호를 재설정해주세요",
-    "body": "<html><body><h1>비밀번호 재설정</h1><p>아래 버튼을 클릭하여 비밀번호를 재설정하세요.</p><a href=\"{{resetLink}}\">재설정하기</a></body></html>"
-  }'
-```
+{% endtab %}
+{% endtabs %}
+
+### 템플릿 파라미터
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |---------|------|:----:|------|
@@ -158,7 +112,7 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
 | `body` | `string` | ✅ | 이메일 본문 (HTML) |
 
 {% hint style="warning" %}
-템플릿 변수(`{{userName}}` 등)를 잘못 입력하면 실제 발송 시 빈 값으로 렌더링됩니다. 미리보기를 통해 반드시 확인하세요.
+⚠️ 템플릿 변수(`{{userName}}` 등)를 잘못 입력하면 실제 발송 시 빈 값으로 렌더링됩니다. 미리보기를 통해 반드시 확인하세요.
 {% endhint %}
 
 ### 템플릿 변수
@@ -174,42 +128,6 @@ curl -X PUT https://api-client.bkend.ai/v1/auth/email-templates/password_reset \
 | `{{magicLink}}` | 매직 링크 |
 | `{{inviterName}}` | 초대자 이름 |
 | `{{resourceName}}` | 리소스(조직/프로젝트) 이름 |
-
-***
-
-## 템플릿 미리보기
-
-### GET /v1/auth/email-templates/preview/:templateId
-
-수정한 템플릿을 미리보기합니다.
-
-```bash
-curl -X GET "https://api-client.bkend.ai/v1/auth/email-templates/preview/password_reset?locale=ko" \
-  -H "X-API-Key: {pk_publishable_key}" \
-  -H "Authorization: Bearer {accessToken}"
-```
-
-**응답:**
-
-```json
-{
-  "subject": "[MyApp] 비밀번호를 재설정해주세요",
-  "htmlBody": "<html>...(렌더링된 HTML)...</html>",
-  "textBody": "비밀번호를 재설정해주세요..."
-}
-```
-
-***
-
-## 콘솔에서 설정하기
-
-콘솔에서도 이메일 템플릿을 관리할 수 있습니다.
-
-<!-- 📸 IMG: 이메일 템플릿 목록 -->
-![이메일 템플릿](../.gitbook/assets/2026-02/console-email-templates.png)
-
-<!-- 📸 IMG: 이메일 템플릿 편집 -->
-![이메일 템플릿 편집](../.gitbook/assets/2026-02/console-email-template-edit.png)
 
 ***
 

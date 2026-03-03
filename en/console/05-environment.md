@@ -15,6 +15,8 @@ Environments isolate data within a project. You can create separate development 
 1. Click **Environments** in the project-level sidebar.
 2. View all environments in the current project as cards.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-env-list.png" alt="Environment list cards"><figcaption></figcaption></figure>
+
 Each environment card displays the following information.
 
 | Displayed Info | Description |

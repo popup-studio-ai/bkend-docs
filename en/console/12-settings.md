@@ -28,6 +28,8 @@ The top section of the settings page displays key project information.
 | **Region** | Deployment region (e.g., ap-northeast-2) |
 | **Created At** | Date and time the project was created |
 
+<figure><img src="../../.gitbook/assets/2026-02/console-project-settings.png" alt="Project settings page"><figcaption></figcaption></figure>
+
 {% hint style="info" %}
 💡 The Project ID is auto-generated and cannot be changed. The Publishable Key (`pk_` prefix) embeds the project ID and environment, so you only need the `X-API-Key` header for REST API calls.
 {% endhint %}
@@ -67,6 +69,8 @@ Click **CORS** in the project-level sidebar to manage allowed origins for cross-
 
 To remove an origin, click the **Delete** button next to it.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-cors.png" alt="CORS allowed origins configuration"><figcaption></figcaption></figure>
+
 {% hint style="warning" %}
 ⚠️ API requests from origins not in the allowed list will be blocked by the browser's CORS policy.
 {% endhint %}
@@ -82,6 +86,8 @@ To remove an origin, click the **Delete** button next to it.
 1. Scroll to the **Delete Project** section at the bottom of the settings page.
 2. Click the **Delete** button.
 3. Enter the project name and click **Confirm Delete**.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-project-danger-zone.png" alt="Project delete danger zone"><figcaption></figcaption></figure>
 
 ***
 

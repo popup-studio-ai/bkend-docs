@@ -33,6 +33,8 @@ flowchart TD
     H --> P[Project Settings]
 ```
 
+<!-- 📸 IMG: Console main dashboard -->
+
 ***
 
 ## Organization Level Menu

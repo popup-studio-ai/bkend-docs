@@ -41,6 +41,8 @@ flowchart TD
 ✅ After logging in, you will be automatically redirected to the console home screen.
 {% endhint %}
 
+<figure><img src="../../.gitbook/assets/2026-02/quickstart-login.png" alt="bkend console login screen"><figcaption></figcaption></figure>
+
 ***
 
 ## Step 2: Create an Organization
@@ -122,6 +124,8 @@ Ask the AI tool something like this:
 ```
 
 Verify the created table in the **Database** menu of the console.
+
+<figure><img src="../../.gitbook/assets/2026-02/quickstart-table-confirm.png" alt="Database table list showing the created posts table"><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 💡 The table has been created, but you need an **API Key** to insert data from your app. Continue to steps 6 and 7.

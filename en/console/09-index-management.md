@@ -15,6 +15,8 @@ Indexes speed up queries on specific columns. Creating indexes on columns that a
 1. Click **Database** → select a table → click the **Indexes** tab.
 2. View currently created indexes.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-index-list.png" alt="Index list in Indexes tab"><figcaption></figcaption></figure>
+
 ***
 
 ## Creating an Index
@@ -31,6 +33,8 @@ Indexes speed up queries on specific columns. Creating indexes on columns that a
 | **Unique** | Whether to create a UNIQUE index |
 
 3. Click **Create**.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-index-create.png" alt="Create index form"><figcaption></figcaption></figure>
 {% endtab %}
 {% tab title="MCP" %}
 Request in natural language from your AI tool.

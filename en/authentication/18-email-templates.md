@@ -39,8 +39,7 @@ Configure sender information, logo, and brand color that apply to all email temp
 3. In the **Settings** tab, configure sender and branding
 4. Click **Save**
 
-<!-- 📸 IMG: Email template settings -->
-![Email Template Settings](../.gitbook/assets/2026-02/console-email-templates.png)
+<!-- 📸 IMG: Email template settings — Coming Soon -->
 
 {% endtab %}
 {% endtabs %}
@@ -98,8 +97,7 @@ Configure sender information, logo, and brand color that apply to all email temp
 4. Use the **Preview** button to verify
 5. Click **Save**
 
-<!-- 📸 IMG: Email template editor -->
-![Email Template Editor](../.gitbook/assets/2026-02/console-email-template-edit.png)
+<!-- 📸 IMG: Email template editor — Coming Soon -->
 
 {% endtab %}
 {% endtabs %}

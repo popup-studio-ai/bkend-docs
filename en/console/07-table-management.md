@@ -15,6 +15,8 @@ Use the Database menu to create, browse, and delete tables. Table creation and m
 1. Click **Database** in the project-level sidebar.
 2. View all tables in the current environment.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-table-list.png" alt="Table list in Database menu"><figcaption></figcaption></figure>
+
 | Displayed Info | Description |
 |----------------|-------------|
 | **Table Name** | Table identifier |
@@ -51,6 +53,8 @@ The MCP tool will automatically create the table and add the columns.
 {% endtab %}
 {% endtabs %}
 
+<figure><img src="../../.gitbook/assets/2026-02/console-table-create.png" alt="Create table dialog"><figcaption></figcaption></figure>
+
 {% hint style="info" %}
 💡 When you create a table, the `id`, `createdAt`, and `updatedAt` fields are added automatically.
 {% endhint %}
@@ -61,6 +65,8 @@ The MCP tool will automatically create the table and add the columns.
 
 Click a table in the table list to open the detail page. The detail page has the following tabs.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-table-detail.png" alt="Table detail page"><figcaption></figcaption></figure>
+
 | Tab | Description |
 |-----|-------------|
 | **Data** | Browse, search, and paginate stored records |
@@ -68,6 +74,8 @@ Click a table in the table list to open the detail page. The detail page has the
 | **Indexes** | Manage indexes for query performance |
 | **Permissions** | Configure RBAC permissions per role |
 | **API Docs** | View auto-generated REST API documentation for this table |
+
+<figure><img src="../../.gitbook/assets/2026-02/console-table-permissions.png" alt="Table permissions configuration"><figcaption></figcaption></figure>
 
 ***
 

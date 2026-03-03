@@ -41,7 +41,7 @@
 5. **Save**를 클릭하세요
 
 <!-- 📸 IMG: 이메일 제공자 설정 화면 -->
-![이메일 제공자 설정](../.gitbook/assets/2026-02/console-auth-providers.png)
+<figure><img src="../../.gitbook/assets/2026-02/console-auth-providers.png" alt="이메일 제공자 설정 화면"><figcaption></figcaption></figure>
 
 {% endtab %}
 {% endtabs %}

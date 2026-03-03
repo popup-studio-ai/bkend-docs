@@ -15,6 +15,8 @@ Use the schema editor to design the column structure of your tables. It supports
 1. Click **Database** → select a table.
 2. Click the **Schema** tab.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-schema-editor.png" alt="Schema editor with column list"><figcaption></figcaption></figure>
+
 ***
 
 ## Column Types
@@ -47,6 +49,8 @@ Use the schema editor to design the column structure of your tables. It supports
 | **Unique** | UNIQUE constraint |
 
 3. Click **Save**.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-column-add.png" alt="Add column form"><figcaption></figcaption></figure>
 {% endtab %}
 {% tab title="MCP" %}
 Request in natural language from your AI tool.
@@ -64,6 +68,8 @@ Request in natural language from your AI tool.
 1. Click the **Edit** icon on the column you want to modify.
 2. Change the type, required status, default value, etc.
 3. Click **Save**.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-column-edit.png" alt="Edit column dialog"><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
 ⚠️ Changing the type of a column that already contains data may cause compatibility issues with existing data. Proceed with caution.
@@ -91,6 +97,42 @@ Every table automatically includes the following fields.
 | `id` | string | Unique identifier (auto-generated) |
 | `createdAt` | date | Creation timestamp (auto-recorded) |
 | `updatedAt` | date | Last modified timestamp (auto-updated) |
+
+***
+
+## Schema Version History
+
+Every time the schema is modified (column added, edited, or deleted), a new version is automatically recorded. You can view the full version timeline and roll back to a previous version if needed.
+
+1. Open the **Schema** tab of a table.
+2. Click the **History** button in the top right.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-schema-history.png" alt="Schema version history"><figcaption></figcaption></figure>
+
+### Viewing Version Details
+
+Each version entry shows the version number, creation date, and creator. Click **View Schema** to inspect the full schema definition (JSON) of that version.
+
+| Field | Description |
+|-------|-------------|
+| **Version** | Incrementing version number (v1, v2, ...) |
+| **Current** | Green badge indicates the active version |
+| **Created At** | Date and time the version was created |
+| **View Schema** | View the full JSON schema of this version |
+
+### Rolling Back
+
+{% hint style="warning" %}
+⚠️ Rolling back does not delete existing versions. It copies the target version's schema and creates a **new version** based on it.
+{% endhint %}
+
+1. In the version history panel, find the version you want to restore.
+2. Click the **Rollback** button (not shown on the current active version).
+3. Confirm in the dialog.
+
+{% hint style="danger" %}
+🚨 **Danger** — Rolling back may cause compatibility issues if your application depends on columns that were added after the target version. Verify your app's data access patterns before rolling back.
+{% endhint %}
 
 ***
 

@@ -8,6 +8,8 @@
 
 Team management is handled at the Organization level. Invited team members can access all projects within the Organization. Permissions vary by role.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-team-list.png" alt="Team management page"><figcaption></figcaption></figure>
+
 ***
 
 ## Inviting Team Members
@@ -23,6 +25,8 @@ Team management is handled at the Organization level. Invited team members can a
 | **Role** | Choose from Member role (Admin and Billing roles will be available in a future update) |
 
 4. Click **Send Invitation**.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-team-invite.png" alt="Invite team member dialog"><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 💡 When the invited member clicks the link in the invitation email, they automatically join the Organization.

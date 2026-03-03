@@ -13,6 +13,9 @@ An Organization is the top-level resource that groups projects and team members 
 ## Creating an Organization
 
 1. On the console home, click the **Create Organization** button.
+
+<!-- 📸 IMG: Organization list on console home -->
+
 2. Enter the following information.
 
 | Field | Description | Example |
@@ -51,6 +54,8 @@ Click **Organization Settings** in the sidebar. The settings page has the follow
 | **Audit** | Organization-level activity logs |
 | **Danger** | Ownership transfer, leave, and deletion |
 
+<figure><img src="../../.gitbook/assets/2026-02/console-org-settings-general.png" alt="Organization settings - General tab"><figcaption></figcaption></figure>
+
 ***
 
 ## Updating Organization Settings
@@ -67,6 +72,8 @@ Click **Organization Settings** in the sidebar. The settings page has the follow
 1. Click the **Danger** tab on the Organization Settings page.
 2. In the **Transfer Ownership** section, select a member from the dropdown.
 3. Type `transfer` in the confirmation field and click **Transfer**.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-org-transfer.png" alt="Transfer organization ownership"><figcaption></figcaption></figure>
 
 {% hint style="danger" %}
 🚨 **Danger** — After transferring ownership, you lose Owner privileges and cannot undo this action.
@@ -97,6 +104,8 @@ Non-owners can leave an organization voluntarily.
 1. Click the **Danger** tab on the Organization Settings page.
 2. In the **Delete Organization** section, click **Delete**.
 3. Enter the organization name in the confirmation prompt and click **Confirm Delete**.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-org-delete.png" alt="Delete organization confirmation dialog"><figcaption></figcaption></figure>
 
 ***
 

@@ -35,6 +35,8 @@ A Project is created under an Organization. When you create a project, a `dev` e
 
 Click **Projects** in the sidebar to view all projects in the current Organization.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-project-list.png" alt="Project list page"><figcaption></figcaption></figure>
+
 | Displayed Info | Description |
 |----------------|-------------|
 | **Project Name** | Display name of the project |
@@ -59,6 +61,8 @@ Click **Project Settings** in the project-level sidebar to modify project inform
 💡 You can find the Project ID on the project settings page. The Publishable Key (`pk_` prefix) includes the project ID and environment information, so you only need the `X-API-Key` header for REST API calls.
 {% endhint %}
 
+<figure><img src="../../.gitbook/assets/2026-02/console-project-settings.png" alt="Project settings page"><figcaption></figcaption></figure>
+
 ***
 
 ## Deleting a Project
@@ -70,6 +74,8 @@ Click **Project Settings** in the project-level sidebar to modify project inform
 1. Click **Project Settings** in the project-level sidebar.
 2. In the **Delete Project** section at the bottom of the page, click **Delete**.
 3. Enter the project name and click **Confirm Delete**.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-project-danger-zone.png" alt="Project delete danger zone"><figcaption></figcaption></figure>
 
 ***
 

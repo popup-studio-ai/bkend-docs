@@ -21,6 +21,8 @@ The page is divided into two sections:
 | **Publishable Keys** | `pk_` | Client-side (browser, mobile app) — limited permissions |
 | **Secret Keys** | `sk_` | Server-side only — full permissions |
 
+<figure><img src="../../.gitbook/assets/2026-02/console-api-keys.png" alt="API Keys management page"><figcaption></figcaption></figure>
+
 ***
 
 ## Creating a Publishable Key
@@ -28,6 +30,8 @@ The page is divided into two sections:
 1. In the **Publishable Keys** section, click the **Add Key** button.
 2. Enter a name (e.g., `my-app-key`) and click **Create**.
 3. The key is created and added to the list.
+
+<figure><img src="../../.gitbook/assets/2026-02/console-api-key-create.png" alt="Create API key dialog"><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 💡 Publishable Keys are always visible in the list and can be copied at any time by clicking the key value.

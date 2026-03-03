@@ -418,6 +418,8 @@ You can configure RLS policies through the **console** or **MCP tools**.
 3. Configure CRUD permissions per group in the **Permissions** section
 4. **Save** your changes
 
+<figure><img src="../../.gitbook/assets/2026-02/console-rls-permissions.png" alt="Console - Table RLS permissions configuration"><figcaption></figcaption></figure>
+
 > [Table Management (Console)](../console/07-table-management.md)
 {% endtab %}
 {% tab title="MCP" %}

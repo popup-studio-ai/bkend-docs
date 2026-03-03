@@ -25,6 +25,8 @@ The bkend console supports social login (Google, GitHub) and magic link authenti
 1. Go to [https://console.bkend.ai](https://console.bkend.ai).
 2. On the **Sign Up** page, choose a login method.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-signup.png" alt="Console sign up page"><figcaption></figcaption></figure>
+
 {% tabs %}
 {% tab title="Google" %}
 1. Click the **Continue with Google** button.
@@ -54,6 +56,8 @@ The bkend console supports social login (Google, GitHub) and magic link authenti
 
 1. Go to [https://console.bkend.ai](https://console.bkend.ai).
 2. Log in using the same method you used when signing up.
+
+<!-- 📸 IMG: Console login page -->
 
 {% hint style="warning" %}
 ⚠️ Magic links are only valid for a limited time after being sent. If expired, request a new one.

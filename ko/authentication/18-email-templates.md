@@ -39,8 +39,7 @@ bkend는 인증 과정에서 발송되는 이메일의 템플릿을 프로젝트
 3. **Settings** 탭에서 발신자 및 브랜딩을 설정하세요
 4. **Save**를 클릭하세요
 
-<!-- 📸 IMG: 이메일 템플릿 설정 -->
-![이메일 템플릿 설정](../.gitbook/assets/2026-02/console-email-templates.png)
+<!-- 📸 IMG: 이메일 템플릿 설정 — Coming Soon -->
 
 {% endtab %}
 {% endtabs %}
@@ -98,8 +97,7 @@ bkend는 인증 과정에서 발송되는 이메일의 템플릿을 프로젝트
 4. **Preview** 버튼으로 확인하세요
 5. **Save**를 클릭하세요
 
-<!-- 📸 IMG: 이메일 템플릿 편집 -->
-![이메일 템플릿 편집](../.gitbook/assets/2026-02/console-email-template-edit.png)
+<!-- 📸 IMG: 이메일 템플릿 편집 — Coming Soon -->
 
 {% endtab %}
 {% endtabs %}

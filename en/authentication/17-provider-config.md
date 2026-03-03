@@ -41,7 +41,7 @@ Manage password policy and magic link settings for email-based authentication.
 5. Click **Save**
 
 <!-- 📸 IMG: Email provider settings screen -->
-![Email Provider Settings](../.gitbook/assets/2026-02/console-auth-providers.png)
+<figure><img src="../../.gitbook/assets/2026-02/console-auth-providers.png" alt="Email provider settings screen"><figcaption></figcaption></figure>
 
 {% endtab %}
 {% endtabs %}

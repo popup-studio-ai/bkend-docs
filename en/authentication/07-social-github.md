@@ -35,6 +35,8 @@ GitHub OAuth uses the OAuth 2.0 protocol. It allows you to easily implement GitH
 
 Register the `Client ID` and `Client Secret` you obtained with bkend. You can configure this in [Auth Provider Configuration](17-provider-config.md).
 
+<figure><img src="../../.gitbook/assets/2026-02/console-auth-github.png" alt="bkend console - GitHub OAuth provider settings"><figcaption></figcaption></figure>
+
 ***
 
 ## Implementing GitHub Login

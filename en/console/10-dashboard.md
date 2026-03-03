@@ -28,6 +28,8 @@ When you access the console, the dashboard automatically redirects you based on 
 
 After selecting a project, click **Overview** in the project-level sidebar to view the project landing page.
 
+<figure><img src="../../.gitbook/assets/2026-02/console-dashboard.png" alt="Project overview dashboard"><figcaption></figcaption></figure>
+
 ***
 
 ## Next Steps

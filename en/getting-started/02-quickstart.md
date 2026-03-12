@@ -283,7 +283,7 @@ console.log(data.createdBy); // User ID
 - [Integrating bkend in Your App](03-app-integration.md) — How to connect bkend to your app
 - [Core Concepts](04-core-concepts.md) — Organization, Project, and Environment structure
 - [Console Overview](../console/01-overview.md) — Explore the console UI
-- [AI Tools Integration Overview](../ai-tools/01-overview.md) — Detailed AI tool setup guide
+- [MCP Overview](../mcp/01-overview.md) — AI tool integration and MCP setup guide
 - [MCP Tools Overview](../mcp/01-overview.md) — MCP tool reference
 - [Table Management](../console/07-table-management.md) — Design tables in the console
 - [Hands-on Project Cookbook](../../cookbooks/README.md) — Build real apps from blog to shopping mall

@@ -41,8 +41,8 @@
 |:----:|------|----------|
 | 1 | bkend 콘솔 회원가입 | [콘솔 회원가입](../../../ko/console/02-signup-login.md) |
 | 2 | 프로젝트 생성 | [프로젝트 관리](../../../ko/console/04-project-management.md) |
-| 3 | AI 도구 설치 | [AI 도구 개요](../../../ko/ai-tools/01-overview.md) |
-| 4 | MCP OAuth 연결 | [OAuth 설정](../../../ko/ai-tools/03-oauth-setup.md) |
+| 3 | AI 도구 설치 | [MCP 개요](../../../ko/mcp/01-overview.md) |
+| 4 | MCP OAuth 연결 | [OAuth 2.1 인증](../../../ko/mcp/05-oauth.md) |
 
 {% hint style="success" %}
 ✅ **AI에게 이렇게 말해보세요**

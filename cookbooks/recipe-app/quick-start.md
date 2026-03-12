@@ -10,7 +10,7 @@
 |------|------|
 | bkend 프로젝트 생성 | [프로젝트 관리](../../ko/console/04-project-management.md) |
 | API Key 발급 | [API 키 관리](../../ko/console/11-api-keys.md) |
-| AI 도구 연결 (MCP 트랙) | [AI 도구 연동](../../ko/ai-tools/01-overview.md) |
+| AI 도구 연결 (MCP 트랙) | [MCP](../../ko/mcp/01-overview.md) |
 
 ***
 

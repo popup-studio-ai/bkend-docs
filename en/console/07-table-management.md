@@ -6,7 +6,7 @@
 
 ## Overview
 
-Use the Database menu to create, browse, and delete tables. Table creation and management is done through the console UI or [MCP Table Management Tools](../mcp/04-table-tools.md). Only data CRUD operations are available via the REST API.
+Use the Database menu to create, browse, and delete tables. Table creation and management is done through the console UI or [MCP Table Management Tools](../mcp/08-table-tools.md). Only data CRUD operations are available via the REST API.
 
 ***
 
@@ -96,4 +96,4 @@ Click a table in the table list to open the detail page. The detail page has the
 - [Schema Editor](08-schema-editor.md) — Add, modify, and delete columns
 - [Index Management](09-index-management.md) — Improve query performance with indexes
 - [Database Overview](../database/01-overview.md) — CRUD data via the REST API
-- [MCP Table Management Tools](../mcp/04-table-tools.md) — Manage tables with AI tools
+- [MCP Table Management Tools](../mcp/08-table-tools.md) — Manage tables with AI tools

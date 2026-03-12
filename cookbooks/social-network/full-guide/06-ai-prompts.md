@@ -396,7 +396,7 @@ AI 응답 예시:
 
 - [데이터베이스 개요](../../../ko/database/01-overview.md) — 동적 테이블 개념
 - [데이터 목록 조회](../../../ko/database/05-list.md) — 필터, 정렬, 페이지네이션 상세
-- [AI 도구 개요](../../../ko/ai-tools/01-overview.md) — MCP 도구 설정 및 사용법
+- [MCP 개요](../../../ko/mcp/01-overview.md) — MCP 도구 설정 및 사용법
 
 ***
 

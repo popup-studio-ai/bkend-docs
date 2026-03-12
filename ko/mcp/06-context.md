@@ -1,4 +1,4 @@
-# 컨텍스트
+# 세션 및 문서 검색
 
 {% hint style="info" %}
 💡 AI 도구가 bkend에 처음 연결될 때 자동으로 호출되는 `get_context`와 문서 검색 도구 `search_docs`를 안내합니다.
@@ -130,5 +130,5 @@ MCP 도구에서 데이터를 조회한 후 REST API 코드를 생성할 때:
 ## 다음 단계
 
 - [MCP 도구 개요](01-overview.md) — 전체 도구 분류
-- [프로젝트 도구](03-project-tools.md) — Organization, 프로젝트, 환경, 액세스 토큰 관리
-- [테이블 도구](04-table-tools.md) — 테이블, 필드, 인덱스 관리
+- [프로젝트 도구](07-project-tools.md) — Organization, 프로젝트, 환경, 액세스 토큰 관리
+- [테이블 도구](08-table-tools.md) — 테이블, 필드, 인덱스 관리

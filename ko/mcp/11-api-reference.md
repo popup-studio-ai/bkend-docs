@@ -290,5 +290,5 @@ GitBook을 통해 bkend 문서를 검색합니다.
 ## 다음 단계
 
 - [MCP 도구 개요](01-overview.md) — 도구 분류와 흐름
-- [컨텍스트](02-context.md) — get_context 상세
-- [MCP 리소스](08-resources.md) — 리소스 URI와 조회 방법
+- [컨텍스트](06-context.md) — get_context 상세
+- [MCP 리소스](10-resources.md) — 리소스 URI와 조회 방법

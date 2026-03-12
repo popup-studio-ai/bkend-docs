@@ -200,5 +200,5 @@ sequenceDiagram
 ## Next Steps
 
 - [MCP Tools Overview](01-overview.md) — Complete tool classification
-- [API Reference](09-api-reference.md) — Tool input/output schemas
-- [Understanding the MCP Protocol](../ai-tools/02-mcp-protocol.md) — MCP protocol details
+- [API Reference](11-api-reference.md) — Tool input/output schemas
+- [Understanding the MCP Protocol](04-protocol.md) — MCP protocol details

@@ -117,7 +117,7 @@ flowchart LR
 
 AI 도구를 사용하는 경우 MCP 도구로도 테이블을 관리할 수 있습니다.
 
-- [테이블 관리 도구](../mcp/04-table-tools.md) — AI를 통한 테이블 관리
+- [테이블 도구](../mcp/08-table-tools.md) — AI를 통한 테이블 관리
 
 ***
 

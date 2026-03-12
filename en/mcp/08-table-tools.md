@@ -247,6 +247,6 @@ sequenceDiagram
 
 ## Next Steps
 
-- [Data Tools](05-data-tools.md) — Data CRUD via REST API
-- [Project Tools](03-project-tools.md) — Environment management
+- [Code Generation](09-code-generation.md) — Data CRUD via REST API
+- [Project Tools](07-project-tools.md) — Environment management
 - [MCP Tools Overview](01-overview.md) — Complete tool classification

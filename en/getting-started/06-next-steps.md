@@ -34,9 +34,9 @@ Design and manage your backend using natural language in AI tools like Claude Co
 
 | Step | Task | Document |
 |:----:|------|----------|
-| 1 | Connect the MCP server | [AI Tools Integration Overview](../ai-tools/01-overview.md) |
-| 2 | Design tables in the AI tool | [Using Claude Code](../ai-tools/05-claude-code-usage.md) |
-| 3 | Manage data with MCP tools | [Data CRUD Tools](../mcp/05-data-tools.md) |
+| 1 | Connect the MCP server | [MCP Overview](../mcp/01-overview.md) |
+| 2 | Set up and authenticate | [Setup](../mcp/02-setup.md) |
+| 3 | Manage data with MCP tools | [Code Generation](../mcp/09-code-generation.md) |
 
 ***
 

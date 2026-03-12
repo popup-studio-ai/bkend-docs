@@ -206,6 +206,6 @@ sequenceDiagram
 
 ## 다음 단계
 
-- [테이블 도구](04-table-tools.md) — 테이블, 필드, 인덱스 관리
-- [데이터 도구](05-data-tools.md) — REST API를 통한 데이터 CRUD
-- [컨텍스트](02-context.md) — ID 조회 방법
+- [테이블 도구](08-table-tools.md) — 테이블, 필드, 인덱스 관리
+- [코드 생성](09-code-generation.md) — REST API를 통한 데이터 CRUD
+- [컨텍스트](06-context.md) — ID 조회 방법

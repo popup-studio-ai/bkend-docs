@@ -54,7 +54,7 @@ AI 도구가 호출할 수 있는 함수입니다. bkend는 두 가지 유형을
 
 **API 도구** — bkend 백엔드의 관리 기능을 호출합니다.
 
-→ 전체 도구 목록은 [MCP 도구 개요](../mcp/01-overview.md)를 참고하세요.
+> 전체 도구 목록은 [MCP 도구 개요](01-overview.md)를 참고하세요.
 
 ### Resources (리소스)
 
@@ -69,7 +69,7 @@ Organization
                     └── Indexes
 ```
 
-→ 리소스 상세는 [MCP 리소스](../mcp/08-resources.md)를 참고하세요.
+> 리소스 상세는 [MCP 리소스](10-resources.md)를 참고하세요.
 
 ***
 
@@ -116,9 +116,9 @@ MCP 토큰에 부여되는 권한입니다.
 
 ## 다음 단계
 
-- [OAuth 2.1 인증 설정](03-oauth-setup.md) — 인증 흐름 상세
-- [Claude Code 설정](04-claude-code-setup.md) — Claude Code 연동
-- [MCP 도구 레퍼런스](../mcp/09-api-reference.md) — MCP 도구 전체 스키마
+- [OAuth 2.1 인증 설정](05-oauth.md) — 인증 흐름 상세
+- [Claude Code 설정](02-setup.md) — Claude Code 연동
+- [MCP 도구 레퍼런스](11-api-reference.md) — MCP 도구 전체 스키마
 
 ## 참조 표준
 

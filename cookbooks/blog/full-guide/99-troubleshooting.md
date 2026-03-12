@@ -478,7 +478,7 @@ async function toggleBookmark(articleId) {
 3. OAuth 재인증을 수행하세요.
 
 {% hint style="info" %}
-💡 MCP 설정에 대한 자세한 내용은 [AI 도구 연동](../../../ko/ai-tools/01-overview.md)을 참고하세요.
+💡 MCP 설정에 대한 자세한 내용은 [MCP 개요](../../../ko/mcp/01-overview.md)를 참고하세요.
 {% endhint %}
 
 ***

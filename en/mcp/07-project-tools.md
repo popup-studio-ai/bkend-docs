@@ -206,6 +206,6 @@ sequenceDiagram
 
 ## Next Steps
 
-- [Table Tools](04-table-tools.md) — Manage tables, fields, and indexes
-- [Data Tools](05-data-tools.md) — Data CRUD via REST API
-- [Context](02-context.md) — How to look up IDs
+- [Table Tools](08-table-tools.md) — Manage tables, fields, and indexes
+- [Code Generation](09-code-generation.md) — Data CRUD via REST API
+- [Context](06-context.md) — How to look up IDs

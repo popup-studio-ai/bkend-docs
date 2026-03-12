@@ -52,7 +52,7 @@ Adding indexes to frequently queried fields significantly improves query perform
 
 Manage indexes from the **console** or **MCP tools**.
 
-→ [Index Management (Console)](../console/09-index-management.md), [Table Management Tools](../mcp/04-table-tools.md)
+→ [Index Management (Console)](../console/09-index-management.md), [Table Tools](../mcp/08-table-tools.md)
 
 ***
 

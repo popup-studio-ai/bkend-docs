@@ -247,6 +247,6 @@ sequenceDiagram
 
 ## 다음 단계
 
-- [데이터 도구](05-data-tools.md) — REST API를 통한 데이터 CRUD
-- [프로젝트 도구](03-project-tools.md) — 환경 관리
+- [코드 생성](09-code-generation.md) — REST API를 통한 데이터 CRUD
+- [프로젝트 도구](07-project-tools.md) — 환경 관리
 - [MCP 도구 개요](01-overview.md) — 전체 도구 분류

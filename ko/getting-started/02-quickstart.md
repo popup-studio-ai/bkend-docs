@@ -279,7 +279,7 @@ console.log(data.createdBy); // 사용자 ID
 - [앱에서 bkend 연동하기](03-app-integration.md) — 앱에 bkend 연결하는 방법
 - [핵심 개념](04-core-concepts.md) — Organization, Project, Environment 구조
 - [콘솔 개요](../console/01-overview.md) — 콘솔 UI 둘러보기
-- [AI 도구 연동 개요](../ai-tools/01-overview.md) — AI 도구 설정 상세 가이드
+- [MCP 개요](../mcp/01-overview.md) — AI 도구 연동 및 MCP 설정 가이드
 - [MCP 도구 개요](../mcp/01-overview.md) — MCP 도구 레퍼런스
 - [테이블 관리](../console/07-table-management.md) — 콘솔에서 테이블 설계하기
 - [실전 프로젝트 쿡북](../../cookbooks/README.md) — 블로그부터 쇼핑몰까지, 실전 앱 구축 튜토리얼

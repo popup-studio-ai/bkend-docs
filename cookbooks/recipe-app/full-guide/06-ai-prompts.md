@@ -507,7 +507,7 @@ AI 처리 흐름:
 
 ## 참고 문서
 
-- [AI 도구 연동](../../../ko/ai-tools/01-overview.md) —MCP 도구 설정 및 연동 가이드
+- [MCP 개요](../../../ko/mcp/01-overview.md) — MCP 도구 설정 및 연동 가이드
 - [데이터 목록 조회](../../../ko/database/05-list.md) —필터링, 정렬, 페이지네이션 상세
 
 ***

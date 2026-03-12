@@ -117,7 +117,7 @@ Table creation, schema editing, and index management are performed in the **cons
 
 If you use AI tools, you can also manage tables through MCP tools.
 
-- [Table Management Tools](../mcp/04-table-tools.md) — Manage tables via AI
+- [Table Tools](../mcp/08-table-tools.md) — Manage tables via AI
 
 ***
 

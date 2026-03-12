@@ -12,8 +12,8 @@
 
 | 필요 항목 | 설명 | 참조 |
 |----------|------|------|
-| MCP 도구 연결 | AI 도구에서 bkend MCP 서버 연결 완료 | [AI 도구 연동](../../../ko/ai-tools/01-overview.md) |
-| 프로젝트 선택 | MCP 세션에서 블로그 프로젝트 선택 | [AI 도구 연동](../../../ko/ai-tools/01-overview.md) |
+| MCP 도구 연결 | AI 도구에서 bkend MCP 서버 연결 완료 | [MCP 개요](../../../ko/mcp/01-overview.md) |
+| 프로젝트 선택 | MCP 세션에서 블로그 프로젝트 선택 | [MCP 개요](../../../ko/mcp/01-overview.md) |
 
 ***
 
@@ -340,7 +340,7 @@ AI가 여러 데이터를 조회하여 종합합니다.
 
 ## 참고 문서
 
-- [MCP 도구 연동](../../../ko/ai-tools/01-overview.md) — AI 도구 설정 및 사용 가능한 도구 목록
+- [MCP 개요](../../../ko/mcp/01-overview.md) — AI 도구 설정 및 사용 가능한 도구 목록
 - [게시글 CRUD](02-articles.md) — REST API 상세
 - [이미지 업로드](03-files.md) — 파일 업로드 상세
 - [태그 관리](04-tags.md) — 태그 CRUD 상세

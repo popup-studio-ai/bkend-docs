@@ -29,7 +29,7 @@
 | 이메일 인증 | 회원가입/로그인 | [이메일 회원가입](../../ko/authentication/02-email-signup.md) |
 | 동적 테이블 | 레시피, 재료, 식단, 쇼핑 목록, 요리 기록 CRUD | [데이터베이스 개요](../../ko/database/01-overview.md) |
 | 스토리지 | 요리 사진 업로드 | [스토리지 개요](../../ko/storage/01-overview.md) |
-| MCP 도구 | AI로 테이블/데이터 관리 | [AI 도구 연동](../../ko/ai-tools/01-overview.md) |
+| MCP 도구 | AI로 테이블/데이터 관리 | [MCP](../../ko/mcp/01-overview.md) |
 
 ***
 
@@ -117,7 +117,7 @@ erDiagram
 | bkend 계정 | 콘솔에서 회원가입 | [콘솔 회원가입](../../ko/console/02-signup-login.md) |
 | 프로젝트 생성 | 콘솔에서 새 프로젝트 생성 | [프로젝트 관리](../../ko/console/04-project-management.md) |
 | API Key | 콘솔 → **MCP** → **새 토큰 생성** | [API 키 관리](../../ko/console/11-api-keys.md) |
-| AI 도구 (선택) | Claude Code 또는 Cursor 설치 | [AI 도구 연동](../../ko/ai-tools/01-overview.md) |
+| AI 도구 (선택) | Claude Code 또는 Cursor 설치 | [MCP](../../ko/mcp/01-overview.md) |
 
 ***
 

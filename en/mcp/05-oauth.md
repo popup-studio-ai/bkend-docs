@@ -1,4 +1,4 @@
-# OAuth 2.1 Authentication Setup
+# OAuth 2.1 Authentication
 
 {% hint style="info" %}
 💡 Learn about the OAuth 2.1 authentication flow and token management for the bkend MCP server.
@@ -154,9 +154,9 @@ This means the Refresh Token has expired (30 days). Restart your AI tool and re-
 
 ## Next Steps
 
-- [Claude Code Setup](04-claude-code-setup.md) — Claude Code integration
-- [Cursor Setup](06-cursor-setup.md) — Cursor integration
-- [MCP Tools Overview](../mcp/01-overview.md) — MCP tool list and parameters
+- [Setup](02-setup.md) — Install and authenticate your AI tool
+- [Understanding the MCP Protocol](04-protocol.md) — Protocol details
+- [MCP Overview](01-overview.md) — MCP tool list and parameters
 
 ## Reference Standards
 

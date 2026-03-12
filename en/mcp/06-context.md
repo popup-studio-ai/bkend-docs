@@ -1,4 +1,4 @@
-# Context
+# Session & Docs Search
 
 {% hint style="info" %}
 💡 This page covers `get_context`, which is automatically called when an AI tool first connects to bkend, and `search_docs`, the documentation search tool.
@@ -130,5 +130,5 @@ When generating REST API code from data retrieved via MCP tools:
 ## Next Steps
 
 - [MCP Tools Overview](01-overview.md) — Complete tool classification
-- [Project Tools](03-project-tools.md) — Manage Organizations, projects, environments, and access tokens
-- [Table Tools](04-table-tools.md) — Manage tables, fields, and indexes
+- [Project Tools](07-project-tools.md) — Manage Organizations, projects, environments, and access tokens
+- [Table Tools](08-table-tools.md) — Manage tables, fields, and indexes

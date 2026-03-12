@@ -54,7 +54,7 @@ Functions that AI tools can invoke. bkend provides two types.
 
 **API Tools** — Invoke management functions on the bkend backend.
 
-> For the full list of tools, see the [MCP Tools Overview](../mcp/01-overview.md).
+> For the full list of tools, see the [MCP Tools Overview](01-overview.md).
 
 ### Resources
 
@@ -69,7 +69,7 @@ Organization
                     └── Indexes
 ```
 
-> For resource details, see [MCP Resources](../mcp/08-resources.md).
+> For resource details, see [MCP Resources](10-resources.md).
 
 ***
 
@@ -116,9 +116,9 @@ Permissions granted to the MCP token.
 
 ## Next Steps
 
-- [OAuth 2.1 Authentication Setup](03-oauth-setup.md) — Detailed authentication flow
-- [Claude Code Setup](04-claude-code-setup.md) — Claude Code integration
-- [MCP Tools Reference](../mcp/09-api-reference.md) — Full MCP tool schema
+- [OAuth 2.1 Authentication](05-oauth.md) — Detailed authentication flow
+- [Setup](02-setup.md) — Install and authenticate your AI tool
+- [API Reference](11-api-reference.md) — Full MCP tool schema
 
 ## Reference Standards
 

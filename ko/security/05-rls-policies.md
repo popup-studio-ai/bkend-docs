@@ -428,7 +428,7 @@ AI 도구에서 자연어로 요청하세요:
 self에는 update, delete도 허용해줘"
 ```
 
-→ [테이블 관리 도구](../mcp/04-table-tools.md)
+→ [테이블 도구](../mcp/08-table-tools.md)
 {% endtab %}
 {% endtabs %}
 

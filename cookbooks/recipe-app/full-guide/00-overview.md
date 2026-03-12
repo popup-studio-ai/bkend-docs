@@ -27,8 +27,8 @@
 |:----:|------|----------|
 | 1 | bkend 콘솔 회원가입 | [콘솔 회원가입](../../../ko/console/02-signup-login.md) |
 | 2 | 프로젝트 생성 | [프로젝트 관리](../../../ko/console/04-project-management.md) |
-| 3 | AI 도구 설치 | [AI 도구 개요](../../../ko/ai-tools/01-overview.md) |
-| 4 | MCP OAuth 연결 | [OAuth 설정](../../../ko/ai-tools/03-oauth-setup.md) |
+| 3 | AI 도구 설치 | [MCP 개요](../../../ko/mcp/01-overview.md) |
+| 4 | MCP OAuth 연결 | [OAuth 2.1 인증](../../../ko/mcp/05-oauth.md) |
 
 {% hint style="success" %}
 ✅ **AI에게 이렇게 말해보세요**
@@ -63,7 +63,7 @@
 | 동적 테이블 | recipes, ingredients, meal_plans, shopping_lists, cooking_logs | [데이터베이스 개요](../../../ko/database/01-overview.md) |
 | 데이터 CRUD | `/v1/data/{tableName}` 엔드포인트 | [데이터 등록](../../../ko/database/03-insert.md) |
 | 스토리지 | 요리 사진 업로드 | [단건 업로드](../../../ko/storage/02-upload-single.md) |
-| MCP 도구 | AI로 테이블 생성/데이터 관리 | [AI 도구 연동](../../../ko/ai-tools/01-overview.md) |
+| MCP 도구 | AI로 테이블 생성/데이터 관리 | [MCP 개요](../../../ko/mcp/01-overview.md) |
 
 ***
 

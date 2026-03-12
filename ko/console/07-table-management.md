@@ -6,7 +6,7 @@
 
 ## 개요
 
-데이터베이스 메뉴에서 테이블을 생성, 조회, 삭제합니다. 테이블 생성/관리는 콘솔 UI 또는 [MCP 테이블 관리 도구](../mcp/04-table-tools.md)를 사용합니다. REST API로는 데이터 CRUD만 가능합니다.
+데이터베이스 메뉴에서 테이블을 생성, 조회, 삭제합니다. 테이블 생성/관리는 콘솔 UI 또는 [MCP 테이블 관리 도구](../mcp/08-table-tools.md)를 사용합니다. REST API로는 데이터 CRUD만 가능합니다.
 
 ***
 
@@ -88,4 +88,4 @@ MCP 도구가 자동으로 테이블을 생성하고 컬럼을 추가합니다.
 - [스키마 편집기](08-schema-editor.md) — 컬럼 추가/수정/삭제
 - [인덱스 관리](09-index-management.md) — 인덱스 생성으로 조회 성능 향상
 - [데이터베이스 개요](../database/01-overview.md) — REST API로 데이터 CRUD
-- [MCP 테이블 관리 도구](../mcp/04-table-tools.md) — AI 도구로 테이블 관리
+- [MCP 테이블 관리 도구](../mcp/08-table-tools.md) — AI 도구로 테이블 관리

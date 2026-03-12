@@ -430,7 +430,7 @@ Use natural language in your AI tool:
 and also allow update and delete for self"
 ```
 
-> [Table Management Tools](../mcp/04-table-tools.md)
+> [Table Tools](../mcp/08-table-tools.md)
 {% endtab %}
 {% endtabs %}
 

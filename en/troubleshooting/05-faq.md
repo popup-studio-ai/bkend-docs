@@ -86,7 +86,7 @@ CDN URLs for public files do not expire. Presigned URLs for private files have a
 
 MCP stands for Model Context Protocol, a standard protocol for AI tools to communicate with external services.
 
-See [Understanding the MCP Protocol](../ai-tools/02-mcp-protocol.md)
+See [Understanding the MCP Protocol](../mcp/04-protocol.md)
 
 ***
 
@@ -94,7 +94,7 @@ See [Understanding the MCP Protocol](../ai-tools/02-mcp-protocol.md)
 
 You can integrate with any AI tool that supports MCP, including Claude Code, Cursor, and Antigravity.
 
-See [AI Tool Integration Overview](../ai-tools/01-overview.md)
+See [MCP Overview](../mcp/01-overview.md)
 
 ***
 

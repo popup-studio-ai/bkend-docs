@@ -200,5 +200,5 @@ sequenceDiagram
 ## 다음 단계
 
 - [MCP 도구 개요](01-overview.md) — 전체 도구 분류
-- [API 레퍼런스](09-api-reference.md) — 도구 입출력 스키마
-- [MCP 프로토콜 이해](../ai-tools/02-mcp-protocol.md) — MCP 프로토콜 상세
+- [API 레퍼런스](11-api-reference.md) — 도구 입출력 스키마
+- [MCP 프로토콜 이해](04-protocol.md) — MCP 프로토콜 상세

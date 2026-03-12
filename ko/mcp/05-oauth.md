@@ -154,9 +154,9 @@ Refresh Token이 만료(30일)된 경우입니다. AI 도구를 재시작하면 
 
 ## 다음 단계
 
-- [Claude Code 설정](04-claude-code-setup.md) — Claude Code 연동
-- [Cursor 설정](06-cursor-setup.md) — Cursor 연동
-- [MCP 도구 개요](../mcp/01-overview.md) — MCP 도구 목록과 파라미터
+- [Claude Code 설정](02-setup.md) — Claude Code 연동
+- [Cursor 설정](02-setup.md) — Cursor 연동
+- [MCP 도구 개요](01-overview.md) — MCP 도구 목록과 파라미터
 
 ## 참조 표준
 

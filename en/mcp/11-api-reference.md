@@ -290,5 +290,5 @@ List index versions by table ID.
 ## Next Steps
 
 - [MCP Tools Overview](01-overview.md) — Tool classification and flow
-- [Context](02-context.md) — get_context details
-- [MCP Resources](08-resources.md) — Resource URIs and how to query them
+- [Context](06-context.md) — get_context details
+- [MCP Resources](10-resources.md) — Resource URIs and how to query them

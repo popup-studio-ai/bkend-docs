@@ -1,5 +1,7 @@
 # Table of contents
 
+* [⚠️ Exporting Your Data](guides/12-data-export.md)
+
 * [Getting Started](getting-started/01-what-is-bkend.md)
   * [Quick Start Guide](getting-started/02-quickstart.md)
   * [Integrating bkend in Your App](getting-started/03-app-integration.md)

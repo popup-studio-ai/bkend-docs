@@ -1,5 +1,7 @@
 # Table of contents
 
+* [⚠️ 데이터 내보내기](guides/12-data-export.md)
+
 * [시작하기](getting-started/01-what-is-bkend.md)
   * [빠른 시작 가이드](getting-started/02-quickstart.md)
   * [앱에서 bkend 연동하기](getting-started/03-app-integration.md)
